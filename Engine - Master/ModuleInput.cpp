@@ -30,7 +30,7 @@ bool ModuleInput::Init()
 update_status ModuleInput::Update()
 {
 	SDL_PumpEvents();
-
+	//ImGui_ImplSDL2_ProcessEvent(&event);
 	keyboard = SDL_GetKeyboardState(NULL);
 
 	return UPDATE_CONTINUE;
