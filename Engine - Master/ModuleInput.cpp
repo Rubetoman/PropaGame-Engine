@@ -29,9 +29,15 @@ bool ModuleInput::Init()
 // Called every draw update
 update_status ModuleInput::Update()
 {
+	static SDL_Event event;
+
 	SDL_PumpEvents();
 	//ImGui_ImplSDL2_ProcessEvent(&event);
 	keyboard = SDL_GetKeyboardState(NULL);
+	
+	while (SDL_PollEvent(&event)) {
+		ImGui_ImplSDL2_ProcessEvent(&event);
+	}
 
 	return UPDATE_CONTINUE;
 }

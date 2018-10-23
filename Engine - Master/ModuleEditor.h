@@ -23,7 +23,7 @@ public:
 	bool Init();
 
 	// Called before quitting
-	bool Update();
+	update_status Update();
 
 	// Called before quitting
 	bool CleanUp();
