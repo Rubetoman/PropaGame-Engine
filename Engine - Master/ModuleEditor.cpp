@@ -16,17 +16,14 @@ ModuleEditor::~ModuleEditor()
 // Called before render is available
 bool ModuleEditor::Init()
 {
-	bool ret = true;
 
 	const char* glsl_version = "#version 130";
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io = ImGui::GetIO(); (void)io;
+
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Window
@@ -34,15 +31,33 @@ bool ModuleEditor::Init()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init(glsl_version);
 
-	ImGui::ShowTestWindow();
+	// Setup style
+	ImGui::StyleColorsDark();
 
-	return ret;
+	return true;
+}
+
+update_status ModuleEditor::PreUpdate()
+{
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame(App->window->window);
+	ImGui::NewFrame();
+
+	return UPDATE_CONTINUE;
 }
 
 update_status ModuleEditor::Update()
 {
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(App->window->window);
+	//Example Window
+	bool show_another_window = true;
+	ImGui::ShowDemoWindow();
+
+	ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+	ImGui::Text("Hello from another window!");
+	if (ImGui::Button("Close Me"))
+		show_another_window = false;
+	ImGui::End();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -50,6 +65,9 @@ update_status ModuleEditor::Update()
 bool ModuleEditor::CleanUp()
 {
 	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	return true;
 }
 

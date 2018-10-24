@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
+#include "ModuleEditor.h"
 #include "SDL.h"
 #include "GL/glew.h"
 
@@ -18,7 +19,6 @@ ModuleRender::~ModuleRender()
 bool ModuleRender::Init()
 {
 	LOG("Creating Renderer context");
-
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
@@ -64,6 +64,14 @@ update_status ModuleRender::Update()
 update_status ModuleRender::PostUpdate()
 {
 	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	// Update and Render additional Platform Windows
+	if (App->editor->io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+	}
 	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;

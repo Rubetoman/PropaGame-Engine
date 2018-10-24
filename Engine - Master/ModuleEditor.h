@@ -5,7 +5,7 @@
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
-#include "imgui/imgui_impl_opengl3.h"
+//#include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl.h"
 
 class Application;
@@ -19,16 +19,13 @@ public:
 	// Destructor
 	virtual ~ModuleEditor();
 
-	// Called before quitting
 	bool Init();
-
-	// Called before quitting
+	update_status PreUpdate();
 	update_status Update();
-
-	// Called before quitting
 	bool CleanUp();
 
 public:
+	ImGuiIO io;
 	//The window we'll be rendering to
 	SDL_Window * window = NULL;
 
