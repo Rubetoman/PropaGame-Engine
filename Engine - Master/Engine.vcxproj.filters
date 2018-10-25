@@ -138,6 +138,7 @@
     <ClCompile Include="imgui\imgui_impl_sdl.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -336,6 +337,7 @@
     <ClInclude Include="ModuleEditor.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
