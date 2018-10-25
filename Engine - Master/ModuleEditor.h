@@ -31,6 +31,9 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = NULL;
+
+	bool show_another_window = true;
+	bool show_about_window = true;
 };
 
 #endif // __ModuleEditor_H__

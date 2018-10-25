@@ -49,13 +49,29 @@ update_status ModuleEditor::PreUpdate()
 update_status ModuleEditor::Update()
 {
 	//Example Window
-	bool show_another_window = true;
 	ImGui::ShowDemoWindow();
 
 	ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
 	ImGui::Text("Hello from another window!");
 	if (ImGui::Button("Close Me"))
 		show_another_window = false;
+	ImGui::End();
+
+	ImGui::Begin("About", &show_about_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+	ImGui::Text("PropaGame Engine");
+	ImGui::Text("Version:	BT - 1");
+	ImGui::Text("Propaganda takes over games");
+	ImGui::Text("Made by Ruben Crispin De la Cruz");
+	ImGui::Text("Libraries: ");
+	ImGui::Text("	- glew-2.1.0");
+	ImGui::Text("	- imgui v1.65 (with branching)");
+	ImGui::Text("	- OpenGL 3.0");
+	ImGui::Text("	- MathGeoLib");
+	ImGui::Text("	- SDL 2.0.8");
+	ImGui::Text("MIT License Copyright (c) [2018] [Ruben Crispin]");
+
+	if (ImGui::Button("Close"))
+		show_about_window = false;
 	ImGui::End();
 
 	return UPDATE_CONTINUE;
