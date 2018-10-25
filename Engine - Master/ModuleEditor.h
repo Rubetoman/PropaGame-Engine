@@ -5,7 +5,6 @@
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
-//#include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl.h"
 
 class Application;
@@ -32,8 +31,9 @@ public:
 	//The surface contained by the window
 	SDL_Surface* screen_surface = NULL;
 
-	bool show_another_window = true;
-	bool show_about_window = true;
+	bool show_options_window = false;
+	bool show_log_window = false;
+	bool show_about_window = false;
 };
 
 #endif // __ModuleEditor_H__

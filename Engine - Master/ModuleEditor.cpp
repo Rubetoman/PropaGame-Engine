@@ -4,6 +4,11 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 
+static void ShowMainMenuBar();
+static void ShowOptionsWindow();
+static void ShowLogWindow();
+static void ShowAboutWindow();
+
 ModuleEditor::ModuleEditor()
 {
 }
@@ -49,15 +54,86 @@ update_status ModuleEditor::PreUpdate()
 update_status ModuleEditor::Update()
 {
 	//Example Window
+	ShowMainMenuBar();
 	ImGui::ShowDemoWindow();
+	
+	if (show_about_window) {
+		ShowAboutWindow();
+	}
 
-	ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-	ImGui::Text("Hello from another window!");
-	if (ImGui::Button("Close Me"))
-		show_another_window = false;
-	ImGui::End();
 
-	ImGui::Begin("About", &show_about_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+	return UPDATE_CONTINUE;
+}
+
+// Called before quitting
+bool ModuleEditor::CleanUp()
+{
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
+	return true;
+}
+
+static void ShowMainMenuBar()
+{
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Open")) {}
+			if (ImGui::MenuItem("Quit", "ALT+F4")) {}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Edit"))
+		{
+			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+			ImGui::Separator();
+			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Window"))
+		{
+			if (ImGui::MenuItem("Options")) { App->editor->show_options_window = true; }
+			if (ImGui::MenuItem("Log")) { App->editor->show_log_window = true; }
+			if (ImGui::MenuItem("Hardware Info")) { ShellExecute(0, 0, "https://github.com/Rubetoman/SDL-OpenGL-Engine-V2", 0, 0, SW_SHOW); }
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Help"))
+		{
+			if (ImGui::MenuItem("About")) { App->editor->show_about_window = true; }
+			ImGui::Separator();
+			if (ImGui::MenuItem("View GIT Repository")) { ShellExecute(0, 0, "https://github.com/Rubetoman/SDL-OpenGL-Engine-V2", 0, 0, SW_SHOW); }
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
+}
+
+static void ShowOptionsWindow() 
+{
+	/*ImGui::Begin("About", &App->editor->show_options_window);   // Pointer to bool variable (close when click on button)
+	if (ImGui::Checkbox("Fullscreen", &fullscreen))
+		App->window->SetFullScreen(fullscreen);
+
+	ImGui::SameLine();
+	if (ImGui::Checkbox("Resizable", &resizable))
+		App->window->SetResizable(resizable);
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip("Restart to apply");*/
+}
+
+static void ShowLogWindow()
+{
+
+}
+
+static void ShowAboutWindow() 
+{
+	ImGui::Begin("About", &App->editor->show_about_window);   // Pointer to bool variable (close when click on button)
 	ImGui::Text("PropaGame Engine");
 	ImGui::Text("Version:	BT - 1");
 	ImGui::Text("Propaganda takes over games");
@@ -71,19 +147,7 @@ update_status ModuleEditor::Update()
 	ImGui::Text("MIT License Copyright (c) [2018] [Ruben Crispin]");
 
 	if (ImGui::Button("Close"))
-		show_about_window = false;
+		App->editor->show_about_window = false;
 	ImGui::End();
-
-	return UPDATE_CONTINUE;
-}
-
-// Called before quitting
-bool ModuleEditor::CleanUp()
-{
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
-
-	return true;
 }
 
