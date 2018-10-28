@@ -20,6 +20,8 @@ public:
 	bool            Init();
 	update_status   Update();
 	bool            CleanUp();
+	void			DrawCoordinates();
+	void			DrawPlane();
 
 	float4x4 model_view;
 	float4x4 view_matrix;
