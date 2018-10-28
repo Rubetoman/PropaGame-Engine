@@ -138,7 +138,13 @@
     <ClCompile Include="imgui\imgui_impl_sdl.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="ModuleCamera.cpp" />
+=======
+    <ClCompile Include="ModuleShader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+>>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -337,7 +343,13 @@
     <ClInclude Include="ModuleEditor.h">
       <Filter>Modules</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ModuleCamera.h" />
+=======
+    <ClInclude Include="ModuleShader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+>>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
@@ -349,5 +361,16 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{45174fb8-e4c8-4c23-a136-6a4593cb6149}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{7183b399-2d66-41ef-92a1-f823bc215071}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Default.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Default.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
