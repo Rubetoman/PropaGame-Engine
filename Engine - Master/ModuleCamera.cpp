@@ -1,16 +1,13 @@
-#include "Application.h"
-#include "ModuleInput.h"
 #include "ModuleCamera.h"
-#include "ModuleWindow.h"
 
-#include "GL/glew.h"
-#include "SDL.h"
 
 ModuleCamera::ModuleCamera()
 {
-	eye =		float3(0, 0, 5);
-	target =	float3(0, 0, 0);
-	up =		float3(0, 0, 1);
+	eye		= float3(0, 0, 5);
+	target	= float3(0, 0, 0);
+	up		= float3(0, 0, 1);
+	pitch	= 0.0f;
+	yaw		= 0.0f;
 }
 
 ModuleCamera::~ModuleCamera()
@@ -26,8 +23,20 @@ bool ModuleCamera::Init()
 update_status ModuleCamera::PreUpdate() 
 {
 	TranslateCameraInput();
-	ChangeCameraSpeed(5.0f);
+	CameraSpeedInput(5.0f);
 
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
+		RotateCamera(NegativePitch);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
+		RotateCamera(PositivePitch);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
+		RotateCamera(PositiveYaw);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
+		RotateCamera(NegativeYaw);
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -115,7 +124,7 @@ void ModuleCamera::TranslateCameraInput()
 	}
 }
 
-void ModuleCamera::ChangeCameraSpeed(float modifier) 
+void ModuleCamera::CameraSpeedInput(float modifier) 
 {
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN)
 	{
@@ -125,4 +134,83 @@ void ModuleCamera::ChangeCameraSpeed(float modifier)
 	{
 		cam_speed /= modifier;
 	}
+}
+
+void ModuleCamera::RotateCamera(CameraRotation camera_rot) {
+	math::float3 direction;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	switch (camera_rot) {
+	case PositivePitch:
+		pitch += cam_speed;
+		forward_v.y = SDL_sin(degreesToRadians(pitch));
+		forward_v.x = SDL_cos(degreesToRadians(pitch));
+		forward_v.z = SDL_cos(degreesToRadians(pitch));
+		forward_v.Normalize();
+		target += forward_v * cam_speed;
+		break;
+	case NegativePitch:
+		pitch -= cam_speed * 2;
+		forward_v.y = SDL_sin(degreesToRadians(pitch));
+		forward_v.x = SDL_cos(degreesToRadians(pitch));
+		forward_v.z = SDL_cos(degreesToRadians(pitch));
+		forward_v.Normalize();
+		target -= forward_v * cam_speed;
+		break;
+	case PositiveYaw:
+		yaw += cam_speed;
+		forward_v.y = SDL_cos(degreesToRadians(pitch)) * SDL_cos(degreesToRadians(yaw));
+		forward_v.x = SDL_sin(degreesToRadians(pitch));
+		forward_v.z = SDL_cos(degreesToRadians(pitch)) * SDL_sin(degreesToRadians(yaw));
+		forward_v.Normalize();
+		target += forward_v * cam_speed;
+		eye += forward_v * cam_speed;
+		break;
+	case NegativeYaw:
+		yaw -= cam_speed;
+		forward_v.y = SDL_cos(degreesToRadians(pitch)) * SDL_cos(degreesToRadians(yaw));
+		forward_v.x = SDL_sin(degreesToRadians(pitch));
+		forward_v.z = SDL_cos(degreesToRadians(pitch)) * SDL_sin(degreesToRadians(yaw));
+		forward_v.Normalize();
+		target -= forward_v * cam_speed;
+		eye -= forward_v * cam_speed;
+		break;
+	}
+}
+
+void ModuleCamera::MouseUpdate(float2& mouse_new_pos)
+{
+	if (firstMouse)
+	{
+		lastX = mouse_new_pos.x;
+		lastY = mouse_new_pos.y;
+		firstMouse = false;
+	}
+
+	float xoffset = mouse_new_pos.x - lastX;
+	float yoffset = lastY - mouse_new_pos.y;
+	lastX = mouse_new_pos.x;
+	lastY = mouse_new_pos.y;
+
+	float sensitivity = 0.05;
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	math::float3 front;
+	front.x = SDL_cosf(yaw) * SDL_cosf(pitch);
+	front.y = SDL_sinf(pitch);
+	front.z = SDL_sinf(yaw) * SDL_cosf(pitch);
+	forward_v = front.Normalized();
 }

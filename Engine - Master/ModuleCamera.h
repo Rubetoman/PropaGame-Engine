@@ -2,11 +2,23 @@
 #define __ModuleCamera_h__
 
 #include "Module.h"
+#include "ModuleWindow.h"
+#include "Application.h"
+#include "ModuleInput.h"
+#include "GL/glew.h"
+#include "SDL.h"
 #include "MathGeoLib.h"
 #include "SDL/include/SDL.h"
 
 class ModuleCamera : public Module
 {
+	enum CameraRotation {
+		PositivePitch,
+		NegativePitch,
+		PositiveYaw,
+		NegativeYaw
+	};
+
 public:
 	ModuleCamera();
 	~ModuleCamera();
@@ -19,7 +31,9 @@ public:
 	void			InitProyection();
 	float4x4		LookAt(math::float3& target, math::float3& eye, math::float3& up);
 	void			TranslateCameraInput();
-	void			ChangeCameraSpeed(float modifier);
+	void			CameraSpeedInput(float modifier);
+	void			RotateCamera(CameraRotation camera_rot);
+	void			MouseUpdate(float2& mouse_new_pos);
 
 	float4x4 model_view;
 	float4x4 view_matrix;
@@ -27,7 +41,11 @@ public:
 	float4x4 proj;
 	Frustum frustum;
 
-	// Camera
+	// Camera rotation
+	float pitch;
+	float yaw;
+
+	// Camera vectors
 	float3& eye = float3(0, 0, 0);
 	float3& target = float3(0, 0, 0);
 	float3& up = float3(0, 0, 0);
@@ -35,6 +53,11 @@ public:
 	float3 side_v;
 	float3 up_v;
 	float cam_speed = 0.01f;
+
+	// Mouse 
+	bool firstMouse = true;
+	float lastX = SCREEN_WIDTH / 2;
+	float lastY = SCREEN_HEIGHT / 2;
 
 private:
 	unsigned vbo = 0;
