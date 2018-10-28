@@ -75,6 +75,10 @@ bool ModuleEditor::CleanUp()
 	return true;
 }
 
+void ModuleEditor::HandleInputs(SDL_Event& event) {
+	ImGui_ImplSDL2_ProcessEvent(&event);
+}
+
 static void ShowMainMenuBar()
 {
 	if (ImGui::BeginMainMenuBar())

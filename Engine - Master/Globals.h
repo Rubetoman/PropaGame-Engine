@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __GLOBALS_H__
+#define __GLOBALS_H__
 #include <windows.h>
 #include <stdio.h>
 
@@ -12,10 +13,32 @@ enum update_status
 	UPDATE_STOP,
 	UPDATE_ERROR
 };
+// Deletes a buffer
+#define RELEASE( x ) \
+    {\
+       if( x != nullptr )\
+       {\
+         delete x;\
+	     x = nullptr;\
+       }\
+    }
+
+// Deletes an array of buffers
+#define RELEASE_ARRAY( x ) \
+	{\
+       if( x != nullptr )\
+       {\
+           delete[] x;\
+	       x = nullptr;\
+		 }\
+	 }
 
 // Configuration -----------
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 #define FULLSCREEN false
 #define VSYNC true
+#define SCREEN_SIZE 2
 #define TITLE "PropaGame Engine"
+
+#endif //__GLOBALS_H__

@@ -22,6 +22,7 @@ public:
 	update_status PreUpdate();
 	update_status Update();
 	bool CleanUp();
+	void HandleInputs(SDL_Event& event);
 
 public:
 	ImGuiIO io;

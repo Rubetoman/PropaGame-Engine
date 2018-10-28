@@ -1,17 +1,15 @@
-/*#ifndef __ModuleRenderExercise_h__
-#define __ModuleRenderExercise_h__
+#ifndef __MODULERENDEREXERCISE_h__
+#define __MODULERENDEREXERCISE_h__
 
 #include "Module.h"
-<<<<<<< HEAD
 #include "MathGeoLib.h"
-=======
 #include "ModuleWindow.h"
 #include "Application.h"
 #include "ModuleShader.h"
+#include "ModuleCamera.h"
 #include "MathGeoLib.h"
 #include "GL/glew.h"
 #include "SDL.h"
->>>>>>> master
 
 class ModuleRenderExercise : public Module
 {
@@ -35,5 +33,5 @@ private:
 	GLuint program = GL_FALSE;
 
 };
-*/
-//#endif /* __ModuleRenderExercise_h__ */
+
+#endif /* __ModuleRenderExercise_h__ */
