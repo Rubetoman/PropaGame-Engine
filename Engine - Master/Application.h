@@ -10,11 +10,7 @@ class ModuleTextures;
 class ModuleInput;
 class ModuleRenderExercise;
 class ModuleEditor;
-<<<<<<< HEAD
 class ModuleCamera;
-=======
-class ModuleShader;
->>>>>>> master
 
 class Application
 {
@@ -34,11 +30,7 @@ public:
 	ModuleInput* input = nullptr;
     ModuleRenderExercise* exercise = nullptr;
 	ModuleEditor* editor = nullptr;
-<<<<<<< HEAD
 	ModuleCamera* camera = nullptr;
-=======
-	ModuleShader* shader = nullptr;
->>>>>>> master
 
 private:
 
