@@ -25,10 +25,8 @@ bool ModuleCamera::Init()
 
 update_status ModuleCamera::PreUpdate() 
 {
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-		eye		+=	float3(0.0f, 1.0f, 0.0f);
-		target	+=	float3(0.0f, 1.0f, 0.0f);
-	}
+	TranslateCameraInput();
+	ChangeCameraSpeed(5.0f);
 
 	return UPDATE_CONTINUE;
 }
@@ -69,16 +67,62 @@ float4x4 ModuleCamera::LookAt(math::float3& target, math::float3& eye, math::flo
 	float4x4 view_matrix;
 
 	// projection
-	math::float3 f(target - eye); f.Normalize();
-	math::float3 s(f.Cross(up)); s.Normalize();
-	math::float3 u(s.Cross(f));
+	forward_v = float3(target - eye); forward_v.Normalize();
+	side_v =	float3(forward_v.Cross(up)); side_v.Normalize();
+	up_v =		float3 (side_v.Cross(forward_v));
 
-	view_matrix[0][0] = s.x;				view_matrix[0][1] = s.y;				view_matrix[0][2] = s.z;
-	view_matrix[1][0] = u.x;				view_matrix[1][1] = u.y;				view_matrix[1][2] = u.z;
-	view_matrix[2][0] = -f.x;				view_matrix[2][1] = -f.y;				view_matrix[2][2] = -f.z;
+	view_matrix[0][0] = side_v.x;			view_matrix[0][1] = side_v.y;			view_matrix[0][2] = side_v.z;
+	view_matrix[1][0] = up_v.x;				view_matrix[1][1] = up_v.y;				view_matrix[1][2] = up_v.z;
+	view_matrix[2][0] = -forward_v.x;		view_matrix[2][1] = -forward_v.y;		view_matrix[2][2] = -forward_v.z;
 
-	view_matrix[0][3] = -s.Dot(eye);		view_matrix[1][3] = -u.Dot(eye);		view_matrix[2][3] = f.Dot(eye);
-	view_matrix[3][0] = 0.0f;				view_matrix[3][1] = 0.0f;				view_matrix[3][2] = 0.0f;			view_matrix[3][3] = 1.0f;
+	view_matrix[0][3] = -side_v.Dot(eye);	view_matrix[1][3] = -up_v.Dot(eye);		view_matrix[2][3] = forward_v.Dot(eye);
+	view_matrix[3][0] = 0.0f;				view_matrix[3][1] = 0.0f;				view_matrix[3][2] = 0.0f;					view_matrix[3][3] = 1.0f;
 
 	return view_matrix;
+}
+
+void ModuleCamera::TranslateCameraInput() 
+{
+	if (App->input->GetKey(SDL_SCANCODE_Q))
+	{
+		eye += float3(0.0f, 1.0f, 0.0f) * cam_speed;
+		target += float3(0.0f, 1.0f, 0.0f) * cam_speed;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_E))
+	{
+		eye -= float3(0.0f, 1.0f, 0.0f) * cam_speed;
+		target -= float3(0.0f, 1.0f, 0.0f) * cam_speed;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_A))
+	{
+		eye -= side_v * cam_speed;
+		target -= side_v * cam_speed;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D))
+	{
+		eye += side_v * cam_speed;
+		target += side_v * cam_speed;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_W))
+	{
+		eye += forward_v * cam_speed;
+		target += forward_v * cam_speed;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_S))
+	{
+		eye -= forward_v * cam_speed;
+		target -= forward_v * cam_speed;
+	}
+}
+
+void ModuleCamera::ChangeCameraSpeed(float modifier) 
+{
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN)
+	{
+		cam_speed *= modifier;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)
+	{
+		cam_speed /= modifier;
+	}
 }

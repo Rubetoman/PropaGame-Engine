@@ -58,7 +58,7 @@ update_status ModuleRenderExercise::Update()
 	// Uniforms (can be changed from any place by calling newColour variable)
 	// Fragment shader coloring
 	int fragUnifLocation = glGetUniformLocation(program, "newColor");
-	float color[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	float color[4] = { 0.651f, 0.008f, 0.008f, 1.0f };
 	glUniform4fv(fragUnifLocation, 1, color);
 
 	math::float4x4 Model(math::float4x4::identity); // Not moving anything
@@ -132,6 +132,10 @@ void ModuleRenderExercise::DrawCoordinates()
 void ModuleRenderExercise::DrawPlane()
 {
 	glLineWidth(1.0f);
+	int grid = glGetUniformLocation(program, "newColor");
+	float cream[4] = {0.988f, 0.918f, 0.592f, 1.0f};
+	glUniform4fv(grid, 1, cream);
+
 	glBegin(GL_LINES);
 
 	float d = 200.0f;
