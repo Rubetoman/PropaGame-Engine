@@ -141,6 +141,7 @@
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleRenderExercise.h" />
+    <ClInclude Include="ModuleShader.h" />
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="ModuleWindow.h" />
   </ItemGroup>
@@ -191,8 +192,13 @@
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleRenderExercise.cpp" />
+    <ClCompile Include="ModuleShader.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Default.fs" />
+    <None Include="Default.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
