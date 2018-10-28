@@ -138,6 +138,9 @@
     <ClCompile Include="imgui\imgui_impl_sdl.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleShader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -334,6 +337,9 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEditor.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleShader.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
