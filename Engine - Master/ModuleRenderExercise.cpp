@@ -10,21 +10,43 @@ ModuleRenderExercise::~ModuleRenderExercise()
 
 bool ModuleRenderExercise::Init()
 {
+	// Load texture
+	texture = App->textures->loadImage("desatranques.jpg");
+
+	if (!texture) {
+		LOG("Error: texture cannot be loaded");
+		return false;
+	}
+
 	// Generate program with vertex and fragment shaders and load it to GL
 	program = App->shader->LoadShaders("../default.vs", "../default.fs");
+	programText = App->shader->LoadShaders("../texture.vs", "../texture.fs");
 
-	if (!program) {
+	if (!program || !programText) {
 		LOG("Error: Program cannot be compiled");
 		return false;
 	}
 
-	glUseProgram(program);
+	// Paint quad
+	float vertex_buffer_data[] =
+	{
+		// positions
+		-1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		-1.0f, 1.0f, 0.0f,
 
-	// Pain Triangle
-	float3 vertex_buffer_data[] = {
-		{ -1.0f, -1.0f, 0.0f },
-	{ 1.0f, -1.0f, 0.0f },
-	{ 0.0f,  1.0f, 0.0f } 
+		1.0f, -1.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,
+		-1.0f,  1.0f, 0.0f,
+
+		// uvs
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		0.0f, 1.0f,
+
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f
 	};
 
 	glGenBuffers(1, &vbo);
@@ -48,6 +70,15 @@ update_status ModuleRenderExercise::Update()
 		(void*)0            // array buffer offset
 	);
 
+	// Enable for textures
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * 6) // buffer offset
+	);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(glGetUniformLocation(programText, "texture0"), 0);
+
 	//Use shaders loadeds in program
 	glUseProgram(program);
 
@@ -67,8 +98,13 @@ update_status ModuleRenderExercise::Update()
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->target, App->camera->eye, App->camera->up)[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
 
+	glUseProgram(programText);
+	glUniformMatrix4fv(glGetUniformLocation(programText, "model"), 1, GL_TRUE, &Model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programText, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->target, App->camera->eye, App->camera->up)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programText, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
 
-	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+
+	glDrawArrays(GL_TRIANGLES, 0, 6); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 

@@ -1,9 +1,11 @@
 #pragma once
-#include<list>
 #include "Module.h"
 #include "Globals.h"
-
-struct SDL_Texture;
+#include <iostream>
+#include <cstdlib>
+#include <GL/glew.h>
+#include <IL/il.h>
+#include <IL/ilut.h>
 
 class ModuleTextures : public Module
 {
@@ -13,9 +15,5 @@ public:
 
 	bool Init();
 	bool CleanUp();
-
-	SDL_Texture* const Load(const char* path);
-
-private:
-	std::list<SDL_Texture*> textures;
+	GLuint loadImage(const char* theFileName);
 };

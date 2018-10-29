@@ -7,9 +7,12 @@
 #include "Application.h"
 #include "ModuleShader.h"
 #include "ModuleCamera.h"
+#include "ModuleTextures.h"
 #include "MathGeoLib.h"
 #include "GL/glew.h"
 #include "SDL.h"
+#include <IL/il.h>
+#include <IL/ilut.h>
 
 class ModuleRenderExercise : public Module
 {
@@ -33,6 +36,8 @@ public:
 private:
 	unsigned vbo = 0;
 	GLuint program = GL_FALSE;
+	GLuint programText = GL_FALSE;
+	GLuint texture;
 
 };
 
