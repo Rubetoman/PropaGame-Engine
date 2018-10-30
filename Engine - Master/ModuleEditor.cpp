@@ -11,6 +11,8 @@ static void ShowAboutWindow();
 
 ModuleEditor::ModuleEditor()
 {
+	fps_log.resize(100);
+	ms_log.resize(100);
 }
 
 // Destructor
@@ -48,6 +50,13 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
+	// Update performance
+	fps_log.erase(fps_log.begin());
+	fps_log.push_back(App->FPS);
+	ms_log.erase(ms_log.begin());
+	ms_log.push_back(App->deltaTime * 1000);
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -59,6 +68,9 @@ update_status ModuleEditor::Update()
 	
 	if (show_about_window) {
 		ShowAboutWindow();
+	}
+	if (show_performance_window) {
+		ShowPerformanceWindow();
 	}
 
 
@@ -102,6 +114,7 @@ static void ShowMainMenuBar()
 		if (ImGui::BeginMenu("Window"))
 		{
 			if (ImGui::MenuItem("Options")) { App->editor->show_options_window = true; }
+			if (ImGui::MenuItem("Performance")) { App->editor->show_performance_window = true; }
 			if (ImGui::MenuItem("Log")) { App->editor->show_log_window = true; }
 			if (ImGui::MenuItem("Hardware Info")) { ShellExecute(0, 0, "https://github.com/Rubetoman/SDL-OpenGL-Engine-V2", 0, 0, SW_SHOW); }
 			ImGui::EndMenu();
@@ -155,3 +168,13 @@ static void ShowAboutWindow()
 	ImGui::End();
 }
 
+void ModuleEditor::ShowPerformanceWindow()
+{
+	ImGui::Begin("Performance", &App->editor->show_performance_window);   // Pointer to bool variable (close when click on button)
+	char title[25];
+	sprintf_s(title, 25, "Framerate %0.1f", fps_log[fps_log.size() - 1]);
+	ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 200.0f, ImVec2(310, 100));
+	sprintf_s(title, 25, "Milliseconds %0.1f", ms_log[ms_log.size() - 1]);
+	ImGui::PlotHistogram("##framerate", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
+	ImGui::End();
+}

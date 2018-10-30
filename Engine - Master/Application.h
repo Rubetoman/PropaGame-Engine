@@ -35,9 +35,11 @@ public:
 	ModuleCamera* camera = nullptr;
 	ModuleShader* shader = nullptr;
 
-	float lastTickTime = 0;
-	float deltaTime = 0;
-	int FPS = 60 * deltaTime;
+	float lastTickCount = 0;	// How many ticks passed last time it was checked
+	float deltaTime = 0;		// Time in seconds
+	int FPS = 0;				// How many frames have passed in one second
+	int frameCounter = 0;		// Counter to count frames
+	float auxTimer = 0;			// Timer to check when a second has passed
 
 private:
 
