@@ -16,8 +16,10 @@ bool ModuleTextures::Init()
 {
 	LOG("Init Image library");
 	// Initialize IL
-	ilInit();	// Initialize ILU
-	iluInit();	// Initialize ILUT with OpenGL support.
+	ilInit();
+	// Initialize ILU
+	iluInit();
+	// Initialize ILUT with OpenGL support.
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
 
@@ -73,7 +75,7 @@ GLuint ModuleTextures::loadImage(const char* theFileName)
 		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 		// Set texture interpolation method to use linear interpolation (no MIPMAPS)
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 		// Specify the texture specification

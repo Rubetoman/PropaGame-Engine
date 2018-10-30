@@ -36,6 +36,9 @@ bool Application::Init()
 {
 	bool ret = true;
 
+	lastTickTime = 0;
+	deltaTime = 0;
+
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();
 
@@ -45,6 +48,8 @@ bool Application::Init()
 update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
+
+	Tick();
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PreUpdate();
@@ -66,4 +71,12 @@ bool Application::CleanUp()
 		ret = (*it)->CleanUp();
 
 	return ret;
+}
+
+void Application::Tick()
+{
+	float ticksNow = SDL_GetTicks();
+	deltaTime = (ticksNow - lastTickTime) / 1000;
+	lastTickTime = ticksNow;
+	FPS = 60 * (-1 * deltaTime);
 }
