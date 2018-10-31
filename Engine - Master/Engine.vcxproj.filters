@@ -146,6 +146,7 @@
     <ClCompile Include="MathGeoLib\include\Geometry\TriangleMesh.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleModelLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -349,6 +350,7 @@
     <ClInclude Include="MathGeoLib\include\Geometry\HitInfo.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleModelLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.fs">
