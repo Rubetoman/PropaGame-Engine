@@ -88,11 +88,11 @@ void ModuleCamera::TranslateCameraInput()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A))
 	{
-		cam_position -= cam_up.Cross(cam_target).Normalized() * cam_speed * App->deltaTime;
+		cam_position += cam_up.Cross(cam_target).Normalized() * cam_speed * App->deltaTime;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D))
 	{
-		cam_position += cam_up.Cross(cam_target).Normalized() * cam_speed * App->deltaTime;
+		cam_position -= cam_up.Cross(cam_target).Normalized() * cam_speed * App->deltaTime;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_W))
 	{
