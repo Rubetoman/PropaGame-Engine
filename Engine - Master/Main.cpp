@@ -81,7 +81,7 @@ int main(int argc, char ** argv)
 
 		}
 
-		SDL_Event sdlEvent;
+		/*SDL_Event sdlEvent;
 
 		while (SDL_PollEvent(&sdlEvent) != 0)
 		{
@@ -97,10 +97,10 @@ int main(int argc, char ** argv)
 					App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
 					break;
 			}
-		}
+		}*/
 	}
 
 	delete App;
-	LOG("Bye :)\n");
+	LOG("See you space cowboy\n");
 	return main_return;
 }
