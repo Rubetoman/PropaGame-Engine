@@ -13,6 +13,7 @@ bool ModuleRenderExercise::Init()
 	image desatranques, sankara, pazos, logo;
 	desatranques.path = "desatranques.jpg";
 	desatranques.use_mipmap = true;
+	desatranques.resize_mode = nearest;
 	sankara.path = "sankara.png";
 	pazos.path = "pazos.jpg";
 	logo.path = "Red Controller Digital.png";
