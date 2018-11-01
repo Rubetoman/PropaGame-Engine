@@ -33,11 +33,12 @@ public:
 	float3 target = { 0, 0, 0 };
 	float3 up = { 0, 0, 1 };
 
+	GLuint texture;
+	image desatranques, sankara, pazos, logo;
 private:
 	unsigned vbo = 0;
 	GLuint program = GL_FALSE;
 	GLuint programText = GL_FALSE;
-	GLuint texture;
 
 };
 

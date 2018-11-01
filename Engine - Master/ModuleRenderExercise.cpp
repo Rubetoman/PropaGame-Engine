@@ -10,10 +10,12 @@ ModuleRenderExercise::~ModuleRenderExercise()
 
 bool ModuleRenderExercise::Init()
 {
-	image desatranques, sankara, pazos, logo;
+	desatranques.name = "Desatranques Jaen";
 	desatranques.path = "desatranques.jpg";
 	desatranques.use_mipmap = true;
-	sankara.path = "sankara.png";
+	sankara.name = "Thomas Sankara";
+	sankara.path = "sankara.jpg";
+	pazos.name = "Pazos64";
 	pazos.path = "pazos.jpg";
 	logo.path = "Red Controller Digital.png";
 	// Load texture

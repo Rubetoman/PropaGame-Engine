@@ -168,3 +168,15 @@ void ModuleTextures::unloadImage(unsigned id)
 		glDeleteTextures(1, &id);
 	}
 }
+
+void ModuleTextures::ReloadImage(image new_image, GLuint& texture) {
+	unloadImage(texture);
+
+	texture = loadImage(new_image);
+
+	if (texture == -1) {
+		LOG("Error: Texture cannot be loaded");
+	}
+
+}
+

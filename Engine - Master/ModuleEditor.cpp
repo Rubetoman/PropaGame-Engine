@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleTextures.h"
+#include "ModuleRenderExercise.h"
 
 static void ShowMainMenuBar();
 static void ShowOptionsWindow();
@@ -72,8 +74,9 @@ update_status ModuleEditor::Update()
 	if (show_performance_window) {
 		ShowPerformanceWindow();
 	}
-
-
+	if (show_textures_window) {
+		ShowTexturesWindow();
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -115,6 +118,7 @@ static void ShowMainMenuBar()
 		{
 			if (ImGui::MenuItem("Options")) { App->editor->show_options_window = true; }
 			if (ImGui::MenuItem("Performance")) { App->editor->show_performance_window = true; }
+			if(ImGui::MenuItem("Texture Options")) { App->editor->show_textures_window = true; }
 			if (ImGui::MenuItem("Log")) { App->editor->show_log_window = true; }
 			if (ImGui::MenuItem("Hardware Info")) { ShellExecute(0, 0, "https://github.com/Rubetoman/SDL-OpenGL-Engine-V2", 0, 0, SW_SHOW); }
 			ImGui::EndMenu();
@@ -176,5 +180,40 @@ void ModuleEditor::ShowPerformanceWindow()
 	ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 200.0f, ImVec2(310, 100));
 	sprintf_s(title, 25, "Milliseconds %0.1f", ms_log[ms_log.size() - 1]);
 	ImGui::PlotHistogram("##framerate", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
+	ImGui::End();
+}
+
+void ModuleEditor::ShowTexturesWindow()
+{
+	ImGui::Begin("Textures", &App->editor->show_textures_window, ImGuiWindowFlags_AlwaysAutoResize);
+	image* images[] = { &App->exercise->desatranques, &App->exercise->sankara, &App->exercise->pazos };
+	static image* current_item = images[0];
+	if (ImGui::BeginCombo("Loaded textures", current_item->name, ImGuiComboFlags_NoArrowButton))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(images); n++)
+		{
+			bool is_selected = (current_item == images[n]);
+			if (ImGui::Selectable(images[n]->name, is_selected)) {
+				current_item = images[n];
+				App->textures->ReloadImage(*images[n], App->exercise->texture);
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::Separator();
+	if (ImGui::CollapsingHeader("Texture information")) {
+		ImGui::InputText("Format", current_item->format, sizeof(current_item->format));
+		ImGui::InputInt("Width", &current_item->width, 0, 0);
+		ImGui::InputInt("Height", &current_item->height, 0, 0);
+	}
+	if (ImGui::CollapsingHeader("Texture config")) {
+		//Show resize options
+		ImGui::Separator();
+		//Show wrap options
+		ImGui::Separator();
+		//Show mipmap options
+	}
 	ImGui::End();
 }

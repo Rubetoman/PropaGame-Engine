@@ -25,6 +25,7 @@ public:
 	bool CleanUp();
 	void HandleInputs(SDL_Event& event);
 	void ShowPerformanceWindow();
+	void ShowTexturesWindow();
 
 public:
 	ImGuiIO io;
@@ -42,6 +43,7 @@ public:
 	bool show_log_window = false;
 	bool show_about_window = false;
 	bool show_performance_window = false;
+	bool show_textures_window = false;
 };
 
 #endif // __ModuleEditor_H__
