@@ -28,7 +28,7 @@ public:
 
 	bool Init();
 	bool CleanUp();
-	GLuint loadImage(image image);
+	GLuint loadImage(image& image);
 	void unloadImage(unsigned id);
-	void ReloadImage(image new_image, GLuint& texture);
+	void ReloadImage(image& new_image, GLuint& texture);
 };

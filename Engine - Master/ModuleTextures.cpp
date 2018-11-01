@@ -23,7 +23,6 @@ bool ModuleTextures::Init()
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
 
-
 	return true;
 }
 
@@ -34,7 +33,7 @@ bool ModuleTextures::CleanUp()
 }
 
 
-GLuint ModuleTextures::loadImage(image image)
+GLuint ModuleTextures::loadImage(image& image)
 {
 	ILuint imageID;				// Create an image ID as a ULuint
 	ILboolean success;			// Create a flag to keep track of success/failure
@@ -168,7 +167,7 @@ void ModuleTextures::unloadImage(unsigned id)
 	}
 }
 
-void ModuleTextures::ReloadImage(image new_image, GLuint& texture) {
+void ModuleTextures::ReloadImage(image& new_image, GLuint& texture) {
 	unloadImage(texture);
 
 	texture = loadImage(new_image);
