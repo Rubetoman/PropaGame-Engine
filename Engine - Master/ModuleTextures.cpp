@@ -91,14 +91,6 @@ GLuint ModuleTextures::loadImage(image image)
 			default: image.format = "Unknown"; break;
 		}
 
-		// Set smaller resize mode
-		if (image.use_mipmap)
-		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glGenerateMipmap(GL_TEXTURE_2D);
-			glGenerateTextureMipmap(textureID);
-		}
-
 		// Set texture clamping method
 		switch (image.wrap_mode)
 		{
@@ -130,12 +122,12 @@ GLuint ModuleTextures::loadImage(image image)
 		{
 		case nearest:
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			/*if(!image.use_mipmap)*/ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			if(!image.use_mipmap) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 			break;
 		default:
 		case linear:
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			/*if (!image.use_mipmap)*/ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			if (!image.use_mipmap) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		}
 
 		// Specify the texture specification
@@ -148,6 +140,13 @@ GLuint ModuleTextures::loadImage(image image)
 			ilGetInteger(IL_IMAGE_FORMAT),	// Format of image pixel data
 			GL_UNSIGNED_BYTE,				// Image data type
 			ilGetData());					// The actual image data itself
+	
+		// Set smaller resize mode
+		if (image.use_mipmap)
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		ilDeleteImages(1, &imageID);		// Because we have already copied image data into texture data we can release memory used by image.
