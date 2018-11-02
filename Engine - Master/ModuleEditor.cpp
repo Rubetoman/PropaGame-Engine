@@ -248,6 +248,13 @@ void ModuleEditor::ShowTexturesWindow()
 		}
 		ImGui::Separator();
 		//Show mipmap options
+		bool mipmap = current_item->use_mipmap;
+		ImGui::Checkbox("Use Mipmap", &mipmap);
+		if (mipmap != current_item->use_mipmap)
+		{
+			current_item->use_mipmap = mipmap;
+			App->textures->ReloadImage(*current_item, App->exercise->texture);
+		}
 	}
 	ImGui::End();
 }
