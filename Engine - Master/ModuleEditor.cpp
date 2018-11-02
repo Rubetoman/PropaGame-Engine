@@ -193,7 +193,7 @@ void ModuleEditor::ShowTexturesWindow()
 		for (int n = 0; n < IM_ARRAYSIZE(images); n++)
 		{
 			bool is_selected = (current_item == images[n]);
-			if (ImGui::Selectable(images[n]->name, is_selected)) {
+			if (ImGui::Selectable(images[n]->name, is_selected) && !is_selected) {
 				current_item = images[n];
 				App->textures->ReloadImage(*images[n], App->exercise->texture);
 			}
@@ -208,10 +208,44 @@ void ModuleEditor::ShowTexturesWindow()
 		ImGui::InputInt("Width", &current_item->width, 0, 0);
 		ImGui::InputInt("Height", &current_item->height, 0, 0);
 	}
+	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Texture config")) {
 		//Show resize options
-		ImGui::Separator();
+		const char* resize_options[] = { "nearest", "linear" };
+		const char* current_resize = current_item->getResizeMode();
+		if (ImGui::BeginCombo("Resize Options", current_resize, ImGuiComboFlags_NoArrowButton))
+		{
+			for (int i = 0; i < IM_ARRAYSIZE(resize_options); i++)
+			{
+				bool is_selected = (current_resize == resize_options[i]);
+				if (ImGui::Selectable(resize_options[i], current_resize) && !is_selected)			// Reload texture if resize option has change
+				{
+					current_item->setResizeMode(resize_options[i]);
+					App->textures->ReloadImage(*current_item, App->exercise->texture);
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
 		//Show wrap options
+		const char* wrap_options[] = { "clamp to boder", "clamp", "repeat", "mirrored" };
+		const char* current_wrap = current_item->getWrapMode();
+		if (ImGui::BeginCombo("Wrap Options", current_wrap, ImGuiComboFlags_NoArrowButton))
+		{
+			for (int i = 0; i < IM_ARRAYSIZE(wrap_options); i++)
+			{
+				bool is_selected = (current_wrap == wrap_options[i]);
+				if (ImGui::Selectable(wrap_options[i], current_wrap) && !is_selected) // Reload texture if wrap option has change
+				{
+					current_item->setWrapMode(wrap_options[i]);
+					App->textures->ReloadImage(*current_item, App->exercise->texture);
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
 		ImGui::Separator();
 		//Show mipmap options
 	}
