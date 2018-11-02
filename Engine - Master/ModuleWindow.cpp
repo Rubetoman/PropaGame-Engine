@@ -32,15 +32,11 @@ bool ModuleWindow::Init()
 		screen_height = DM.h;
 
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
-
-		if(fullscreen)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN;
-		}
-		if (resizable)
-		{
-			flags |= SDL_WINDOW_RESIZABLE;
-		}
+		
+		//Set window settings
+		if(fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
+		if(resizable) flags |= SDL_WINDOW_RESIZABLE;
+		SDL_GL_SetSwapInterval(vsync);
 
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, flags);
 
@@ -99,6 +95,18 @@ void ModuleWindow::ToggleFullScreen()
 		DM.h -= 78;
 	}
 	SetWindowSize(DM.w, DM.h);
+}
+
+void ModuleWindow::ToggleVSync()
+{
+	SDL_GL_SetSwapInterval(!SDL_GL_GetSwapInterval);
+}
+
+void ModuleWindow::ToggleResizable()
+{
+	Uint32 resizableFlag = SDL_WINDOW_RESIZABLE;
+	bool isResizable = SDL_GetWindowFlags(window) & resizableFlag;
+	SDL_SetWindowResizable(window, (SDL_bool)isResizable);
 }
 
 void ModuleWindow::SetWindowSize(int w, int h)

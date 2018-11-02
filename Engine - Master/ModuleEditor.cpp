@@ -146,16 +146,14 @@ static void ShowOptionsWindow()
 	ImGui::InputScalar("Width", ImGuiDataType_U32, &App->window->screen_width, App->window->fullscreen ? NULL : &width_step, NULL, "%u");
 	ImGui::InputScalar("Height", ImGuiDataType_U32, &App->window->screen_height, App->window->fullscreen ? NULL : &height_step, NULL, "%u");
 
-	if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen)) {
+	if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
 		App->window->ToggleFullScreen();
-	}
-
+	ImGui::SameLine();
+	if (ImGui::Checkbox("Resizable", &App->window->resizable))
+		App->window->ToggleResizable();
+	if (ImGui::Checkbox("VSync", &App->window->vsync))
+		App->window->ToggleVSync();
 	ImGui::End();
-	//ImGui::SameLine();
-	/*if (ImGui::Checkbox("Resizable", &resizable))
-		App->window->SetResizable(resizable);
-	if (ImGui::IsItemHovered())
-		ImGui::SetTooltip("Restart to apply");*/
 }
 
 static void ShowLogWindow()

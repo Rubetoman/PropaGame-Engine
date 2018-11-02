@@ -20,6 +20,8 @@ public:
 	bool CleanUp();
 
 	void ToggleFullScreen();
+	void ToggleResizable();
+	void ToggleVSync();
 	void SetWindowSize(int w, int h);
 
 	int screen_width = SCREEN_WIDTH;
