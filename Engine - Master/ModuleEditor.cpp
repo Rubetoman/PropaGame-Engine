@@ -68,6 +68,9 @@ update_status ModuleEditor::Update()
 	ShowMainMenuBar();
 	ImGui::ShowDemoWindow();
 	
+	if (show_options_window) {
+		ShowOptionsWindow();
+	}
 	if (show_about_window) {
 		ShowAboutWindow();
 	}
@@ -136,12 +139,20 @@ static void ShowMainMenuBar()
 
 static void ShowOptionsWindow() 
 {
-	/*ImGui::Begin("About", &App->editor->show_options_window);   // Pointer to bool variable (close when click on button)
-	if (ImGui::Checkbox("Fullscreen", &fullscreen))
-		App->window->SetFullScreen(fullscreen);
+	ImGui::Begin("Window Options", &App->editor->show_options_window);   // Pointer to bool variable (close when click on button)
+	//Window size fields (only be able to edit if not in full screen)
+	static ImU32 width_step = (ImU32)30;
+	static ImU32 height_step = (ImU32)50;
+	ImGui::InputScalar("Width", ImGuiDataType_U32, &App->window->screen_width, App->window->fullscreen ? NULL : &width_step, NULL, "%u");
+	ImGui::InputScalar("Height", ImGuiDataType_U32, &App->window->screen_height, App->window->fullscreen ? NULL : &height_step, NULL, "%u");
 
-	ImGui::SameLine();
-	if (ImGui::Checkbox("Resizable", &resizable))
+	if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen)) {
+		App->window->ToggleFullScreen();
+	}
+
+	ImGui::End();
+	//ImGui::SameLine();
+	/*if (ImGui::Checkbox("Resizable", &resizable))
 		App->window->SetResizable(resizable);
 	if (ImGui::IsItemHovered())
 		ImGui::SetTooltip("Restart to apply");*/
@@ -155,10 +166,10 @@ static void ShowLogWindow()
 static void ShowAboutWindow() 
 {
 	ImGui::Begin("About", &App->editor->show_about_window);   // Pointer to bool variable (close when click on button)
-	ImGui::Text("PropaGame Engine");
+	ImGui::Text(TITLE);
 	ImGui::Text("Version:	BT - 1");
-	ImGui::Text("Propaganda takes over games");
-	ImGui::Text("Made by Ruben Crispin De la Cruz");
+	ImGui::Text("Games are not free of propaganda");
+	ImGui::Text("C/C++ engine made by Ruben Crispin De la Cruz");
 	ImGui::Text("Libraries: ");
 	ImGui::Text("	- glew-2.1.0");
 	ImGui::Text("	- imgui v1.65 (with branching)");

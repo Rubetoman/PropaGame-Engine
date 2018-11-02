@@ -17,6 +17,8 @@ ModuleCamera::~ModuleCamera()
 bool ModuleCamera::Init()
 {
 	InitProyection();
+	lastX = App->window->screen_width / 2;
+	lastY = App->window->screen_height / 2;
 	return true;
 }
 
@@ -54,7 +56,10 @@ void ModuleCamera::InitProyection()
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 100.0f;
 	frustum.verticalFov = math::pi / 4.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) *(SCREEN_WIDTH / SCREEN_HEIGHT);
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
+	// Calculate horizontal first
+	//frustum.horizontalFov = math::pi / 4.0f;
+	//frustum.verticalFov = 2.f * atanf(tanf(frustum.horizontalFov * 0.5f)) *((float)App->window->screen_height / (float)App->window->screen_width);
 }
 
 float4x4 ModuleCamera::LookAt(math::float3& target, math::float3& eye, math::float3& up)
