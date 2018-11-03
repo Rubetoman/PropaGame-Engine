@@ -1,10 +1,4 @@
-#include "Globals.h"
-#include "Application.h"
 #include "ModuleRender.h"
-#include "ModuleWindow.h"
-#include "ModuleEditor.h"
-#include "SDL.h"
-#include "GL/glew.h"
 
 ModuleRender::ModuleRender()
 {
@@ -57,6 +51,16 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	math::float4x4 proj = App->camera->frustum.ProjectionMatrix();
+	math::float4x4 view = App->camera->frustum.ViewMatrix();
+
+	for (unsigned i = 0; i < App->model_loader->meshes.size(); ++i)
+	{
+		const ModuleModelLoader::mesh& mesh = App->model_loader->meshes[i];
+
+		RenderMesh(mesh, App->model_loader->materials[mesh.material], App->exercise->program,
+			App->model_loader->transform, view, proj);
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -90,5 +94,36 @@ bool ModuleRender::CleanUp()
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
     glViewport(0, 0, width, height); 
+}
+
+void ModuleRender::RenderMesh(const ModuleModelLoader::mesh& mesh, const ModuleModelLoader::material& material,
+	unsigned program, const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj)
+{
+	//Use shaders loaded in program
+	glUseProgram(program);
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, material.texture0);
+	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * mesh.num_vertices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ibo);
+	glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, nullptr);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUseProgram(0);
+
 }
 

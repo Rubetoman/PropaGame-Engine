@@ -35,10 +35,11 @@ public:
 
 	GLuint texture;
 	image desatranques, sankara, pazos, logo;
-private:
-	unsigned vbo = 0;
+
 	GLuint program = GL_FALSE;
 	GLuint programText = GL_FALSE;
+private:
+	unsigned vbo = 0;
 
 };
 

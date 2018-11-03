@@ -37,12 +37,12 @@ update_status ModuleModelLoader::Update()
 	glDisableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 	
-	glActiveTexture(GL_TEXTURE0);
+	//glActiveTexture(GL_TEXTURE0);
 
 	// draw mesh
-	glBindVertexArray(meshes[0].vao);
-	glDrawElements(GL_TRIANGLES, meshes[0].num_indices, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+	//glBindVertexArray(meshes[0].vao);
+	//glDrawElements(GL_TRIANGLES, meshes[0].num_indices, GL_UNSIGNED_INT, 0);
+	//glBindVertexArray(0);
 	return UPDATE_CONTINUE;
 }
 

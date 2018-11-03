@@ -46,5 +46,6 @@ public:
 
 	std::vector<mesh>     meshes;
 	std::vector<material> materials;
+	math::float4x4        transform = math::float4x4::identity;
 };
 #endif /* __MODULEMODELLOADER_h__ */

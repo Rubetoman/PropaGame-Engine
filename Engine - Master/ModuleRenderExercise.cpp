@@ -87,9 +87,9 @@ update_status ModuleRenderExercise::Update()
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glUniform1i(glGetUniformLocation(programText, "texture0"), 0);
 
-	//Use shaders loadeds in program
+	//Use shaders loaded in program
 	glUseProgram(program);
-
+	
 	// Draw plane and reference
 	DrawCoordinates();
 	DrawPlane();
