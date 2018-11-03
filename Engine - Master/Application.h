@@ -12,6 +12,7 @@ class ModuleRenderExercise;
 class ModuleEditor;
 class ModuleCamera;
 class ModuleShader;
+class ModuleModelLoader;
 
 class Application
 {
@@ -34,6 +35,7 @@ public:
 	ModuleEditor* editor = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleShader* shader = nullptr;
+	ModuleModelLoader* model_loader = nullptr;
 
 	float lastTickCount = 0;	// How many ticks passed last time it was checked
 	float deltaTime = 0;		// Time in seconds
