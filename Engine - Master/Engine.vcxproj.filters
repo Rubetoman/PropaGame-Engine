@@ -146,7 +146,9 @@
     <ClCompile Include="MathGeoLib\include\Geometry\TriangleMesh.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleModelLoader.cpp" />
+    <ClCompile Include="ModuleModelLoader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -346,11 +348,16 @@
     <ClInclude Include="MathGeoLib\include\Geometry\TriangleMesh.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="Point.h" />
     <ClInclude Include="MathGeoLib\include\Geometry\HitInfo.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleModelLoader.h" />
+    <ClInclude Include="ModuleModelLoader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.fs">

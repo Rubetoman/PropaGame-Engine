@@ -44,6 +44,7 @@ GLuint ModuleTextures::loadImage(image& image)
 
 	if (ilLoadImage(image.path))
 	{
+		image.name = image.path;
 		GLuint textureID = 0;							// Create a texture ID as a GLuint
 		glGenTextures(1, &textureID);					// Generate a new texture
 		glBindTexture(GL_TEXTURE_2D, textureID);		// Bind the texture to a name
