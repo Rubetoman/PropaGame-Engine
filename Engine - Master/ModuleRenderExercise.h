@@ -23,8 +23,8 @@ public:
 	bool            Init();
 	update_status   Update();
 	bool            CleanUp();
-	void			DrawCoordinates();
-	void			DrawPlane();
+	//void			DrawCoordinates();
+	//void			DrawPlane();
 
 	float4x4 model_view;
 	float4x4 view_matrix;
@@ -36,8 +36,8 @@ public:
 	GLuint texture;
 	image desatranques, sankara, pazos, logo;
 
-	GLuint program = GL_FALSE;
-	GLuint programText = GL_FALSE;
+	//GLuint program = GL_FALSE;
+	//GLuint programText = GL_FALSE;
 private:
 	unsigned vbo = 0;
 

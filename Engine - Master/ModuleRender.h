@@ -34,4 +34,10 @@ public:
 
 	void WindowResized(unsigned width, unsigned height);
 	void* context;
+
+	GLuint program = GL_FALSE;
+	GLuint programText = GL_FALSE;
+
+	void			DrawCoordinates();
+	void			DrawPlane();
 };

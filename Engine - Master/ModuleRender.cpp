@@ -38,6 +38,15 @@ bool ModuleRender::Init()
     SDL_GetWindowSize(App->window->window, &width, &height);
     glViewport(0, 0, width, height);
 
+	// Generate program with vertex and fragment shaders and load it to GL
+	program = App->shader->LoadShaders("../default.vs", "../default.fs");
+	programText = App->shader->LoadShaders("../texture.vs", "../texture.fs");
+
+	if (!program || !programText) {
+		LOG("Error: Program cannot be compiled");
+		return false;
+	}
+
 	return true;
 }
 
@@ -51,14 +60,20 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	math::float4x4 proj = App->camera->frustum.ProjectionMatrix();
-	math::float4x4 view = App->camera->frustum.ViewMatrix();
+	glUseProgram(program);
+	DrawCoordinates();
+	DrawPlane();
+	glUseProgram(0);
+	//math::float4x4 proj = App->camera->frustum.ProjectionMatrix();
+	math::float4x4 proj = App->camera->ProjectionMatrix();
+	//math::float4x4 view = App->camera->frustum.ViewMatrix();
+	math::float4x4 view = App->camera->LookAt(App->camera->cam_target, App->camera->cam_position, App->camera->cam_up);
 
 	for (unsigned i = 0; i < App->model_loader->meshes.size(); ++i)
 	{
 		const ModuleModelLoader::mesh& mesh = App->model_loader->meshes[i];
 
-		RenderMesh(mesh, App->model_loader->materials[mesh.material], App->exercise->program,
+		RenderMesh(mesh, App->model_loader->materials[mesh.material], program,
 			App->model_loader->transform, view, proj);
 	}
 
@@ -125,5 +140,70 @@ void ModuleRender::RenderMesh(const ModuleModelLoader::mesh& mesh, const ModuleM
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 
+}
+
+void ModuleRender::DrawCoordinates()
+{
+	glLineWidth(2.0f);
+
+	// red X
+	int xAxis = glGetUniformLocation(program, "newColor");
+	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	glUniform4fv(xAxis, 1, red);
+
+	glBegin(GL_LINES);
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
+	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
+	glEnd();
+
+	// green Y
+	int yAxis = glGetUniformLocation(program, "newColor");
+	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
+	glUniform4fv(yAxis, 1, green);
+
+	glBegin(GL_LINES);
+	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
+	glEnd();
+
+	// blue Z
+	int zAxis = glGetUniformLocation(program, "newColor");
+	float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
+	glUniform4fv(zAxis, 1, blue);
+
+	glBegin(GL_LINES);
+	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
+	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
+	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
+	glEnd();
+
+	glLineWidth(1.0f);
+}
+
+void ModuleRender::DrawPlane()
+{
+	glLineWidth(1.0f);
+	int grid = glGetUniformLocation(program, "newColor");
+	float cream[4] = { 0.988f, 0.918f, 0.592f, 1.0f };
+	glUniform4fv(grid, 1, cream);
+
+	glBegin(GL_LINES);
+
+	float d = 200.0f;
+
+	for (float i = -d; i <= d; i += 1.0f)
+	{
+		glVertex3f(i, 0.0f, -d);
+		glVertex3f(i, 0.0f, d);
+		glVertex3f(-d, 0.0f, i);
+		glVertex3f(d, 0.0f, i);
+	}
+	glEnd();
 }
 

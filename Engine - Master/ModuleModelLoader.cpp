@@ -16,7 +16,7 @@ bool ModuleModelLoader::Init()
 	}
 
 	GenerateMeshData(scene);
-	//GenerateMaterialData(scene);
+	GenerateMaterialData(scene);
 
 	return true;
 }

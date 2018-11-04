@@ -10,7 +10,7 @@ ModuleRenderExercise::~ModuleRenderExercise()
 
 bool ModuleRenderExercise::Init()
 {
-	desatranques.name = "Desatranques Jaen";
+	/*desatranques.name = "Desatranques Jaen";
 	desatranques.path = "desatranques.jpg";
 	desatranques.use_mipmap = true;
 	sankara.name = "Thomas Sankara";
@@ -27,16 +27,16 @@ bool ModuleRenderExercise::Init()
 	}
 
 	// Generate program with vertex and fragment shaders and load it to GL
-	program = App->shader->LoadShaders("../default.vs", "../default.fs");
-	programText = App->shader->LoadShaders("../texture.vs", "../texture.fs");
+	//program = App->shader->LoadShaders("../default.vs", "../default.fs");
+	//programText = App->shader->LoadShaders("../texture.vs", "../texture.fs");
 
 	if (!program || !programText) {
 		LOG("Error: Program cannot be compiled");
 		return false;
 	}
-
+	*/
 	// Paint quad
-	float vertex_buffer_data[] =
+	/*float vertex_buffer_data[] =
 	{
 		// positions
 		-1.0f, -1.0f, 0.0f,
@@ -62,12 +62,13 @@ bool ModuleRenderExercise::Init()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_buffer_data), vertex_buffer_data, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	return vbo;
+	return vbo;*/
+	return true;
 }
 
 update_status ModuleRenderExercise::Update()
 {
-	glEnableVertexAttribArray(0);
+	/*glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glVertexAttribPointer(
 		0,                  // attribute 0
@@ -99,6 +100,7 @@ update_status ModuleRenderExercise::Update()
 	int fragUnifLocation = glGetUniformLocation(program, "newColor");
 	float color[4] = { 0.651f, 0.008f, 0.008f, 1.0f };
 	glUniform4fv(fragUnifLocation, 1, color);
+	
 
 	math::float4x4 Model(math::float4x4::identity); // Not moving anything
 
@@ -114,7 +116,7 @@ update_status ModuleRenderExercise::Update()
 
 	glDrawArrays(GL_TRIANGLES, 0, 6); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 
 	return UPDATE_CONTINUE;
 }
@@ -129,69 +131,6 @@ bool ModuleRenderExercise::CleanUp()
 	return true;
 }
 
-void ModuleRenderExercise::DrawCoordinates()
-{
-	glLineWidth(2.0f);
 
-	// red X
-	int xAxis = glGetUniformLocation(program, "newColor");
-	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	glUniform4fv(xAxis, 1, red);
-
-	glBegin(GL_LINES);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
-	glEnd();
-
-	// green Y
-	int yAxis = glGetUniformLocation(program, "newColor");
-	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
-	glUniform4fv(yAxis, 1, green);
-
-	glBegin(GL_LINES);
-	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
-	glEnd();
-
-	// blue Z
-	int zAxis = glGetUniformLocation(program, "newColor");
-	float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
-	glUniform4fv(zAxis, 1, blue);
-
-	glBegin(GL_LINES);
-	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
-	glEnd();
-
-	glLineWidth(1.0f);
-}
-
-void ModuleRenderExercise::DrawPlane()
-{
-	glLineWidth(1.0f);
-	int grid = glGetUniformLocation(program, "newColor");
-	float cream[4] = {0.988f, 0.918f, 0.592f, 1.0f};
-	glUniform4fv(grid, 1, cream);
-
-	glBegin(GL_LINES);
-
-	float d = 200.0f;
-
-	for (float i = -d; i <= d; i += 1.0f)
-	{
-		glVertex3f(i, 0.0f, -d);
-		glVertex3f(i, 0.0f, d);
-		glVertex3f(-d, 0.0f, i);
-		glVertex3f(d, 0.0f, i);
-	}
-	glEnd();
-}
 
 
