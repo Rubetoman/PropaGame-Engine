@@ -47,7 +47,7 @@ bool ModuleRender::Init()
 		return false;
 	}
 
-	InitQuad();
+	//InitQuad();
 
 	return true;
 }
@@ -66,20 +66,18 @@ update_status ModuleRender::Update()
 	DrawCoordinates();
 	DrawPlane();
 	glUseProgram(0);
-	//math::float4x4 proj = App->camera->frustum.ProjectionMatrix();
 	math::float4x4 proj = App->camera->ProjectionMatrix();
-	//math::float4x4 view = App->camera->frustum.ViewMatrix();
 	math::float4x4 view = App->camera->LookAt(App->camera->cam_target, App->camera->cam_position, App->camera->cam_up);
 
 	for (unsigned i = 0; i < App->model_loader->meshes.size(); ++i)
 	{
 		const ModuleModelLoader::mesh& mesh = App->model_loader->meshes[i];
 
-		RenderMesh(mesh, App->model_loader->materials[mesh.material], program,
+		RenderMesh(mesh, App->model_loader->materials[mesh.material], programText,
 			App->model_loader->transform, view, proj);
 	}
 	
-	DrawQuad();
+	//DrawQuad();
 
 	return UPDATE_CONTINUE;
 }
@@ -131,11 +129,9 @@ void ModuleRender::RenderMesh(const ModuleModelLoader::mesh& mesh, const ModuleM
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
-	//glEnableVertexAttribArray(2);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * mesh.num_vertices));
-	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * mesh.num_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ibo);
 	glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, nullptr);
 
