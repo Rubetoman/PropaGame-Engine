@@ -40,4 +40,10 @@ public:
 
 	void			DrawCoordinates();
 	void			DrawPlane();
+	void			InitQuad();
+	void			DrawQuad();
+
+	GLuint texture;
+	image desatranques, sankara, pazos, logo;
+	ModuleModelLoader::mesh quad;
 };

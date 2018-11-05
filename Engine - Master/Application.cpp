@@ -23,7 +23,7 @@ Application::Application()
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(shader = new ModuleShader());
 	modules.push_back(model_loader = new ModuleModelLoader());
-	modules.push_back(exercise = new ModuleRenderExercise());
+	//modules.push_back(exercise = new ModuleRenderExercise());
 }
 
 Application::~Application()

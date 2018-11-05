@@ -47,6 +47,8 @@ bool ModuleRender::Init()
 		return false;
 	}
 
+	InitQuad();
+
 	return true;
 }
 
@@ -76,6 +78,8 @@ update_status ModuleRender::Update()
 		RenderMesh(mesh, App->model_loader->materials[mesh.material], program,
 			App->model_loader->transform, view, proj);
 	}
+	
+	DrawQuad();
 
 	return UPDATE_CONTINUE;
 }
@@ -127,14 +131,17 @@ void ModuleRender::RenderMesh(const ModuleModelLoader::mesh& mesh, const ModuleM
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	//glEnableVertexAttribArray(2);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * mesh.num_vertices));
+	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * mesh.num_indices));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ibo);
 	glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, nullptr);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -205,5 +212,99 @@ void ModuleRender::DrawPlane()
 		glVertex3f(d, 0.0f, i);
 	}
 	glEnd();
+}
+
+void ModuleRender::InitQuad()
+{
+	desatranques.name = "Desatranques Jaen";
+	desatranques.path = "desatranques.jpg";
+	desatranques.use_mipmap = true;
+	sankara.name = "Thomas Sankara";
+	sankara.path = "sankara.jpg";
+	pazos.name = "Pazos64";
+	pazos.path = "pazos.jpg";
+	logo.path = "Red Controller Digital.png";
+	// Load texture
+	texture = App->textures->loadImage(desatranques);
+
+	float vertex_buffer_data[] =
+	{
+		// positions
+		-1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		-1.0f, 1.0f, 0.0f,
+
+		1.0f, -1.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,
+		-1.0f,  1.0f, 0.0f,
+
+		// uvs
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		0.0f, 1.0f,
+
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f
+	};
+
+	glGenBuffers(1, &quad.vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, quad.vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_buffer_data), vertex_buffer_data, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+}
+
+void ModuleRender::DrawQuad()
+{
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, quad.vbo);
+	glVertexAttribPointer(
+		0,                  // attribute 0
+		3,                  // number of componentes (3 floats)
+		GL_FLOAT,           // data type
+		GL_FALSE,           // should be normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+	);
+
+	// Enable for textures
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * 6) // buffer offset
+	);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(glGetUniformLocation(programText, "texture0"), 0);
+
+	//Use shaders loaded in program
+	glUseProgram(program);
+
+	// Draw plane and reference
+	DrawCoordinates();
+	DrawPlane();
+
+	// Uniforms (can be changed from any place by calling newColour variable)
+	// Fragment shader coloring
+	int fragUnifLocation = glGetUniformLocation(program, "newColor");
+	float color[4] = { 0.651f, 0.008f, 0.008f, 1.0f };
+	glUniform4fv(fragUnifLocation, 1, color);
+
+
+	math::float4x4 Model(math::float4x4::identity); // Not moving anything
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &Model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cam_target, App->camera->cam_position, App->camera->cam_up)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
+
+	glUseProgram(programText);
+	glUniformMatrix4fv(glGetUniformLocation(programText, "model"), 1, GL_TRUE, &Model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programText, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cam_target, App->camera->cam_position, App->camera->cam_up)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programText, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
+
+
+	glDrawArrays(GL_TRIANGLES, 0, 6); // Starting from vertex 0; 3 vertices total -> 1 triangle
+	glDisableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

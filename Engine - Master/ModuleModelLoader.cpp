@@ -17,7 +17,7 @@ bool ModuleModelLoader::Init()
 
 	GenerateMeshData(scene);
 	GenerateMaterialData(scene);
-
+	aiReleaseImport(scene);
 	return true;
 }
 update_status ModuleModelLoader::Update()
@@ -71,7 +71,7 @@ bool ModuleModelLoader::CleanUp()
 	}
 	return true;
 }
-//float vertex_buffer_data[]
+
 void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 {
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
@@ -80,8 +80,10 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 
 		// Generate mesh object
 		mesh gen_mesh;
-		glGenVertexArrays(1, &gen_mesh.vao);
+		// vertex array objects (VAO)
+		//glGenVertexArrays(1, &gen_mesh.vao);
 		glGenBuffers(1, &gen_mesh.vbo);
+		//glBindVertexArray(gen_mesh.vao);
 		glBindBuffer(GL_ARRAY_BUFFER, gen_mesh.vbo);
 
 		// Divide Buffer for position and UVs
@@ -124,12 +126,8 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 
 		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 2 * src_mesh->mNumVertices, src_mesh->mTextureCoords[0]);
-		//glMapBufferRange(GL_ARRAY_BUFFER, 0, 2, 
-		glGenBuffers(1, &vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
+		//glBindVertexArray(0);
 
 		gen_mesh.material = src_mesh->mMaterialIndex;
 		gen_mesh.num_vertices = src_mesh->mNumVertices;
