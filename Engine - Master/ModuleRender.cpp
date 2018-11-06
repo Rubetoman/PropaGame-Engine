@@ -229,7 +229,7 @@ void ModuleRender::InitQuad()
 	pazos.path = "pazos.jpg";
 	logo.path = "Red Controller Digital.png";
 	// Load texture
-	texture = App->textures->loadImage(desatranques);
+	quadTexture = App->textures->loadImage(desatranques);
 
 	float vertex_buffer_data[] =
 	{
@@ -278,7 +278,7 @@ void ModuleRender::DrawQuad()
 	);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindTexture(GL_TEXTURE_2D, quadTexture);
 	glUniform1i(glGetUniformLocation(programText, "texture0"), 0);
 
 	//Use shaders loaded in program

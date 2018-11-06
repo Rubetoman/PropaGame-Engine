@@ -10,7 +10,7 @@
 enum Resize_Mode {nearest, linear};
 enum Wrap_Mode {clamp_to_boder, clamp, repeat, mirrored};
 
-struct image {
+struct texture {
 	const char* name = "";
 	const char* path = "";
 	int width = 0;
@@ -52,7 +52,7 @@ public:
 
 	bool Init();
 	bool CleanUp();
-	GLuint loadImage(image& image);
+	GLuint loadImage(texture& texture);
 	void unloadImage(unsigned id);
-	void ReloadImage(image& new_image, GLuint& texture);
+	void ReloadImage(texture& new_texture, GLuint& texture);
 };

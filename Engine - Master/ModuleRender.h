@@ -43,7 +43,7 @@ public:
 	void			InitQuad();
 	void			DrawQuad();
 
-	GLuint texture;
-	image desatranques, sankara, pazos, logo;
+	GLuint quadTexture;
+	texture desatranques, sankara, pazos, logo;
 	ModuleModelLoader::mesh quad;
 };

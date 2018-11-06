@@ -33,7 +33,7 @@ bool ModuleTextures::CleanUp()
 }
 
 
-GLuint ModuleTextures::loadImage(image& image)
+GLuint ModuleTextures::loadImage(texture& texture)
 {
 	ILuint imageID;				// Create an image ID as a ULuint
 	ILboolean success;			// Create a flag to keep track of success/failure
@@ -42,9 +42,9 @@ GLuint ModuleTextures::loadImage(image& image)
 	ilBindImage(imageID); 			// Bind the image
 
 
-	if (ilLoadImage(image.path))
+	if (ilLoadImage(texture.path))
 	{
-		image.name = image.path;
+		texture.name = texture.path;
 		GLuint textureID = 0;							// Create a texture ID as a GLuint
 		glGenTextures(1, &textureID);					// Generate a new texture
 		glBindTexture(GL_TEXTURE_2D, textureID);		// Bind the texture to a name
@@ -78,21 +78,21 @@ GLuint ModuleTextures::loadImage(image& image)
 
 		ILubyte* data = ilGetData();
 		// Asign parameters to image
-		image.width = ilGetInteger(IL_IMAGE_WIDTH);
-		image.height = ilGetInteger(IL_IMAGE_HEIGHT);
+		texture.width = ilGetInteger(IL_IMAGE_WIDTH);
+		texture.height = ilGetInteger(IL_IMAGE_HEIGHT);
 		switch (ImageInfo.Format)
 		{
-			case IL_COLOUR_INDEX: image.format = "Colour_index"; break;
-			case IL_RGB: image.format = "RGB"; break;
-			case IL_RGBA: image.format = "RGBA"; break;
-			case IL_BGR: image.format = "BGR"; break;
-			case IL_BGRA: image.format = "BGRA"; break;
-			case IL_LUMINANCE: image.format = "Luminance"; break;
-			default: image.format = "Unknown"; break;
+			case IL_COLOUR_INDEX: texture.format = "Colour_index"; break;
+			case IL_RGB: texture.format = "RGB"; break;
+			case IL_RGBA: texture.format = "RGBA"; break;
+			case IL_BGR: texture.format = "BGR"; break;
+			case IL_BGRA: texture.format = "BGRA"; break;
+			case IL_LUMINANCE: texture.format = "Luminance"; break;
+			default: texture.format = "Unknown"; break;
 		}
 
 		// Set texture clamping method
-		switch (image.wrap_mode)
+		switch (texture.wrap_mode)
 		{
 		case clamp_to_boder:
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
@@ -118,16 +118,16 @@ GLuint ModuleTextures::loadImage(image& image)
 		}
 
 		// Set texture interpolation method to use linear interpolation (no MIPMAPS)
-		switch (image.resize_mode) 
+		switch (texture.resize_mode) 
 		{
 		case nearest:
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			if(!image.use_mipmap) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			if(!texture.use_mipmap) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 			break;
 		default:
 		case linear:
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			if (!image.use_mipmap) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			if (!texture.use_mipmap) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		}
 
 		// Specify the texture specification
@@ -142,7 +142,7 @@ GLuint ModuleTextures::loadImage(image& image)
 			ilGetData());					// The actual image data itself
 	
 		// Set smaller resize mode
-		if (image.use_mipmap)
+		if (texture.use_mipmap)
 		{
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 			glGenerateMipmap(GL_TEXTURE_2D);
@@ -168,10 +168,10 @@ void ModuleTextures::unloadImage(unsigned id)
 	}
 }
 
-void ModuleTextures::ReloadImage(image& new_image, GLuint& texture) {
+void ModuleTextures::ReloadImage(texture& new_texture, GLuint& texture) {
 	unloadImage(texture);
 
-	texture = loadImage(new_image);
+	texture = loadImage(new_texture);
 
 	if (texture == -1) {
 		LOG("Error: Texture cannot be loaded");

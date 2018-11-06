@@ -17,9 +17,9 @@ class Mesh
 public:
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
-	std::vector<image> textures;
+	std::vector<texture> textures;
 
-	Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<image> textures) : 
+	Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<texture> textures) : 
 		vertices(vertices), indices(indices), textures(textures)
 	{
 		this->SetupMesh();

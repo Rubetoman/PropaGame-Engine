@@ -151,7 +151,7 @@ void ModuleModelLoader::GenerateMaterialData(const aiScene* scene)
 
 		if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
 		{
-			image texture;
+			texture texture;
 			texture.path = file.data;
 			gen_material.texture0 = App->textures->loadImage(texture);
 		}

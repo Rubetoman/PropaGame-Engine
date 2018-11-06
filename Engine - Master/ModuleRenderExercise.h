@@ -33,8 +33,8 @@ public:
 	float3 target = { 0, 0, 0 };
 	float3 up = { 0, 0, 1 };
 
-	GLuint texture;
-	image desatranques, sankara, pazos, logo;
+	GLuint quadTexture;
+	texture desatranques, sankara, pazos, logo;
 
 	//GLuint program = GL_FALSE;
 	//GLuint programText = GL_FALSE;
