@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __TIMER_H__
+#define __TIMER_H__
+
 #include "SDL.h"
 class MsTimer 
 {
@@ -8,22 +10,22 @@ class MsTimer
 
 	
 public:
-	void Start() 
+	inline void Start()
 	{
 		startTicks = SDL_GetTicks();
 	}
 
-	Uint32 Read()
+	inline Uint32 Read()
 	{
 		return (SDL_GetTicks() - startTicks);
 	}
 
-	void Stop()
+	inline void Stop()
 	{
 		time = (SDL_GetTicks() - startTicks);
 	}
 
-	void Reset()
+	inline void Reset()
 	{
 		time = 0;
 	}
@@ -38,7 +40,7 @@ private:
 	static Uint64 frequency;
 
 public:
-	void Start()
+	inline void Start()
 	{
 		startTicks = SDL_GetPerformanceCounter();
 	}
@@ -48,12 +50,12 @@ public:
 		return (SDL_GetPerformanceCounter() - startTicks) * 1000/ frequency;
 	}
 
-	void Stop()
+	inline void Stop()
 	{
 		time = (SDL_GetPerformanceCounter() - startTicks) * 1000/ frequency;
 	}
 
-	void Reset()
+	inline void Reset()
 	{
 		time = 0;
 	}
@@ -61,3 +63,4 @@ public:
 
 Uint64 McTimer::frequency = SDL_GetPerformanceFrequency();
 
+#endif // __TIMER_H__
