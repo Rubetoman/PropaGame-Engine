@@ -29,12 +29,12 @@ public:
 	bool            CleanUp();
 	float4x4		ProjectionMatrix();
 	void			InitProyection();
-	float4x4		LookAt(math::float3& target, math::float3& eye, math::float3& up);
+	float4x4		LookAt(math::float3& target, math::float3& eye);
 	void			TranslateCameraInput();
 	void			RotateCameraInput();
 	void			CameraSpeedInput(float modifier);
 	void			RotateCamera();
-	void			MouseUpdate(float2& mouse_new_pos);
+	void			MouseUpdate(math::float2& mouse_new_pos);
 
 	float4x4 model_view;
 	float4x4 view_matrix;
@@ -47,9 +47,9 @@ public:
 	float yaw;
 
 	// Camera vectors
-	float3& cam_position = float3(0, 0, 0);	// Position in world of the camera
-	float3& cam_target = float3(0, 0, 0);	// Where the camera is looking at
-	float3& cam_up = float3(0, 0, 0);		// Up vector of the camera
+	math::float3& cam_position = math::float3(0, 0, 0);	// Position in world of the camera
+	math::float3& cam_target = math::float3(0, 0, 0);	// Where the camera is looking at
+	math::float3& cam_up = math::float3(0, 0, 0);		// Up vector of the camera
 	float cam_speed = 1.0f;
 	float cam_rot_speed = 65.0f;
 

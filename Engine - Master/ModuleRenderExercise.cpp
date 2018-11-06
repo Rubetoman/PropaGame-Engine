@@ -95,12 +95,12 @@ update_status ModuleRenderExercise::Update()
 	math::float4x4 Model(math::float4x4::identity); // Not moving anything
 
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &Model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cam_target, App->camera->cam_position, App->camera->cam_up)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cam_target, App->camera->cam_position)[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
 
 	glUseProgram(programText);
 	glUniformMatrix4fv(glGetUniformLocation(programText, "model"), 1, GL_TRUE, &Model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(programText, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cam_target, App->camera->cam_position, App->camera->cam_up)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programText, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cam_target, App->camera->cam_position)[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(programText, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
 
 

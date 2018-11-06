@@ -47,24 +47,24 @@ float4x4 ModuleCamera::ProjectionMatrix()
 
 void ModuleCamera::InitProyection() 
 {
-	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.front = -float3::unitZ;
-	frustum.up = float3::unitY;
+	frustum.type = math::FrustumType::PerspectiveFrustum;
+	frustum.pos = math::float3::zero;
+	frustum.front = -math::float3::unitZ;
+	frustum.up = math::float3::unitY;
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 100.0f;
 	frustum.verticalFov = math::pi / 4.0f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) *(SCREEN_WIDTH / SCREEN_HEIGHT);
 }
 
-float4x4 ModuleCamera::LookAt(math::float3& target, math::float3& eye, math::float3& up)
+float4x4 ModuleCamera::LookAt(math::float3& target, math::float3& eye)
 {
 	float4x4 view_matrix;
 
 	// projection
-	float3 f(target); f.Normalize();
-	float3 s(f.Cross(up)); s.Normalize();
-	float3 u(s.Cross(f));
+	math::float3 f(target); f.Normalize();
+	math::float3 s(f.Cross(math::float3(0, 1, 0))); s.Normalize();
+	math::float3 u(s.Cross(f));
 
 	view_matrix[0][0] = s.x;	view_matrix[0][1] = s.y;	view_matrix[0][2] = s.z;
 	view_matrix[1][0] = u.x;	view_matrix[1][1] = u.y;	view_matrix[1][2] = u.z;
@@ -140,19 +140,19 @@ void ModuleCamera::CameraSpeedInput(float modifier)
 
 void ModuleCamera::RotateCamera() {
 
-	/*if (pitch > 89.0f)
+	if (pitch > 89.0f)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
-		pitch = -89.0f;*/
+		pitch = -89.0f;
 
-	float3 rotation;
+	math::float3 rotation;
 	rotation.x = SDL_cosf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
 	rotation.y = SDL_sinf(degreesToRadians(pitch));
 	rotation.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
 	cam_target = rotation.Normalized();
 }
 
-void ModuleCamera::MouseUpdate(float2& mouse_new_pos)
+void ModuleCamera::MouseUpdate(math::float2& mouse_new_pos)
 {
 	if (firstMouse)
 	{
