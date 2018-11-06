@@ -62,10 +62,17 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	// Draw references
 	glUseProgram(program);
+	math::float4x4 Model(math::float4x4::identity); // Not moving anything
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &Model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cam_target, App->camera->cam_position, App->camera->cam_up)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
 	DrawCoordinates();
 	DrawPlane();
 	glUseProgram(0);
+
+	//Draw meshes
 	math::float4x4 proj = App->camera->ProjectionMatrix();
 	math::float4x4 view = App->camera->LookAt(App->camera->cam_target, App->camera->cam_position, App->camera->cam_up);
 
@@ -76,8 +83,6 @@ update_status ModuleRender::Update()
 		RenderMesh(mesh, App->model_loader->materials[mesh.material], programText,
 			App->model_loader->transform, view, proj);
 	}
-	
-	//DrawQuad();
 
 	return UPDATE_CONTINUE;
 }
@@ -94,7 +99,6 @@ update_status ModuleRender::PostUpdate()
 		ImGui::RenderPlatformWindowsDefault();
 	}
 	SDL_GL_SwapWindow(App->window->window);
-
 	return UPDATE_CONTINUE;
 }
 
@@ -150,6 +154,7 @@ void ModuleRender::DrawCoordinates()
 	glLineWidth(2.0f);
 
 	// red X
+	glUseProgram(program);
 	int xAxis = glGetUniformLocation(program, "newColor");
 	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 	glUniform4fv(xAxis, 1, red);
@@ -191,7 +196,9 @@ void ModuleRender::DrawCoordinates()
 
 void ModuleRender::DrawPlane()
 {
+
 	glLineWidth(1.0f);
+	glUseProgram(program);
 	int grid = glGetUniformLocation(program, "newColor");
 	float cream[4] = { 0.988f, 0.918f, 0.592f, 1.0f };
 	glUniform4fv(grid, 1, cream);
@@ -208,6 +215,7 @@ void ModuleRender::DrawPlane()
 		glVertex3f(d, 0.0f, i);
 	}
 	glEnd();
+	glUseProgram(0);
 }
 
 void ModuleRender::InitQuad()
@@ -275,10 +283,6 @@ void ModuleRender::DrawQuad()
 
 	//Use shaders loaded in program
 	glUseProgram(program);
-
-	// Draw plane and reference
-	DrawCoordinates();
-	DrawPlane();
 
 	// Uniforms (can be changed from any place by calling newColour variable)
 	// Fragment shader coloring
