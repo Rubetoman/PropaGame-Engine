@@ -4,7 +4,7 @@
 ModuleCamera::ModuleCamera()
 {
 	cam_position	= float3(0, 0, 3);
-	cam_target		= float3(0, 0, -1);
+	cam_front		= float3(0, 0, -1);
 	cam_up			= float3(0, 1, 0);
 	yaw = -90.0f;
 	pitch = 0.0f;
@@ -102,28 +102,34 @@ void ModuleCamera::TranslateCameraInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_Q))
 	{
-		cam_position += cam_up * cam_speed * App->deltaTime;
+		TranslateCamera(cam_up);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_E))
 	{
-		cam_position -= cam_up * cam_speed * App->deltaTime;
+		TranslateCamera(-cam_up);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A))
 	{
-		cam_position += cam_up.Cross(cam_target).Normalized() * cam_speed * App->deltaTime;
+		TranslateCamera(cam_up.Cross(cam_front).Normalized());
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D))
 	{
-		cam_position -= cam_up.Cross(cam_target).Normalized() * cam_speed * App->deltaTime;
+		TranslateCamera(-cam_up.Cross(cam_front).Normalized());
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_W))
 	{
-		cam_position += cam_target * cam_speed * App->deltaTime;
+		TranslateCamera(cam_front);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_S))
 	{
-		cam_position -= cam_target * cam_speed * App->deltaTime;
+		TranslateCamera(-cam_front);
 	}
+}
+
+void ModuleCamera::TranslateCamera(math::float3 direction)
+{
+	cam_position += direction * cam_speed * App->deltaTime;
+	//LookAt(cam_position, (cam_position + cam_front));
 }
 
 void ModuleCamera::RotateCameraInput() 
@@ -171,7 +177,7 @@ void ModuleCamera::RotateCamera() {
 	rotation.x = SDL_cosf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
 	rotation.y = SDL_sinf(degreesToRadians(pitch));
 	rotation.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
-	cam_target = rotation.Normalized();
+	cam_front = rotation.Normalized();
 }
 
 void ModuleCamera::MouseUpdate(math::float2& mouse_new_pos)
@@ -204,5 +210,5 @@ void ModuleCamera::MouseUpdate(math::float2& mouse_new_pos)
 	front.x = SDL_cosf(yaw) * SDL_cosf(pitch);
 	front.y = SDL_sinf(pitch);
 	front.z = SDL_sinf(yaw) * SDL_cosf(pitch);
-	cam_target = front.Normalized();
+	cam_front = front.Normalized();
 }

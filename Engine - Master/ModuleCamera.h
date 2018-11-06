@@ -39,6 +39,7 @@ public:
 	void			TranslateCameraInput();
 	void			RotateCameraInput();
 	void			CameraSpeedInput(float modifier);
+	void			TranslateCamera(math::float3 direction);
 	void			RotateCamera();
 	void			MouseUpdate(math::float2& mouse_new_pos);
 
@@ -54,7 +55,7 @@ public:
 
 	// Camera vectors
 	math::float3& cam_position = math::float3(0, 0, 0);	// Position in world of the camera
-	math::float3& cam_target = math::float3(0, 0, 0);	// Where the camera is looking at
+	math::float3& cam_front = math::float3(0, 0, 0);	// Where the camera is looking at
 	math::float3& cam_up = math::float3(0, 0, 0);		// Up vector of the camera
 	float cam_speed = 1.0f;
 	float cam_rot_speed = 65.0f;
