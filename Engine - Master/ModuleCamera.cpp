@@ -16,7 +16,7 @@ ModuleCamera::~ModuleCamera()
 
 bool ModuleCamera::Init()
 {
-	InitProyection();
+	InitFrustum();
 	return true;
 }
 
@@ -45,7 +45,7 @@ float4x4 ModuleCamera::ProjectionMatrix()
 }
 
 
-void ModuleCamera::InitProyection() 
+void ModuleCamera::InitFrustum() 
 {
 	frustum.type = math::FrustumType::PerspectiveFrustum;
 	frustum.pos = math::float3::zero;
@@ -55,6 +55,18 @@ void ModuleCamera::InitProyection()
 	frustum.farPlaneDistance = 100.0f;
 	frustum.verticalFov = math::pi / 4.0f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) *(SCREEN_WIDTH / SCREEN_HEIGHT);
+}
+
+void ModuleCamera::SetHorizontalFOV(float& degrees)
+{
+	frustum.horizontalFov = math::DegToRad(degrees);
+	frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5)) *(SCREEN_WIDTH / SCREEN_WIDTH);
+}
+
+void ModuleCamera::SetVerticalFOV(float& degrees)
+{
+	frustum.verticalFov = math::DegToRad(degrees);
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) *(SCREEN_WIDTH / SCREEN_WIDTH);
 }
 
 float4x4 ModuleCamera::LookAt(math::float3& target, math::float3& eye)

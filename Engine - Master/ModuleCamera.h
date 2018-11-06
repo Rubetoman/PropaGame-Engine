@@ -27,20 +27,25 @@ public:
 	update_status	PreUpdate();
 	update_status   Update();
 	bool            CleanUp();
-	float4x4		ProjectionMatrix();
-	void			InitProyection();
-	float4x4		LookAt(math::float3& target, math::float3& eye);
+
+	math::float4x4	ProjectionMatrix();
+	// Frustum
+	void			InitFrustum();
+	void			SetHorizontalFOV(float& degrees);
+	void			SetVerticalFOV(float& degrees);
+
+	math::float4x4	LookAt(math::float3& target, math::float3& eye);
 	void			TranslateCameraInput();
 	void			RotateCameraInput();
 	void			CameraSpeedInput(float modifier);
 	void			RotateCamera();
 	void			MouseUpdate(math::float2& mouse_new_pos);
 
-	float4x4 model_view;
-	float4x4 view_matrix;
-	float4x4 result_matrix;
-	float4x4 proj;
-	Frustum frustum;
+	math::float4x4 model_view;
+	math::float4x4 view_matrix;
+	math::float4x4 result_matrix;
+	math::float4x4 proj;
+	math::Frustum frustum;
 
 	// Camera rotation
 	float pitch;
