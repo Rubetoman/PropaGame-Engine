@@ -33,6 +33,7 @@ public:
 	void			InitFrustum();
 	void			SetHorizontalFOV(float& degrees);
 	void			SetVerticalFOV(float& degrees);
+	void			UpdateScreenSize();
 
 	math::float4x4	LookAt(math::float3& target, math::float3& eye);
 	void			TranslateCameraInput();

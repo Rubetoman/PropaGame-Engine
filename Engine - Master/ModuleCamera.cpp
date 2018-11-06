@@ -56,22 +56,27 @@ void ModuleCamera::InitFrustum()
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 100.0f;
 	frustum.verticalFov = math::pi / 4.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
+	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
 	// Calculate horizontal first
 	//frustum.horizontalFov = math::pi / 4.0f;
-	//frustum.verticalFov = 2.f * atanf(tanf(frustum.horizontalFov * 0.5f)) *((float)App->window->screen_height / (float)App->window->screen_width);
+	//frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5f)) *((float)App->window->screen_height / (float)App->window->screen_width);
 }
 
 void ModuleCamera::SetHorizontalFOV(float& degrees)
 {
 	frustum.horizontalFov = math::DegToRad(degrees);
-	frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5)) *(App->window->screen_width / App->window->screen_height);
+	frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
 }
 
 void ModuleCamera::SetVerticalFOV(float& degrees)
 {
 	frustum.verticalFov = math::DegToRad(degrees);
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
+	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
+}
+
+void ModuleCamera::UpdateScreenSize() {
+	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
+	frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
 }
 
 float4x4 ModuleCamera::LookAt(math::float3& target, math::float3& eye)

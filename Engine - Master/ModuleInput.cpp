@@ -97,6 +97,7 @@ update_status ModuleInput::Update()
 				break;
 			case SDL_WINDOWEVENT_RESIZED:
 			case SDL_WINDOWEVENT_SIZE_CHANGED:
+				App->renderer->WindowResized(event.window.data1, event.window.data2);
 				LOG("Window size changed to width %d and heigh %d", event.window.data1, event.window.data2);
 				break;
 			}

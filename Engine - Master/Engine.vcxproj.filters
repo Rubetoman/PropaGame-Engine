@@ -74,9 +74,6 @@
     <ClCompile Include="log.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
     <ClCompile Include="MathGeoLib\include\Math\MathFunc.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -146,6 +143,7 @@
     <ClCompile Include="MathGeoLib\include\Geometry\TriangleMesh.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />

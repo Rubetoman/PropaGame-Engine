@@ -59,7 +59,7 @@ bool ModuleWindow::Init()
 update_status ModuleWindow::Update() {
 
 	if (screen_width != DM.w || screen_height != DM.h)
-		SetWindowSize(screen_width, screen_height);
+		SetWindowSize(screen_width, screen_height, true);
 
 	return UPDATE_CONTINUE;
 }
@@ -94,7 +94,7 @@ void ModuleWindow::ToggleFullScreen()
 		DM.w -= 100;
 		DM.h -= 78;
 	}
-	SetWindowSize(DM.w, DM.h);
+	SetWindowSize(DM.w, DM.h, true);
 }
 
 void ModuleWindow::ToggleVSync()
@@ -109,12 +109,15 @@ void ModuleWindow::ToggleResizable()
 	SDL_SetWindowResizable(window, (SDL_bool)isResizable);
 }
 
-void ModuleWindow::SetWindowSize(int w, int h)
+void ModuleWindow::SetWindowSize(int w, int h, bool useSDL)
 {
 	DM.w = w;
 	DM.h = h;
 	screen_width = w;
 	screen_height = h;
-	SDL_SetWindowSize(window, screen_width, screen_height);
+	glViewport(0, 0, screen_width, screen_height);
+	//App->camera->UpdateScreenSize();
+	if(useSDL)
+		SDL_SetWindowSize(window, screen_width, screen_height);
 }
 
