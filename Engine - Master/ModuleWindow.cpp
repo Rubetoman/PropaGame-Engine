@@ -99,14 +99,14 @@ void ModuleWindow::ToggleFullScreen()
 
 void ModuleWindow::ToggleVSync()
 {
-	SDL_GL_SetSwapInterval(!SDL_GL_GetSwapInterval);
+	SDL_GL_SetSwapInterval(!SDL_GL_GetSwapInterval());
 }
 
 void ModuleWindow::ToggleResizable()
 {
 	Uint32 resizableFlag = SDL_WINDOW_RESIZABLE;
 	bool isResizable = SDL_GetWindowFlags(window) & resizableFlag;
-	SDL_SetWindowResizable(window, (SDL_bool)isResizable);
+	SDL_SetWindowResizable(window, (SDL_bool)!isResizable);
 }
 
 void ModuleWindow::SetWindowSize(int w, int h)
