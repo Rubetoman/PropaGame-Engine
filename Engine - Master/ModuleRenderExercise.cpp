@@ -10,8 +10,16 @@ ModuleRenderExercise::~ModuleRenderExercise()
 
 bool ModuleRenderExercise::Init()
 {
+	desatranques.name = "Desatranques Jaen";
+	desatranques.path = "desatranques.jpg";
+	desatranques.use_mipmap = true;
+	sankara.name = "Thomas Sankara";
+	sankara.path = "sankara.jpg";
+	pazos.name = "Pazos64";
+	pazos.path = "pazos.jpg";
+	logo.path = "Red Controller Digital.png";
 	// Load texture
-	texture = App->textures->loadImage("desatranques.jpg");
+	texture = App->textures->loadImage(desatranques);
 
 	if (!texture) {
 		LOG("Error: texture cannot be loaded");

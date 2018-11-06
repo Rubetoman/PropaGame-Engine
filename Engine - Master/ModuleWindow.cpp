@@ -25,16 +25,20 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH;
-		int height = SCREEN_HEIGHT;
+		SDL_GetCurrentDisplayMode(0, &DM);
+		DM.w -= 100;
+		DM.h -= 78;
+		screen_width = DM.w;
+		screen_height = DM.h;
+
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
+		
+		//Set window settings
+		if(fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
+		if(resizable) flags |= SDL_WINDOW_RESIZABLE;
+		SDL_GL_SetSwapInterval(vsync);
 
-		if(FULLSCREEN == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN;
-		}
-
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, flags);
 
 		if(window == NULL)
 		{
@@ -52,6 +56,14 @@ bool ModuleWindow::Init()
 	return ret;
 }
 
+update_status ModuleWindow::Update() {
+
+	if (screen_width != DM.w || screen_height != DM.h)
+		SetWindowSize(screen_width, screen_height);
+
+	return UPDATE_CONTINUE;
+}
+
 // Called before quitting
 bool ModuleWindow::CleanUp()
 {
@@ -66,5 +78,43 @@ bool ModuleWindow::CleanUp()
 	//Quit SDL subsystems
 	SDL_Quit();
 	return true;
+}
+
+void ModuleWindow::ToggleFullScreen() 
+{
+	Uint32 fullscreenFlag = SDL_WINDOW_FULLSCREEN;
+	bool isFullscreen = SDL_GetWindowFlags(window) & fullscreenFlag;
+	SDL_SetWindowFullscreen(window, isFullscreen ? 0 : fullscreenFlag);
+	SDL_ShowCursor(isFullscreen);
+
+	SDL_GetCurrentDisplayMode(0, &DM);
+	// If it was on fullscreen change make window a bit smaller than screen
+	if (isFullscreen)
+	{
+		DM.w -= 100;
+		DM.h -= 78;
+	}
+	SetWindowSize(DM.w, DM.h);
+}
+
+void ModuleWindow::ToggleVSync()
+{
+	SDL_GL_SetSwapInterval(!SDL_GL_GetSwapInterval);
+}
+
+void ModuleWindow::ToggleResizable()
+{
+	Uint32 resizableFlag = SDL_WINDOW_RESIZABLE;
+	bool isResizable = SDL_GetWindowFlags(window) & resizableFlag;
+	SDL_SetWindowResizable(window, (SDL_bool)isResizable);
+}
+
+void ModuleWindow::SetWindowSize(int w, int h)
+{
+	DM.w = w;
+	DM.h = h;
+	screen_width = w;
+	screen_height = h;
+	SDL_SetWindowSize(window, screen_width, screen_height);
 }
 
