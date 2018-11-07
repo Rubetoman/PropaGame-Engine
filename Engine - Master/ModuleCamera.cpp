@@ -12,9 +12,9 @@ ModuleCamera::~ModuleCamera()
 bool ModuleCamera::Init()
 {
 	mainCamera = new Camera();
-	mainCamera->cam_position = float3(0, 0, 3);
-	mainCamera->cam_front = float3(0, 0, -1);
-	mainCamera->cam_up = float3(0, 1, 0);
+	mainCamera->position = float3(0, 0, 3);
+	mainCamera->front = float3(0, 0, -1);
+	mainCamera->up = float3(0, 1, 0);
 	mainCamera->yaw = -90.0f;
 	mainCamera->pitch = 0.0f;
 	cameras.push_back(mainCamera);
@@ -54,27 +54,27 @@ void ModuleCamera::TranslateCameraInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_Q))
 	{
-		mainCamera->TranslateCamera(mainCamera->cam_up);
+		mainCamera->TranslateCamera(mainCamera->up);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_E))
 	{
-		mainCamera->TranslateCamera(-mainCamera->cam_up);
+		mainCamera->TranslateCamera(-mainCamera->up);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A))
 	{
-		mainCamera->TranslateCamera(mainCamera->cam_up.Cross(mainCamera->cam_front).Normalized());
+		mainCamera->TranslateCamera(mainCamera->up.Cross(mainCamera->front).Normalized());
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D))
 	{
-		mainCamera->TranslateCamera(-mainCamera->cam_up.Cross(mainCamera->cam_front).Normalized());
+		mainCamera->TranslateCamera(-mainCamera->up.Cross(mainCamera->front).Normalized());
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_W))
 	{
-		mainCamera->TranslateCamera(mainCamera->cam_front);
+		mainCamera->TranslateCamera(mainCamera->front);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_S))
 	{
-		mainCamera->TranslateCamera(-mainCamera->cam_front);
+		mainCamera->TranslateCamera(-mainCamera->front);
 	}
 }
 
@@ -82,29 +82,29 @@ void ModuleCamera::RotateCameraInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) 
 	{
-		mainCamera->pitch += mainCamera->cam_rot_speed * App->deltaTime;
+		mainCamera->pitch += mainCamera->rotation_speed * App->deltaTime;
 		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) 
 	{
-		mainCamera->pitch -= mainCamera->cam_rot_speed * App->deltaTime;
+		mainCamera->pitch -= mainCamera->rotation_speed * App->deltaTime;
 		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) 
 	{
-		mainCamera->yaw -= mainCamera->cam_rot_speed * App->deltaTime;
+		mainCamera->yaw -= mainCamera->rotation_speed * App->deltaTime;
 		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) 
 	{
-		mainCamera->yaw += mainCamera->cam_rot_speed * App->deltaTime;
+		mainCamera->yaw += mainCamera->rotation_speed * App->deltaTime;
 		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F))
 	{
-		mainCamera->cam_front = math::float3(0, 0, 0) - mainCamera->cam_position;
+		mainCamera->front = math::float3(0, 0, 0) - mainCamera->position;
 		mainCamera->UpdatePitchYaw();
-		mainCamera->LookAt(mainCamera->cam_front, mainCamera->cam_position);
+		mainCamera->LookAt(mainCamera->front, mainCamera->position);
 	}
 }
 
@@ -112,13 +112,13 @@ void ModuleCamera::CameraSpeedInput(float modifier)
 {
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN)
 	{
-		mainCamera->cam_speed *= modifier;
-		mainCamera->cam_rot_speed *= modifier;
+		mainCamera->speed *= modifier;
+		mainCamera->rotation_speed *= modifier;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)
 	{
-		mainCamera->cam_speed /= modifier;
-		mainCamera->cam_rot_speed /= modifier;
+		mainCamera->speed /= modifier;
+		mainCamera->rotation_speed /= modifier;
 	}
 }
 
@@ -152,5 +152,5 @@ void ModuleCamera::MouseUpdate(math::float2& mouse_new_pos)
 	front.x = SDL_cosf(mainCamera->yaw) * SDL_cosf(mainCamera->pitch);
 	front.y = SDL_sinf(mainCamera->pitch);
 	front.z = SDL_sinf(mainCamera->yaw) * SDL_cosf(mainCamera->pitch);
-	mainCamera->cam_front = front.Normalized();
+	mainCamera->front = front.Normalized();
 }

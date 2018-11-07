@@ -12,7 +12,7 @@ Camera::~Camera()
 
 void Camera::TranslateCamera(math::float3 direction)
 {
-	cam_position += direction * cam_speed * App->deltaTime;
+	position += direction * speed * App->deltaTime;
 	//LookAt(cam_position, (cam_position + cam_front));
 }
 
@@ -27,7 +27,7 @@ void Camera::RotateCamera() {
 	rotation.x = SDL_cosf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
 	rotation.y = SDL_sinf(degreesToRadians(pitch));
 	rotation.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
-	cam_front = rotation.Normalized();
+	front = rotation.Normalized();
 }
 
 float4x4 Camera::LookAt(math::float3& target, math::float3& eye)
@@ -84,8 +84,8 @@ void Camera::SetVerticalFOV(float& degrees)
 
 void Camera::UpdatePitchYaw() 
 {
-	pitch = -math::RadToDeg(SDL_atanf(cam_front.y / cam_front.z));
-	yaw = -math::RadToDeg(SDL_atanf(cam_front.x / cam_front.z));
+	pitch = -math::RadToDeg(SDL_atanf(front.y / front.z));
+	yaw = -math::RadToDeg(SDL_atanf(front.x / front.z));
 
 	if (math::IsNan(pitch))
 		pitch = 0.0f;

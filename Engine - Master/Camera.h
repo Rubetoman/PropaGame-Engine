@@ -13,11 +13,12 @@ public:
 	~Camera();
 	
 	// Camera vectors
-	math::float3& cam_position = math::float3(0, 0, 0);	// Position in world of the camera
-	math::float3& cam_front = math::float3(0, 0, 0);	// Where the camera is looking at
-	math::float3& cam_up = math::float3(0, 0, 0);		// Up vector of the camera
-	float cam_speed = 1.0f;
-	float cam_rot_speed = 65.0f;
+	math::float3&	position = math::float3(0, 0, 0);		// Position in world of the camera
+	math::float3&	front = math::float3(0, 0, 0);		// Where the camera is looking at
+	math::float3&	up = math::float3(0, 0, 0);			// Up vector of the camera
+
+	float			speed = 1.0f;
+	float			rotation_speed = 65.0f;
 
 	// Camera transformation matrix
 	math::float4x4 model_view;
@@ -35,6 +36,7 @@ public:
 	void			TranslateCamera(math::float3 direction);
 	void			RotateCamera();
 	math::float4x4	LookAt(math::float3& target, math::float3& eye);
+	
 	// Frustum
 	void			InitFrustum();
 	math::float4x4	ProjectionMatrix();
@@ -43,4 +45,4 @@ public:
 	void			UpdatePitchYaw();
 };
 
-#endif /* __Camera_H__ */
+#endif /* __CAMERA_H__ */
