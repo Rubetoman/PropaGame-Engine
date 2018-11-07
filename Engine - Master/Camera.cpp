@@ -29,7 +29,6 @@ void Camera::RotateCamera() {
 	rotation.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
 	front = rotation.Normalized();
 
-	up = math::float3(0.0f, 1.0f, 0.0f);
 	LookAt(position + front);
 }
 

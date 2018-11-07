@@ -6,6 +6,7 @@
 #include "ModuleWindow.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "Point.h"
 #include "GL/glew.h"
 #include "SDL.h"
 #include "MathGeoLib.h"
@@ -38,7 +39,7 @@ public:
 	void			TranslateCameraInput();
 	void			RotateCameraInput();
 	void			CameraSpeedInput(float modifier);
-	void			MouseUpdate(math::float2& mouse_new_pos);
+	void			MouseUpdate(const iPoint& mouse_position);
 
 	// Camera
 	Camera* mainCamera = nullptr;			// Default camera

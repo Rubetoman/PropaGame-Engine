@@ -106,6 +106,11 @@ void ModuleCamera::RotateCameraInput()
 		mainCamera->UpdatePitchYaw();
 		mainCamera->LookAt(math::float3(0, 0, 0));
 	}
+	if(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		SDL_ShowCursor(SDL_DISABLE);
+		MouseUpdate(App->input->GetMousePosition());
+	}
 }
 
 void ModuleCamera::CameraSpeedInput(float modifier) 
@@ -122,19 +127,19 @@ void ModuleCamera::CameraSpeedInput(float modifier)
 	}
 }
 
-void ModuleCamera::MouseUpdate(math::float2& mouse_new_pos)
+void ModuleCamera::MouseUpdate(const iPoint& mouse_position)
 {
 	if (firstMouse)
 	{
-		lastX = mouse_new_pos.x;
-		lastY = mouse_new_pos.y;
+		lastX = mouse_position.x;
+		lastY = mouse_position.y;
 		firstMouse = false;
 	}
 
-	float xoffset = mouse_new_pos.x - lastX;
-	float yoffset = lastY - mouse_new_pos.y;
-	lastX = mouse_new_pos.x;
-	lastY = mouse_new_pos.y;
+	int xoffset = mouse_position.x - lastX;
+	int yoffset = lastY - mouse_position.y;
+	lastX = mouse_position.x;
+	lastY = mouse_position.y;
 
 	float sensitivity = 0.05;
 	xoffset *= sensitivity;
@@ -143,14 +148,5 @@ void ModuleCamera::MouseUpdate(math::float2& mouse_new_pos)
 	mainCamera->yaw += xoffset;
 	mainCamera->pitch += yoffset;
 
-	if (mainCamera->pitch > 89.0f)
-		mainCamera->pitch = 89.0f;
-	if (mainCamera->pitch < -89.0f)
-		mainCamera->pitch = -89.0f;
-
-	math::float3 front;
-	front.x = SDL_cosf(mainCamera->yaw) * SDL_cosf(mainCamera->pitch);
-	front.y = SDL_sinf(mainCamera->pitch);
-	front.z = SDL_sinf(mainCamera->yaw) * SDL_cosf(mainCamera->pitch);
-	mainCamera->front = front.Normalized();
+	mainCamera->RotateCamera();
 }
