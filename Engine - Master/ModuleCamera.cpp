@@ -134,21 +134,29 @@ void ModuleCamera::TranslateCamera(math::float3 direction)
 
 void ModuleCamera::RotateCameraInput() 
 {
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) 
+	{
 		pitch += cam_rot_speed * App->deltaTime;
 		RotateCamera();
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
+	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) 
+	{
 		pitch -= cam_rot_speed * App->deltaTime;
 		RotateCamera();
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
+	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) 
+	{
 		yaw -= cam_rot_speed * App->deltaTime;
 		RotateCamera();
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
+	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) 
+	{
 		yaw += cam_rot_speed * App->deltaTime;
 		RotateCamera();
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_F))
+	{
+		cam_front = math::float3(0, 0, 0) - cam_position;
 	}
 }
 
