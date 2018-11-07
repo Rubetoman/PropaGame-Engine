@@ -12,18 +12,20 @@ public:
 	Camera();
 	~Camera();
 	
-	// Camera vectors
 	math::float3&	position = math::float3(0, 0, 0);		// Position in world of the camera
+	
+	// Camera vectors
 	math::float3&	front = math::float3(0, 0, 0);		// Where the camera is looking at
+	math::float3&	side = math::float3(0, 0, 0);
 	math::float3&	up = math::float3(0, 0, 0);			// Up vector of the camera
 
 	float			speed = 1.0f;
 	float			rotation_speed = 65.0f;
 
 	// Camera transformation matrix
-	math::float4x4 model_view;
-	math::float4x4 view_matrix;
-	math::float4x4 result_matrix;
+	//math::float4x4 model_view;
+	//math::float4x4 view_matrix;
+	//math::float4x4 result_matrix;
 
 	// Camera frustum
 	math::float4x4 proj;

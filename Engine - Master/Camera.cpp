@@ -28,6 +28,9 @@ void Camera::RotateCamera() {
 	rotation.y = SDL_sinf(degreesToRadians(pitch));
 	rotation.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
 	front = rotation.Normalized();
+
+	up = math::float3(0.0f, 1.0f, 0.0f);
+	LookAt(position + front);
 }
 
 float4x4 Camera::LookAt(math::float3& target)
@@ -36,15 +39,15 @@ float4x4 Camera::LookAt(math::float3& target)
 
 	// projection
 	front = math::float3(target - position); front.Normalize();
-	math::float3 s(front.Cross(math::float3(0, 1, 0))); s.Normalize();
-	up = math::float3(s.Cross(front));
+	side = math::float3(front.Cross(math::float3(0, 1, 0))); side.Normalize();
+	up = math::float3(side.Cross(front));
 
-	view_matrix[0][0] = s.x;	view_matrix[0][1] = s.y;	view_matrix[0][2] = s.z;
-	view_matrix[1][0] = up.x;	view_matrix[1][1] = up.y;	view_matrix[1][2] = up.z;
+	view_matrix[0][0] = side.x;		view_matrix[0][1] = side.y;		view_matrix[0][2] = side.z;
+	view_matrix[1][0] = up.x;		view_matrix[1][1] = up.y;		view_matrix[1][2] = up.z;
 	view_matrix[2][0] = -front.x;	view_matrix[2][1] = -front.y;	view_matrix[2][2] = -front.z;
 
-	view_matrix[0][3] = -s.Dot(position);	view_matrix[1][3] = -up.Dot(position);	view_matrix[2][3] = front.Dot(position);
-	view_matrix[3][0] = 0.0f;				view_matrix[3][1] = 0.0f;				view_matrix[3][2] = 0.0f;			view_matrix[3][3] = 1.0f;
+	view_matrix[0][3] = -side.Dot(position);	view_matrix[1][3] = -up.Dot(position);	view_matrix[2][3] = front.Dot(position);
+	view_matrix[3][0] = 0.0f;					view_matrix[3][1] = 0.0f;				view_matrix[3][2] = 0.0f;			view_matrix[3][3] = 1.0f;
 
 	return view_matrix;
 }
