@@ -19,8 +19,8 @@ bool ModuleCamera::Init()
 	mainCamera->pitch = 0.0f;
 	cameras.push_back(mainCamera);
 
-	lastX = App->window->screen_width / 2;
-	lastY = App->window->screen_height / 2;
+	last_x = App->window->screen_width / 2;
+	last_y = App->window->screen_height / 2;
 	return true;
 }
 
@@ -102,14 +102,17 @@ void ModuleCamera::RotateCameraInput()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F))
 	{
-		//mainCamera->front = math::float3(0, 0, 0) - mainCamera->position;
 		mainCamera->UpdatePitchYaw();
 		mainCamera->LookAt(math::float3(0, 0, 0));
 	}
-	if(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	else if(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		SDL_ShowCursor(SDL_DISABLE);
-		MouseUpdate(App->input->GetMousePosition());
+		MouseInputRotation(App->input->GetMousePosition());
+	}
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+		SDL_ShowCursor(SDL_ENABLE);
+		new_click = true;
 	}
 }
 
@@ -127,26 +130,25 @@ void ModuleCamera::CameraSpeedInput(float modifier)
 	}
 }
 
-void ModuleCamera::MouseUpdate(const iPoint& mouse_position)
+void ModuleCamera::MouseInputRotation(const iPoint& mouse_position)
 {
-	if (firstMouse)
+	if (new_click)
 	{
-		lastX = mouse_position.x;
-		lastY = mouse_position.y;
-		firstMouse = false;
+		last_x = mouse_position.x;
+		last_y = mouse_position.y;
+		new_click = false;
 	}
 
-	int xoffset = mouse_position.x - lastX;
-	int yoffset = lastY - mouse_position.y;
-	lastX = mouse_position.x;
-	lastY = mouse_position.y;
+	int x_offset = mouse_position.x - last_x;
+	int y_offset = last_y - mouse_position.y;
+	last_x = mouse_position.x;
+	last_y = mouse_position.y;
 
-	float sensitivity = 0.05;
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
+	x_offset *= mainCamera->rotation_speed * mouse_sensitivity;
+	y_offset *= mainCamera->rotation_speed * mouse_sensitivity;
 
-	mainCamera->yaw += xoffset;
-	mainCamera->pitch += yoffset;
+	mainCamera->yaw += x_offset;
+	mainCamera->pitch += y_offset;
 
 	mainCamera->RotateCamera();
 }

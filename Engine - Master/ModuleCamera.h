@@ -39,7 +39,7 @@ public:
 	void			TranslateCameraInput();
 	void			RotateCameraInput();
 	void			CameraSpeedInput(float modifier);
-	void			MouseUpdate(const iPoint& mouse_position);
+	void			MouseInputRotation(const iPoint& mouse_position);
 
 	// Camera
 	Camera* mainCamera = nullptr;			// Default camera
@@ -47,9 +47,10 @@ public:
 	std::vector<Camera*> cameras;			// Vector with all the cameras on the scene
 
 	// Mouse 
-	bool firstMouse = true;
-	float lastX = SCREEN_WIDTH / 2;
-	float lastY = SCREEN_HEIGHT / 2;
+	bool new_click = true;
+	float mouse_sensitivity = 0.003;
+	float last_x = SCREEN_WIDTH / 2;
+	float last_y = SCREEN_HEIGHT / 2;
 
 };
 
