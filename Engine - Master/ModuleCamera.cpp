@@ -3,11 +3,6 @@
 
 ModuleCamera::ModuleCamera()
 {
-	cam_position	= float3(0, 0, 3);
-	cam_front		= float3(0, 0, -1);
-	cam_up			= float3(0, 1, 0);
-	yaw = -90.0f;
-	pitch = 0.0f;
 }
 
 ModuleCamera::~ModuleCamera()
@@ -16,7 +11,14 @@ ModuleCamera::~ModuleCamera()
 
 bool ModuleCamera::Init()
 {
-	InitFrustum();
+	mainCamera = new Camera();
+	mainCamera->cam_position = float3(0, 0, 3);
+	mainCamera->cam_front = float3(0, 0, -1);
+	mainCamera->cam_up = float3(0, 1, 0);
+	mainCamera->yaw = -90.0f;
+	mainCamera->pitch = 0.0f;
+	cameras.push_back(mainCamera);
+
 	lastX = App->window->screen_width / 2;
 	lastY = App->window->screen_height / 2;
 	return true;
@@ -41,122 +43,68 @@ bool ModuleCamera::CleanUp()
 	return true;
 }
 
-float4x4 ModuleCamera::ProjectionMatrix()
-{
-	return frustum.ProjectionMatrix();;
-}
 
-
-void ModuleCamera::InitFrustum() 
-{
-	frustum.type = math::FrustumType::PerspectiveFrustum;
-	frustum.pos = math::float3::zero;
-	frustum.front = -math::float3::unitZ;
-	frustum.up = math::float3::unitY;
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.0f;
-	frustum.verticalFov = math::pi / 4.0f;
-	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
-	// Calculate horizontal first
-	//frustum.horizontalFov = math::pi / 4.0f;
-	//frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5f)) *((float)App->window->screen_height / (float)App->window->screen_width);
-}
-
-void ModuleCamera::SetHorizontalFOV(float& degrees)
-{
-	frustum.horizontalFov = math::DegToRad(degrees);
-	frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
-}
-
-void ModuleCamera::SetVerticalFOV(float& degrees)
-{
-	frustum.verticalFov = math::DegToRad(degrees);
-	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
-}
 
 void ModuleCamera::UpdateScreenSize() {
-	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
-	frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
-}
-
-float4x4 ModuleCamera::LookAt(math::float3& target, math::float3& eye)
-{
-	float4x4 view_matrix;
-
-	// projection
-	math::float3 f(target); f.Normalize();
-	math::float3 s(f.Cross(math::float3(0, 1, 0))); s.Normalize();
-	math::float3 u(s.Cross(f));
-
-	view_matrix[0][0] = s.x;	view_matrix[0][1] = s.y;	view_matrix[0][2] = s.z;
-	view_matrix[1][0] = u.x;	view_matrix[1][1] = u.y;	view_matrix[1][2] = u.z;
-	view_matrix[2][0] = -f.x;	view_matrix[2][1] = -f.y;	view_matrix[2][2] = -f.z;
-
-	view_matrix[0][3] = -s.Dot(eye);	view_matrix[1][3] = -u.Dot(eye);	view_matrix[2][3] = f.Dot(eye);
-	view_matrix[3][0] = 0.0f;			view_matrix[3][1] = 0.0f;			view_matrix[3][2] = 0.0f;			view_matrix[3][3] = 1.0f;
-
-	return view_matrix;
+	mainCamera->frustum.horizontalFov = 2.0f * atanf(tanf(mainCamera->frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
+	mainCamera->frustum.verticalFov = 2.0f * atanf(tanf(mainCamera->frustum.horizontalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
 }
 
 void ModuleCamera::TranslateCameraInput() 
 {
 	if (App->input->GetKey(SDL_SCANCODE_Q))
 	{
-		TranslateCamera(cam_up);
+		mainCamera->TranslateCamera(mainCamera->cam_up);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_E))
 	{
-		TranslateCamera(-cam_up);
+		mainCamera->TranslateCamera(-mainCamera->cam_up);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A))
 	{
-		TranslateCamera(cam_up.Cross(cam_front).Normalized());
+		mainCamera->TranslateCamera(mainCamera->cam_up.Cross(mainCamera->cam_front).Normalized());
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D))
 	{
-		TranslateCamera(-cam_up.Cross(cam_front).Normalized());
+		mainCamera->TranslateCamera(-mainCamera->cam_up.Cross(mainCamera->cam_front).Normalized());
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_W))
 	{
-		TranslateCamera(cam_front);
+		mainCamera->TranslateCamera(mainCamera->cam_front);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_S))
 	{
-		TranslateCamera(-cam_front);
+		mainCamera->TranslateCamera(-mainCamera->cam_front);
 	}
-}
-
-void ModuleCamera::TranslateCamera(math::float3 direction)
-{
-	cam_position += direction * cam_speed * App->deltaTime;
-	//LookAt(cam_position, (cam_position + cam_front));
 }
 
 void ModuleCamera::RotateCameraInput() 
 {
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) 
 	{
-		pitch += cam_rot_speed * App->deltaTime;
-		RotateCamera();
+		mainCamera->pitch += mainCamera->cam_rot_speed * App->deltaTime;
+		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) 
 	{
-		pitch -= cam_rot_speed * App->deltaTime;
-		RotateCamera();
+		mainCamera->pitch -= mainCamera->cam_rot_speed * App->deltaTime;
+		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) 
 	{
-		yaw -= cam_rot_speed * App->deltaTime;
-		RotateCamera();
+		mainCamera->yaw -= mainCamera->cam_rot_speed * App->deltaTime;
+		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) 
 	{
-		yaw += cam_rot_speed * App->deltaTime;
-		RotateCamera();
+		mainCamera->yaw += mainCamera->cam_rot_speed * App->deltaTime;
+		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F))
 	{
-		cam_front = math::float3(0, 0, 0) - cam_position;
+		mainCamera->cam_front = math::float3(0, 0, 0) - mainCamera->cam_position;
+		mainCamera->UpdatePitchYaw();
+		mainCamera->LookAt(mainCamera->cam_front, mainCamera->cam_position);
 	}
 }
 
@@ -164,28 +112,14 @@ void ModuleCamera::CameraSpeedInput(float modifier)
 {
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN)
 	{
-		cam_speed *= modifier;
-		cam_rot_speed *= modifier;
+		mainCamera->cam_speed *= modifier;
+		mainCamera->cam_rot_speed *= modifier;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)
 	{
-		cam_speed /= modifier;
-		cam_rot_speed /= modifier;
+		mainCamera->cam_speed /= modifier;
+		mainCamera->cam_rot_speed /= modifier;
 	}
-}
-
-void ModuleCamera::RotateCamera() {
-
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-
-	math::float3 rotation;
-	rotation.x = SDL_cosf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
-	rotation.y = SDL_sinf(degreesToRadians(pitch));
-	rotation.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
-	cam_front = rotation.Normalized();
 }
 
 void ModuleCamera::MouseUpdate(math::float2& mouse_new_pos)
@@ -206,17 +140,17 @@ void ModuleCamera::MouseUpdate(math::float2& mouse_new_pos)
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
-	yaw += xoffset;
-	pitch += yoffset;
+	mainCamera->yaw += xoffset;
+	mainCamera->pitch += yoffset;
 
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
+	if (mainCamera->pitch > 89.0f)
+		mainCamera->pitch = 89.0f;
+	if (mainCamera->pitch < -89.0f)
+		mainCamera->pitch = -89.0f;
 
 	math::float3 front;
-	front.x = SDL_cosf(yaw) * SDL_cosf(pitch);
-	front.y = SDL_sinf(pitch);
-	front.z = SDL_sinf(yaw) * SDL_cosf(pitch);
-	cam_front = front.Normalized();
+	front.x = SDL_cosf(mainCamera->yaw) * SDL_cosf(mainCamera->pitch);
+	front.y = SDL_sinf(mainCamera->pitch);
+	front.z = SDL_sinf(mainCamera->yaw) * SDL_cosf(mainCamera->pitch);
+	mainCamera->cam_front = front.Normalized();
 }

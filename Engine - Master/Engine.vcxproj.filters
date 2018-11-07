@@ -144,6 +144,7 @@
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -347,6 +348,7 @@
     <ClInclude Include="MathGeoLib\include\Geometry\HitInfo.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.fs">

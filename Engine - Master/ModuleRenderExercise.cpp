@@ -103,13 +103,13 @@ update_status ModuleRenderExercise::Update()
 	math::float4x4 Model(math::float4x4::identity); // Not moving anything
 
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &Model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cam_front, App->camera->cam_position)[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &App->camera->mainCamera->LookAt(App->camera->mainCamera->cam_front, App->camera->mainCamera->cam_position)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &App->camera->mainCamera->ProjectionMatrix()[0][0]);
 
 	glUseProgram(programText);
 	glUniformMatrix4fv(glGetUniformLocation(programText, "model"), 1, GL_TRUE, &Model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(programText, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cam_front, App->camera->cam_position)[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(programText, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programText, "view"), 1, GL_TRUE, &App->camera->mainCamera->LookAt(App->camera->mainCamera->cam_front, App->camera->mainCamera->cam_position)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programText, "proj"), 1, GL_TRUE, &App->camera->mainCamera->ProjectionMatrix()[0][0]);
 
 
 	glDrawArrays(GL_TRIANGLES, 0, 6); // Starting from vertex 0; 3 vertices total -> 1 triangle
