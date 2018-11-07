@@ -102,9 +102,9 @@ void ModuleCamera::RotateCameraInput()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F))
 	{
-		mainCamera->front = math::float3(0, 0, 0) - mainCamera->position;
+		//mainCamera->front = math::float3(0, 0, 0) - mainCamera->position;
 		mainCamera->UpdatePitchYaw();
-		mainCamera->LookAt(mainCamera->front, mainCamera->position);
+		mainCamera->LookAt(math::float3(0, 0, 0));
 	}
 }
 

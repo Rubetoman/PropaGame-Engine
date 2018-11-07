@@ -35,7 +35,7 @@ public:
 
 	void			TranslateCamera(math::float3 direction);
 	void			RotateCamera();
-	math::float4x4	LookAt(math::float3& target, math::float3& eye);
+	math::float4x4	LookAt(math::float3& target);
 	
 	// Frustum
 	void			InitFrustum();

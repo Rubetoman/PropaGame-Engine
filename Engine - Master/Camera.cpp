@@ -30,21 +30,21 @@ void Camera::RotateCamera() {
 	front = rotation.Normalized();
 }
 
-float4x4 Camera::LookAt(math::float3& target, math::float3& eye)
+float4x4 Camera::LookAt(math::float3& target)
 {
 	float4x4 view_matrix;
 
 	// projection
-	math::float3 f(target); f.Normalize();
-	math::float3 s(f.Cross(math::float3(0, 1, 0))); s.Normalize();
-	math::float3 u(s.Cross(f));
+	front = math::float3(target - position); front.Normalize();
+	math::float3 s(front.Cross(math::float3(0, 1, 0))); s.Normalize();
+	up = math::float3(s.Cross(front));
 
 	view_matrix[0][0] = s.x;	view_matrix[0][1] = s.y;	view_matrix[0][2] = s.z;
-	view_matrix[1][0] = u.x;	view_matrix[1][1] = u.y;	view_matrix[1][2] = u.z;
-	view_matrix[2][0] = -f.x;	view_matrix[2][1] = -f.y;	view_matrix[2][2] = -f.z;
+	view_matrix[1][0] = up.x;	view_matrix[1][1] = up.y;	view_matrix[1][2] = up.z;
+	view_matrix[2][0] = -front.x;	view_matrix[2][1] = -front.y;	view_matrix[2][2] = -front.z;
 
-	view_matrix[0][3] = -s.Dot(eye);	view_matrix[1][3] = -u.Dot(eye);	view_matrix[2][3] = f.Dot(eye);
-	view_matrix[3][0] = 0.0f;			view_matrix[3][1] = 0.0f;			view_matrix[3][2] = 0.0f;			view_matrix[3][3] = 1.0f;
+	view_matrix[0][3] = -s.Dot(position);	view_matrix[1][3] = -up.Dot(position);	view_matrix[2][3] = front.Dot(position);
+	view_matrix[3][0] = 0.0f;				view_matrix[3][1] = 0.0f;				view_matrix[3][2] = 0.0f;			view_matrix[3][3] = 1.0f;
 
 	return view_matrix;
 }
