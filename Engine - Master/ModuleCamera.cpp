@@ -52,29 +52,32 @@ void ModuleCamera::UpdateScreenSize() {
 
 void ModuleCamera::TranslateCameraInput() 
 {
-	if (App->input->GetKey(SDL_SCANCODE_Q))
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
-		mainCamera->TranslateCamera(mainCamera->up);
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_E))
-	{
-		mainCamera->TranslateCamera(-mainCamera->up);
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A))
-	{
-		mainCamera->TranslateCamera(mainCamera->up.Cross(mainCamera->front).Normalized());
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_D))
-	{
-		mainCamera->TranslateCamera(-mainCamera->up.Cross(mainCamera->front).Normalized());
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_W))
-	{
-		mainCamera->TranslateCamera(mainCamera->front);
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_S))
-	{
-		mainCamera->TranslateCamera(-mainCamera->front);
+		if (App->input->GetKey(SDL_SCANCODE_Q))
+		{
+			mainCamera->TranslateCamera(mainCamera->up);
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_E))
+		{
+			mainCamera->TranslateCamera(-mainCamera->up);
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_A))
+		{
+			mainCamera->TranslateCamera(mainCamera->up.Cross(mainCamera->front).Normalized());
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_D))
+		{
+			mainCamera->TranslateCamera(-mainCamera->up.Cross(mainCamera->front).Normalized());
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_W))
+		{
+			mainCamera->TranslateCamera(mainCamera->front);
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_S))
+		{
+			mainCamera->TranslateCamera(-mainCamera->front);
+		}
 	}
 }
 
