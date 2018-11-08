@@ -17,7 +17,6 @@ class ModuleModelLoader;
 class Application
 {
 public:
-
 	Application();
 	~Application();
 

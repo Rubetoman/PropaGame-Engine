@@ -114,7 +114,8 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
-    glViewport(0, 0, width, height); 
+    //glViewport(0, 0, width, height); 
+	App->window->SetWindowSize(width, height, false);
 }
 
 void ModuleRender::RenderMesh(const ModuleModelLoader::mesh& mesh, const ModuleModelLoader::material& material,

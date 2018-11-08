@@ -74,9 +74,6 @@
     <ClCompile Include="log.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
     <ClCompile Include="MathGeoLib\include\Math\MathFunc.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -149,6 +146,8 @@
     <ClCompile Include="ModuleModelLoader.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -358,6 +357,7 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.fs">
