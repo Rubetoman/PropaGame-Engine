@@ -39,6 +39,7 @@ public:
 	void			TranslateCameraInput();
 	void			RotateCameraInput();
 	void			CameraSpeedInput(float modifier);
+	void			MouseInputTranslation(const iPoint& mouse_position);
 	void			MouseInputRotation(const iPoint& mouse_position);
 
 	// Camera

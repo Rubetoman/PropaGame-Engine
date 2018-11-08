@@ -52,7 +52,8 @@ void ModuleCamera::UpdateScreenSize() {
 
 void ModuleCamera::TranslateCameraInput() 
 {
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	// Right click + WASD/QE translates the camera
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_Q))
 		{
@@ -64,11 +65,11 @@ void ModuleCamera::TranslateCameraInput()
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_A))
 		{
-			mainCamera->TranslateCamera(mainCamera->up.Cross(mainCamera->front).Normalized());
+			mainCamera->TranslateCamera(-mainCamera->side);
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_D))
 		{
-			mainCamera->TranslateCamera(-mainCamera->up.Cross(mainCamera->front).Normalized());
+			mainCamera->TranslateCamera(mainCamera->side);
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_W))
 		{
@@ -83,7 +84,21 @@ void ModuleCamera::TranslateCameraInput()
 
 void ModuleCamera::RotateCameraInput() 
 {
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) 
+	// ALT + mouse left click + mouse move orbit around the loaded mesh
+	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) 
+	{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+		{
+			SDL_ShowCursor(SDL_DISABLE);
+			MouseInputTranslation(App->input->GetMousePosition());
+			mainCamera->LookAt(math::float3(0, 0, 0));
+		}
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+			SDL_ShowCursor(SDL_ENABLE);
+			new_click = true;
+		}
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) 
 	{
 		mainCamera->pitch += mainCamera->rotation_speed * App->deltaTime;
 		mainCamera->RotateCamera();
@@ -108,12 +123,12 @@ void ModuleCamera::RotateCameraInput()
 		mainCamera->UpdatePitchYaw();
 		mainCamera->LookAt(math::float3(0, 0, 0));
 	}
-	else if(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	else if(App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		SDL_ShowCursor(SDL_DISABLE);
 		MouseInputRotation(App->input->GetMousePosition());
 	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP) {
 		SDL_ShowCursor(SDL_ENABLE);
 		new_click = true;
 	}
@@ -131,6 +146,27 @@ void ModuleCamera::CameraSpeedInput(float modifier)
 		mainCamera->speed /= modifier;
 		mainCamera->rotation_speed /= modifier;
 	}
+}
+
+void ModuleCamera::MouseInputTranslation(const iPoint& mouse_position)
+{
+	if (new_click)
+	{
+		last_x = mouse_position.x;
+		last_y = mouse_position.y;
+		new_click = false;
+	}
+
+	int x_offset = mouse_position.x - last_x;
+	int y_offset = last_y - mouse_position.y;
+	last_x = mouse_position.x;
+	last_y = mouse_position.y;
+
+	x_offset *= mainCamera->rotation_speed * mouse_sensitivity;
+	y_offset *= mainCamera->rotation_speed * mouse_sensitivity;
+
+	mainCamera->position -= mainCamera->side.Mul(x_offset) * App->deltaTime;
+	mainCamera->position -= mainCamera->up.Mul(y_offset) * App->deltaTime;
 }
 
 void ModuleCamera::MouseInputRotation(const iPoint& mouse_position)
