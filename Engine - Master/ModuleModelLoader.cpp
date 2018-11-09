@@ -8,7 +8,7 @@ ModuleModelLoader::~ModuleModelLoader()
 }
 bool ModuleModelLoader::Init()
 {
-	return LoadMesh("BakerHouse.fbx");
+	return LoadMesh("Assets/Models/BakerHouse.fbx");
 }
 update_status ModuleModelLoader::Update()
 {
@@ -143,8 +143,25 @@ void ModuleModelLoader::GenerateMaterialData(const aiScene* scene)
 		if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
 		{
 			gen_material.texture0 = App->textures->loadTexture(file.data);
+			if (!gen_material.texture0)
+			{
+				LOG("Texture couldn't be found on Game dir, looking on Assets/Models/");
+				char * path = (char *)malloc(1 + strlen("Assets/Models/") + strlen(file.data));
+				strcpy(path, "Assets/Models/");
+				strcat(path, file.data);
+				gen_material.texture0 = App->textures->loadTexture(path);
+				free(path);
+			}
+			if (!gen_material.texture0)
+			{
+				LOG("Texture couldn't be found on Game dir, looking on Assets/Models/textures/");
+				char * path = (char *)malloc(1 + strlen("Assets/Models/textures/") + strlen(file.data));
+				strcpy(path, "Assets/Models/textures/");
+				strcat(path, file.data);
+				gen_material.texture0 = App->textures->loadTexture(path);
+				free(path);
+			}
 		}
-
 		materials.push_back(gen_material);
 	}
 }
