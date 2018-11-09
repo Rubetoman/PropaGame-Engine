@@ -16,7 +16,6 @@ class ModuleShader;
 class Application
 {
 public:
-
 	Application();
 	~Application();
 

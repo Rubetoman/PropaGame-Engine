@@ -3,11 +3,6 @@
 
 ModuleCamera::ModuleCamera()
 {
-	cam_position	= float3(0, 0, 3);
-	cam_target		= float3(0, 0, -1);
-	cam_up			= float3(0, 1, 0);
-	yaw = -90.0f;
-	pitch = 0.0f;
 }
 
 ModuleCamera::~ModuleCamera()
@@ -16,9 +11,16 @@ ModuleCamera::~ModuleCamera()
 
 bool ModuleCamera::Init()
 {
-	InitProyection();
-	lastX = App->window->screen_width / 2;
-	lastY = App->window->screen_height / 2;
+	mainCamera = new Camera();
+	mainCamera->position = float3(0, 0, 3);
+	mainCamera->front = float3(0, 0, -1);
+	mainCamera->up = float3(0, 1, 0);
+	mainCamera->yaw = -90.0f;
+	mainCamera->pitch = 0.0f;
+	cameras.push_back(mainCamera);
+
+	last_x = App->window->screen_width / 2;
+	last_y = App->window->screen_height / 2;
 	return true;
 }
 
@@ -41,91 +43,100 @@ bool ModuleCamera::CleanUp()
 	return true;
 }
 
-float4x4 ModuleCamera::ProjectionMatrix()
-{
-	return frustum.ProjectionMatrix();;
-}
 
 
-void ModuleCamera::InitProyection() 
-{
-	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.front = -float3::unitZ;
-	frustum.up = float3::unitY;
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.0f;
-	frustum.verticalFov = math::pi / 4.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
-	// Calculate horizontal first
-	//frustum.horizontalFov = math::pi / 4.0f;
-	//frustum.verticalFov = 2.f * atanf(tanf(frustum.horizontalFov * 0.5f)) *((float)App->window->screen_height / (float)App->window->screen_width);
-}
-
-float4x4 ModuleCamera::LookAt(math::float3& target, math::float3& eye, math::float3& up)
-{
-	float4x4 view_matrix;
-
-	// projection
-	float3 f(target); f.Normalize();
-	float3 s(f.Cross(up)); s.Normalize();
-	float3 u(s.Cross(f));
-
-	view_matrix[0][0] = s.x;	view_matrix[0][1] = s.y;	view_matrix[0][2] = s.z;
-	view_matrix[1][0] = u.x;	view_matrix[1][1] = u.y;	view_matrix[1][2] = u.z;
-	view_matrix[2][0] = -f.x;	view_matrix[2][1] = -f.y;	view_matrix[2][2] = -f.z;
-
-	view_matrix[0][3] = -s.Dot(eye);	view_matrix[1][3] = -u.Dot(eye);	view_matrix[2][3] = f.Dot(eye);
-	view_matrix[3][0] = 0.0f;			view_matrix[3][1] = 0.0f;			view_matrix[3][2] = 0.0f;			view_matrix[3][3] = 1.0f;
-
-	return view_matrix;
+void ModuleCamera::UpdateScreenSize() {
+	mainCamera->frustum.horizontalFov = 2.0f * atanf(tanf(mainCamera->frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
+	mainCamera->frustum.verticalFov = 2.0f * atanf(tanf(mainCamera->frustum.horizontalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
 }
 
 void ModuleCamera::TranslateCameraInput() 
 {
-	if (App->input->GetKey(SDL_SCANCODE_Q))
+	// Right click + WASD/QE translates the camera
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
-		cam_position += cam_up * cam_speed * App->deltaTime;
+		if (App->input->GetKey(SDL_SCANCODE_Q))
+		{
+			mainCamera->TranslateCamera(mainCamera->up);
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_E))
+		{
+			mainCamera->TranslateCamera(-mainCamera->up);
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_A))
+		{
+			mainCamera->TranslateCamera(-mainCamera->side);
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_D))
+		{
+			mainCamera->TranslateCamera(mainCamera->side);
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_W))
+		{
+			mainCamera->TranslateCamera(mainCamera->front);
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_S))
+		{
+			mainCamera->TranslateCamera(-mainCamera->front);
+		}
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_E))
+
+	// Mouse wheel go forward or backwards
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_X1) == KEY_DOWN)
 	{
-		cam_position -= cam_up * cam_speed * App->deltaTime;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A))
-	{
-		cam_position += cam_up.Cross(cam_target).Normalized() * cam_speed * App->deltaTime;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_D))
-	{
-		cam_position -= cam_up.Cross(cam_target).Normalized() * cam_speed * App->deltaTime;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_W))
-	{
-		cam_position += cam_target * cam_speed * App->deltaTime;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_S))
-	{
-		cam_position -= cam_target * cam_speed * App->deltaTime;
+		WheelInputTranslation(App->input->GetMouseWheel());
 	}
 }
 
 void ModuleCamera::RotateCameraInput() 
 {
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
-		pitch += cam_rot_speed * App->deltaTime;
-		RotateCamera();
+	// ALT + mouse left click + mouse move orbit around the loaded mesh
+	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) 
+	{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+		{
+			SDL_ShowCursor(SDL_DISABLE);
+			MouseInputTranslation(App->input->GetMousePosition());
+			mainCamera->LookAt(math::float3(0, 0, 0));
+		}
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+			SDL_ShowCursor(SDL_ENABLE);
+			new_click = true;
+		}
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
-		pitch -= cam_rot_speed * App->deltaTime;
-		RotateCamera();
+	else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) 
+	{
+		mainCamera->pitch += mainCamera->rotation_speed * App->deltaTime;
+		mainCamera->RotateCamera();
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
-		yaw -= cam_rot_speed * App->deltaTime;
-		RotateCamera();
+	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) 
+	{
+		mainCamera->pitch -= mainCamera->rotation_speed * App->deltaTime;
+		mainCamera->RotateCamera();
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-		yaw += cam_rot_speed * App->deltaTime;
-		RotateCamera();
+	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) 
+	{
+		mainCamera->yaw -= mainCamera->rotation_speed * App->deltaTime;
+		mainCamera->RotateCamera();
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) 
+	{
+		mainCamera->yaw += mainCamera->rotation_speed * App->deltaTime;
+		mainCamera->RotateCamera();
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_F))
+	{
+		mainCamera->UpdatePitchYaw();
+		mainCamera->LookAt(math::float3(0, 0, 0));
+	}
+	else if(App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	{
+		SDL_ShowCursor(SDL_DISABLE);
+		MouseInputRotation(App->input->GetMousePosition());
+	}
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP) {
+		SDL_ShowCursor(SDL_ENABLE);
+		new_click = true;
 	}
 }
 
@@ -133,59 +144,62 @@ void ModuleCamera::CameraSpeedInput(float modifier)
 {
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN)
 	{
-		cam_speed *= modifier;
-		cam_rot_speed *= modifier;
+		mainCamera->speed *= modifier;
+		mainCamera->rotation_speed *= modifier;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)
 	{
-		cam_speed /= modifier;
-		cam_rot_speed /= modifier;
+		mainCamera->speed /= modifier;
+		mainCamera->rotation_speed /= modifier;
 	}
 }
 
-void ModuleCamera::RotateCamera() {
-
-	/*if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;*/
-
-	float3 rotation;
-	rotation.x = SDL_cosf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
-	rotation.y = SDL_sinf(degreesToRadians(pitch));
-	rotation.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
-	cam_target = rotation.Normalized();
-}
-
-void ModuleCamera::MouseUpdate(float2& mouse_new_pos)
+void ModuleCamera::MouseInputTranslation(const iPoint& mouse_position)
 {
-	if (firstMouse)
+	if (new_click)
 	{
-		lastX = mouse_new_pos.x;
-		lastY = mouse_new_pos.y;
-		firstMouse = false;
+		last_x = mouse_position.x;
+		last_y = mouse_position.y;
+		new_click = false;
 	}
 
-	float xoffset = mouse_new_pos.x - lastX;
-	float yoffset = lastY - mouse_new_pos.y;
-	lastX = mouse_new_pos.x;
-	lastY = mouse_new_pos.y;
+	int x_offset = mouse_position.x - last_x;
+	int y_offset = last_y - mouse_position.y;
+	last_x = mouse_position.x;
+	last_y = mouse_position.y;
 
-	float sensitivity = 0.05;
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
+	x_offset *= mainCamera->rotation_speed * mouse_sensitivity;
+	y_offset *= mainCamera->rotation_speed * mouse_sensitivity;
 
-	yaw += xoffset;
-	pitch += yoffset;
+	mainCamera->position -= mainCamera->side.Mul(x_offset) * App->deltaTime;
+	mainCamera->position -= mainCamera->up.Mul(y_offset) * App->deltaTime;
+}
 
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
+void ModuleCamera::MouseInputRotation(const iPoint& mouse_position)
+{
+	if (new_click)
+	{
+		last_x = mouse_position.x;
+		last_y = mouse_position.y;
+		new_click = false;
+	}
 
-	math::float3 front;
-	front.x = SDL_cosf(yaw) * SDL_cosf(pitch);
-	front.y = SDL_sinf(pitch);
-	front.z = SDL_sinf(yaw) * SDL_cosf(pitch);
-	cam_target = front.Normalized();
+	int x_offset = mouse_position.x - last_x;
+	int y_offset = last_y - mouse_position.y;
+	last_x = mouse_position.x;
+	last_y = mouse_position.y;
+
+	x_offset *= mainCamera->rotation_speed * mouse_sensitivity;
+	y_offset *= mainCamera->rotation_speed * mouse_sensitivity;
+
+	mainCamera->yaw += x_offset;
+	mainCamera->pitch += y_offset;
+
+	mainCamera->RotateCamera();
+}
+
+void ModuleCamera::WheelInputTranslation(const iPoint& wheel_motion)
+{
+	mainCamera->position -= mainCamera->side.Mul(wheel_motion.x) * 10 * mainCamera->speed * App->deltaTime;
+	mainCamera->position -= mainCamera->front.Mul(-wheel_motion.y) * 10 * mainCamera->speed * App->deltaTime;
 }

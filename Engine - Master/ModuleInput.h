@@ -6,6 +6,8 @@
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
+#include "ModuleRender.h"
+#include "ModuleCamera.h"
 #include "SDL/include/SDL.h"
 #include "SDL_scancode.h"
 #include "imgui/imgui.h"
@@ -66,13 +68,17 @@ public:
 	// Get mouse / axis position
 	const iPoint& GetMouseMotion() const;
 	const iPoint& GetMousePosition() const;
+	// Get mouse wheel scroll
+	const iPoint& GetMouseWheel() const;
 
 private:
 	bool		windowEvents[WE_COUNT];
 	KeyState*	keyboard;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
-	iPoint mouse_motion;
-	iPoint mouse;
+	iPoint		mouse_motion;
+	iPoint		mouse;
+	iPoint		wheel_motion;
+	bool		wheel_scroll;
 };
 
 #endif /*__MODULEINPUT_H__*/

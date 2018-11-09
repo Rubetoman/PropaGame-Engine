@@ -1,18 +1,24 @@
 #ifndef __ModuleCamera_h__
 #define __ModuleCamera_h__
 
+#include "Camera.h"
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "Point.h"
 #include "GL/glew.h"
 #include "SDL.h"
 #include "MathGeoLib.h"
 #include "SDL/include/SDL.h"
+#include <vector>
+
+class Camera;
 
 class ModuleCamera : public Module
 {
-	enum CameraRotation {
+	enum CameraRotation 
+	{
 		PositivePitch,
 		NegativePitch,
 		PositiveYaw,
@@ -27,39 +33,27 @@ public:
 	update_status	PreUpdate();
 	update_status   Update();
 	bool            CleanUp();
-	float4x4		ProjectionMatrix();
-	void			InitProyection();
-	float4x4		LookAt(math::float3& target, math::float3& eye, math::float3& up);
+
+	void			UpdateScreenSize();
+
 	void			TranslateCameraInput();
 	void			RotateCameraInput();
 	void			CameraSpeedInput(float modifier);
-	void			RotateCamera();
-	void			MouseUpdate(float2& mouse_new_pos);
+	void			MouseInputTranslation(const iPoint& mouse_position);
+	void			MouseInputRotation(const iPoint& mouse_position);
+	void			WheelInputTranslation(const iPoint& wheel_motion);
 
-	float4x4 model_view;
-	float4x4 view_matrix;
-	float4x4 result_matrix;
-	float4x4 proj;
-	Frustum frustum;
-
-	// Camera rotation
-	float pitch;
-	float yaw;
-
-	// Camera vectors
-	float3& cam_position = float3(0, 0, 0);	// Position in world of the camera
-	float3& cam_target = float3(0, 0, 0);	// Where the camera is looking at
-	float3& cam_up = float3(0, 0, 0);		// Up vector of the camera
-	float cam_speed = 1.0f;
-	float cam_rot_speed = 65.0f;
+	// Camera
+	Camera* mainCamera = nullptr;			// Default camera
+	std::vector<bool> activeCameras;		// Vector of boleans to know which cameras are active
+	std::vector<Camera*> cameras;			// Vector with all the cameras on the scene
 
 	// Mouse 
-	bool firstMouse = true;
-	float lastX = SCREEN_WIDTH / 2;
-	float lastY = SCREEN_HEIGHT / 2;
-
-private:
-	unsigned vbo = 0;
+	bool new_click = true;
+	bool new_scroll = true;
+	float mouse_sensitivity = 0.003;
+	float last_x = SCREEN_WIDTH / 2;
+	float last_y = SCREEN_HEIGHT / 2;
 
 };
 

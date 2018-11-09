@@ -3,6 +3,8 @@
 
 #include "Module.h"
 #include "SDL/include/SDL.h"
+#include "GL/glew.h"
+#include "ModuleCamera.h"
 
 class Application;
 
@@ -22,7 +24,7 @@ public:
 	void ToggleFullScreen();
 	void ToggleResizable();
 	void ToggleVSync();
-	void SetWindowSize(int w, int h);
+	void SetWindowSize(int w, int h, bool useSDL);
 
 	int screen_width = SCREEN_WIDTH;
 	int screen_height = SCREEN_HEIGHT;
