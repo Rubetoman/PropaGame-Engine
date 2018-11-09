@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __APPLICATION_H__
+#define __APPLICATION_H__
 
 #include<list>
 #include "Globals.h"
@@ -8,11 +9,11 @@ class ModuleRender;
 class ModuleWindow;
 class ModuleTextures;
 class ModuleInput;
-class ModuleRenderExercise;
 class ModuleEditor;
 class ModuleCamera;
 class ModuleShader;
 class ModuleModelLoader;
+class ModuleFileManager;
 
 class Application
 {
@@ -30,11 +31,11 @@ public:
 	ModuleWindow* window = nullptr;
 	ModuleTextures* textures = nullptr;
 	ModuleInput* input = nullptr;
-    ModuleRenderExercise* exercise = nullptr;
 	ModuleEditor* editor = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleShader* shader = nullptr;
 	ModuleModelLoader* model_loader = nullptr;
+	ModuleFileManager* file = nullptr;
 
 	float lastTickCount = 0;	// How many ticks passed last time it was checked
 	float deltaTime = 0;		// Time in seconds
@@ -49,3 +50,5 @@ private:
 };
 
 extern Application* App;
+
+#endif // __APPLICATION_H__

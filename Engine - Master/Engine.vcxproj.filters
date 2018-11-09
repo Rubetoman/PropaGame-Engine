@@ -95,9 +95,6 @@
     <ClCompile Include="ModuleRender.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleRenderExercise.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleShader.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -148,6 +145,10 @@
     </ClCompile>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ModuleFileManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -278,9 +279,6 @@
     <ClInclude Include="ModuleRender.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleRenderExercise.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleShader.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -358,6 +356,10 @@
     </ClInclude>
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ModuleFileManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.fs">

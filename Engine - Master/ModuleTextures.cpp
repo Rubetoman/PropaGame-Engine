@@ -33,8 +33,15 @@ bool ModuleTextures::CleanUp()
 }
 
 
-GLuint ModuleTextures::loadImage(texture& texture)
+GLuint ModuleTextures::loadTexture(const char* path)
 {
+	Texture* nTexture = new Texture();
+	std::string name = path;
+
+	App->file->splitPath(path, nullptr, &name, nullptr);
+	nTexture->path = path;
+	nTexture->name = name.c_str();
+
 	ILuint imageID;				// Create an image ID as a ULuint
 	ILboolean success;			// Create a flag to keep track of success/failure
 
@@ -42,9 +49,8 @@ GLuint ModuleTextures::loadImage(texture& texture)
 	ilBindImage(imageID); 			// Bind the image
 
 
-	if (ilLoadImage(texture.path))
+	if (ilLoadImage(path))
 	{
-		texture.name = texture.path;
 		GLuint textureID = 0;							// Create a texture ID as a GLuint
 		glGenTextures(1, &textureID);					// Generate a new texture
 		glBindTexture(GL_TEXTURE_2D, textureID);		// Bind the texture to a name
@@ -78,21 +84,21 @@ GLuint ModuleTextures::loadImage(texture& texture)
 
 		ILubyte* data = ilGetData();
 		// Asign parameters to image
-		texture.width = ilGetInteger(IL_IMAGE_WIDTH);
-		texture.height = ilGetInteger(IL_IMAGE_HEIGHT);
+		nTexture->width = ilGetInteger(IL_IMAGE_WIDTH);
+		nTexture->height = ilGetInteger(IL_IMAGE_HEIGHT);
 		switch (ImageInfo.Format)
 		{
-			case IL_COLOUR_INDEX: texture.format = "Colour_index"; break;
-			case IL_RGB: texture.format = "RGB"; break;
-			case IL_RGBA: texture.format = "RGBA"; break;
-			case IL_BGR: texture.format = "BGR"; break;
-			case IL_BGRA: texture.format = "BGRA"; break;
-			case IL_LUMINANCE: texture.format = "Luminance"; break;
-			default: texture.format = "Unknown"; break;
+			case IL_COLOUR_INDEX: nTexture->format = "Colour_index"; break;
+			case IL_RGB: nTexture->format = "RGB"; break;
+			case IL_RGBA: nTexture->format = "RGBA"; break;
+			case IL_BGR: nTexture->format = "BGR"; break;
+			case IL_BGRA: nTexture->format = "BGRA"; break;
+			case IL_LUMINANCE: nTexture->format = "Luminance"; break;
+			default: nTexture->format = "Unknown"; break;
 		}
 
 		// Set texture clamping method
-		switch (texture.wrap_mode)
+		switch (nTexture->wrap_mode)
 		{
 		case clamp_to_boder:
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
@@ -118,16 +124,16 @@ GLuint ModuleTextures::loadImage(texture& texture)
 		}
 
 		// Set texture interpolation method to use linear interpolation (no MIPMAPS)
-		switch (texture.resize_mode) 
+		switch (nTexture->resize_mode)
 		{
 		case nearest:
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			if(!texture.use_mipmap) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			if(!nTexture->use_mipmap) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 			break;
 		default:
 		case linear:
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			if (!texture.use_mipmap) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			if (!nTexture->use_mipmap) glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		}
 
 		// Specify the texture specification
@@ -142,7 +148,7 @@ GLuint ModuleTextures::loadImage(texture& texture)
 			ilGetData());					// The actual image data itself
 	
 		// Set smaller resize mode
-		if (texture.use_mipmap)
+		if (nTexture->use_mipmap)
 		{
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 			glGenerateMipmap(GL_TEXTURE_2D);
@@ -150,6 +156,8 @@ GLuint ModuleTextures::loadImage(texture& texture)
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		ilDeleteImages(1, &imageID);		// Because we have already copied image data into texture data we can release memory used by image.
+
+		textures.push_back(nTexture);
 
 		LOG("Texture creation successful.");
 		return textureID;					// Return the GLuint to the texture so you can use it!
@@ -160,7 +168,7 @@ GLuint ModuleTextures::loadImage(texture& texture)
 	return 0;
 }
 
-void ModuleTextures::unloadImage(unsigned id)
+void ModuleTextures::unloadTexture(unsigned id)
 {
 	if (id != 0)
 	{
@@ -168,10 +176,10 @@ void ModuleTextures::unloadImage(unsigned id)
 	}
 }
 
-void ModuleTextures::ReloadImage(texture& new_texture, GLuint& texture) {
-	unloadImage(texture);
+void ModuleTextures::ReloadTexture(Texture& new_texture, GLuint& texture) {
+	unloadTexture(texture);
 
-	texture = loadImage(new_texture);
+	texture = loadTexture(new_texture.path);
 
 	if (texture == -1) {
 		LOG("Error: Texture cannot be loaded");

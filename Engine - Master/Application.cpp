@@ -1,14 +1,16 @@
-#pragma once
+#ifndef __APPLICATION_CPP__
+#define __APPLICATION_CPP__
+
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
-#include "ModuleRenderExercise.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
 #include "ModuleShader.h"
 #include "ModuleModelLoader.h"
+#include "ModuleFileManager.h"
 
 using namespace std;
 
@@ -23,7 +25,7 @@ Application::Application()
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(shader = new ModuleShader());
 	modules.push_back(model_loader = new ModuleModelLoader());
-	//modules.push_back(exercise = new ModuleRenderExercise());
+	modules.push_back(file = new ModuleFileManager());
 }
 
 Application::~Application()
@@ -90,3 +92,5 @@ void Application::Tick()
 		auxTimer = 0;
 	}
 }
+
+#endif //__APPLICATION_CPP__
