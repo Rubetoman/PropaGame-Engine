@@ -117,6 +117,16 @@ update_status ModuleInput::Update()
 			mouse.x = event.motion.x / SCREEN_SIZE;
 			mouse.y = event.motion.y / SCREEN_SIZE;
 			break;
+		case SDL_MOUSEWHEEL:
+			wheel_motion.x = event.wheel.x;
+			wheel_motion.y = event.wheel.y;
+			if (event.wheel.y != 0) {
+				mouse_buttons[4 - 1] = KEY_DOWN;	// Button for y mouse wheel scroll
+			}
+			else {
+				mouse_buttons[5 - 1] = KEY_DOWN;	// Button for x mouse wheel scroll
+			}
+			break;
 		}
 	}
 
@@ -151,4 +161,9 @@ const iPoint& ModuleInput::GetMousePosition() const
 const iPoint& ModuleInput::GetMouseMotion() const
 {
 	return mouse_motion;
+}
+
+const iPoint& ModuleInput::GetMouseWheel() const
+{
+	return wheel_motion;
 }

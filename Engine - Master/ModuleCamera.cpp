@@ -80,6 +80,12 @@ void ModuleCamera::TranslateCameraInput()
 			mainCamera->TranslateCamera(-mainCamera->front);
 		}
 	}
+
+	// Mouse wheel go forward or backwards
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_X1) == KEY_DOWN)
+	{
+		WheelInputTranslation(App->input->GetMouseWheel());
+	}
 }
 
 void ModuleCamera::RotateCameraInput() 
@@ -190,4 +196,10 @@ void ModuleCamera::MouseInputRotation(const iPoint& mouse_position)
 	mainCamera->pitch += y_offset;
 
 	mainCamera->RotateCamera();
+}
+
+void ModuleCamera::WheelInputTranslation(const iPoint& wheel_motion)
+{
+	mainCamera->position -= mainCamera->side.Mul(wheel_motion.x) * 10 * mainCamera->speed * App->deltaTime;
+	mainCamera->position -= mainCamera->front.Mul(-wheel_motion.y) * 10 * mainCamera->speed * App->deltaTime;
 }

@@ -41,6 +41,7 @@ public:
 	void			CameraSpeedInput(float modifier);
 	void			MouseInputTranslation(const iPoint& mouse_position);
 	void			MouseInputRotation(const iPoint& mouse_position);
+	void			WheelInputTranslation(const iPoint& wheel_motion);
 
 	// Camera
 	Camera* mainCamera = nullptr;			// Default camera
@@ -49,6 +50,7 @@ public:
 
 	// Mouse 
 	bool new_click = true;
+	bool new_scroll = true;
 	float mouse_sensitivity = 0.003;
 	float last_x = SCREEN_WIDTH / 2;
 	float last_y = SCREEN_HEIGHT / 2;
