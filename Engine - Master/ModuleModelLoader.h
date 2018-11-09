@@ -21,9 +21,12 @@ public:
 	bool            Init();
 	update_status   Update();
 	bool            CleanUp();
+	bool			LoadMesh(const char* path);
+	void			LoadMaterial(const char* path);
 	void			GenerateMeshData(const aiScene* scene);
 	void			GenerateMaterialData(const aiScene* scene);
-	const aiScene* scene;
+	void			DeleteMesh(int index);
+	void			DeleteMaterial(int index);
 
 private:
 	unsigned vbo = 0; // Stores numers in case of error
@@ -44,6 +47,7 @@ public:
 		unsigned texture0 = 0;
 	};
 
+	const aiScene* scene;
 	std::vector<mesh>     meshes;
 	std::vector<material> materials;
 	math::float4x4        transform = math::float4x4::identity;

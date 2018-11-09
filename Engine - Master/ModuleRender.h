@@ -5,8 +5,8 @@
 #include "ModuleModelLoader.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
-#include "ModuleRenderExercise.h"
 #include "ModuleCamera.h"
+#include "ModuleShader.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -40,10 +40,6 @@ public:
 
 	void			DrawCoordinates();
 	void			DrawPlane();
-	void			InitQuad();
-	void			DrawQuad();
 
-	GLuint quadTexture;
-	texture desatranques, sankara, pazos, logo;
 	ModuleModelLoader::mesh quad;
 };

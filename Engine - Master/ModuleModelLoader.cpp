@@ -1,4 +1,5 @@
 #include "ModuleModelLoader.h"
+
 ModuleModelLoader::ModuleModelLoader()
 {
 }
@@ -7,8 +8,32 @@ ModuleModelLoader::~ModuleModelLoader()
 }
 bool ModuleModelLoader::Init()
 {
+	return LoadMesh("BakerHouse.fbx");
+}
+update_status ModuleModelLoader::Update()
+{
+	return UPDATE_CONTINUE;
+}
+
+bool ModuleModelLoader::CleanUp()
+{
+	// Delete loaded models
+	for (unsigned i = 0; i < meshes.size(); ++i)
+	{
+		DeleteMesh(i);
+	}
+
+	for (unsigned i = 0; i < materials.size(); ++i)
+	{
+		DeleteMaterial(i);
+	}
+	return true;
+}
+
+bool ModuleModelLoader::LoadMesh(const char* path)
+{
 	unsigned int postprocess_flags = aiProcessPreset_TargetRealtime_MaxQuality;
-	scene = aiImportFile("BakerHouse.fbx", postprocess_flags);
+	scene = aiImportFile(path, postprocess_flags);
 	if (scene == NULL)
 	{
 		aiGetErrorString();
@@ -20,56 +45,22 @@ bool ModuleModelLoader::Init()
 	aiReleaseImport(scene);
 	return true;
 }
-update_status ModuleModelLoader::Update()
-{
-	/*glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, meshes[0].vbo);
-	glVertexAttribPointer(
-		0,                  // attribute 0
-		3,                  // number of componentes (3 floats)
-		GL_FLOAT,           // data type
-		GL_FALSE,           // should be normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-	);
-	
-	glDrawArrays(GL_POINTS, 0, meshes[0].num_vertices);
-	glDisableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
-	
-	//glActiveTexture(GL_TEXTURE0);
 
-	// draw mesh
-	//glBindVertexArray(meshes[0].vao);
-	//glDrawElements(GL_TRIANGLES, meshes[0].num_indices, GL_UNSIGNED_INT, 0);
-	//glBindVertexArray(0);
-	return UPDATE_CONTINUE;
-}
-
-bool ModuleModelLoader::CleanUp()
+void ModuleModelLoader::LoadMaterial(const char* path)
 {
-	// Delete loaded models
-	for (unsigned i = 0; i < meshes.size(); ++i)
+	const aiMaterial* src_material = nullptr;
+	material gen_material;
+
+	aiString file;
+	aiTextureMapping mapping;
+	unsigned uvindex = 0;
+
+	if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
 	{
-		if (meshes[i].vbo != 0)
-		{
-			glDeleteBuffers(1, &meshes[i].vbo);
-		}
-
-		if (meshes[i].ibo != 0)
-		{
-			glDeleteBuffers(1, &meshes[i].ibo);
-		}
+		gen_material.texture0 = App->textures->loadTexture(file.data);
 	}
 
-	for (unsigned i = 0; i < materials.size(); ++i)
-	{
-		if (materials[i].texture0 != 0)
-		{
-			App->textures->unloadImage(materials[i].texture0);
-		}
-	}
-	return true;
+	materials.push_back(gen_material);
 }
 
 void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
@@ -151,11 +142,35 @@ void ModuleModelLoader::GenerateMaterialData(const aiScene* scene)
 
 		if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
 		{
-			texture texture;
-			texture.path = file.data;
-			gen_material.texture0 = App->textures->loadImage(texture);
+			gen_material.texture0 = App->textures->loadTexture(file.data);
 		}
 
 		materials.push_back(gen_material);
+	}
+}
+
+void ModuleModelLoader::DeleteMesh(int index)
+{
+	if (meshes[index].vbo != 0)
+	{
+		glDeleteBuffers(1, &meshes[index].vbo);
+	}
+
+	if (meshes[index].ibo != 0)
+	{
+		glDeleteBuffers(1, &meshes[index].ibo);
+	}
+	
+	if (meshes[index].vao != 0)
+	{
+		glDeleteBuffers(1, &meshes[index].vao);
+	}
+}
+
+void ModuleModelLoader::DeleteMaterial(int index)
+{
+	if (materials[index].texture0 != 0)
+	{
+		App->textures->unloadTexture(materials[index].texture0);
 	}
 }

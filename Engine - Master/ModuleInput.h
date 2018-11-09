@@ -8,6 +8,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
+#include "ModuleFileManager.h"
 #include "SDL/include/SDL.h"
 #include "SDL_scancode.h"
 #include "imgui/imgui.h"
@@ -75,6 +76,8 @@ private:
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
 	iPoint mouse_motion;
 	iPoint mouse;
+
+	char* dropped_filedir;                  // Pointer for directory of dropped file
 };
 
 #endif /*__MODULEINPUT_H__*/
