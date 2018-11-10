@@ -146,6 +146,9 @@
     <ClCompile Include="MathGeoLib\include\Geometry\TriangleMesh.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -347,6 +350,9 @@
     </ClInclude>
     <ClInclude Include="Point.h" />
     <ClInclude Include="MathGeoLib\include\Geometry\HitInfo.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\mmgr.h">
       <Filter>Other</Filter>
     </ClInclude>
   </ItemGroup>

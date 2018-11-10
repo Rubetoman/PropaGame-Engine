@@ -6,6 +6,8 @@
 #include "ModuleTextures.h"
 #include "ModuleRenderExercise.h"
 
+#include "mmgr/mmgr.h"
+
 static void ShowMainMenuBar();
 static void ShowOptionsWindow();
 static void ShowLogWindow();
@@ -15,6 +17,7 @@ ModuleEditor::ModuleEditor()
 {
 	fps_log.resize(100);
 	ms_log.resize(100);
+	mem_log.resize(100);
 }
 
 // Destructor
@@ -25,7 +28,6 @@ ModuleEditor::~ModuleEditor()
 // Called before render is available
 bool ModuleEditor::Init()
 {
-
 	const char* glsl_version = "#version 130";
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
 
@@ -58,7 +60,6 @@ update_status ModuleEditor::PreUpdate()
 	ms_log.erase(ms_log.begin());
 	ms_log.push_back(App->deltaTime * 1000);
 
-
 	return UPDATE_CONTINUE;
 }
 
@@ -80,7 +81,7 @@ update_status ModuleEditor::Update()
 	if (show_textures_window) {
 		ShowTexturesWindow();
 	}
-	return UPDATE_CONTINUE;
+	return update;
 }
 
 // Called before quitting
@@ -104,7 +105,7 @@ static void ShowMainMenuBar()
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("Open")) {}
-			if (ImGui::MenuItem("Quit", "ALT+F4")) {}
+			if (ImGui::MenuItem("Quit", "ALT+F4")) { App->editor->update = UPDATE_STOP; }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit"))
@@ -123,14 +124,14 @@ static void ShowMainMenuBar()
 			if (ImGui::MenuItem("Performance")) { App->editor->show_performance_window = true; }
 			if(ImGui::MenuItem("Texture Options")) { App->editor->show_textures_window = true; }
 			if (ImGui::MenuItem("Log")) { App->editor->show_log_window = true; }
-			if (ImGui::MenuItem("Hardware Info")) { ShellExecute(0, 0, "https://github.com/Rubetoman/SDL-OpenGL-Engine-V2", 0, 0, SW_SHOW); }
+			if (ImGui::MenuItem("Hardware Info")) { App->editor->ShowInBrowser("https://github.com/Rubetoman/SDL-OpenGL-Engine-V2"); }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Help"))
 		{
 			if (ImGui::MenuItem("About")) { App->editor->show_about_window = true; }
 			ImGui::Separator();
-			if (ImGui::MenuItem("View GIT Repository")) { ShellExecute(0, 0, "https://github.com/Rubetoman/SDL-OpenGL-Engine-V2", 0, 0, SW_SHOW); }
+			if (ImGui::MenuItem("View GIT Repository")) { App->editor->ShowInBrowser("https://github.com/Rubetoman/SDL-OpenGL-Engine-V2"); }
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
@@ -166,16 +167,66 @@ static void ShowAboutWindow()
 	ImGui::Begin("About", &App->editor->show_about_window);   // Pointer to bool variable (close when click on button)
 	ImGui::Text(TITLE);
 	ImGui::Text("Version:	BT - 1");
-	ImGui::Text("Games are not free of propaganda");
-	ImGui::Text("C/C++ engine made by Ruben Crispin De la Cruz");
+	ImGui::Text("Games are not free of propaganda.");
+	ImGui::Text("C/C++ engine made by: ");
+	ImGui::NewLine(); ImGui::SameLine(30);
+	if (ImGui::Selectable("Ruben Crispin De la Cruz", false, 0, { 165, 13 }))
+		App->editor->ShowInBrowser("https://github.com/Rubetoman");
+	
+	ImGui::NewLine();
 	ImGui::Text("Libraries: ");
-	ImGui::Text("	- glew-2.1.0");
-	ImGui::Text("	- imgui v1.65 (with branching)");
-	ImGui::Text("	- OpenGL 3.0");
-	ImGui::Text("	- MathGeoLib");
-	ImGui::Text("	- SDL 2.0.8");
+	
+	ImGui::NewLine(); ImGui::SameLine(30);
+	std::string glewVersion = (const char*)glewGetString(GLEW_VERSION);
+	glewVersion = "Glew " + glewVersion;
+	if (ImGui::Selectable(glewVersion.c_str(), false, 0, { 142, 13 }))
+		App->editor->ShowInBrowser("http://glew.sourceforge.net/");
+	
+	ImGui::NewLine(); ImGui::SameLine(30);
+	std::string imguiVersion = "ImGui ";
+	imguiVersion += ImGui::GetVersion();
+	if (ImGui::Selectable(imguiVersion.c_str(), false, 0, { 142, 13 }))
+		App->editor->ShowInBrowser("https://github.com/ocornut/imgui");
+
+	ImGui::NewLine(); ImGui::SameLine(30);
+	std::string glVersion = (const char*)glGetString(GL_VERSION);
+	glVersion = "OpenGL " + glVersion;
+	if (ImGui::Selectable(glVersion.c_str(), false, 0, { 310, 13 }))
+		App->editor->ShowInBrowser("https://www.opengl.org/");
+
+	ImGui::NewLine(); ImGui::SameLine(30);
+	if (ImGui::Selectable("MathGeoLib 1.5.0", false, 0, { 185, 13 }))
+		App->editor->ShowInBrowser("https://github.com/juj/MathGeoLib");
+
+	ImGui::NewLine(); ImGui::SameLine(30);
+	SDL_version version;
+	SDL_GetVersion(&version);
+	std::string sdlVersion = "SDL ";
+	sdlVersion += std::to_string(version.major) + '.' + std::to_string(version.minor) + '.' + std::to_string(version.patch);
+	if (ImGui::Selectable(sdlVersion.c_str(), false, 0, { 135, 13 }))
+		App->editor->ShowInBrowser("https://www.libsdl.org/");
+
+	/*ImGui::NewLine();ImGui::SameLine(30);
+	std::string assimpVersion = "Assimp - version ";
+	assimpVersion += std::to_string(aiGetVersionMajor()) + '.' + std::to_string(aiGetVersionMinor()) + '.' + std::to_string(aiGetVersionRevision());
+	if (ImGui::Selectable(assimpVersion.c_str(), false, 0, { 155, 13 }))
+		App->editor->ShowInBrowser("http://www.assimp.org/");*/
+
+	ImGui::NewLine(); ImGui::SameLine(30);
+	std::string devilVersion = "DevIL " + std::to_string(IL_VERSION);
+	if (ImGui::Selectable(devilVersion.c_str(), false, 0, { 135, 13 }))
+		App->editor->ShowInBrowser("http://openil.sourceforge.net/");
+
+	ImGui::NewLine(); ImGui::SameLine(30);
+	if (ImGui::Selectable("mmgr 1.0", false, 0, { 130, 13 }))
+		App->editor->ShowInBrowser("http://www.flipcode.com/archives/Presenting_A_Memory_Manager.shtml");
+
+	// License
+	ImGui::NewLine();
 	ImGui::Text("MIT License Copyright (c) [2018] [Ruben Crispin]");
 
+	// Close button
+	ImGui::NewLine();
 	if (ImGui::Button("Close"))
 		App->editor->show_about_window = false;
 	ImGui::End();
@@ -183,12 +234,29 @@ static void ShowAboutWindow()
 
 void ModuleEditor::ShowPerformanceWindow()
 {
+	// FPS & Miliseconds for each frame
 	ImGui::Begin("Performance", &App->editor->show_performance_window);   // Pointer to bool variable (close when click on button)
-	char title[25];
+	char title[35];
 	sprintf_s(title, 25, "Framerate %0.1f", fps_log[fps_log.size() - 1]);
 	ImGui::PlotHistogram("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 200.0f, ImVec2(310, 100));
 	sprintf_s(title, 25, "Milliseconds %0.1f", ms_log[ms_log.size() - 1]);
 	ImGui::PlotHistogram("##framerate", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
+	
+	// Memory stats
+	sMStats stats = m_getMemoryStatistics();
+	mem_log.erase(mem_log.begin());
+	mem_log.push_back((float)stats.totalReportedMemory);
+	sprintf_s(title, 35, "Memory Consumption (Bytes) %0.1f", mem_log[mem_log.size()-1]);
+	ImGui::PlotHistogram("##memory", &mem_log[0], mem_log.size(), 0, title, 0.0f, (float)stats.peakReportedMemory * 1.2f, ImVec2(310, 100));
+	ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
+	ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
+	ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
+	ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
+	ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
+	ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
+	ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
+	ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
+	ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
 	ImGui::End();
 }
 
@@ -266,4 +334,9 @@ void ModuleEditor::ShowTexturesWindow()
 		}
 	}
 	ImGui::End();
+}
+
+const void ModuleEditor::ShowInBrowser(const char* url) const
+{
+	ShellExecute(0, "open", url, 0, 0, SW_SHOW);
 }
