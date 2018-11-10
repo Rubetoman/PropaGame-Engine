@@ -24,8 +24,11 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void HandleInputs(SDL_Event& event);
-	void ShowPerformanceWindow();
+	void ShowAppInfoWindow();
 	void ShowTexturesWindow();
+	const void ShowLogWindow();
+	void AddLog(const char* logs);
+	const void ShowInBrowser(const char* url) const;
 
 public:
 	ImGuiIO io;
@@ -38,12 +41,18 @@ public:
 	// Performance data
 	std::vector<float> fps_log;
 	std::vector<float> ms_log;
+	std::vector<float> mem_log;
 
 	bool show_options_window = false;
 	bool show_log_window = false;
 	bool show_about_window = false;
-	bool show_performance_window = false;
+	bool show_app_info_window = false;
 	bool show_textures_window = false;
+
+	ImGuiTextBuffer Buffer;
+	bool ScrollToBottom = false;
+
+	update_status update = UPDATE_CONTINUE;
 };
 
 #endif // __ModuleEditor_H__
