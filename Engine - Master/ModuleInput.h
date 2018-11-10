@@ -8,6 +8,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
+#include "ModuleFileManager.h"
 #include "SDL/include/SDL.h"
 #include "SDL_scancode.h"
 #include "imgui/imgui.h"
@@ -79,6 +80,8 @@ private:
 	iPoint		mouse;
 	iPoint		wheel_motion;
 	bool		wheel_scroll;
+
+	char* dropped_filedir;                  // Pointer for directory of dropped file
 };
 
 #endif /*__MODULEINPUT_H__*/

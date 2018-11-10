@@ -95,9 +95,6 @@
     <ClCompile Include="ModuleRender.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleRenderExercise.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleShader.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -143,8 +140,15 @@
     <ClCompile Include="MathGeoLib\include\Geometry\TriangleMesh.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleModelLoader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ModuleFileManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -275,9 +279,6 @@
     <ClInclude Include="ModuleRender.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleRenderExercise.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleShader.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -344,11 +345,21 @@
     <ClInclude Include="MathGeoLib\include\Geometry\TriangleMesh.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="Point.h" />
     <ClInclude Include="MathGeoLib\include\Geometry\HitInfo.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleModelLoader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ModuleFileManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.fs">

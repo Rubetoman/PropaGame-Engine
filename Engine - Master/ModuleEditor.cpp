@@ -4,7 +4,6 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
-#include "ModuleRenderExercise.h"
 
 static void ShowMainMenuBar();
 static void ShowOptionsWindow();
@@ -78,7 +77,7 @@ update_status ModuleEditor::Update()
 		ShowPerformanceWindow();
 	}
 	if (show_textures_window) {
-		ShowTexturesWindow();
+		//ShowTexturesWindow();
 	}
 	return UPDATE_CONTINUE;
 }
@@ -192,11 +191,11 @@ void ModuleEditor::ShowPerformanceWindow()
 	ImGui::End();
 }
 
-void ModuleEditor::ShowTexturesWindow()
+/*void ModuleEditor::ShowTexturesWindow()
 {
 	ImGui::Begin("Textures", &App->editor->show_textures_window, ImGuiWindowFlags_AlwaysAutoResize);
-	image* images[] = { &App->exercise->desatranques, &App->exercise->sankara, &App->exercise->pazos };
-	static image* current_item = images[0];
+	Texture* images[] = { &App->exercise->desatranques, &App->exercise->sankara, &App->exercise->pazos };
+	static texture* current_item = images[0];
 	if (ImGui::BeginCombo("Loaded textures", current_item->name, ImGuiComboFlags_NoArrowButton))
 	{
 		for (int n = 0; n < IM_ARRAYSIZE(images); n++)
@@ -204,7 +203,7 @@ void ModuleEditor::ShowTexturesWindow()
 			bool is_selected = (current_item == images[n]);
 			if (ImGui::Selectable(images[n]->name, is_selected) && !is_selected) {
 				current_item = images[n];
-				App->textures->ReloadImage(*images[n], App->exercise->texture);
+				App->textures->ReloadTexture(*images[n], App->exercise->quadTexture);
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
@@ -230,7 +229,7 @@ void ModuleEditor::ShowTexturesWindow()
 				if (ImGui::Selectable(resize_options[i], current_resize) && !is_selected)			// Reload texture if resize option has change
 				{
 					current_item->setResizeMode(resize_options[i]);
-					App->textures->ReloadImage(*current_item, App->exercise->texture);
+					App->textures->ReloadTexture(*current_item, App->exercise->quadTexture);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -248,7 +247,7 @@ void ModuleEditor::ShowTexturesWindow()
 				if (ImGui::Selectable(wrap_options[i], current_wrap) && !is_selected) // Reload texture if wrap option has change
 				{
 					current_item->setWrapMode(wrap_options[i]);
-					App->textures->ReloadImage(*current_item, App->exercise->texture);
+					App->textures->ReloadTexture(*current_item, App->exercise->quadTexture);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -262,8 +261,8 @@ void ModuleEditor::ShowTexturesWindow()
 		if (mipmap != current_item->use_mipmap)
 		{
 			current_item->use_mipmap = mipmap;
-			App->textures->ReloadImage(*current_item, App->exercise->texture);
+			App->textures->ReloadTexture(*current_item, App->exercise->quadTexture);
 		}
 	}
 	ImGui::End();
-}
+}*/
