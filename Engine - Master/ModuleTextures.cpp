@@ -29,6 +29,10 @@ bool ModuleTextures::Init()
 // Called before quitting
 bool ModuleTextures::CleanUp()
 {
+	for (int i = 0; i < textures.size(); ++i)
+	{
+		//unloadTexture((int)textures[i]);
+	}
 	return true;
 }
 
@@ -168,12 +172,10 @@ GLuint ModuleTextures::loadTexture(const char* path)
 	return textureID;					// Return the GLuint to the texture so you can use it!
 }
 
-void ModuleTextures::unloadTexture(unsigned id)
+void ModuleTextures::unloadTexture(const unsigned& id)
 {
-	if (id != 0)
-	{
-		glDeleteTextures(1, &id);
-	}
+	glDeleteTextures(1, &id);
+	//textures.erase(textures.begin() + id-1);
 }
 
 void ModuleTextures::ReloadTexture(Texture& new_texture, GLuint& texture) {
@@ -181,7 +183,8 @@ void ModuleTextures::ReloadTexture(Texture& new_texture, GLuint& texture) {
 
 	texture = loadTexture(new_texture.path);
 
-	if (texture == -1) {
+	if (texture == -1) 
+	{
 		LOG("Error: Texture cannot be loaded");
 	}
 
