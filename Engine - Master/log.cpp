@@ -1,7 +1,5 @@
 #pragma once
 #include "Globals.h"
-#include "Application.h"
-#include "ModuleEditor.h"
 
 void log(const char file[], int line, const char* format, ...)
 {
@@ -15,10 +13,4 @@ void log(const char file[], int line, const char* format, ...)
 	va_end(ap);
 	sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
 	OutputDebugString(tmp_string2);
-
-	if (App && App->editor)
-	{
-		sprintf_s(tmp_string, 4096, "%s \n", tmp_string);
-		App->editor->AddLog(tmp_string);
-	}
 }
