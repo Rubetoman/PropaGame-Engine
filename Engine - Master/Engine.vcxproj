@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -142,6 +142,7 @@
     <ClInclude Include="MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleEditor.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="MathGeoLib\include\Math\SSEMath.cpp" />
     <ClCompile Include="MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
+    <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleFileManager.cpp" />
