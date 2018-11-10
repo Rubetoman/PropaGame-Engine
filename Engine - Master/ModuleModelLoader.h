@@ -13,6 +13,7 @@
 #include <assimp/material.h>
 #include <assimp/mesh.h>
 #include <vector>
+#include <iterator>
 
 class ModuleModelLoader : public Module
 {
@@ -26,6 +27,7 @@ public:
 	void			LoadMaterial(const char* path);
 	void			GenerateMeshData(const aiScene* scene);
 	void			GenerateMaterialData(const aiScene* scene);
+	void			ChangeMeshTexture(const char * path);
 	void			DeleteMesh(int index);
 	void			DeleteMaterial(int index);
 
@@ -41,6 +43,9 @@ public:
 		unsigned material = 0;
 		unsigned num_vertices = 0;
 		unsigned num_indices = 0;
+		unsigned texWidth = 0;
+		unsigned texHeight = 0;
+		AABB boundingBox;
 	};
 
 	struct material

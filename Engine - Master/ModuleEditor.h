@@ -6,6 +6,7 @@
 #include "GL/glew.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
+#include "Assimp/include/assimp/version.h"
 #include <vector> 
 
 class Application;

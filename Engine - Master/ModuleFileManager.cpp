@@ -20,9 +20,9 @@ void ModuleFileManager::manageFile(const char* path)
 		App->model_loader->CleanUp();
 		App->model_loader->LoadMesh(path);
 	}
-	else if (extension == "png" || extension == "dds" || extension == "tga")
+	else if (extension == "png" || extension == "dds" || extension == "jpg")
 	{
-		App->textures->loadTexture(path);
+		App->model_loader->ChangeMeshTexture(path);
 	}
 	else
 	{

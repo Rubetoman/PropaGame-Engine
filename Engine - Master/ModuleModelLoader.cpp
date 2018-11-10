@@ -32,6 +32,7 @@ bool ModuleModelLoader::CleanUp()
 
 bool ModuleModelLoader::LoadMesh(const char* path)
 {
+	assert(path != nullptr);
 	unsigned int postprocess_flags = aiProcessPreset_TargetRealtime_MaxQuality;
 	scene = aiImportFile(path, postprocess_flags);
 	if (scene == NULL)
@@ -48,6 +49,7 @@ bool ModuleModelLoader::LoadMesh(const char* path)
 
 void ModuleModelLoader::LoadMaterial(const char* path)
 {
+	assert(path != nullptr);
 	const aiMaterial* src_material = nullptr;
 	material gen_material;
 
@@ -65,6 +67,7 @@ void ModuleModelLoader::LoadMaterial(const char* path)
 
 void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 {
+	assert(scene != nullptr);
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
 	{
 		const aiMesh* src_mesh = scene->mMeshes[i];
@@ -130,6 +133,7 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 
 void ModuleModelLoader::GenerateMaterialData(const aiScene* scene)
 {
+	assert(scene != nullptr);
 	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
 	{
 		const aiMaterial* src_material = scene->mMaterials[i];
@@ -163,6 +167,21 @@ void ModuleModelLoader::GenerateMaterialData(const aiScene* scene)
 			}
 		}
 		materials.push_back(gen_material);
+	}
+}
+
+void ModuleModelLoader::ChangeMeshTexture(const char * path)
+{
+	assert(path != nullptr);
+	unsigned width, height;
+	GLuint tex_id = App->textures->loadTexture(path);
+
+	for (std::vector<material>::iterator it_m = materials.begin(); it_m != materials.end(); it_m++)
+	{
+		//glDeleteTextures(1, (GLuint*)(*it_m)->texture);
+		(it_m)->texture0 = tex_id;
+		//(it_m)->texWidth = width;
+		//(it_m)->texHeight = height;
 	}
 }
 
