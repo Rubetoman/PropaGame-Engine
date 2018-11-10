@@ -10,7 +10,6 @@
 
 static void ShowMainMenuBar();
 static void ShowOptionsWindow();
-static void ShowLogWindow();
 static void ShowAboutWindow();
 
 ModuleEditor::ModuleEditor()
@@ -81,12 +80,16 @@ update_status ModuleEditor::Update()
 	if (show_textures_window) {
 		ShowTexturesWindow();
 	}
+	if (show_log_window) {
+		ShowLogWindow();
+	}
 	return update;
 }
 
 // Called before quitting
 bool ModuleEditor::CleanUp()
 {
+	Buffer.clear();
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
@@ -156,9 +159,31 @@ static void ShowOptionsWindow()
 	ImGui::End();
 }
 
-static void ShowLogWindow()
+const void ModuleEditor::ShowLogWindow()
 {
+	ImGui::Begin("Log", &App->editor->show_log_window);   // Pointer to bool variable (close when click on button)
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0.9f,0.45f,0.0f,0.7f });
+		if (ImGui::Button("Clear"))
+		{
+			Buffer.clear();
+		}
+		ImGui::PopStyleColor();
 
+
+	ImGui::TextUnformatted(Buffer.begin());
+
+	if (ScrollToBottom)
+		ImGui::SetScrollHere(1.0f);
+
+	ScrollToBottom = false;
+
+	ImGui::End();
+}
+
+void ModuleEditor::AddLog(const char* logs)
+{
+	Buffer.appendf(logs);
+	ScrollToBottom = true;
 }
 
 static void ShowAboutWindow() 

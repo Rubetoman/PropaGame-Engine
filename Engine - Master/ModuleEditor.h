@@ -26,6 +26,8 @@ public:
 	void HandleInputs(SDL_Event& event);
 	void ShowAppInfoWindow();
 	void ShowTexturesWindow();
+	const void ShowLogWindow();
+	void AddLog(const char* logs);
 	const void ShowInBrowser(const char* url) const;
 
 public:
@@ -46,6 +48,9 @@ public:
 	bool show_about_window = false;
 	bool show_app_info_window = false;
 	bool show_textures_window = false;
+
+	ImGuiTextBuffer Buffer;
+	bool ScrollToBottom = false;
 
 	update_status update = UPDATE_CONTINUE;
 };

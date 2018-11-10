@@ -100,7 +100,7 @@ int main(int argc, char ** argv)
 		}
 	}
 
+	LOG("See you space cowboy\n");
 	delete App;
-	LOG("Bye :)\n");
 	return main_return;
 }
