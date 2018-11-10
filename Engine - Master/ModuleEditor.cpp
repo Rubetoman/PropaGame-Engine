@@ -120,16 +120,16 @@ static void ShowMainMenuBar()
 		}
 		if (ImGui::BeginMenu("Window"))
 		{
-			if (ImGui::MenuItem("Options")) { App->editor->show_options_window = true; }
-			if (ImGui::MenuItem("Performance")) { App->editor->show_performance_window = true; }
+			if (ImGui::MenuItem("Options", NULL, &App->editor->show_options_window)) { App->editor->show_options_window = true; }
+			if (ImGui::MenuItem("Performance", NULL, &App->editor->show_performance_window)) { App->editor->show_performance_window = true; }
 			if(ImGui::MenuItem("Texture Options")) { App->editor->show_textures_window = true; }
-			if (ImGui::MenuItem("Log")) { App->editor->show_log_window = true; }
+			if (ImGui::MenuItem("Log", NULL, &App->editor->show_log_window)) { App->editor->show_log_window = true; }
 			if (ImGui::MenuItem("Hardware Info")) { App->editor->ShowInBrowser("https://github.com/Rubetoman/SDL-OpenGL-Engine-V2"); }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Help"))
 		{
-			if (ImGui::MenuItem("About")) { App->editor->show_about_window = true; }
+			if (ImGui::MenuItem("About", NULL, &App->editor->show_about_window)) { App->editor->show_about_window = true; }
 			ImGui::Separator();
 			if (ImGui::MenuItem("View GIT Repository")) { App->editor->ShowInBrowser("https://github.com/Rubetoman/SDL-OpenGL-Engine-V2"); }
 			ImGui::EndMenu();
