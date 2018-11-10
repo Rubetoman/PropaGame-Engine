@@ -24,7 +24,7 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void HandleInputs(SDL_Event& event);
-	void ShowPerformanceWindow();
+	void ShowAppInfoWindow();
 	void ShowTexturesWindow();
 	const void ShowInBrowser(const char* url) const;
 
@@ -44,7 +44,7 @@ public:
 	bool show_options_window = false;
 	bool show_log_window = false;
 	bool show_about_window = false;
-	bool show_performance_window = false;
+	bool show_app_info_window = false;
 	bool show_textures_window = false;
 
 	update_status update = UPDATE_CONTINUE;
