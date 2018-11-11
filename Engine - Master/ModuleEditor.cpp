@@ -72,6 +72,7 @@ update_status ModuleEditor::Update()
 	if (show_textures_window)	{/*ShowTexturesWindow();*/}
 	if (show_log_window)		{ShowLogWindow();}
 	if (show_properties_window)	{ShowPropertiesWindow();}
+	if (show_configuration_window) { ShowConfigurationWindow(); }
 	return update;
 }
 
@@ -116,6 +117,7 @@ static void ShowMainMenuBar()
 		{
 			if (ImGui::MenuItem("Options", NULL, &App->editor->show_options_window)) { App->editor->show_options_window = true; }
 			if (ImGui::MenuItem("Application Info", NULL, &App->editor->show_app_info_window)) { App->editor->show_app_info_window = true; }
+			if (ImGui::MenuItem("Configuration", NULL, &App->editor->show_configuration_window)) { App->editor->show_configuration_window = true; }
 			//if(ImGui::MenuItem("Texture Options")) { App->editor->show_textures_window = true; }
 			if (ImGui::MenuItem("Log", NULL, &App->editor->show_log_window)) { App->editor->show_log_window = true; }
 			ImGui::EndMenu();
@@ -379,6 +381,73 @@ void ModuleEditor::ShowPropertiesWindow()
 	else
 		ImGui::Text("No meshes loaded");
 
+	ImGui::End();
+}
+
+void ModuleEditor::ShowConfigurationWindow()
+{
+	ImGui::SetNextWindowSize(ImVec2(350, 500), ImGuiCond_FirstUseEver);
+	ImGui::Begin("Application Info", &App->editor->show_configuration_window);   // Pointer to bool variable (close when click on button)
+	if (ImGui::CollapsingHeader("Camera"))
+	{
+		ImGui::Text("Camera Position:");
+		ImGui::Text("X: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->position.x).c_str());
+		ImGui::SameLine(100); ImGui::Text("Y: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->position.y).c_str());
+		ImGui::SameLine(200); ImGui::Text("Z: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->position.z).c_str());
+		ImGui::NewLine();
+		ImGui::Separator();
+
+		// Front, side and up vectors
+		ImGui::Text("Camera Vectors:");
+		ImGui::Text("Front: ");
+		ImGui::Text("X: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->front.x).c_str());
+		ImGui::SameLine(100); ImGui::Text("Y: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->front.y).c_str());
+		ImGui::SameLine(200); ImGui::Text("Z: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->front.z).c_str());
+		ImGui::NewLine();
+
+		ImGui::Text("Side: ");
+		ImGui::Text("X: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->side.x).c_str());
+		ImGui::SameLine(100); ImGui::Text("Y: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->side.y).c_str());
+		ImGui::SameLine(200); ImGui::Text("Z: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->side.z).c_str());
+		ImGui::NewLine();
+
+		ImGui::Text("Up: ");
+		ImGui::Text("X: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->up.x).c_str());
+		ImGui::SameLine(100); ImGui::Text("Y: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->up.y).c_str());
+		ImGui::SameLine(200); ImGui::Text("Z: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->up.z).c_str());
+		ImGui::NewLine();
+		ImGui::Separator();
+
+		ImGui::Text("Camera Vectors:");
+		ImGui::Text("Pitch: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->pitch).c_str());
+		ImGui::Text("Yaw: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(App->camera->mainCamera->yaw).c_str());
+		ImGui::NewLine();
+		ImGui::Separator();
+
+		ImGui::PushItemWidth(100.0f);
+		ImGui::InputFloat("Camera Speed", &App->camera->mainCamera->speed);
+		ImGui::InputFloat("Mouse Sensitivity", &App->camera->mouse_sensitivity);
+		ImGui::PopItemWidth();
+	}
+	if (ImGui::CollapsingHeader("Input"))
+	{
+		ImGui::Text("Mouse Position:");
+		ImGui::Text("X: %d | Y: %d", App->input->GetMousePosition().x, App->input->GetMousePosition().y);
+	}
 	ImGui::End();
 }
 

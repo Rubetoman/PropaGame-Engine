@@ -28,6 +28,7 @@ public:
 	void HandleInputs(SDL_Event& event);
 	void ShowAppInfoWindow();
 	void ShowPropertiesWindow();
+	void ShowConfigurationWindow();
 	//void ShowTexturesWindow();
 	const void ShowLogWindow();
 	void AddLog(const char* logs);
@@ -52,6 +53,7 @@ public:
 	bool show_app_info_window = false;
 	bool show_textures_window = false;
 	bool show_properties_window = false;
+	bool show_configuration_window = false;
 
 	ImGuiTextBuffer Buffer;
 	bool ScrollToBottom = false;
