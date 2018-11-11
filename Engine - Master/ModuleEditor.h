@@ -1,5 +1,5 @@
-#ifndef __ModuleEditor_H__
-#define __ModuleEditor_H__
+#ifndef __MODULEEDITOR_H__
+#define __MODULEEDITOR_H__
 
 #include "Module.h"
 #include "ModuleModelLoader.h"
@@ -39,10 +39,10 @@ public:
 public:
 	ImGuiIO io;
 	//The window we'll be rendering to
-	SDL_Window * window = NULL;
+	SDL_Window * window = nullptr;
 
 	//The surface contained by the window
-	SDL_Surface* screen_surface = NULL;
+	SDL_Surface* screen_surface = nullptr;
 
 	// Performance data
 	std::vector<float> fps_log;
@@ -62,5 +62,5 @@ public:
 	update_status update = UPDATE_CONTINUE;
 };
 
-#endif // __ModuleEditor_H__
+#endif // __MODULEEDITOR_H__
 

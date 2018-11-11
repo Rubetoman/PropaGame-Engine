@@ -160,6 +160,7 @@ const void ModuleEditor::ShowLogWindow()
 
 void ModuleEditor::AddLog(const char* logs)
 {
+	assert(logs != nullptr);
 	Buffer.appendf(logs);
 	ScrollToBottom = true;
 }
@@ -568,5 +569,6 @@ void ModuleEditor::ShowConfigurationWindow()
 
 const void ModuleEditor::ShowInBrowser(const char* url) const
 {
+	assert(url != nullptr);
 	ShellExecute(0, "open", url, 0, 0, SW_SHOW);
 }

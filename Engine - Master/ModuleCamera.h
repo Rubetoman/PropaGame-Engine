@@ -1,5 +1,5 @@
-#ifndef __ModuleCamera_h__
-#define __ModuleCamera_h__
+#ifndef __MODULECAMERA_H__
+#define __MODULECAMERA_H__
 
 #include "Camera.h"
 #include "Module.h"
@@ -34,14 +34,14 @@ public:
 	update_status   Update();
 	bool            CleanUp();
 
-	void			UpdateScreenSize();
+	const void		UpdateScreenSize();
 
-	void			TranslateCameraInput();
-	void			RotateCameraInput();
-	void			CameraSpeedInput(float modifier);
-	void			MouseInputTranslation(const iPoint& mouse_position);
-	void			MouseInputRotation(const iPoint& mouse_position);
-	void			WheelInputTranslation(const iPoint& wheel_motion);
+	const void		TranslateCameraInput();
+	const void		RotateCameraInput();
+	const void		CameraSpeedInput(float modifier);
+	const void		MouseInputTranslation(const iPoint& mouse_position);
+	const void		MouseInputRotation(const iPoint& mouse_position);
+	const void		WheelInputTranslation(const iPoint& wheel_motion);
 	void			FitCamera(const AABB &boundingBox);
 
 	// Camera
@@ -61,5 +61,5 @@ public:
 
 };
 
-#endif /* __ModuleCamera_h__ */
+#endif /* __MODULECAMERA_H__ */
 
