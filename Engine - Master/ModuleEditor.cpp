@@ -383,11 +383,14 @@ void ModuleEditor::ShowConfigurationWindow()
 
 		if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
 			App->window->ToggleFullScreen();
-		ImGui::SameLine();
+		ImGui::SameLine(110);
 		if (ImGui::Checkbox("Resizable", &App->window->resizable))
 			App->window->ToggleResizable();
 		if (ImGui::Checkbox("VSync", &App->window->vsync))
 			App->window->ToggleVSync();
+		ImGui::SameLine(110);
+		if (ImGui::Checkbox("Borderless", &App->window->borderless))
+			App->window->ToggleBorderless();
 	}
 	if (ImGui::CollapsingHeader("Camera"))
 	{

@@ -24,6 +24,7 @@ public:
 	void ToggleFullScreen();
 	void ToggleResizable();
 	void ToggleVSync();
+	void ToggleBorderless();
 	void SetWindowSize(int w, int h, bool useSDL);
 
 	int screen_width = SCREEN_WIDTH;
@@ -31,6 +32,7 @@ public:
 	bool fullscreen = FULLSCREEN;
 	bool vsync = VSYNC;
 	bool resizable = RESIZABLE;
+	bool borderless = BORDERLESS;
 
 	//The window we'll be rendering to
 	SDL_Window* window = NULL;

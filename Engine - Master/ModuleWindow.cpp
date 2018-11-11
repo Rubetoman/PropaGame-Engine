@@ -109,6 +109,13 @@ void ModuleWindow::ToggleResizable()
 	SDL_SetWindowResizable(window, (SDL_bool)!isResizable);
 }
 
+void ModuleWindow::ToggleBorderless()
+{
+	Uint32 resizableFlag = SDL_WINDOW_BORDERLESS;
+	bool isResizable = SDL_GetWindowFlags(window) & resizableFlag;
+	SDL_SetWindowBordered(window, (SDL_bool)!borderless);
+}
+
 void ModuleWindow::SetWindowSize(int w, int h, bool useSDL)
 {
 	DM.w = w;

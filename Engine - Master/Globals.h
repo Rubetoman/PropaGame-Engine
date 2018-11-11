@@ -42,6 +42,7 @@ enum update_status
 #define FULLSCREEN false
 #define VSYNC true
 #define RESIZABLE true
+#define BORDERLESS false
 #define SCREEN_SIZE 2
 #define TITLE "PropaGame Engine"
 
