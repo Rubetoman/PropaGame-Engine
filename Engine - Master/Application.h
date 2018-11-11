@@ -1,7 +1,7 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#include<list>
+#include <list>
 #include "Globals.h"
 #include "Module.h"
 

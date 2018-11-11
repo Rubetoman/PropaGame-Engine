@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULETEXTURES_H__
+#define __MODULETEXTURES_H__
+
 #include "Module.h"
 #include "Globals.h"
 #include "Texture.h"
@@ -24,3 +26,5 @@ public:
 
 	std::vector<Texture*> textures;
 };
+
+#endif /*__MODULETEXTURES_H__*/

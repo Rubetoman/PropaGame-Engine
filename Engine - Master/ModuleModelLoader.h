@@ -1,5 +1,5 @@
-#ifndef __MODULEMODELLOADER_h__
-#define __MODULEMODELLOADER_h__
+#ifndef __MODULEMODELLOADER_H__
+#define __MODULEMODELLOADER_H__
 
 #include "Module.h"
 #include "Application.h"
@@ -19,23 +19,7 @@
 class ModuleModelLoader : public Module
 {
 public:
-	ModuleModelLoader();
-	~ModuleModelLoader();
-	bool            Init();
-	update_status   Update();
-	bool            CleanUp();
-	bool			LoadMesh(const char* path);
-	void			LoadMaterial(const char* path);
-	void			GenerateMeshData(const aiScene* scene);
-	void			GenerateMaterialData(const aiScene* scene);
-	void			ChangeMeshTexture(const char * path);
-	void			DeleteMesh(int index);
-	void			DeleteMaterial(int index);
 
-private:
-	unsigned vbo = 0; // Stores numers in case of error
-
-public:
 	struct mesh
 	{
 		std::string name;
@@ -49,7 +33,7 @@ public:
 		unsigned texWidth = 0;
 		unsigned texHeight = 0;
 		AABB boundingBox;
-		math::float3 position = math::float3(0.0f,0.0f,0.0f);
+		math::float3 position = math::float3(0.0f, 0.0f, 0.0f);
 		math::float3 scale = math::float3(0.0f, 0.0f, 0.0f);
 	};
 
@@ -58,9 +42,23 @@ public:
 		unsigned texture0 = 0;
 	};
 
-	const aiScene* scene;
-	std::vector<mesh*>     meshes;
+	ModuleModelLoader();
+	~ModuleModelLoader();
+	bool            Init();
+	update_status   Update();
+	bool            CleanUp();
+
+	bool			LoadMesh(const char* path);
+	void			LoadMaterial(const char* path);
+	void			GenerateMeshData(const aiScene* scene);
+	void			GenerateMaterialData(const aiScene* scene);
+	void			ChangeMeshTexture(const char * path);
+	void			DeleteMesh(int index);
+	void			DeleteMaterial(int index);
+
+	const aiScene* scene = nullptr;
+	std::vector<mesh*>    meshes;
 	std::vector<material> materials;
 	math::float4x4        transform = math::float4x4::identity;
 };
-#endif /* __MODULEMODELLOADER_h__ */
+#endif /* __MODULEMODELLOADER_H__ */

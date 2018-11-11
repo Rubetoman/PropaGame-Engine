@@ -93,4 +93,4 @@ void Application::Tick()
 	}
 }
 
-#endif //__APPLICATION_CPP__
+#endif /*__APPLICATION_CPP__*/

@@ -39,6 +39,8 @@ bool ModuleTextures::CleanUp()
 
 GLuint ModuleTextures::loadTexture(const char* path)
 {
+	assert(path != nullptr);
+
 	ILuint imageID;				// Create an image ID as a ULuint
 	ILboolean success;			// Create a flag to keep track of success/failure
 
@@ -195,7 +197,8 @@ void ModuleTextures::unloadTexture(const unsigned& id)
 	//textures.erase(textures.begin() + id-1);
 }
 
-void ModuleTextures::ReloadTexture(Texture& new_texture, GLuint& texture) {
+void ModuleTextures::ReloadTexture(Texture& new_texture, GLuint& texture) 
+{
 	unloadTexture(texture);
 
 	texture = loadTexture(new_texture.path);

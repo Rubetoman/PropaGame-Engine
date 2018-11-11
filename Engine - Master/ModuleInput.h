@@ -81,7 +81,7 @@ private:
 	iPoint		wheel_motion;
 	bool		wheel_scroll;
 
-	char* dropped_filedir;                  // Pointer for directory of dropped file
+	char* dropped_filedir = nullptr;    // Pointer for directory of dropped file
 };
 
 #endif /*__MODULEINPUT_H__*/

@@ -42,7 +42,7 @@ public:
 	const void		MouseInputTranslation(const iPoint& mouse_position);
 	const void		MouseInputRotation(const iPoint& mouse_position);
 	const void		WheelInputTranslation(const iPoint& wheel_motion);
-	void			FitCamera(const AABB &boundingBox);
+	const void		FitCamera(const AABB &boundingBox);
 
 	// Camera
 	Camera* mainCamera = nullptr;			// Default camera

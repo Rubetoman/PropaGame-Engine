@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULERENDER_H__
+#define __MODULERENDER_H__
+
 #include "Module.h"
 #include "Globals.h"
 #include "Application.h"
@@ -28,12 +30,13 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
+
 	void RenderMesh(const ModuleModelLoader::mesh* mesh, const ModuleModelLoader::material& material,
 		unsigned program, const math::float4x4& model,
 		const math::float4x4& view, const math::float4x4& proj);
 
 	void WindowResized(unsigned width, unsigned height);
-	void* context;
+	void* context = nullptr;
 
 	GLuint program = GL_FALSE;
 	GLuint programText = GL_FALSE;
@@ -41,3 +44,5 @@ public:
 	void			DrawCoordinates();
 	void			DrawPlane();
 };
+
+#endif

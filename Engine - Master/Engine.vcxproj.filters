@@ -357,7 +357,6 @@
     <ClInclude Include="Point.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ModuleFileManager.h">
       <Filter>Modules</Filter>

@@ -1,5 +1,5 @@
-#ifndef MODULESHADER_H
-#define MODULESHADER_H
+#ifndef __MODULESHADER_H__
+#define __MODULESHADER_H__
 
 #include "Module.h"
 #include "Globals.h"
@@ -14,10 +14,11 @@ class ModuleShader : public Module
 public:
 	ModuleShader();
 	~ModuleShader();
+
 	char*	ReadShaderFile(const char* shaderPath);
 	GLuint	LoadShaders(const char* vertShaderPath, const char* fragShaderPath);
 	void	CheckCompilationErrors(GLuint shader);
 };
 
-#endif
+#endif /* __MODULESHADER_H__ */
 

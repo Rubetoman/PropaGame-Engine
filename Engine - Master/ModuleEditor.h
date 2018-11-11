@@ -27,10 +27,10 @@ public:
 	update_status PreUpdate();
 	update_status Update();
 	bool CleanUp();
-	void HandleInputs(SDL_Event& event);
-	void ShowAppInfoWindow();
-	void ShowPropertiesWindow();
-	void ShowConfigurationWindow();
+	const void HandleInputs(SDL_Event& event);
+	const void ShowAppInfoWindow();
+	const void ShowPropertiesWindow();
+	const void ShowConfigurationWindow();
 	//void ShowTexturesWindow();
 	const void ShowLogWindow();
 	void AddLog(const char* logs);

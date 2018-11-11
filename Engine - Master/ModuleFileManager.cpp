@@ -13,6 +13,8 @@ ModuleFileManager::~ModuleFileManager()
 
 void ModuleFileManager::manageFile(const char* path)
 {
+	assert(path != nullptr);
+
 	std::string extension = getFileExtension(path);
 
 	if (extension == "fbx" || extension == "FBX")
@@ -36,6 +38,7 @@ void ModuleFileManager::manageFile(const char* path)
 
 std::string ModuleFileManager::getFileExtension(const char* path)
 {
+	assert(path != nullptr);
 	std::string filename = path;
 	std::string extension = path;
 	splitPath(path, nullptr, &filename, &extension);
@@ -73,6 +76,8 @@ void ModuleFileManager::splitPath(const char* full_path, std::string* path, std:
 
 std::string ModuleFileManager::normalizePath(const char * path)
 {
+	assert(path != nullptr);
+
 	std::string str = path;
 
 	for (int i = 0; i < str.length(); i++)

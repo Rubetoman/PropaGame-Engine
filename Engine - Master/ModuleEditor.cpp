@@ -87,7 +87,7 @@ bool ModuleEditor::CleanUp()
 	return true;
 }
 
-void ModuleEditor::HandleInputs(SDL_Event& event) {
+const void ModuleEditor::HandleInputs(SDL_Event& event) {
 	ImGui_ImplSDL2_ProcessEvent(&event);
 }
 
@@ -130,11 +130,6 @@ static void ShowMainMenuBar()
 		}
 		ImGui::EndMainMenuBar();
 	}
-}
-
-static void ShowOptionsWindow() 
-{
-	
 }
 
 const void ModuleEditor::ShowLogWindow()
@@ -235,7 +230,7 @@ static void ShowAboutWindow()
 	ImGui::End();
 }
 
-void ModuleEditor::ShowAppInfoWindow()
+const void ModuleEditor::ShowAppInfoWindow()
 {
 	ImGui::SetNextWindowSize(ImVec2(350,500), ImGuiCond_FirstUseEver);
 	ImGui::Begin("Application Info", &App->editor->show_app_info_window);   // Pointer to bool variable (close when click on button)
@@ -312,7 +307,7 @@ void ModuleEditor::ShowAppInfoWindow()
 	ImGui::End();
 }
 
-void ModuleEditor::ShowPropertiesWindow()
+const void ModuleEditor::ShowPropertiesWindow()
 {
 	ImGui::Begin("Properties", &show_properties_window, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
@@ -370,7 +365,7 @@ void ModuleEditor::ShowPropertiesWindow()
 	ImGui::End();
 }
 
-void ModuleEditor::ShowConfigurationWindow()
+const void ModuleEditor::ShowConfigurationWindow()
 {
 	ImGui::SetNextWindowSize(ImVec2(350, 500), ImGuiCond_FirstUseEver);
 	ImGui::Begin("Configuration", &App->editor->show_configuration_window);   // Pointer to bool variable (close when click on button)
@@ -490,82 +485,6 @@ void ModuleEditor::ShowConfigurationWindow()
 	}*/
 	ImGui::End();
 }
-
-/*void ModuleEditor::ShowTexturesWindow()
-{
-	ImGui::Begin("Textures", &App->editor->show_textures_window, ImGuiWindowFlags_AlwaysAutoResize);
-	Texture* images[] = { &App->exercise->desatranques, &App->exercise->sankara, &App->exercise->pazos };
-	static texture* current_item = images[0];
-	if (ImGui::BeginCombo("Loaded textures", current_item->name, ImGuiComboFlags_NoArrowButton))
-	{
-		for (int n = 0; n < IM_ARRAYSIZE(images); n++)
-		{
-			bool is_selected = (current_item == images[n]);
-			if (ImGui::Selectable(images[n]->name, is_selected) && !is_selected) {
-				current_item = images[n];
-				App->textures->ReloadTexture(*images[n], App->exercise->quadTexture);
-			}
-			if (is_selected)
-				ImGui::SetItemDefaultFocus();
-		}
-		ImGui::EndCombo();
-	}
-	ImGui::Separator();
-	if (ImGui::CollapsingHeader("Texture information")) {
-		ImGui::InputText("Format", current_item->format, sizeof(current_item->format));
-		ImGui::InputInt("Width", &current_item->width, 0, 0);
-		ImGui::InputInt("Height", &current_item->height, 0, 0);
-	}
-	ImGui::Separator();
-	if (ImGui::CollapsingHeader("Texture config")) {
-		//Show resize options
-		const char* resize_options[] = { "nearest", "linear" };
-		const char* current_resize = current_item->getResizeMode();
-		if (ImGui::BeginCombo("Resize Options", current_resize, ImGuiComboFlags_NoArrowButton))
-		{
-			for (int i = 0; i < IM_ARRAYSIZE(resize_options); i++)
-			{
-				bool is_selected = (current_resize == resize_options[i]);
-				if (ImGui::Selectable(resize_options[i], current_resize) && !is_selected)			// Reload texture if resize option has change
-				{
-					current_item->setResizeMode(resize_options[i]);
-					App->textures->ReloadTexture(*current_item, App->exercise->quadTexture);
-				}
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
-		}
-		//Show wrap options
-		const char* wrap_options[] = { "clamp to boder", "clamp", "repeat", "mirrored" };
-		const char* current_wrap = current_item->getWrapMode();
-		if (ImGui::BeginCombo("Wrap Options", current_wrap, ImGuiComboFlags_NoArrowButton))
-		{
-			for (int i = 0; i < IM_ARRAYSIZE(wrap_options); i++)
-			{
-				bool is_selected = (current_wrap == wrap_options[i]);
-				if (ImGui::Selectable(wrap_options[i], current_wrap) && !is_selected) // Reload texture if wrap option has change
-				{
-					current_item->setWrapMode(wrap_options[i]);
-					App->textures->ReloadTexture(*current_item, App->exercise->quadTexture);
-				}
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
-		}
-		ImGui::Separator();
-		//Show mipmap options
-		bool mipmap = current_item->use_mipmap;
-		ImGui::Checkbox("Use Mipmap", &mipmap);
-		if (mipmap != current_item->use_mipmap)
-		{
-			current_item->use_mipmap = mipmap;
-			App->textures->ReloadTexture(*current_item, App->exercise->quadTexture);
-		}
-	}
-	ImGui::End();
-}*/
 
 const void ModuleEditor::ShowInBrowser(const char* url) const
 {

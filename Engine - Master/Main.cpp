@@ -82,7 +82,7 @@ int main(int argc, char ** argv)
 		}
 	}
 
-	LOG("See you space cowboy\n");
+	LOG("SEE YOU SPACE COWBOY...\n");
 	delete App;
 	return main_return;
 }

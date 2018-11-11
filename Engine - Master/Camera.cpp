@@ -13,11 +13,10 @@ Camera::~Camera()
 void Camera::TranslateCamera(math::float3 direction)
 {
 	position += direction * speed * App->deltaTime;
-	//LookAt(cam_position, (cam_position + cam_front));
 }
 
-void Camera::RotateCamera() {
-
+void Camera::RotateCamera() 
+{
 	if (pitch > 89.0f)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
@@ -57,7 +56,7 @@ float4x4 Camera::ProjectionMatrix()
 }
 
 
-void Camera::InitFrustum()
+const void Camera::InitFrustum()
 {
 	frustum.type = math::FrustumType::PerspectiveFrustum;
 	frustum.pos = math::float3::zero;
@@ -84,7 +83,7 @@ void Camera::SetVerticalFOV(float& degrees)
 	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
 }
 
-void Camera::UpdatePitchYaw() 
+const void Camera::UpdatePitchYaw() 
 {
 	pitch = -math::RadToDeg(SDL_atanf(front.y / front.z));
 	yaw = -math::RadToDeg(SDL_atanf(front.x / front.z));

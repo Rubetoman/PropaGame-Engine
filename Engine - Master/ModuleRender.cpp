@@ -198,7 +198,6 @@ void ModuleRender::DrawCoordinates()
 
 void ModuleRender::DrawPlane()
 {
-
 	glLineWidth(1.0f);
 	glUseProgram(program);
 	int grid = glGetUniformLocation(program, "newColor");

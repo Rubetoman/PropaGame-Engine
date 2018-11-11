@@ -40,11 +40,11 @@ public:
 	math::float4x4	LookAt(math::float3& target);
 	
 	// Frustum
-	void			InitFrustum();
+	const void		InitFrustum();
 	math::float4x4	ProjectionMatrix();
 	void			SetHorizontalFOV(float& degrees);
 	void			SetVerticalFOV(float& degrees);
-	void			UpdatePitchYaw();
+	const void		UpdatePitchYaw();
 };
 
 #endif /* __CAMERA_H__ */

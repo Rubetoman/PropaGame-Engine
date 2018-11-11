@@ -61,7 +61,8 @@ GLuint ModuleShader::LoadShaders(const char* vertShaderPath, const char* fragSha
 	return program;
 }
 
-char* ModuleShader::ReadShaderFile(const char* shaderPath) {
+char* ModuleShader::ReadShaderFile(const char* shaderPath) 
+{
 	FILE* file;
 	errno_t err = fopen_s(&file, shaderPath, "rb");
 	if (file)
@@ -79,7 +80,8 @@ char* ModuleShader::ReadShaderFile(const char* shaderPath) {
 	return nullptr;
 }
 
-void ModuleShader::CheckCompilationErrors(GLuint shader) {
+void ModuleShader::CheckCompilationErrors(GLuint shader) 
+{
 	GLint infoLogLength;
 	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
 	GLchar* strInfoLog = new GLchar[infoLogLength + 1];

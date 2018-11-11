@@ -205,7 +205,7 @@ const void ModuleCamera::WheelInputTranslation(const iPoint& wheel_motion)
 	mainCamera->position -= mainCamera->front.Mul(-wheel_motion.y) * 10 * mainCamera->speed * App->deltaTime;
 }
 
-void ModuleCamera::FitCamera(const AABB &boundingBox)
+const void ModuleCamera::FitCamera(const AABB &boundingBox)
 {
 	math::float3 diagonal = boundingBox.Diagonal();
 	math::float3 center = boundingBox.CenterPoint();
