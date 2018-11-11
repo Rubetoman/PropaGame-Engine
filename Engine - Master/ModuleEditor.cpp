@@ -8,7 +8,6 @@
 #include "mmgr/mmgr.h"
 
 static void ShowMainMenuBar();
-static void ShowOptionsWindow();
 static void ShowAboutWindow();
 
 ModuleEditor::ModuleEditor()
@@ -63,10 +62,11 @@ update_status ModuleEditor::PreUpdate()
 
 update_status ModuleEditor::Update()
 {
-	//Example Window
+
 	ShowMainMenuBar();
-	ImGui::ShowDemoWindow();
-	if (show_options_window)	{ShowOptionsWindow();}
+	
+	//ImGui::ShowDemoWindow();	//Example Window
+
 	if (show_about_window)		{ShowAboutWindow();}
 	if (show_app_info_window)	{ShowAppInfoWindow();}
 	if (show_textures_window)	{/*ShowTexturesWindow();*/}
@@ -115,7 +115,6 @@ static void ShowMainMenuBar()
 		}
 		if (ImGui::BeginMenu("Window"))
 		{
-			if (ImGui::MenuItem("Options", NULL, &App->editor->show_options_window)) { App->editor->show_options_window = true; }
 			if (ImGui::MenuItem("Application Info", NULL, &App->editor->show_app_info_window)) { App->editor->show_app_info_window = true; }
 			if (ImGui::MenuItem("Configuration", NULL, &App->editor->show_configuration_window)) { App->editor->show_configuration_window = true; }
 			//if(ImGui::MenuItem("Texture Options")) { App->editor->show_textures_window = true; }
@@ -135,21 +134,7 @@ static void ShowMainMenuBar()
 
 static void ShowOptionsWindow() 
 {
-	ImGui::Begin("Window Options", &App->editor->show_options_window);   // Pointer to bool variable (close when click on button)
-	//Window size fields (only be able to edit if not in full screen)
-	static ImU32 width_step = (ImU32)30;
-	static ImU32 height_step = (ImU32)50;
-	ImGui::InputScalar("Width", ImGuiDataType_U32, &App->window->screen_width, App->window->fullscreen ? NULL : &width_step, NULL, "%u");
-	ImGui::InputScalar("Height", ImGuiDataType_U32, &App->window->screen_height, App->window->fullscreen ? NULL : &height_step, NULL, "%u");
-
-	if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
-		App->window->ToggleFullScreen();
-	ImGui::SameLine();
-	if (ImGui::Checkbox("Resizable", &App->window->resizable))
-		App->window->ToggleResizable();
-	if (ImGui::Checkbox("VSync", &App->window->vsync))
-		App->window->ToggleVSync();
-	ImGui::End();
+	
 }
 
 const void ModuleEditor::ShowLogWindow()
@@ -387,7 +372,23 @@ void ModuleEditor::ShowPropertiesWindow()
 void ModuleEditor::ShowConfigurationWindow()
 {
 	ImGui::SetNextWindowSize(ImVec2(350, 500), ImGuiCond_FirstUseEver);
-	ImGui::Begin("Application Info", &App->editor->show_configuration_window);   // Pointer to bool variable (close when click on button)
+	ImGui::Begin("Configuration", &App->editor->show_configuration_window);   // Pointer to bool variable (close when click on button)
+	if (ImGui::CollapsingHeader("Window"))
+	{
+		//Window size fields (only be able to edit if not in full screen)
+		static ImU32 width_step = (ImU32)30;
+		static ImU32 height_step = (ImU32)50;
+		ImGui::InputScalar("Width", ImGuiDataType_U32, &App->window->screen_width, App->window->fullscreen ? NULL : &width_step, NULL, "%u");
+		ImGui::InputScalar("Height", ImGuiDataType_U32, &App->window->screen_height, App->window->fullscreen ? NULL : &height_step, NULL, "%u");
+
+		if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
+			App->window->ToggleFullScreen();
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Resizable", &App->window->resizable))
+			App->window->ToggleResizable();
+		if (ImGui::Checkbox("VSync", &App->window->vsync))
+			App->window->ToggleVSync();
+	}
 	if (ImGui::CollapsingHeader("Camera"))
 	{
 		ImGui::Text("Camera Position:");

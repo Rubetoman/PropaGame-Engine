@@ -47,7 +47,6 @@ public:
 	std::vector<float> ms_log;
 	std::vector<float> mem_log;
 
-	bool show_options_window = false;
 	bool show_log_window = false;
 	bool show_about_window = false;
 	bool show_app_info_window = false;
