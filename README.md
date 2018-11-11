@@ -3,6 +3,10 @@ This is a C/C++ game engine created by Rubén Crispín for the "Universidad Poli
 
 https://github.com/Rubetoman/PropaGame-Engine
 
+## Executing Instructions
+-------------
+Inside the folder Game there is a file called "PropaGame Engine.exe"; just execute it.
+
 ## Controls
 -------------
 - The camera has Unity-like controls:
