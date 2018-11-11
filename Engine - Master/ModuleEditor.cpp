@@ -459,6 +459,34 @@ void ModuleEditor::ShowConfigurationWindow()
 		ImGui::Text("Mouse Position:");
 		ImGui::Text("X: %d | Y: %d", App->input->GetMousePosition().x, App->input->GetMousePosition().y);
 	}
+
+	if (ImGui::CollapsingHeader("Mesh"))
+	{
+		if (ImGui::Button("Use Chekers Texture"))
+		{
+			App->model_loader->ChangeMeshTexture("Checkers_Texture.jpg");
+		}
+	}
+	/*if (ImGui::CollapsingHeader("Textures"))
+	{
+		ImGui::Text("Loaded textures:");
+		for (std::vector<Texture*>::iterator it_m = App->textures->textures.begin(); it_m != App->textures->textures.end(); it_m++)
+		{
+			Texture* tex = (*it_m);
+
+			if (ImGui::CollapsingHeader(tex->name))
+			{
+				ImGui::Text("Texture name: %s", tex->name);
+				ImGui::Text("Texture path: %s", tex->name);
+				ImGui::Text("Texture Size:\n Width: %d | Height: %d", tex->width, tex->height);
+				float panelWidth = ImGui::GetWindowContentRegionWidth();
+				float conversionFactor = panelWidth / tex->width;
+				ImVec2 imageSize = { tex->height *conversionFactor, panelWidth };
+				ImGui::Image((ImTextureID)tex->path, imageSize);
+			}
+			ImGui::NewLine();
+		}
+	}*/
 	ImGui::End();
 }
 

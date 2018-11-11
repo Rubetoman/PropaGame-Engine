@@ -3,6 +3,8 @@
 
 #include "Module.h"
 #include "ModuleModelLoader.h"
+#include "ModuleTextures.h"
+#include "Texture.h"
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"

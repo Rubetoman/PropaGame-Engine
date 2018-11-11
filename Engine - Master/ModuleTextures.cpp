@@ -49,8 +49,25 @@ GLuint ModuleTextures::loadTexture(const char* path)
 	if (!ilLoadImage(path))
 	{
 		// If we failed to open the image file in the first place...
-		LOG("Image load failed");
-		return 0;
+		LOG("Image couldn't be found on Game dir, looking on Assets/Models/");
+		char * newPath = (char *)malloc(1 + strlen("Assets/Models/") + strlen(path));
+		strcpy(newPath, "Assets/Models/");
+		strcat(newPath, path);
+
+		if (!ilLoadImage(newPath))
+		{
+			LOG("Image couldn't be found on Game dir, looking on Assets/Models/textures/");
+			newPath = (char *)malloc(1 + strlen("Assets/Models/textures/") + strlen(path));
+			strcpy(newPath, "Assets/Models/textures/");
+			strcat(newPath, path);
+			if (!ilLoadImage(newPath))
+			{
+				LOG("Image couldn't be found");
+				free(newPath);
+				return 0;
+			}
+		}
+		free(newPath);
 	}
 
 	Texture* nTexture = new Texture();
