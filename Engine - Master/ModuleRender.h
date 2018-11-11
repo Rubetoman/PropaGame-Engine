@@ -40,6 +40,4 @@ public:
 
 	void			DrawCoordinates();
 	void			DrawPlane();
-
-	ModuleModelLoader::mesh quad;
 };

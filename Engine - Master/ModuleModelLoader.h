@@ -6,6 +6,7 @@
 #include "ModuleTextures.h"
 #include "MathGeoLib.h"
 #include "GL/glew.h"
+#include "MathGeoLib.h"
 #include <assimp/cimport.h>
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
@@ -37,6 +38,7 @@ private:
 public:
 	struct mesh
 	{
+		std::string name;
 		unsigned vbo = 0;
 		unsigned ibo = 0;
 		unsigned vao = 0;
@@ -46,6 +48,8 @@ public:
 		unsigned texWidth = 0;
 		unsigned texHeight = 0;
 		AABB boundingBox;
+		math::float3 position = math::float3(0.0f,0.0f,0.0f);
+		math::float3 scale = math::float3(0.0f, 0.0f, 0.0f);
 	};
 
 	struct material

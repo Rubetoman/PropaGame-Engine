@@ -42,6 +42,7 @@ public:
 	void			MouseInputTranslation(const iPoint& mouse_position);
 	void			MouseInputRotation(const iPoint& mouse_position);
 	void			WheelInputTranslation(const iPoint& wheel_motion);
+	void			FitCamera(const AABB &boundingBox);
 
 	// Camera
 	Camera* mainCamera = nullptr;			// Default camera
@@ -54,6 +55,9 @@ public:
 	float mouse_sensitivity = 0.003;
 	float last_x = SCREEN_WIDTH / 2;
 	float last_y = SCREEN_HEIGHT / 2;
+
+	// Mesh
+	AABB* BBtoLook = nullptr;
 
 };
 

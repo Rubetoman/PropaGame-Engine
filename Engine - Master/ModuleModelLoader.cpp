@@ -1,4 +1,5 @@
 #include "ModuleModelLoader.h"
+#include "ModuleCamera.h"
 
 ModuleModelLoader::ModuleModelLoader()
 {
@@ -40,6 +41,7 @@ bool ModuleModelLoader::LoadMesh(const char* path)
 		aiGetErrorString();
 		return false;
 	}
+	App->camera->BBtoLook = new AABB({ 0,0,0 }, { 0,0,0 });
 
 	GenerateMeshData(scene);
 	GenerateMaterialData(scene);
@@ -68,17 +70,33 @@ void ModuleModelLoader::LoadMaterial(const char* path)
 void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 {
 	assert(scene != nullptr);
+
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
 	{
 		const aiMesh* src_mesh = scene->mMeshes[i];
 
 		// Generate mesh object
-		mesh gen_mesh;
+		mesh* gen_mesh = new mesh();
+
+		aiNode* root = scene->mRootNode;
+
+		//Get node transformation
+		aiVector3D translation;
+		aiVector3D scaling;
+		aiQuaternion rotation;
+		root->mTransformation.Decompose(scaling, rotation, translation);
+		math::float3 pos(translation.x, translation.y, translation.z);
+		math::float3 scale(scaling.x, scaling.y, scaling.z);
+
+		gen_mesh->position = pos;
+		gen_mesh->scale = scale;
+
+		gen_mesh->name = src_mesh->mName.C_Str();
 		// vertex array objects (VAO)
 		//glGenVertexArrays(1, &gen_mesh.vao);
-		glGenBuffers(1, &gen_mesh.vbo);
+		glGenBuffers(1, &gen_mesh->vbo);
 		//glBindVertexArray(gen_mesh.vao);
-		glBindBuffer(GL_ARRAY_BUFFER, gen_mesh.vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, gen_mesh->vbo);
 
 		// Divide Buffer for position and UVs
 		glBufferData(GL_ARRAY_BUFFER, src_mesh->mNumVertices * (sizeof(float) * 3 + sizeof(float) * 2), nullptr, GL_STATIC_DRAW);
@@ -99,8 +117,8 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 
 		// Indices (faces)
 
-		glGenBuffers(1, &gen_mesh.ibo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gen_mesh.ibo);
+		glGenBuffers(1, &gen_mesh->ibo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gen_mesh->ibo);
 
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, src_mesh->mNumFaces * (sizeof(unsigned) * 3), nullptr, GL_STATIC_DRAW);
 
@@ -123,12 +141,17 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		
 		//glBindVertexArray(0);
 
-		gen_mesh.material = src_mesh->mMaterialIndex;
-		gen_mesh.num_vertices = src_mesh->mNumVertices;
-		gen_mesh.num_indices = src_mesh->mNumFaces * 3;
+		gen_mesh->material = src_mesh->mMaterialIndex;
+		gen_mesh->num_vertices = src_mesh->mNumVertices;
+		gen_mesh->num_indices = src_mesh->mNumFaces * 3;
 
-		meshes.push_back(gen_mesh);
+		gen_mesh->boundingBox.SetNegativeInfinity();
+		gen_mesh->boundingBox.Enclose((math::float3*)src_mesh->mVertices, gen_mesh->num_vertices);
+		App->camera->BBtoLook->Enclose(gen_mesh->boundingBox);
+
+		meshes.push_back(*gen_mesh);
 	}
+	App->camera->FitCamera(*App->camera->BBtoLook);
 }
 
 void ModuleModelLoader::GenerateMaterialData(const aiScene* scene)
