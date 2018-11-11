@@ -116,6 +116,11 @@ void ModuleWindow::ToggleBorderless()
 	SDL_SetWindowBordered(window, (SDL_bool)!borderless);
 }
 
+void ModuleWindow::SetWindowBrightness(int value)
+{
+	SDL_SetWindowBrightness(window, brightness);
+}
+
 void ModuleWindow::SetWindowSize(int w, int h, bool useSDL)
 {
 	DM.w = w;

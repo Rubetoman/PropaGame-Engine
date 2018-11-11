@@ -391,6 +391,13 @@ void ModuleEditor::ShowConfigurationWindow()
 		ImGui::SameLine(110);
 		if (ImGui::Checkbox("Borderless", &App->window->borderless))
 			App->window->ToggleBorderless();
+		ImGui::Separator();
+
+		if (ImGui::SliderFloat("Brightness", &App->window->brightness, 0.0f, 1.0f))
+		{
+			App->window->SetWindowBrightness(App->window->brightness);
+		}
+		ImGui::NewLine();
 	}
 	if (ImGui::CollapsingHeader("Camera"))
 	{

@@ -44,6 +44,7 @@ enum update_status
 #define RESIZABLE true
 #define BORDERLESS false
 #define SCREEN_SIZE 2
+#define BRIGHTNESS 1.0f
 #define TITLE "PropaGame Engine"
 
 #endif //__GLOBALS_H__
