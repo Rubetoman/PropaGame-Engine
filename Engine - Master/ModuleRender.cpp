@@ -39,8 +39,8 @@ bool ModuleRender::Init()
     glViewport(0, 0, width, height);
 
 	// Generate program with vertex and fragment shaders and load it to GL
-	program = App->shader->LoadShaders("../default.vs", "../default.fs");
-	programText = App->shader->LoadShaders("../texture.vs", "../texture.fs");
+	program = App->shader->LoadShaders("Assets/Shaders/default.vs", "Assets/Shaders/default.fs");
+	programText = App->shader->LoadShaders("Assets/Shaders/texture.vs", "Assets/Shaders/texture.fs");
 
 	if (!program || !programText) {
 		LOG("Error: Program cannot be compiled");
