@@ -45,6 +45,7 @@ public:
 		unsigned material = 0;
 		unsigned num_vertices = 0;
 		unsigned num_indices = 0;
+		unsigned texture = 0;
 		unsigned texWidth = 0;
 		unsigned texHeight = 0;
 		AABB boundingBox;
@@ -58,7 +59,7 @@ public:
 	};
 
 	const aiScene* scene;
-	std::vector<mesh>     meshes;
+	std::vector<mesh*>     meshes;
 	std::vector<material> materials;
 	math::float4x4        transform = math::float4x4::identity;
 };

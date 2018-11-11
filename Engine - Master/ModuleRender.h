@@ -28,7 +28,7 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
-	void RenderMesh(const ModuleModelLoader::mesh& mesh, const ModuleModelLoader::material& material,
+	void RenderMesh(const ModuleModelLoader::mesh* mesh, const ModuleModelLoader::material& material,
 		unsigned program, const math::float4x4& model,
 		const math::float4x4& view, const math::float4x4& proj);
 

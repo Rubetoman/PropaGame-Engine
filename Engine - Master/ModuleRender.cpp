@@ -78,9 +78,9 @@ update_status ModuleRender::Update()
 
 	for (unsigned i = 0; i < App->model_loader->meshes.size(); ++i)
 	{
-		const ModuleModelLoader::mesh& mesh = App->model_loader->meshes[i];
+		const ModuleModelLoader::mesh* mesh = App->model_loader->meshes[i];
 
-		RenderMesh(mesh, App->model_loader->materials[mesh.material], programText,
+		RenderMesh(mesh, App->model_loader->materials[mesh->material], programText,
 			App->model_loader->transform, view, proj);
 	}
 
@@ -118,9 +118,10 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 	App->window->SetWindowSize(width, height, false);
 }
 
-void ModuleRender::RenderMesh(const ModuleModelLoader::mesh& mesh, const ModuleModelLoader::material& material,
+void ModuleRender::RenderMesh(const ModuleModelLoader::mesh* mesh, const ModuleModelLoader::material& material,
 	unsigned program, const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj)
 {
+	assert(mesh != nullptr);
 	//Use shaders loaded in program
 	glUseProgram(program);
 
@@ -134,11 +135,11 @@ void ModuleRender::RenderMesh(const ModuleModelLoader::mesh& mesh, const ModuleM
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * mesh.num_vertices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ibo);
-	glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, nullptr);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * mesh->num_vertices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->ibo);
+	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, nullptr);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

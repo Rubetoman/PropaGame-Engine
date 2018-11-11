@@ -2,6 +2,7 @@
 #define __ModuleEditor_H__
 
 #include "Module.h"
+#include "ModuleModelLoader.h"
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -26,7 +27,8 @@ public:
 	bool CleanUp();
 	void HandleInputs(SDL_Event& event);
 	void ShowAppInfoWindow();
-	void ShowTexturesWindow();
+	void ShowPropertiesWindow();
+	//void ShowTexturesWindow();
 	const void ShowLogWindow();
 	void AddLog(const char* logs);
 	const void ShowInBrowser(const char* url) const;
@@ -49,6 +51,7 @@ public:
 	bool show_about_window = false;
 	bool show_app_info_window = false;
 	bool show_textures_window = false;
+	bool show_properties_window = false;
 
 	ImGuiTextBuffer Buffer;
 	bool ScrollToBottom = false;

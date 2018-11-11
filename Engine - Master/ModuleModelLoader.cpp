@@ -149,7 +149,7 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		gen_mesh->boundingBox.Enclose((math::float3*)src_mesh->mVertices, gen_mesh->num_vertices);
 		App->camera->BBtoLook->Enclose(gen_mesh->boundingBox);
 
-		meshes.push_back(*gen_mesh);
+		meshes.push_back(gen_mesh);
 	}
 	App->camera->FitCamera(*App->camera->BBtoLook);
 }
@@ -189,6 +189,9 @@ void ModuleModelLoader::GenerateMaterialData(const aiScene* scene)
 				free(path);
 			}
 		}
+		meshes[i]->texture = gen_material.texture0;
+		meshes[i]->texHeight = App->textures->textures[gen_material.texture0-1]->height;
+		meshes[i]->texWidth = App->textures->textures[gen_material.texture0-1]->width;
 		materials.push_back(gen_material);
 	}
 }
@@ -210,19 +213,19 @@ void ModuleModelLoader::ChangeMeshTexture(const char * path)
 
 void ModuleModelLoader::DeleteMesh(int index)
 {
-	if (meshes[index].vbo != 0)
+	if (meshes[index]->vbo != 0)
 	{
-		glDeleteBuffers(1, &meshes[index].vbo);
+		glDeleteBuffers(1, &meshes[index]->vbo);
 	}
 
-	if (meshes[index].ibo != 0)
+	if (meshes[index]->ibo != 0)
 	{
-		glDeleteBuffers(1, &meshes[index].ibo);
+		glDeleteBuffers(1, &meshes[index]->ibo);
 	}
 	
-	if (meshes[index].vao != 0)
+	if (meshes[index]->vao != 0)
 	{
-		glDeleteBuffers(1, &meshes[index].vao);
+		glDeleteBuffers(1, &meshes[index]->vao);
 	}
 }
 

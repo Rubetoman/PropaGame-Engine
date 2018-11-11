@@ -66,22 +66,12 @@ update_status ModuleEditor::Update()
 	//Example Window
 	ShowMainMenuBar();
 	ImGui::ShowDemoWindow();
-	
-	if (show_options_window) {
-		ShowOptionsWindow();
-	}
-	if (show_about_window) {
-		ShowAboutWindow();
-	}
-	if (show_app_info_window) {
-		ShowAppInfoWindow();
-	}
-	if (show_textures_window) {
-		//ShowTexturesWindow();
-	}
-	if (show_log_window) {
-		ShowLogWindow();
-	}
+	if (show_options_window)	{ShowOptionsWindow();}
+	if (show_about_window)		{ShowAboutWindow();}
+	if (show_app_info_window)	{ShowAppInfoWindow();}
+	if (show_textures_window)	{/*ShowTexturesWindow();*/}
+	if (show_log_window)		{ShowLogWindow();}
+	if (show_properties_window)	{ShowPropertiesWindow();}
 	return update;
 }
 
@@ -118,13 +108,15 @@ static void ShowMainMenuBar()
 			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
 			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
 			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Properties", NULL, &App->editor->show_properties_window)) { App->editor->show_properties_window = true; }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window"))
 		{
 			if (ImGui::MenuItem("Options", NULL, &App->editor->show_options_window)) { App->editor->show_options_window = true; }
 			if (ImGui::MenuItem("Application Info", NULL, &App->editor->show_app_info_window)) { App->editor->show_app_info_window = true; }
-			if(ImGui::MenuItem("Texture Options")) { App->editor->show_textures_window = true; }
+			//if(ImGui::MenuItem("Texture Options")) { App->editor->show_textures_window = true; }
 			if (ImGui::MenuItem("Log", NULL, &App->editor->show_log_window)) { App->editor->show_log_window = true; }
 			ImGui::EndMenu();
 		}
@@ -329,6 +321,64 @@ void ModuleEditor::ShowAppInfoWindow()
 		ImGui::Text(caps.c_str());
 		ImGui::PopStyleColor();
 	}
+	ImGui::End();
+}
+
+void ModuleEditor::ShowPropertiesWindow()
+{
+	ImGui::Begin("Properties", &show_properties_window, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_AlwaysVerticalScrollbar);
+
+	if (App->model_loader->meshes.size() > 0)
+	{
+		ImGui::Text("Current loaded file has %d meshes", App->model_loader->meshes.size());
+		ImGui::NewLine();
+		int count = 0;
+		for (std::vector<ModuleModelLoader::mesh*>::iterator it_m = App->model_loader->meshes.begin(); it_m != App->model_loader->meshes.end(); it_m++)
+		{
+			ModuleModelLoader::mesh* mesh = (*it_m);
+			ImGui::Text("Mesh name: %s", mesh->name.c_str());
+
+			ImGui::PushID("Transformation" + count);
+			if (ImGui::CollapsingHeader("Transformation"))
+			{
+				ImGui::Text("Position:\n X: %f | Y: %f | Z: %f", mesh->position.x, mesh->position.y, mesh->position.z);
+				//float3 rot = mesh->rotation.ToEulerXYZ();
+				//rot *= 180 / pi;
+				//ImGui::Text("Rotation:\n X: %f | Y: %f | Z: %f", rot.x, rot.y, rot.z);
+				ImGui::Text("Scale:\n X: %f | Y: %f | Z: %f", mesh->scale.x, mesh->scale.y, mesh->scale.z);
+			}
+			ImGui::PopID();
+			ImGui::PushID("Geometry" + count);
+			if (ImGui::CollapsingHeader("Geometry"))
+			{
+				ImGui::Text("Triangles Count: %d", mesh->num_indices / 3);
+				ImGui::Text("Vertices Count: %d", mesh->num_vertices);
+				ImGui::Text("Mesh size:\n X: %f | Y: %f | Z: %f", mesh->boundingBox.Size().x, mesh->boundingBox.Size().y, mesh->boundingBox.Size().z);
+			}
+			ImGui::PopID();
+			ImGui::PushID("Texture" + count);
+			if (ImGui::CollapsingHeader("Texture"))
+			{
+				if (mesh->texture != 0)
+				{
+					ImGui::Text("Texture Size:\n Width: %d | Height: %d", mesh->texWidth, mesh->texHeight);
+					float panelWidth = ImGui::GetWindowContentRegionWidth();
+					float conversionFactor = panelWidth / mesh->texWidth;
+					ImVec2 imageSize = { mesh->texHeight *conversionFactor, panelWidth };
+					ImGui::Image((ImTextureID)mesh->texture, imageSize);
+				}
+				else
+					ImGui::Text("No texture");
+			}
+			ImGui::PopID();
+
+			count++;
+			ImGui::NewLine();
+		}
+	}
+	else
+		ImGui::Text("No meshes loaded");
+
 	ImGui::End();
 }
 
