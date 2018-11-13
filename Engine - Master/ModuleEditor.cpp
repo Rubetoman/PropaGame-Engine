@@ -374,8 +374,14 @@ const void ModuleEditor::ShowConfigurationWindow()
 		//Window size fields (only be able to edit if not in full screen)
 		static ImU32 width_step = (ImU32)30;
 		static ImU32 height_step = (ImU32)50;
-		ImGui::InputScalar("Width", ImGuiDataType_U32, &App->window->screen_width, App->window->fullscreen ? NULL : &width_step, NULL, "%u");
-		ImGui::InputScalar("Height", ImGuiDataType_U32, &App->window->screen_height, App->window->fullscreen ? NULL : &height_step, NULL, "%u");
+		if (ImGui::InputScalar("Width", ImGuiDataType_U32, &App->window->screen_width, App->window->fullscreen ? NULL : &width_step, NULL, "%u"))
+		{
+			App->window->SetWindowSize(App->window->screen_width, App->window->screen_height, true);
+		}
+		if (ImGui::InputScalar("Height", ImGuiDataType_U32, &App->window->screen_height, App->window->fullscreen ? NULL : &height_step, NULL, "%u"))
+		{
+			App->window->SetWindowSize(App->window->screen_width, App->window->screen_height, true);
+		}
 
 		if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
 			App->window->ToggleFullScreen();

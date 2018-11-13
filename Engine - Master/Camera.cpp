@@ -71,16 +71,9 @@ const void Camera::InitFrustum()
 	//frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5f)) *((float)App->window->screen_height / (float)App->window->screen_width);
 }
 
-void Camera::SetHorizontalFOV(float& degrees)
+void Camera::SetFrustum(unsigned& w, unsigned& h)
 {
-	frustum.horizontalFov = math::DegToRad(degrees);
-	frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
-}
-
-void Camera::SetVerticalFOV(float& degrees)
-{
-	frustum.verticalFov = math::DegToRad(degrees);
-	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)w / (float)h));
 }
 
 const void Camera::UpdatePitchYaw() 

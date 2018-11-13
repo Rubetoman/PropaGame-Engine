@@ -26,10 +26,10 @@ public:
 	const void ToggleVSync();
 	const void ToggleBorderless();
 	const void SetWindowBrightness(int value);
-	const void SetWindowSize(int w, int h, bool useSDL);
+	const void SetWindowSize(unsigned& w, unsigned& h, bool useSDL);
 
-	int screen_width = SCREEN_WIDTH;
-	int screen_height = SCREEN_HEIGHT;
+	unsigned screen_width = SCREEN_WIDTH;
+	unsigned screen_height = SCREEN_HEIGHT;
 	bool fullscreen = FULLSCREEN;
 	bool vsync = VSYNC;
 	bool resizable = RESIZABLE;

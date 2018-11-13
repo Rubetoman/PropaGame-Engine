@@ -42,8 +42,7 @@ public:
 	// Frustum
 	const void		InitFrustum();
 	math::float4x4	ProjectionMatrix();
-	void			SetHorizontalFOV(float& degrees);
-	void			SetVerticalFOV(float& degrees);
+	void			SetFrustum(unsigned& w, unsigned& h);
 	const void		UpdatePitchYaw();
 };
 

@@ -30,6 +30,7 @@ bool ModuleWindow::Init()
 		DM.h -= 78;
 		screen_width = DM.w;
 		screen_height = DM.h;
+		SetWindowSize(screen_width, screen_height, true);
 
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 		
@@ -57,9 +58,6 @@ bool ModuleWindow::Init()
 }
 
 update_status ModuleWindow::Update() {
-
-	if (screen_width != DM.w || screen_height != DM.h)
-		SetWindowSize(screen_width, screen_height, true);
 
 	return UPDATE_CONTINUE;
 }
@@ -94,7 +92,8 @@ const void ModuleWindow::ToggleFullScreen()
 		DM.w -= 100;
 		DM.h -= 78;
 	}
-	SetWindowSize(DM.w, DM.h, true);
+	unsigned w = DM.w;	unsigned h = DM.h;
+	SetWindowSize(w, h, true);
 }
 
 const void ModuleWindow::ToggleVSync()
@@ -121,15 +120,12 @@ const void ModuleWindow::SetWindowBrightness(int value)
 	SDL_SetWindowBrightness(window, brightness);
 }
 
-const void ModuleWindow::SetWindowSize(int w, int h, bool useSDL)
+const void ModuleWindow::SetWindowSize(unsigned& w, unsigned& h, bool useSDL)
 {
-	DM.w = w;
-	DM.h = h;
-	screen_width = w;
-	screen_height = h;
-	glViewport(0, 0, screen_width, screen_height);
-	//App->camera->UpdateScreenSize();
-	if(useSDL)
+	App->window->screen_width = w;
+	App->window->screen_height = h;
+	App->camera->mainCamera->SetFrustum(w,h);
+	if (useSDL)
 		SDL_SetWindowSize(window, screen_width, screen_height);
 }
 
