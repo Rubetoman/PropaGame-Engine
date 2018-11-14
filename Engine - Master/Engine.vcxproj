@@ -154,6 +154,8 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Window.h" />
+    <ClInclude Include="WindowScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -209,12 +211,13 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="WindowScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Default.fs" />
-    <None Include="Default.vs" />
-    <None Include="Texture.fs" />
-    <None Include="Texture.vs" />
+    <None Include="Game\Assets\Shaders\Default.fs" />
+    <None Include="Game\Assets\Shaders\Default.vs" />
+    <None Include="Game\Assets\Shaders\Texture.fs" />
+    <None Include="Game\Assets\Shaders\Texture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

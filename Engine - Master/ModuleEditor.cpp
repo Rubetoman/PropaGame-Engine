@@ -15,6 +15,7 @@ ModuleEditor::ModuleEditor()
 	fps_log.resize(100);
 	ms_log.resize(100);
 	mem_log.resize(100);
+	editorWindows.push_back(scene = new WindowScene("Scene"));
 }
 
 // Destructor
@@ -79,6 +80,11 @@ update_status ModuleEditor::Update()
 // Called before quitting
 bool ModuleEditor::CleanUp()
 {
+	for (std::list<Window*>::iterator it_p = editorWindows.begin(); it_p != editorWindows.end(); it_p++)
+	{
+		RELEASE((*it_p));
+	}
+
 	Buffer.clear();
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
@@ -87,8 +93,45 @@ bool ModuleEditor::CleanUp()
 	return true;
 }
 
+void ModuleEditor::Draw()
+{
+	for (std::list<Window*>::iterator it_p = editorWindows.begin(); it_p != editorWindows.end(); it_p++)
+	{
+		if ((*it_p)->isActive())
+		{
+			ImGui::SetNextWindowSizeConstraints({ 10,10 }, { (float)App->window->screen_width, (float)App->window->screen_height });
+			(*it_p)->Draw();
+		}
+	}
+	//ImGui::End();
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
 const void ModuleEditor::HandleInputs(SDL_Event& event) {
 	ImGui_ImplSDL2_ProcessEvent(&event);
+}
+
+void ModuleEditor::CreateDockSpace()
+{
+	ImGui::SetNextWindowPos({ 0,0 });
+	ImGui::SetNextWindowSize({ (float)App->window->screen_width, (float)App->window->screen_height });
+	ImGui::SetNextWindowBgAlpha(0.0f);
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+	//TODO: change this to a simple define
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar;
+	windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::Begin("DockSpace", NULL, windowFlags);
+	ImGui::PopStyleVar(3);
+
+	ImGuiID dockspaceId = ImGui::GetID("DockSpace");
+	ImGui::DockSpace(dockspaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 }
 
 static void ShowMainMenuBar()

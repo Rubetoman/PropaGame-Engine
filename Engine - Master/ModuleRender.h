@@ -36,10 +36,16 @@ public:
 		const math::float4x4& view, const math::float4x4& proj);
 
 	void WindowResized(unsigned width, unsigned height);
+	void CreateFrameBuffer();
+
 	void* context = nullptr;
 
 	GLuint program = GL_FALSE;
 	GLuint programText = GL_FALSE;
+	GLuint renderedTexture = GL_FALSE;
+
+	unsigned		fbo = 0;
+	unsigned		rbo = 0;
 
 	void			DrawCoordinates();
 	void			DrawPlane();

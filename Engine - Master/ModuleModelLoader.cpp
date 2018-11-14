@@ -190,10 +190,10 @@ void ModuleModelLoader::GenerateMaterialData(const aiScene* scene)
 			}
 		}
 		meshes[i]->texture = gen_material.texture0;
-		if ((gen_material.texture0) > 0)
+		if ((gen_material.texture0) > 1)
 		{
-			meshes[i]->texHeight = App->textures->textures[gen_material.texture0 - 1]->height;
-			meshes[i]->texWidth = App->textures->textures[gen_material.texture0 - 1]->width;
+			meshes[i]->texHeight = App->textures->textures[gen_material.texture0 - 2]->height;
+			meshes[i]->texWidth = App->textures->textures[gen_material.texture0 - 2]->width;
 		}
 		materials.push_back(gen_material);
 	}

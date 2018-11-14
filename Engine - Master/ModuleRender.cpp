@@ -47,7 +47,7 @@ bool ModuleRender::Init()
 		return false;
 	}
 
-	//InitQuad();
+	CreateFrameBuffer();
 
 	return true;
 }
@@ -62,6 +62,9 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	// Draw references
 	glUseProgram(program);
 	math::float4x4 Model(math::float4x4::identity); // Not moving anything
@@ -89,8 +92,9 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	App->editor->Draw();
 
 	// Update and Render additional Platform Windows
 	if (App->editor->io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -98,7 +102,11 @@ update_status ModuleRender::PostUpdate()
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
 	}
+	
 	SDL_GL_SwapWindow(App->window->window);
+
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -116,6 +124,7 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
     glViewport(0, 0, width, height); 
 	App->window->SetWindowSize(width, height, false);
+	CreateFrameBuffer();
 }
 
 void ModuleRender::RenderMesh(const ModuleModelLoader::mesh* mesh, const ModuleModelLoader::material& material,
@@ -217,5 +226,38 @@ void ModuleRender::DrawPlane()
 	}
 	glEnd();
 	glUseProgram(0);
+}
+
+void ModuleRender::CreateFrameBuffer() {
+	glDeleteFramebuffers(1, &fbo);
+	glDeleteRenderbuffers(1, &rbo);
+
+	glGenFramebuffers(1, &fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+	glGenTextures(1, &renderedTexture);
+	glBindTexture(GL_TEXTURE_2D, renderedTexture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->window->screen_width, App->window->screen_height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->window->screen_width, App->window->screen_height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		LOG("Error: Framebuffer issue");
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

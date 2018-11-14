@@ -2,9 +2,11 @@
 #define __MODULEEDITOR_H__
 
 #include "Module.h"
+#include "Window.h"
 #include "ModuleModelLoader.h"
 #include "ModuleTextures.h"
 #include "Texture.h"
+#include "WindowScene.h"
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -13,6 +15,7 @@
 #include <vector> 
 
 class Application;
+class WindowScene;
 
 class ModuleEditor : public Module
 {
@@ -27,7 +30,9 @@ public:
 	update_status PreUpdate();
 	update_status Update();
 	bool CleanUp();
+	void Draw();
 	const void HandleInputs(SDL_Event& event);
+	void CreateDockSpace();
 	const void ShowAppInfoWindow();
 	const void ShowPropertiesWindow();
 	const void ShowConfigurationWindow();
@@ -60,6 +65,12 @@ public:
 	bool ScrollToBottom = false;
 
 	update_status update = UPDATE_CONTINUE;
+
+	//Docking windows
+	WindowScene* scene = nullptr;
+
+private:
+	std::list<Window*> editorWindows;
 };
 
 #endif // __MODULEEDITOR_H__
