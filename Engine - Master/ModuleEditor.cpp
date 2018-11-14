@@ -52,6 +52,8 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
+	CreateDockSpace();
+
 	// Update performance
 	fps_log.erase(fps_log.begin());
 	fps_log.push_back(App->FPS);
@@ -103,7 +105,7 @@ void ModuleEditor::Draw()
 			(*it_p)->Draw();
 		}
 	}
-	//ImGui::End();
+	ImGui::End();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -119,13 +121,12 @@ void ModuleEditor::CreateDockSpace()
 	ImGui::SetNextWindowSize({ (float)App->window->screen_width, (float)App->window->screen_height });
 	ImGui::SetNextWindowBgAlpha(0.0f);
 
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-
 	//TODO: change this to a simple define
 	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar;
 	windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	ImGui::Begin("DockSpace", NULL, windowFlags);
 	ImGui::PopStyleVar(3);

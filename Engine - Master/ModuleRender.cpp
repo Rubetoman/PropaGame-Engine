@@ -13,6 +13,7 @@ ModuleRender::~ModuleRender()
 bool ModuleRender::Init()
 {
 	LOG("Creating Renderer context");
+	bool ret = true;
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
@@ -21,8 +22,20 @@ bool ModuleRender::Init()
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
 	context = SDL_GL_CreateContext(App->window->window);
+	if (context == NULL)
+	{
+		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
+
 
 	glewInit();
+	/*GLenum error = glewInit();
+	if (error != GL_NO_ERROR)
+	{
+		LOG("Error initializing glew! Error: %s\n", gluErrorString(error));
+		ret = false;
+	}*/
 
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -49,7 +62,7 @@ bool ModuleRender::Init()
 
 	CreateFrameBuffer();
 
-	return true;
+	return ret;
 }
 
 update_status ModuleRender::PreUpdate()
@@ -228,8 +241,10 @@ void ModuleRender::DrawPlane()
 	glUseProgram(0);
 }
 
-void ModuleRender::CreateFrameBuffer() {
+void ModuleRender::CreateFrameBuffer() 
+{
 	glDeleteFramebuffers(1, &fbo);
+	glDeleteTextures(1, &renderedTexture);
 	glDeleteRenderbuffers(1, &rbo);
 
 	glGenFramebuffers(1, &fbo);
@@ -259,5 +274,6 @@ void ModuleRender::CreateFrameBuffer() {
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
