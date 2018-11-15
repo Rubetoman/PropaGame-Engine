@@ -108,17 +108,8 @@ update_status ModuleRender::PostUpdate()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	App->editor->Draw();
-
-	// Update and Render additional Platform Windows
-	if (App->editor->io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
-	}
 	
 	SDL_GL_SwapWindow(App->window->window);
-
-
 
 	return UPDATE_CONTINUE;
 }

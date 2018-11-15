@@ -48,7 +48,6 @@ public:
 	const void ShowInBrowser(const char* url) const;
 
 public:
-	ImGuiIO io;
 	//The window we'll be rendering to
 	SDL_Window * window = nullptr;
 

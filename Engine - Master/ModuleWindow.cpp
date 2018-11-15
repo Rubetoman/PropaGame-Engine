@@ -37,6 +37,7 @@ bool ModuleWindow::Init()
 		//Set window settings
 		if(fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
 		if(resizable) flags |= SDL_WINDOW_RESIZABLE;
+		if (borderless) flags |= SDL_WINDOW_BORDERLESS;
 		SDL_GL_SetSwapInterval(vsync);
 
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, flags);
@@ -49,7 +50,6 @@ bool ModuleWindow::Init()
 		else
 		{
 			//Get window surface
-			
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}

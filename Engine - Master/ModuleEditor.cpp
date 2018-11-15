@@ -14,12 +14,6 @@
 
 ModuleEditor::ModuleEditor()
 {
-	editorWindows.push_back(scene = new WindowScene("Scene"));
-	editorWindows.push_back(about = new WindowAbout("About"));
-	editorWindows.push_back(console = new WindowConsole("console"));
-	editorWindows.push_back(performance = new WindowPerformance("performance"));
-	editorWindows.push_back(configuration = new WindowConfiguration("configuration"));
-	editorWindows.push_back(properties = new WindowProperties("properties"));
 }
 
 // Destructor
@@ -35,7 +29,7 @@ bool ModuleEditor::Init()
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	io = ImGui::GetIO(); (void)io;
+	ImGuiIO io = ImGui::GetIO(); (void)io;
 
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
@@ -43,6 +37,14 @@ bool ModuleEditor::Init()
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init(glsl_version);
+
+	// Add EditorWindows
+	editorWindows.push_back(scene = new WindowScene("Scene"));
+	editorWindows.push_back(about = new WindowAbout("About"));
+	editorWindows.push_back(console = new WindowConsole("console"));
+	editorWindows.push_back(performance = new WindowPerformance("performance"));
+	editorWindows.push_back(configuration = new WindowConfiguration("configuration"));
+	editorWindows.push_back(properties = new WindowProperties("properties"));
 
 	// Setup style
 	ImGui::StyleColorsDark();
@@ -109,7 +111,8 @@ void ModuleEditor::Draw()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-const void ModuleEditor::HandleInputs(SDL_Event& event) {
+const void ModuleEditor::HandleInputs(SDL_Event& event) 
+{
 	ImGui_ImplSDL2_ProcessEvent(&event);
 }
 
