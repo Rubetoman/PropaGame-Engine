@@ -78,6 +78,6 @@ void WindowAbout::Draw()
 	// Close button
 	ImGui::NewLine();
 	if (ImGui::Button("Close"))
-		App->editor->show_about_window = false;
+		active = false;
 	ImGui::End();
 }

@@ -18,7 +18,10 @@ void log(const char file[], int line, const char* format, ...)
 
 	if (App && App->editor)
 	{
-		sprintf_s(tmp_string, 4096, "%s \n", tmp_string);
-		App->editor->AddLog(tmp_string);
+		if (App->editor->console) 
+		{
+			sprintf_s(tmp_string, 4096, "%s \n", tmp_string);
+			App->editor->console->AddLog(tmp_string);
+		}
 	}
 }

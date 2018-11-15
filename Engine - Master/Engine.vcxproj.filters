@@ -162,6 +162,9 @@
     <ClCompile Include="WindowAbout.cpp">
       <Filter>Modules\EditorWindows</Filter>
     </ClCompile>
+    <ClCompile Include="WindowConsole.cpp">
+      <Filter>Modules\EditorWindows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -386,6 +389,9 @@
       <Filter>Modules\EditorWindows</Filter>
     </ClInclude>
     <ClInclude Include="WindowAbout.h">
+      <Filter>Modules\EditorWindows</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowConsole.h">
       <Filter>Modules\EditorWindows</Filter>
     </ClInclude>
   </ItemGroup>

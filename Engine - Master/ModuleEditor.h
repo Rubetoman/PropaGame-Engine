@@ -9,6 +9,7 @@
 #include "Window.h"
 #include "WindowScene.h"
 #include "WindowAbout.h"
+#include "WindowConsole.h"
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -19,6 +20,7 @@
 class Application;
 class WindowScene;
 class WindowAbout;
+class WindowConsole;
 
 class ModuleEditor : public Module
 {
@@ -41,8 +43,6 @@ public:
 	const void ShowPropertiesWindow();
 	const void ShowConfigurationWindow();
 	//void ShowTexturesWindow();
-	const void ShowLogWindow();
-	void AddLog(const char* logs);
 	const void ShowInBrowser(const char* url) const;
 
 public:
@@ -58,21 +58,17 @@ public:
 	std::vector<float> ms_log;
 	std::vector<float> mem_log;
 
-	bool show_log_window = false;
-	bool show_about_window = false;
 	bool show_app_info_window = false;
 	bool show_textures_window = false;
 	bool show_properties_window = false;
 	bool show_configuration_window = false;
-
-	ImGuiTextBuffer Buffer;
-	bool ScrollToBottom = false;
 
 	update_status update = UPDATE_CONTINUE;
 
 	//Docking windows
 	WindowScene* scene = nullptr;
 	WindowAbout* about = nullptr;
+	WindowConsole* console = nullptr;
 
 private:
 	std::list<Window*> editorWindows;

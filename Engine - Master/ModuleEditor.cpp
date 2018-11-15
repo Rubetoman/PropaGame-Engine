@@ -7,6 +7,7 @@
 #include "Window.h"
 #include "WindowScene.h"
 #include "WindowAbout.h"
+#include "WindowConsole.h"
 
 #include "mmgr/mmgr.h"
 
@@ -17,6 +18,7 @@ ModuleEditor::ModuleEditor()
 	mem_log.resize(100);
 	editorWindows.push_back(scene = new WindowScene("Scene"));
 	editorWindows.push_back(about = new WindowAbout("About"));
+	editorWindows.push_back(console = new WindowConsole("console"));
 }
 
 // Destructor
@@ -73,7 +75,6 @@ update_status ModuleEditor::Update()
 
 	if (show_app_info_window)	{ShowAppInfoWindow();}
 	if (show_textures_window)	{/*ShowTexturesWindow();*/}
-	if (show_log_window)		{ShowLogWindow();}
 	if (show_properties_window)	{ShowPropertiesWindow();}
 	if (show_configuration_window) { ShowConfigurationWindow(); }
 	return update;
@@ -87,7 +88,9 @@ bool ModuleEditor::CleanUp()
 		RELEASE((*it_p));
 	}
 
-	Buffer.clear();
+	editorWindows.clear();
+	console = nullptr;
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
@@ -162,7 +165,7 @@ const void ModuleEditor::ShowMainMenuBar()
 			if (ImGui::MenuItem("Application Info", NULL, &show_app_info_window)) { show_app_info_window = true; }
 			if (ImGui::MenuItem("Configuration", NULL, &show_configuration_window)) { show_configuration_window = true; }
 			//if(ImGui::MenuItem("Texture Options")) { App->editor->show_textures_window = true; }
-			if (ImGui::MenuItem("Log", NULL, &show_log_window)) { show_log_window = true; }
+			if (ImGui::MenuItem("Console", NULL, console->isActive())) { console->toggleActive(); }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Help"))
@@ -174,34 +177,6 @@ const void ModuleEditor::ShowMainMenuBar()
 		}
 		ImGui::EndMainMenuBar();
 	}
-}
-
-const void ModuleEditor::ShowLogWindow()
-{
-	ImGui::Begin("Log", &App->editor->show_log_window);   // Pointer to bool variable (close when click on button)
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.9f,0.45f,0.0f,0.7f });
-		if (ImGui::Button("Clear"))
-		{
-			Buffer.clear();
-		}
-		ImGui::PopStyleColor();
-
-
-	ImGui::TextUnformatted(Buffer.begin());
-
-	if (ScrollToBottom)
-		ImGui::SetScrollHere(1.0f);
-
-	ScrollToBottom = false;
-
-	ImGui::End();
-}
-
-void ModuleEditor::AddLog(const char* logs)
-{
-	assert(logs != nullptr);
-	Buffer.appendf(logs);
-	ScrollToBottom = true;
 }
 
 const void ModuleEditor::ShowAppInfoWindow()
