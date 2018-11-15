@@ -11,6 +11,7 @@
 #include "WindowAbout.h"
 #include "WindowConsole.h"
 #include "WindowPerformance.h"
+#include "WindowConfiguration.h"
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -23,6 +24,7 @@ class WindowScene;
 class WindowAbout;
 class WindowConsole;
 class WindowPerformance;
+class WindowConfiguration;
 
 class ModuleEditor : public Module
 {
@@ -56,7 +58,6 @@ public:
 
 	bool show_textures_window = false;
 	bool show_properties_window = false;
-	bool show_configuration_window = false;
 
 	update_status update = UPDATE_CONTINUE;
 
@@ -65,6 +66,7 @@ public:
 	WindowAbout* about = nullptr;
 	WindowConsole* console = nullptr;
 	WindowPerformance* performance = nullptr;
+	WindowConfiguration* configuration = nullptr;
 
 private:
 	std::list<Window*> editorWindows;
