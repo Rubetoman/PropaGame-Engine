@@ -6,7 +6,9 @@
 #include "ModuleModelLoader.h"
 #include "ModuleTextures.h"
 #include "Texture.h"
+#include "Window.h"
 #include "WindowScene.h"
+#include "WindowAbout.h"
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -16,6 +18,7 @@
 
 class Application;
 class WindowScene;
+class WindowAbout;
 
 class ModuleEditor : public Module
 {
@@ -33,6 +36,7 @@ public:
 	void Draw();
 	const void HandleInputs(SDL_Event& event);
 	void CreateDockSpace();
+	const void ShowMainMenuBar();
 	const void ShowAppInfoWindow();
 	const void ShowPropertiesWindow();
 	const void ShowConfigurationWindow();
@@ -68,6 +72,7 @@ public:
 
 	//Docking windows
 	WindowScene* scene = nullptr;
+	WindowAbout* about = nullptr;
 
 private:
 	std::list<Window*> editorWindows;

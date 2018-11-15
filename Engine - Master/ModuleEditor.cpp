@@ -4,11 +4,11 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "Window.h"
+#include "WindowScene.h"
+#include "WindowAbout.h"
 
 #include "mmgr/mmgr.h"
-
-static void ShowMainMenuBar();
-static void ShowAboutWindow();
 
 ModuleEditor::ModuleEditor()
 {
@@ -16,6 +16,7 @@ ModuleEditor::ModuleEditor()
 	ms_log.resize(100);
 	mem_log.resize(100);
 	editorWindows.push_back(scene = new WindowScene("Scene"));
+	editorWindows.push_back(about = new WindowAbout("About"));
 }
 
 // Destructor
@@ -70,7 +71,6 @@ update_status ModuleEditor::Update()
 	
 	//ImGui::ShowDemoWindow();	//Example Window
 
-	if (show_about_window)		{ShowAboutWindow();}
 	if (show_app_info_window)	{ShowAppInfoWindow();}
 	if (show_textures_window)	{/*ShowTexturesWindow();*/}
 	if (show_log_window)		{ShowLogWindow();}
@@ -135,14 +135,14 @@ void ModuleEditor::CreateDockSpace()
 	ImGui::DockSpace(dockspaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 }
 
-static void ShowMainMenuBar()
+const void ModuleEditor::ShowMainMenuBar()
 {
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("Open")) {}
-			if (ImGui::MenuItem("Quit", "ALT+F4")) { App->editor->update = UPDATE_STOP; }
+			if (ImGui::MenuItem("Quit", "ALT+F4")) { update = UPDATE_STOP; }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit"))
@@ -154,22 +154,22 @@ static void ShowMainMenuBar()
 			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
 			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Properties", NULL, &App->editor->show_properties_window)) { App->editor->show_properties_window = true; }
+			if (ImGui::MenuItem("Properties", NULL, &show_properties_window)) { show_properties_window = true; }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window"))
 		{
-			if (ImGui::MenuItem("Application Info", NULL, &App->editor->show_app_info_window)) { App->editor->show_app_info_window = true; }
-			if (ImGui::MenuItem("Configuration", NULL, &App->editor->show_configuration_window)) { App->editor->show_configuration_window = true; }
+			if (ImGui::MenuItem("Application Info", NULL, &show_app_info_window)) { show_app_info_window = true; }
+			if (ImGui::MenuItem("Configuration", NULL, &show_configuration_window)) { show_configuration_window = true; }
 			//if(ImGui::MenuItem("Texture Options")) { App->editor->show_textures_window = true; }
-			if (ImGui::MenuItem("Log", NULL, &App->editor->show_log_window)) { App->editor->show_log_window = true; }
+			if (ImGui::MenuItem("Log", NULL, &show_log_window)) { show_log_window = true; }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Help"))
 		{
-			if (ImGui::MenuItem("About", NULL, &App->editor->show_about_window)) { App->editor->show_about_window = true; }
+			if (ImGui::MenuItem("About", NULL, about->isActive())) { about->toggleActive(); }
 			ImGui::Separator();
-			if (ImGui::MenuItem("View GIT Repository")) { App->editor->ShowInBrowser("https://github.com/Rubetoman/SDL-OpenGL-Engine-V2"); }
+			if (ImGui::MenuItem("View GIT Repository")) { ShowInBrowser("https://github.com/Rubetoman/SDL-OpenGL-Engine-V2"); }
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
@@ -202,76 +202,6 @@ void ModuleEditor::AddLog(const char* logs)
 	assert(logs != nullptr);
 	Buffer.appendf(logs);
 	ScrollToBottom = true;
-}
-
-static void ShowAboutWindow() 
-{
-	ImGui::Begin("About", &App->editor->show_about_window);   // Pointer to bool variable (close when click on button)
-	ImGui::Text(TITLE);
-	ImGui::Text("Version:	BT - 1");
-	ImGui::Text("Games are not free of propaganda.");
-	ImGui::Text("C/C++ engine made by: ");
-	ImGui::NewLine(); ImGui::SameLine(30);
-	if (ImGui::Selectable("Ruben Crispin De la Cruz", false, 0, { 165, 13 }))
-		App->editor->ShowInBrowser("https://github.com/Rubetoman");
-	
-	ImGui::NewLine();
-	ImGui::Text("Libraries: ");
-	
-	ImGui::NewLine(); ImGui::SameLine(30);
-	std::string glewVersion = (const char*)glewGetString(GLEW_VERSION);
-	glewVersion = "Glew " + glewVersion;
-	if (ImGui::Selectable(glewVersion.c_str(), false, 0, { 142, 13 }))
-		App->editor->ShowInBrowser("http://glew.sourceforge.net/");
-	
-	ImGui::NewLine(); ImGui::SameLine(30);
-	std::string imguiVersion = "ImGui ";
-	imguiVersion += ImGui::GetVersion();
-	if (ImGui::Selectable(imguiVersion.c_str(), false, 0, { 142, 13 }))
-		App->editor->ShowInBrowser("https://github.com/ocornut/imgui");
-
-	ImGui::NewLine(); ImGui::SameLine(30);
-	std::string glVersion = (const char*)glGetString(GL_VERSION);
-	glVersion = "OpenGL " + glVersion;
-	if (ImGui::Selectable(glVersion.c_str(), false, 0, { 310, 13 }))
-		App->editor->ShowInBrowser("https://www.opengl.org/");
-
-	ImGui::NewLine(); ImGui::SameLine(30);
-	if (ImGui::Selectable("MathGeoLib 1.5.0", false, 0, { 185, 13 }))
-		App->editor->ShowInBrowser("https://github.com/juj/MathGeoLib");
-
-	ImGui::NewLine(); ImGui::SameLine(30);
-	SDL_version version;
-	SDL_GetVersion(&version);
-	std::string sdlVersion = "SDL ";
-	sdlVersion += std::to_string(version.major) + '.' + std::to_string(version.minor) + '.' + std::to_string(version.patch);
-	if (ImGui::Selectable(sdlVersion.c_str(), false, 0, { 135, 13 }))
-		App->editor->ShowInBrowser("https://www.libsdl.org/");
-
-	ImGui::NewLine();ImGui::SameLine(30);
-	std::string assimpVersion = "Assimp - version ";
-	assimpVersion += std::to_string(aiGetVersionMajor()) + '.' + std::to_string(aiGetVersionMinor()) + '.' + std::to_string(aiGetVersionRevision());
-	if (ImGui::Selectable(assimpVersion.c_str(), false, 0, { 155, 13 }))
-		App->editor->ShowInBrowser("http://www.assimp.org/");
-
-	ImGui::NewLine(); ImGui::SameLine(30);
-	std::string devilVersion = "DevIL " + std::to_string(IL_VERSION);
-	if (ImGui::Selectable(devilVersion.c_str(), false, 0, { 135, 13 }))
-		App->editor->ShowInBrowser("http://openil.sourceforge.net/");
-
-	ImGui::NewLine(); ImGui::SameLine(30);
-	if (ImGui::Selectable("mmgr 1.0", false, 0, { 130, 13 }))
-		App->editor->ShowInBrowser("http://www.flipcode.com/archives/Presenting_A_Memory_Manager.shtml");
-
-	// License
-	ImGui::NewLine();
-	ImGui::Text("MIT License Copyright (c) [2018] [Ruben Crispin]");
-
-	// Close button
-	ImGui::NewLine();
-	if (ImGui::Button("Close"))
-		App->editor->show_about_window = false;
-	ImGui::End();
 }
 
 const void ModuleEditor::ShowAppInfoWindow()
