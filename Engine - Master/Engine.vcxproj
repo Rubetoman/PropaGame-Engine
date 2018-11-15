@@ -157,6 +157,7 @@
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowAbout.h" />
     <ClInclude Include="WindowConsole.h" />
+    <ClInclude Include="WindowPerformance.h" />
     <ClInclude Include="WindowScene.h" />
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +216,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="WindowAbout.cpp" />
     <ClCompile Include="WindowConsole.cpp" />
+    <ClCompile Include="WindowPerformance.cpp" />
     <ClCompile Include="WindowScene.cpp" />
   </ItemGroup>
   <ItemGroup>

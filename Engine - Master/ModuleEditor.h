@@ -10,6 +10,7 @@
 #include "WindowScene.h"
 #include "WindowAbout.h"
 #include "WindowConsole.h"
+#include "WindowPerformance.h"
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -21,6 +22,7 @@ class Application;
 class WindowScene;
 class WindowAbout;
 class WindowConsole;
+class WindowPerformance;
 
 class ModuleEditor : public Module
 {
@@ -39,7 +41,6 @@ public:
 	const void HandleInputs(SDL_Event& event);
 	void CreateDockSpace();
 	const void ShowMainMenuBar();
-	const void ShowAppInfoWindow();
 	const void ShowPropertiesWindow();
 	const void ShowConfigurationWindow();
 	//void ShowTexturesWindow();
@@ -53,12 +54,6 @@ public:
 	//The surface contained by the window
 	SDL_Surface* screen_surface = nullptr;
 
-	// Performance data
-	std::vector<float> fps_log;
-	std::vector<float> ms_log;
-	std::vector<float> mem_log;
-
-	bool show_app_info_window = false;
 	bool show_textures_window = false;
 	bool show_properties_window = false;
 	bool show_configuration_window = false;
@@ -69,6 +64,7 @@ public:
 	WindowScene* scene = nullptr;
 	WindowAbout* about = nullptr;
 	WindowConsole* console = nullptr;
+	WindowPerformance* performance = nullptr;
 
 private:
 	std::list<Window*> editorWindows;
