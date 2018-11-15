@@ -10,6 +10,7 @@
 #include "WindowConsole.h"
 #include "WindowPerformance.h"
 #include "WindowConfiguration.h"
+#include "WindowProperties.h"
 
 ModuleEditor::ModuleEditor()
 {
@@ -18,6 +19,7 @@ ModuleEditor::ModuleEditor()
 	editorWindows.push_back(console = new WindowConsole("console"));
 	editorWindows.push_back(performance = new WindowPerformance("performance"));
 	editorWindows.push_back(configuration = new WindowConfiguration("configuration"));
+	editorWindows.push_back(properties = new WindowProperties("properties"));
 }
 
 // Destructor
@@ -70,8 +72,6 @@ update_status ModuleEditor::Update()
 	ShowMainMenuBar();
 	
 	//ImGui::ShowDemoWindow();	//Example Window
-
-	if (show_properties_window)	{ShowPropertiesWindow();}
 	return update;
 }
 
@@ -152,7 +152,7 @@ const void ModuleEditor::ShowMainMenuBar()
 			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
 			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Properties", NULL, &show_properties_window)) { show_properties_window = true; }
+			if (ImGui::MenuItem("Properties", NULL, properties->isActive())) { properties->toggleActive(); }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window"))
@@ -171,64 +171,6 @@ const void ModuleEditor::ShowMainMenuBar()
 		}
 		ImGui::EndMainMenuBar();
 	}
-}
-
-const void ModuleEditor::ShowPropertiesWindow()
-{
-	ImGui::Begin("Properties", &show_properties_window, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_AlwaysVerticalScrollbar);
-
-	if (App->model_loader->meshes.size() > 0)
-	{
-		ImGui::Text("Current loaded file has %d meshes", App->model_loader->meshes.size());
-		ImGui::NewLine();
-		int count = 0;
-		for (std::vector<ModuleModelLoader::mesh*>::iterator it_m = App->model_loader->meshes.begin(); it_m != App->model_loader->meshes.end(); it_m++)
-		{
-			ModuleModelLoader::mesh* mesh = (*it_m);
-			ImGui::Text("Mesh name: %s", mesh->name.c_str());
-
-			ImGui::PushID("Transformation" + count);
-			if (ImGui::CollapsingHeader("Transformation"))
-			{
-				ImGui::Text("Position:\n X: %f | Y: %f | Z: %f", mesh->position.x, mesh->position.y, mesh->position.z);
-				//float3 rot = mesh->rotation.ToEulerXYZ();
-				//rot *= 180 / pi;
-				//ImGui::Text("Rotation:\n X: %f | Y: %f | Z: %f", rot.x, rot.y, rot.z);
-				ImGui::Text("Scale:\n X: %f | Y: %f | Z: %f", mesh->scale.x, mesh->scale.y, mesh->scale.z);
-			}
-			ImGui::PopID();
-			ImGui::PushID("Geometry" + count);
-			if (ImGui::CollapsingHeader("Geometry"))
-			{
-				ImGui::Text("Triangles Count: %d", mesh->num_indices / 3);
-				ImGui::Text("Vertices Count: %d", mesh->num_vertices);
-				ImGui::Text("Mesh size:\n X: %f | Y: %f | Z: %f", mesh->boundingBox.Size().x, mesh->boundingBox.Size().y, mesh->boundingBox.Size().z);
-			}
-			ImGui::PopID();
-			ImGui::PushID("Texture" + count);
-			if (ImGui::CollapsingHeader("Texture"))
-			{
-				if (mesh->texture != 0)
-				{
-					ImGui::Text("Texture Size:\n Width: %d | Height: %d", mesh->texWidth, mesh->texHeight);
-					float panelWidth = ImGui::GetWindowContentRegionWidth();
-					float conversionFactor = panelWidth / mesh->texWidth;
-					ImVec2 imageSize = { mesh->texHeight *conversionFactor, panelWidth };
-					ImGui::Image((ImTextureID)mesh->texture, imageSize);
-				}
-				else
-					ImGui::Text("No texture");
-			}
-			ImGui::PopID();
-
-			count++;
-			ImGui::NewLine();
-		}
-	}
-	else
-		ImGui::Text("No meshes loaded");
-
-	ImGui::End();
 }
 
 const void ModuleEditor::ShowInBrowser(const char* url) const

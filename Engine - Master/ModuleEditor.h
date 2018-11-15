@@ -12,6 +12,7 @@
 #include "WindowConsole.h"
 #include "WindowPerformance.h"
 #include "WindowConfiguration.h"
+#include "WindowProperties.h"
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -25,6 +26,7 @@ class WindowAbout;
 class WindowConsole;
 class WindowPerformance;
 class WindowConfiguration;
+class WindowProperties;
 
 class ModuleEditor : public Module
 {
@@ -43,9 +45,6 @@ public:
 	const void HandleInputs(SDL_Event& event);
 	void CreateDockSpace();
 	const void ShowMainMenuBar();
-	const void ShowPropertiesWindow();
-	const void ShowConfigurationWindow();
-	//void ShowTexturesWindow();
 	const void ShowInBrowser(const char* url) const;
 
 public:
@@ -56,9 +55,6 @@ public:
 	//The surface contained by the window
 	SDL_Surface* screen_surface = nullptr;
 
-	bool show_textures_window = false;
-	bool show_properties_window = false;
-
 	update_status update = UPDATE_CONTINUE;
 
 	//Docking windows
@@ -67,6 +63,7 @@ public:
 	WindowConsole* console = nullptr;
 	WindowPerformance* performance = nullptr;
 	WindowConfiguration* configuration = nullptr;
+	WindowProperties* properties = nullptr;
 
 private:
 	std::list<Window*> editorWindows;
