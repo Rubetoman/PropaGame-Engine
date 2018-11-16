@@ -24,8 +24,8 @@ public:
 	void ToggleResizable();
 	void ToggleVSync();
 	void ToggleBorderless();
-	void SetWindowBrightness(int value);
-	void SetWindowSize(unsigned& w, unsigned& h, bool useSDL);
+	void SetWindowBrightness(const int value);
+	void SetWindowSize(unsigned& w, unsigned& h, const bool useSDL);
 
 	// Window configuration variables
 	unsigned screen_width = SCREEN_WIDTH;

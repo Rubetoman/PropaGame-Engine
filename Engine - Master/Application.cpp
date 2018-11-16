@@ -53,7 +53,6 @@ update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
 
-
 	Tick();
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
@@ -82,14 +81,14 @@ void Application::Tick()
 {
 	frameCounter++;
 	float ticksNow = SDL_GetTicks();
-	deltaTime = (ticksNow - lastTickCount) / 1000;
+	deltaTime = (ticksNow - lastTickCount) / 1000.0f;
 	auxTimer += deltaTime;
 	lastTickCount = ticksNow;
-	if (auxTimer >= 1)
+	if (auxTimer >= 1.0f)
 	{
 		FPS = frameCounter;
 		frameCounter = 0;
-		auxTimer = 0;
+		auxTimer = 0.0f;
 	}
 }
 

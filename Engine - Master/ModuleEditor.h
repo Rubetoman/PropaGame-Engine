@@ -42,7 +42,7 @@ public:
 
 	// ImGui
 	void Draw();
-	void CreateDockSpace();
+	void CreateDockSpace() const;
 	void ShowMainMenuBar();
 	void ShowInBrowser(const char* url) const;
 

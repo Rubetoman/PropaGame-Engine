@@ -44,21 +44,13 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-	enum EventWindow
-	{
-		WE_QUIT = 0,
-		WE_HIDE = 1,
-		WE_SHOW = 2,
-		WE_COUNT
-	};
-
 	// Check key states (includes mouse and joy buttons)
-	KeyState GetKey(int id) const
+	inline KeyState GetKey(const int id) const
 	{
 		return keyboard[id];
 	}
 
-	KeyState GetMouseButtonDown(int id) const
+	inline KeyState GetMouseButtonDown(const int id) const
 	{
 		return mouse_buttons[id - 1];
 	}

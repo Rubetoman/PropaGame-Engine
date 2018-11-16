@@ -3,6 +3,7 @@
 
 WindowProperties::WindowProperties(const char* name) : Window(name)
 {
+	active = true;
 }
 
 WindowProperties::~WindowProperties()

@@ -23,15 +23,15 @@ public:
 	struct mesh
 	{
 		std::string name;
-		unsigned vbo = 0;
-		unsigned ibo = 0;
-		unsigned vao = 0;
-		unsigned material = 0;
-		unsigned num_vertices = 0;
-		unsigned num_indices = 0;
-		unsigned texture = 0;
-		unsigned texWidth = 0;
-		unsigned texHeight = 0;
+		unsigned vbo = 0u;
+		unsigned ibo = 0u;
+		unsigned vao = 0u;
+		unsigned material = 0u;
+		unsigned num_vertices = 0u;
+		unsigned num_indices = 0u;
+		unsigned texture = 0u;
+		unsigned texWidth = 0u;
+		unsigned texHeight = 0u;
 		AABB boundingBox;
 		math::float3 position = math::float3(0.0f, 0.0f, 0.0f);
 		math::float3 scale = math::float3(0.0f, 0.0f, 0.0f);
@@ -39,7 +39,7 @@ public:
 
 	struct material
 	{
-		unsigned texture0 = 0;
+		unsigned texture0 = 0u;
 	};
 
 	ModuleModelLoader();
@@ -52,9 +52,9 @@ public:
 	void			LoadMaterial(const char* path);
 	void			GenerateMeshData(const aiScene* scene);
 	void			GenerateMaterialData(const aiScene* scene);
-	void			ChangeMeshTexture(const char * path);
-	void			DeleteMesh(int index);
-	void			DeleteMaterial(int index);
+	void			ChangeMeshTexture(const char* path);
+	void			DeleteMesh(const int index);
+	void			DeleteMaterial(const int index);
 
 	const aiScene* scene = nullptr;
 	std::vector<mesh*>    meshes;

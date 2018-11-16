@@ -48,13 +48,13 @@ bool ModuleCamera::CleanUp()
 
 
 
-const void ModuleCamera::UpdateScreenSize() 
+void ModuleCamera::UpdateScreenSize() 
 {
 	mainCamera->frustum.horizontalFov = 2.0f * atanf(tanf(mainCamera->frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
 	mainCamera->frustum.verticalFov = 2.0f * atanf(tanf(mainCamera->frustum.horizontalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
 }
 
-const void ModuleCamera::TranslateCameraInput() 
+void ModuleCamera::TranslateCameraInput() 
 {
 	// Right click + WASD/QE translates the camera
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
@@ -92,7 +92,7 @@ const void ModuleCamera::TranslateCameraInput()
 	}
 }
 
-const void ModuleCamera::RotateCameraInput() 
+void ModuleCamera::RotateCameraInput() 
 {
 	// ALT + mouse left click + mouse move orbit around the loaded mesh
 	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) 
@@ -144,7 +144,7 @@ const void ModuleCamera::RotateCameraInput()
 	}
 }
 
-const void ModuleCamera::CameraSpeedInput(float modifier) 
+void ModuleCamera::CameraSpeedInput(float modifier) 
 {
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN)
 	{
@@ -158,7 +158,7 @@ const void ModuleCamera::CameraSpeedInput(float modifier)
 	}
 }
 
-const void ModuleCamera::MouseInputTranslation(const iPoint& mouse_position)
+void ModuleCamera::MouseInputTranslation(const iPoint& mouse_position)
 {
 	if (new_click)
 	{
@@ -179,7 +179,7 @@ const void ModuleCamera::MouseInputTranslation(const iPoint& mouse_position)
 	mainCamera->position -= mainCamera->up.Mul(y_offset) * App->deltaTime;
 }
 
-const void ModuleCamera::MouseInputRotation(const iPoint& mouse_position)
+void ModuleCamera::MouseInputRotation(const iPoint& mouse_position)
 {
 	if (new_click)
 	{
@@ -202,13 +202,13 @@ const void ModuleCamera::MouseInputRotation(const iPoint& mouse_position)
 	mainCamera->RotateCamera();
 }
 
-const void ModuleCamera::WheelInputTranslation(const iPoint& wheel_motion)
+void ModuleCamera::WheelInputTranslation(const iPoint& wheel_motion)
 {
 	mainCamera->position -= mainCamera->side.Mul(wheel_motion.x) * 10 * mainCamera->speed * App->deltaTime;
 	mainCamera->position -= mainCamera->front.Mul(-wheel_motion.y) * 10 * mainCamera->speed * App->deltaTime;
 }
 
-const void ModuleCamera::FitCamera(const AABB &boundingBox)
+void ModuleCamera::FitCamera(const AABB &boundingBox)
 {
 	math::float3 diagonal = boundingBox.Diagonal();
 	math::float3 center = boundingBox.CenterPoint();

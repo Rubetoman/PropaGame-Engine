@@ -6,7 +6,7 @@
 class WindowPerformance : public Window
 {
 public:
-	WindowPerformance(const char * name);
+	WindowPerformance(const char* name);
 	~WindowPerformance();
 
 	void Draw();

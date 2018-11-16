@@ -2,7 +2,7 @@
 #include "SDL/include/SDL.h"
 #include "mmgr/mmgr.h"
 
-WindowPerformance::WindowPerformance(const char * name) : Window(name)
+WindowPerformance::WindowPerformance(const char* name) : Window(name)
 {
 	fps_log.resize(100);
 	ms_log.resize(100);

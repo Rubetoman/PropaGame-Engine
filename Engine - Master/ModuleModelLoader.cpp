@@ -19,12 +19,12 @@ update_status ModuleModelLoader::Update()
 bool ModuleModelLoader::CleanUp()
 {
 	// Delete loaded models
-	for (unsigned i = 0; i < meshes.size(); ++i)
+	for (unsigned i = 0u; i < meshes.size(); ++i)
 	{
 		DeleteMesh(i);
 	}
 
-	for (unsigned i = 0; i < materials.size(); ++i)
+	for (unsigned i = 0u; i < materials.size(); ++i)
 	{
 		DeleteMaterial(i);
 	}
@@ -36,12 +36,12 @@ bool ModuleModelLoader::LoadMesh(const char* path)
 	assert(path != nullptr);
 	unsigned int postprocess_flags = aiProcessPreset_TargetRealtime_MaxQuality;
 	scene = aiImportFile(path, postprocess_flags);
-	if (scene == NULL)
+	if (scene == nullptr)
 	{
 		aiGetErrorString();
 		return false;
 	}
-	App->camera->BBtoLook = new AABB({ 0,0,0 }, { 0,0,0 });
+	App->camera->BBtoLook = new AABB({ .0f, .0f, .0f }, { .0f, .0f, .0f });
 
 	GenerateMeshData(scene);
 	GenerateMaterialData(scene);
@@ -157,7 +157,7 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 void ModuleModelLoader::GenerateMaterialData(const aiScene* scene)
 {
 	assert(scene != nullptr);
-	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
+	for (unsigned i = 0u; i < scene->mNumMaterials; ++i)
 	{
 		const aiMaterial* src_material = scene->mMaterials[i];
 
@@ -214,7 +214,7 @@ void ModuleModelLoader::ChangeMeshTexture(const char * path)
 	}
 }
 
-void ModuleModelLoader::DeleteMesh(int index)
+void ModuleModelLoader::DeleteMesh(const int index)
 {
 	if (meshes[index]->vbo != 0)
 	{
@@ -232,7 +232,7 @@ void ModuleModelLoader::DeleteMesh(int index)
 	}
 }
 
-void ModuleModelLoader::DeleteMaterial(int index)
+void ModuleModelLoader::DeleteMaterial(const int index)
 {
 	if (materials[index].texture0 != 0)
 	{

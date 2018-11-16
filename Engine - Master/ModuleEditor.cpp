@@ -115,7 +115,7 @@ void ModuleEditor::HandleInputs(SDL_Event& event)
 	ImGui_ImplSDL2_ProcessEvent(&event);
 }
 
-void ModuleEditor::CreateDockSpace()
+void ModuleEditor::CreateDockSpace() const
 {
 	ImGui::SetNextWindowPos({ 0,0 });
 	ImGui::SetNextWindowSize({ (float)App->window->screen_width, (float)App->window->screen_height });

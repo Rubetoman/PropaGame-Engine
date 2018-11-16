@@ -1,8 +1,9 @@
 #include "WindowConfiguration.h"
 #include "ModuleWindow.h"
 
-WindowConfiguration::WindowConfiguration(const char * name) : Window(name)
+WindowConfiguration::WindowConfiguration(const char* name) : Window(name)
 {
+	active = true;
 }
 
 WindowConfiguration::~WindowConfiguration()

@@ -59,7 +59,7 @@ bool ModuleWindow::CleanUp()
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
-	if(window != NULL)
+	if(window != nullptr)
 	{
 		SDL_DestroyWindow(window);
 	}
@@ -111,12 +111,12 @@ void ModuleWindow::ToggleBorderless()
 	SDL_SetWindowBordered(window, (SDL_bool)!borderless);
 }
 
-void ModuleWindow::SetWindowBrightness(int value)
+void ModuleWindow::SetWindowBrightness(const int value)
 {
 	SDL_SetWindowBrightness(window, brightness);
 }
 
-void ModuleWindow::SetWindowSize(unsigned& w, unsigned& h, bool useSDL)
+void ModuleWindow::SetWindowSize(unsigned& w, unsigned& h, const bool useSDL)
 {
 	App->window->screen_width = w;
 	App->window->screen_height = h;

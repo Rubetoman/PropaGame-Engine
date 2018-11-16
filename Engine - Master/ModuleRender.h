@@ -40,12 +40,12 @@ public:
 
 	void* context = nullptr;
 
-	GLuint program = GL_FALSE;
-	GLuint programText = GL_FALSE;
-	GLuint renderedTexture = GL_FALSE;
+	GLuint program = 0;
+	GLuint programText = 0;
+	GLuint renderedTexture = 0;
 
-	unsigned		fbo = 0;
-	unsigned		rbo = 0;
+	unsigned		fbo = 0u;
+	unsigned		rbo = 0u;
 
 	void			DrawCoordinates();
 	void			DrawPlane();

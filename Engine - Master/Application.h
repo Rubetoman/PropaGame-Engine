@@ -37,11 +37,11 @@ public:
 	ModuleModelLoader* model_loader = nullptr;
 	ModuleFileManager* file = nullptr;
 
-	float lastTickCount = 0;	// How many ticks passed last time it was checked
-	float deltaTime = 0;		// Time in seconds
+	float lastTickCount = 0.0f;	// How many ticks passed last time it was checked
+	float deltaTime = 0.0f;		// Time in seconds
 	int FPS = 0;				// How many frames have passed in one second
 	int frameCounter = 0;		// Counter to count frames
-	float auxTimer = 0;			// Timer to check when a second has passed
+	float auxTimer = 0.0f;		// Timer to check when a second has passed
 
 private:
 

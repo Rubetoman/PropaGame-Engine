@@ -36,15 +36,15 @@ public:
 	update_status   Update();
 	bool            CleanUp();
 
-	const void		UpdateScreenSize();
+	void		UpdateScreenSize();
 
-	const void		TranslateCameraInput();
-	const void		RotateCameraInput();
-	const void		CameraSpeedInput(float modifier);
-	const void		MouseInputTranslation(const iPoint& mouse_position);
-	const void		MouseInputRotation(const iPoint& mouse_position);
-	const void		WheelInputTranslation(const iPoint& wheel_motion);
-	const void		FitCamera(const AABB &boundingBox);
+	void		TranslateCameraInput();
+	void		RotateCameraInput();
+	void		CameraSpeedInput(float modifier);
+	void		MouseInputTranslation(const iPoint& mouse_position);
+	void		MouseInputRotation(const iPoint& mouse_position);
+	void		WheelInputTranslation(const iPoint& wheel_motion);
+	void		FitCamera(const AABB &boundingBox);
 
 	// Camera
 	Camera* mainCamera = nullptr;			// Default camera
