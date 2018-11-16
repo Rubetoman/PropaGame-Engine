@@ -17,5 +17,9 @@ void WindowScene::Draw()
 
 	ImGui::Image((ImTextureID)App->renderer->renderedTexture, { (float)App->window->screen_width, (float)App->window->screen_height }, { 0,1 }, { 1,0 });
 
+
+	focus = ImGui::IsWindowFocused();
 	ImGui::End();
 }
+
+bool WindowScene::IsFocused() const { return focus; }

@@ -33,28 +33,31 @@ class ModuleEditor : public Module
 public:
 
 	ModuleEditor();
-
-	// Destructor
 	virtual ~ModuleEditor();
 
-	bool Init();
-	update_status PreUpdate();
-	update_status Update();
-	bool CleanUp();
+	bool			Init();
+	update_status	PreUpdate();
+	update_status	Update();
+	bool			CleanUp();
+
+	// ImGui
 	void Draw();
-	const void HandleInputs(SDL_Event& event);
 	void CreateDockSpace();
-	const void ShowMainMenuBar();
-	const void ShowInBrowser(const char* url) const;
+	void ShowMainMenuBar();
+	void ShowInBrowser(const char* url) const;
+
+	// SDL
+	void HandleInputs(SDL_Event& event);
 
 public:
+
+	update_status update = UPDATE_CONTINUE;
+
 	//The window we'll be rendering to
 	SDL_Window * window = nullptr;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = nullptr;
-
-	update_status update = UPDATE_CONTINUE;
 
 	//Docking windows
 	WindowScene* scene = nullptr;

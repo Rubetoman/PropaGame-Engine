@@ -24,12 +24,8 @@ bool ModuleWindow::Init()
 	}
 	else
 	{
-		//Create window
-		SDL_GetCurrentDisplayMode(0, &DM);
-		DM.w -= 100;
-		DM.h -= 78;
-		screen_width = DM.w;
-		screen_height = DM.h;
+		screen_width = SCREEN_WIDTH;
+		screen_height = SCREEN_HEIGHT;
 		SetWindowSize(screen_width, screen_height, true);
 
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
@@ -42,7 +38,7 @@ bool ModuleWindow::Init()
 
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, flags);
 
-		if(window == NULL)
+		if(window == nullptr)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
@@ -55,11 +51,6 @@ bool ModuleWindow::Init()
 	}
 
 	return ret;
-}
-
-update_status ModuleWindow::Update() {
-
-	return UPDATE_CONTINUE;
 }
 
 // Called before quitting
@@ -78,49 +69,54 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-const void ModuleWindow::ToggleFullScreen() 
+void ModuleWindow::ToggleFullScreen() 
 {
 	Uint32 fullscreenFlag = SDL_WINDOW_FULLSCREEN;
 	bool isFullscreen = SDL_GetWindowFlags(window) & fullscreenFlag;
 	SDL_SetWindowFullscreen(window, isFullscreen ? 0 : fullscreenFlag);
 	SDL_ShowCursor(isFullscreen);
 
-	SDL_GetCurrentDisplayMode(0, &DM);
-	// If it was on fullscreen change make window a bit smaller than screen
+	unsigned w;	unsigned h;
 	if (isFullscreen)
 	{
-		DM.w -= 100;
-		DM.h -= 78;
+		w = previous_width;
+		h = previous_height;
 	}
-	unsigned w = DM.w;	unsigned h = DM.h;
+	else
+	{
+		SDL_GetDesktopDisplayMode(0, &DM);
+		w = DM.w; h = DM.h;
+		previous_width = screen_width;
+		previous_height = screen_height;
+	}
 	SetWindowSize(w, h, true);
 }
 
-const void ModuleWindow::ToggleVSync()
+void ModuleWindow::ToggleVSync()
 {
 	SDL_GL_SetSwapInterval(!SDL_GL_GetSwapInterval());
 }
 
-const void ModuleWindow::ToggleResizable()
+void ModuleWindow::ToggleResizable()
 {
 	Uint32 resizableFlag = SDL_WINDOW_RESIZABLE;
 	bool isResizable = SDL_GetWindowFlags(window) & resizableFlag;
 	SDL_SetWindowResizable(window, (SDL_bool)!isResizable);
 }
 
-const void ModuleWindow::ToggleBorderless()
+void ModuleWindow::ToggleBorderless()
 {
 	Uint32 resizableFlag = SDL_WINDOW_BORDERLESS;
 	bool isResizable = SDL_GetWindowFlags(window) & resizableFlag;
 	SDL_SetWindowBordered(window, (SDL_bool)!borderless);
 }
 
-const void ModuleWindow::SetWindowBrightness(int value)
+void ModuleWindow::SetWindowBrightness(int value)
 {
 	SDL_SetWindowBrightness(window, brightness);
 }
 
-const void ModuleWindow::SetWindowSize(unsigned& w, unsigned& h, bool useSDL)
+void ModuleWindow::SetWindowSize(unsigned& w, unsigned& h, bool useSDL)
 {
 	App->window->screen_width = w;
 	App->window->screen_height = h;

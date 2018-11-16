@@ -18,16 +18,16 @@ public:
 	virtual ~ModuleWindow();
 
 	bool Init();
-	update_status Update();
 	bool CleanUp();
 
-	const void ToggleFullScreen();
-	const void ToggleResizable();
-	const void ToggleVSync();
-	const void ToggleBorderless();
-	const void SetWindowBrightness(int value);
-	const void SetWindowSize(unsigned& w, unsigned& h, bool useSDL);
+	void ToggleFullScreen();
+	void ToggleResizable();
+	void ToggleVSync();
+	void ToggleBorderless();
+	void SetWindowBrightness(int value);
+	void SetWindowSize(unsigned& w, unsigned& h, bool useSDL);
 
+	// Window configuration variables
 	unsigned screen_width = SCREEN_WIDTH;
 	unsigned screen_height = SCREEN_HEIGHT;
 	bool fullscreen = FULLSCREEN;
@@ -35,6 +35,9 @@ public:
 	bool resizable = RESIZABLE;
 	bool borderless = BORDERLESS;
 	float brightness = BRIGHTNESS;
+
+	unsigned previous_width = SCREEN_WIDTH;
+	unsigned previous_height = SCREEN_HEIGHT;
 
 	//The window we'll be rendering to
 	SDL_Window* window = nullptr;

@@ -35,9 +35,6 @@ bool ModuleEditor::Init()
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Window
 
-	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
-	ImGui_ImplOpenGL3_Init(glsl_version);
-
 	// Add EditorWindows
 	editorWindows.push_back(scene = new WindowScene("Scene"));
 	editorWindows.push_back(about = new WindowAbout("About"));
@@ -45,6 +42,9 @@ bool ModuleEditor::Init()
 	editorWindows.push_back(performance = new WindowPerformance("performance"));
 	editorWindows.push_back(configuration = new WindowConfiguration("configuration"));
 	editorWindows.push_back(properties = new WindowProperties("properties"));
+
+	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
+	ImGui_ImplOpenGL3_Init(glsl_version);
 
 	// Setup style
 	ImGui::StyleColorsDark();
@@ -72,7 +72,7 @@ update_status ModuleEditor::PreUpdate()
 update_status ModuleEditor::Update()
 {
 	ShowMainMenuBar();
-	
+
 	//ImGui::ShowDemoWindow();	//Example Window
 	return update;
 }
@@ -80,9 +80,9 @@ update_status ModuleEditor::Update()
 // Called before quitting
 bool ModuleEditor::CleanUp()
 {
-	for (std::list<Window*>::iterator it_p = editorWindows.begin(); it_p != editorWindows.end(); it_p++)
+	for (std::list<Window*>::iterator it = editorWindows.begin(); it != editorWindows.end(); ++it)
 	{
-		RELEASE((*it_p));
+		RELEASE((*it));
 	}
 
 	editorWindows.clear();
@@ -97,12 +97,12 @@ bool ModuleEditor::CleanUp()
 
 void ModuleEditor::Draw()
 {
-	for (std::list<Window*>::iterator it_p = editorWindows.begin(); it_p != editorWindows.end(); it_p++)
+	for (std::list<Window*>::iterator it = editorWindows.begin(); it != editorWindows.end(); ++it)
 	{
-		if ((*it_p)->isActive())
+		if ((*it)->isActive())
 		{
 			ImGui::SetNextWindowSizeConstraints({ 10,10 }, { (float)App->window->screen_width, (float)App->window->screen_height });
-			(*it_p)->Draw();
+			(*it)->Draw();
 		}
 	}
 	ImGui::End();
@@ -111,7 +111,7 @@ void ModuleEditor::Draw()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-const void ModuleEditor::HandleInputs(SDL_Event& event) 
+void ModuleEditor::HandleInputs(SDL_Event& event) 
 {
 	ImGui_ImplSDL2_ProcessEvent(&event);
 }
@@ -136,7 +136,7 @@ void ModuleEditor::CreateDockSpace()
 	ImGui::DockSpace(dockspaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 }
 
-const void ModuleEditor::ShowMainMenuBar()
+void ModuleEditor::ShowMainMenuBar()
 {
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -176,7 +176,7 @@ const void ModuleEditor::ShowMainMenuBar()
 	}
 }
 
-const void ModuleEditor::ShowInBrowser(const char* url) const
+void ModuleEditor::ShowInBrowser(const char* url) const
 {
 	assert(url != nullptr);
 	ShellExecute(0, "open", url, 0, 0, SW_SHOW);

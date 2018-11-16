@@ -6,6 +6,8 @@
 #include "ModuleWindow.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleEditor.h"
+#include "WindowScene.h"
 #include "Point.h"
 #include "GL/glew.h"
 #include "SDL.h"

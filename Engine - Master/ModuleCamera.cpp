@@ -26,9 +26,12 @@ bool ModuleCamera::Init()
 
 update_status ModuleCamera::PreUpdate() 
 {
-	TranslateCameraInput();
-	RotateCameraInput();
-	CameraSpeedInput(5.0f);
+	if (App->editor->scene->IsFocused())
+	{
+		TranslateCameraInput();
+		RotateCameraInput();
+		CameraSpeedInput(5.0f);
+	}
 
 	return UPDATE_CONTINUE;
 }

@@ -13,7 +13,9 @@ ModuleRender::~ModuleRender()
 bool ModuleRender::Init()
 {
 	LOG("Creating Renderer context");
-	bool ret = true;
+
+	// Init SDL
+	LOG("Initializing SDL...");
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
@@ -25,18 +27,24 @@ bool ModuleRender::Init()
 	if (context == NULL)
 	{
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
-		ret = false;
+		return false;
 	}
 
+	int width = App->window->screen_width;
+	int	height = App->window->screen_height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
 
-	glewInit();
-	/*GLenum error = glewInit();
+	// Init Glew
+	LOG("Initializing Glew...");
+	GLenum error = glewInit();
 	if (error != GL_NO_ERROR)
 	{
-		LOG("Error initializing glew! Error: %s\n", gluErrorString(error));
-		ret = false;
-	}*/
+		LOG("Error initializing glew!");
+		return false;
+	}
 
+	// Init OpenGL
+	LOG("Initializing OpenGL...");
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
@@ -46,10 +54,7 @@ bool ModuleRender::Init()
 
 	glClearDepth(1.0f);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
-
-    int width, height;
-    SDL_GetWindowSize(App->window->window, &width, &height);
-    glViewport(0, 0, width, height);
+	glViewport(0, 0, width, height);
 
 	// Generate program with vertex and fragment shaders and load it to GL
 	program = App->shader->LoadShaders("Assets/Shaders/default.vs", "Assets/Shaders/default.fs");
@@ -62,7 +67,8 @@ bool ModuleRender::Init()
 
 	CreateFrameBuffer();
 
-	return ret;
+	LOG("Renderer context creation successful.");
+	return true;
 }
 
 update_status ModuleRender::PreUpdate()
