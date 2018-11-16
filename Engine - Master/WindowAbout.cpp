@@ -57,7 +57,7 @@ void WindowAbout::Draw()
 		App->editor->ShowInBrowser("https://www.libsdl.org/");
 
 	ImGui::NewLine(); ImGui::SameLine(30);
-	std::string assimpVersion = "Assimp - version ";
+	std::string assimpVersion = "Assimp ";
 	assimpVersion += std::to_string(aiGetVersionMajor()) + '.' + std::to_string(aiGetVersionMinor()) + '.' + std::to_string(aiGetVersionRevision());
 	if (ImGui::Selectable(assimpVersion.c_str(), false, 0, { 155, 13 }))
 		App->editor->ShowInBrowser("http://www.assimp.org/");
