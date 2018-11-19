@@ -1,5 +1,8 @@
 #ifndef __TEXTURE_H__
 #define __TEXTURE_H__
+#define NAME_SIZE 20
+#define PATH_SIZE 100
+#define EXTEN_SIZE 4
 
 enum Resize_Mode { nearest, linear };
 enum Wrap_Mode { clamp_to_boder, clamp, repeat, mirrored };
@@ -7,9 +10,9 @@ enum Wrap_Mode { clamp_to_boder, clamp, repeat, mirrored };
 class Texture 
 {
 public:
-	const char* name = "";
+	char name[NAME_SIZE] = "";
 	const char* path = "";
-	const char* extension = "";
+	char extension[EXTEN_SIZE] = "";
 	unsigned id = 0u;
 	int width = 0;
 	int height = 0;

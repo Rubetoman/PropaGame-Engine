@@ -132,7 +132,6 @@ void WindowConfiguration::Draw()
 				ImVec2 imageSize = { texture->height *conversionFactor, panelWidth };
 				ImGui::Image((ImTextureID)texture->path, imageSize);
 			}
-			ImGui::PopID();
 			ImGui::NewLine();
 		}
 	}

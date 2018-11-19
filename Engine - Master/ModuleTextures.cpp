@@ -56,8 +56,8 @@ Texture* ModuleTextures::loadTexture(const char* path)
 
 	App->file->splitPath(path, nullptr, &name, &extension);
 	nTexture->path = path;
-	nTexture->name = name.c_str();
-	nTexture->extension = extension.c_str();
+	strcpy_s(nTexture->name, NAME_SIZE, name.c_str());
+	strcpy_s(nTexture->extension, EXTEN_SIZE, extension.c_str());
 
 	if (!ilLoadImage(path))
 	{
