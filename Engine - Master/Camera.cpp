@@ -78,8 +78,8 @@ void Camera::SetFrustum(unsigned& w, unsigned& h)
 
 const void Camera::UpdatePitchYaw() 
 {
-	pitch = -math::RadToDeg(SDL_atanf(front.y / front.z));
-	yaw = -math::RadToDeg(SDL_atanf(front.x / front.z));
+	pitch = -math::RadToDeg(SDL_asinf(-front.y));
+	yaw = math::RadToDeg(SDL_atan2f(front.z , front.x));
 
 	if (math::IsNan(pitch))
 		pitch = 0.0f;
