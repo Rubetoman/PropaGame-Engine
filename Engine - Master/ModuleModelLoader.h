@@ -26,21 +26,15 @@ public:
 		unsigned vbo = 0u;
 		unsigned ibo = 0u;
 		unsigned vao = 0u;
-		unsigned material = 0u;
 		unsigned num_vertices = 0u;
 		unsigned num_indices = 0u;
-		unsigned texture = 0u;
-		unsigned texWidth = 0u;
-		unsigned texHeight = 0u;
+		Texture* texture;
+
 		AABB boundingBox;
 		math::float3 position = math::float3(0.0f, 0.0f, 0.0f);
 		math::float3 scale = math::float3(0.0f, 0.0f, 0.0f);
 	};
 
-	struct material
-	{
-		unsigned texture0 = 0u;
-	};
 
 	ModuleModelLoader();
 	~ModuleModelLoader();
@@ -49,16 +43,15 @@ public:
 	bool            CleanUp();
 
 	bool			LoadMesh(const char* path);
-	void			LoadMaterial(const char* path);
+	//void			LoadMaterial(const char* path);
 	void			GenerateMeshData(const aiScene* scene);
-	void			GenerateMaterialData(const aiScene* scene);
 	void			ChangeMeshTexture(const char* path);
 	void			DeleteMesh(const int index);
-	void			DeleteMaterial(const int index);
+	//void			DeleteMaterial(const int index);
 
 	const aiScene* scene = nullptr;
 	std::vector<mesh*>    meshes;
-	std::vector<material> materials;
+	//std::vector<material> materials;
 	math::float4x4        transform = math::float4x4::identity;
 };
 #endif /* __MODULEMODELLOADER_H__ */

@@ -31,15 +31,25 @@ bool ModuleTextures::CleanUp()
 {
 	for (int i = 0; i < textures.size(); ++i)
 	{
-		//unloadTexture((int)textures[i]);
+		unloadTexture(textures[i]);
 	}
+	ilShutDown();
 	return true;
 }
 
 
-GLuint ModuleTextures::loadTexture(const char* path)
+Texture* ModuleTextures::loadTexture(const char* path)
 {
 	assert(path != nullptr);
+	// Check the texture wasn't already loaded
+	for (std::vector<Texture*>::iterator it_m = textures.begin(); it_m != textures.end(); it_m++)
+	{
+		if ((*it_m)->path == path)
+		{
+			LOG("%c already loaded.", path);
+			return *it_m;
+		}
+	}
 
 	ILuint imageID;				// Create an image ID as a ULuint
 	ILboolean success;			// Create a flag to keep track of success/failure
@@ -47,6 +57,7 @@ GLuint ModuleTextures::loadTexture(const char* path)
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
 
+	Texture* nTexture = new Texture();
 
 	if (!ilLoadImage(path))
 	{
@@ -66,13 +77,12 @@ GLuint ModuleTextures::loadTexture(const char* path)
 			{
 				LOG("Image couldn't be found");
 				free(newPath);
-				return 0;
+				return nTexture;
 			}
 		}
 		free(newPath);
 	}
 
-	Texture* nTexture = new Texture();
 	std::string name = path;
 
 	App->file->splitPath(path, nullptr, &name, nullptr);
@@ -82,6 +92,8 @@ GLuint ModuleTextures::loadTexture(const char* path)
 	GLuint textureID = 0;							// Create a texture ID as a GLuint
 	glGenTextures(1, &textureID);					// Generate a new texture
 	glBindTexture(GL_TEXTURE_2D, textureID);		// Bind the texture to a name
+
+	nTexture->id = textureID;
 
 	// If the image is flipped (i.e. upside-down and mirrored, flip it the right way up!)
 	ILinfo ImageInfo;
@@ -182,24 +194,36 @@ GLuint ModuleTextures::loadTexture(const char* path)
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
-	glBindTexture(GL_TEXTURE_2D, 0);
 	ilDeleteImages(1, &imageID);		// Because we have already copied image data into texture data we can release memory used by image.
+	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	textures.push_back(nTexture);
 
 	LOG("Texture creation successful.");
-	return textureID;					// Return the GLuint to the texture so you can use it!
+	return nTexture;					// Return the GLuint to the texture so you can use it!
 }
 
-void ModuleTextures::unloadTexture(const unsigned& id)
+void ModuleTextures::unloadTexture(Texture* texture)
 {
-	glDeleteTextures(1, &id);
+	if (texture != nullptr)
+	{
+		for (std::vector<Texture*>::iterator it_m = textures.begin(); it_m != textures.end(); it_m++)
+		{
+			if ((*it_m)->id == texture->id)
+			{
+				textures.erase(it_m);
+				break;
+			}
+		}
+		glDeleteTextures(1, &texture->id);
+		delete texture;
+	}
 	//textures.erase(textures.begin() + id-1);
 }
 
-void ModuleTextures::ReloadTexture(Texture& new_texture, GLuint& texture) 
+/*void ModuleTextures::ReloadTexture(Texture& new_texture, Texture& texture) 
 {
-	unloadTexture(texture);
+	glDeleteTextures(1, &texture.id);
 
 	texture = loadTexture(new_texture.path);
 
@@ -208,5 +232,5 @@ void ModuleTextures::ReloadTexture(Texture& new_texture, GLuint& texture)
 		LOG("Error: Texture cannot be loaded");
 	}
 
-}
+}*/
 

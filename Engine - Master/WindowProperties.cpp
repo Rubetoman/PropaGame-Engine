@@ -1,5 +1,7 @@
 #include "WindowProperties.h"
 #include "ModuleModelLoader.h"
+#include "ModuleTextures.h"
+#include "Texture.h"
 
 WindowProperties::WindowProperties(const char* name) : Window(name)
 {
@@ -47,11 +49,11 @@ void WindowProperties::Draw()
 			{
 				if (mesh->texture != 0)
 				{
-					ImGui::Text("Texture Size:\n Width: %d | Height: %d", mesh->texWidth, mesh->texHeight);
+					ImGui::Text("Texture Size:\n Width: %d | Height: %d", mesh->texture->width, mesh->texture->height);
 					float panelWidth = ImGui::GetWindowContentRegionWidth();
-					float conversionFactor = panelWidth / mesh->texWidth;
-					ImVec2 imageSize = { mesh->texHeight *conversionFactor, panelWidth };
-					ImGui::Image((ImTextureID)mesh->texture, imageSize);
+					float conversionFactor = panelWidth / mesh->texture->width;
+					ImVec2 imageSize = { mesh->texture->height *conversionFactor, panelWidth };
+					ImGui::Image((ImTextureID)mesh->texture->id, imageSize);
 				}
 				else
 					ImGui::Text("No texture");

@@ -9,6 +9,7 @@ class Texture
 public:
 	const char* name = "";
 	const char* path = "";
+	unsigned id = 0u;
 	int width = 0;
 	int height = 0;
 	char* format = "";

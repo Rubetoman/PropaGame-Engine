@@ -102,7 +102,7 @@ update_status ModuleRender::Update()
 	{
 		const ModuleModelLoader::mesh* mesh = App->model_loader->meshes[i];
 
-		RenderMesh(mesh, App->model_loader->materials[mesh->material], programText,
+		RenderMesh(mesh, programText,
 			App->model_loader->transform, view, proj);
 	}
 
@@ -137,8 +137,8 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 	CreateFrameBuffer();
 }
 
-void ModuleRender::RenderMesh(const ModuleModelLoader::mesh* mesh, const ModuleModelLoader::material& material,
-	unsigned program, const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj)
+void ModuleRender::RenderMesh(const ModuleModelLoader::mesh* mesh, unsigned program,
+	const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj)
 {
 	assert(mesh != nullptr);
 	//Use shaders loaded in program
@@ -148,9 +148,12 @@ void ModuleRender::RenderMesh(const ModuleModelLoader::mesh* mesh, const ModuleM
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, material.texture0);
-	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
+	if (mesh->texture->id != 0)
+	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mesh->texture->id);
+		glUniform1i(glGetUniformLocation(program, "texture0"), 0);
+	}
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);

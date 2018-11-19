@@ -24,10 +24,10 @@ void ModuleFileManager::manageFile(const char* path)
 	}
 	else if (extension == "png" || extension == "dds" || extension == "jpg")
 	{
-		for (int i = 0; i < App->model_loader->materials.size(); ++i)
+		/*for (int i = 0; i < App->model_loader->materials.size(); ++i)
 		{
 			App->textures->unloadTexture(App->model_loader->materials[i].texture0);
-		}
+		}*/
 		App->model_loader->ChangeMeshTexture(path);
 	}
 	else

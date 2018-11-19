@@ -20,9 +20,9 @@ public:
 
 	bool Init();
 	bool CleanUp();
-	GLuint loadTexture(const char* path);
-	void unloadTexture(const unsigned& id);
-	void ReloadTexture(Texture& new_texture, GLuint& texture);
+	Texture* loadTexture(const char* path);
+	void unloadTexture(Texture* texture);
+	//void ReloadTexture(Texture& new_texture, GLuint& texture);
 
 	std::vector<Texture*> textures;
 };

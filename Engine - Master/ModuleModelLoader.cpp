@@ -23,11 +23,12 @@ bool ModuleModelLoader::CleanUp()
 	{
 		DeleteMesh(i);
 	}
+	meshes.clear();
 
-	for (unsigned i = 0u; i < materials.size(); ++i)
+	/*for (unsigned i = 0u; i < materials.size(); ++i)
 	{
 		DeleteMaterial(i);
-	}
+	}*/
 	return true;
 }
 
@@ -44,12 +45,11 @@ bool ModuleModelLoader::LoadMesh(const char* path)
 	App->camera->BBtoLook = new AABB({ .0f, .0f, .0f }, { .0f, .0f, .0f });
 
 	GenerateMeshData(scene);
-	GenerateMaterialData(scene);
 	aiReleaseImport(scene);
 	return true;
 }
 
-void ModuleModelLoader::LoadMaterial(const char* path)
+/*void ModuleModelLoader::LoadMaterial(const char* path)
 {
 	assert(path != nullptr);
 	const aiMaterial* src_material = nullptr;
@@ -65,7 +65,7 @@ void ModuleModelLoader::LoadMaterial(const char* path)
 	}
 
 	materials.push_back(gen_material);
-}
+}*/
 
 void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 {
@@ -141,7 +141,7 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		
 		//glBindVertexArray(0);
 
-		gen_mesh->material = src_mesh->mMaterialIndex;
+		//gen_mesh->material = src_mesh->mMaterialIndex;
 		gen_mesh->num_vertices = src_mesh->mNumVertices;
 		gen_mesh->num_indices = src_mesh->mNumFaces * 3;
 
@@ -149,68 +149,58 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		gen_mesh->boundingBox.Enclose((math::float3*)src_mesh->mVertices, gen_mesh->num_vertices);
 		App->camera->BBtoLook->Enclose(gen_mesh->boundingBox);
 
-		meshes.push_back(gen_mesh);
-	}
-	App->camera->FitCamera(*App->camera->BBtoLook);
-}
+		// Load material
+		const aiMaterial* src_material = scene->mMaterials[src_mesh->mMaterialIndex];
 
-void ModuleModelLoader::GenerateMaterialData(const aiScene* scene)
-{
-	assert(scene != nullptr);
-	for (unsigned i = 0u; i < scene->mNumMaterials; ++i)
-	{
-		const aiMaterial* src_material = scene->mMaterials[i];
-
-		material gen_material;
-		
 		aiString file;
 		aiTextureMapping mapping;
 		unsigned uvindex = 0;
 
 		if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
 		{
-			gen_material.texture0 = App->textures->loadTexture(file.data);
-			if (!gen_material.texture0)
+			gen_mesh->texture = App->textures->loadTexture(file.data);
+			if (gen_mesh->texture == 0)
 			{
 				LOG("Texture couldn't be found on Game dir, looking on Assets/Models/");
 				char * path = (char *)malloc(1 + strlen("Assets/Models/") + strlen(file.data));
 				strcpy(path, "Assets/Models/");
 				strcat(path, file.data);
-				gen_material.texture0 = App->textures->loadTexture(path);
-				free(path);
-			}
-			if (!gen_material.texture0)
-			{
-				LOG("Texture couldn't be found on Game dir, looking on Assets/Models/textures/");
-				char * path = (char *)malloc(1 + strlen("Assets/Models/textures/") + strlen(file.data));
-				strcpy(path, "Assets/Models/textures/");
-				strcat(path, file.data);
-				gen_material.texture0 = App->textures->loadTexture(path);
+				gen_mesh->texture = App->textures->loadTexture(path);
+				if (gen_mesh->texture == 0)
+				{
+					LOG("Texture couldn't be found on Game dir, looking on Assets/Models/textures/");
+					char * path = (char *)malloc(1 + strlen("Assets/Models/textures/") + strlen(file.data));
+					strcpy(path, "Assets/Models/textures/");
+					strcat(path, file.data);
+					gen_mesh->texture = App->textures->loadTexture(path);
+					if (gen_mesh->texture == 0)
+					{
+						LOG("Texture couldn't be found.");
+					}
+				}
 				free(path);
 			}
 		}
-		meshes[i]->texture = gen_material.texture0;
-		if ((gen_material.texture0) > 1)
+		else
 		{
-			meshes[i]->texHeight = App->textures->textures[gen_material.texture0 - 2]->height;
-			meshes[i]->texWidth = App->textures->textures[gen_material.texture0 - 2]->width;
+			LOG("Couldn't read the texture from .fbx file");
 		}
-		materials.push_back(gen_material);
+		meshes.push_back(gen_mesh);
 	}
+	App->camera->FitCamera(*App->camera->BBtoLook);
 }
 
 void ModuleModelLoader::ChangeMeshTexture(const char * path)
 {
 	assert(path != nullptr);
 	unsigned width, height;
-	GLuint tex_id = App->textures->loadTexture(path);
+	Texture* tex = App->textures->loadTexture(path);
 
-	for (std::vector<material>::iterator it_m = materials.begin(); it_m != materials.end(); it_m++)
+	//App->textures->unloadTexture((*meshes.begin())->texture);
+
+	for (std::vector<mesh*>::iterator it_m = meshes.begin(); it_m != meshes.end(); it_m++)
 	{
-		//glDeleteTextures(1, (GLuint*)(*it_m)->texture);
-		(it_m)->texture0 = tex_id;
-		//(it_m)->texWidth = width;
-		//(it_m)->texHeight = height;
+		(*it_m)->texture = tex;
 	}
 }
 
@@ -232,10 +222,10 @@ void ModuleModelLoader::DeleteMesh(const int index)
 	}
 }
 
-void ModuleModelLoader::DeleteMaterial(const int index)
+/*void ModuleModelLoader::DeleteMaterial(const int index)
 {
 	if (materials[index].texture0 != 0)
 	{
 		App->textures->unloadTexture(materials[index].texture0);
 	}
-}
+}*/
