@@ -99,6 +99,7 @@ void ModuleCamera::RotateCameraInput()
 	{
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 		{
+			mainCamera->UpdatePitchYaw();
 			SDL_ShowCursor(SDL_DISABLE);
 			MouseInputTranslation(App->input->GetMousePosition());
 			mainCamera->LookAt(math::float3(0, 0, 0));
