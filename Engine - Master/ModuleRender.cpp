@@ -148,7 +148,7 @@ void ModuleRender::RenderMesh(const ModuleModelLoader::mesh* mesh, unsigned prog
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
 
-	if (mesh->texture->id != 0)
+	if (mesh->texture != nullptr)
 	{
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mesh->texture->id);

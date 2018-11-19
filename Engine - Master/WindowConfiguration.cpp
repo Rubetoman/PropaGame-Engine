@@ -101,11 +101,6 @@ void WindowConfiguration::Draw()
 		ImGui::InputFloat("Mouse Sensitivity", &App->camera->mouse_sensitivity);
 		ImGui::PopItemWidth();
 	}
-	if (ImGui::CollapsingHeader("Input"))
-	{
-		ImGui::Text("Mouse Position:");
-		ImGui::Text("X: %d | Y: %d", App->input->GetMousePosition().x, App->input->GetMousePosition().y);
-	}
 
 	if (ImGui::CollapsingHeader("Mesh"))
 	{
@@ -114,25 +109,32 @@ void WindowConfiguration::Draw()
 			App->model_loader->ChangeMeshTexture("Checkers_Texture.jpg");
 		}
 	}
-	/*if (ImGui::CollapsingHeader("Textures"))
+
+	if (ImGui::CollapsingHeader("Input"))
+	{
+		ImGui::Text("Mouse Position:");
+		ImGui::Text("X: %d | Y: %d", App->input->GetMousePosition().x, App->input->GetMousePosition().y);
+	}
+
+	if (ImGui::CollapsingHeader("Textures"))
 	{
 		ImGui::Text("Loaded textures:");
-		for (std::vector<Texture*>::iterator it_m = App->textures->textures.begin(); it_m != App->textures->textures.end(); it_m++)
+		for (std::vector<Texture*>::iterator it_t = App->textures->textures.begin(); it_t != App->textures->textures.end(); ++it_t)
 		{
-			Texture* tex = (*it_m);
-
-			if (ImGui::CollapsingHeader(tex->name))
+			Texture* texture = (*it_t);
+			if (ImGui::CollapsingHeader(texture->name))
 			{
-				ImGui::Text("Texture name: %s", tex->name);
-				ImGui::Text("Texture path: %s", tex->name);
-				ImGui::Text("Texture Size:\n Width: %d | Height: %d", tex->width, tex->height);
+				ImGui::Text("Texture name: %s", texture->name);
+				ImGui::Text("Texture path: %s", texture->path);
+				ImGui::Text("Texture Size:\n Width: %d | Height: %d", texture->width, texture->height);
 				float panelWidth = ImGui::GetWindowContentRegionWidth();
-				float conversionFactor = panelWidth / tex->width;
-				ImVec2 imageSize = { tex->height *conversionFactor, panelWidth };
-				ImGui::Image((ImTextureID)tex->path, imageSize);
+				float conversionFactor = panelWidth / texture->width;
+				ImVec2 imageSize = { texture->height *conversionFactor, panelWidth };
+				ImGui::Image((ImTextureID)texture->path, imageSize);
 			}
+			ImGui::PopID();
 			ImGui::NewLine();
 		}
-	}*/
+	}
 	ImGui::End();
 }

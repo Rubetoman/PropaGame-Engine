@@ -159,27 +159,6 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
 		{
 			gen_mesh->texture = App->textures->loadTexture(file.data);
-			if (gen_mesh->texture == 0)
-			{
-				LOG("Texture couldn't be found on Game dir, looking on Assets/Models/");
-				char * path = (char *)malloc(1 + strlen("Assets/Models/") + strlen(file.data));
-				strcpy(path, "Assets/Models/");
-				strcat(path, file.data);
-				gen_mesh->texture = App->textures->loadTexture(path);
-				if (gen_mesh->texture == 0)
-				{
-					LOG("Texture couldn't be found on Game dir, looking on Assets/Models/textures/");
-					char * path = (char *)malloc(1 + strlen("Assets/Models/textures/") + strlen(file.data));
-					strcpy(path, "Assets/Models/textures/");
-					strcat(path, file.data);
-					gen_mesh->texture = App->textures->loadTexture(path);
-					if (gen_mesh->texture == 0)
-					{
-						LOG("Texture couldn't be found.");
-					}
-				}
-				free(path);
-			}
 		}
 		else
 		{

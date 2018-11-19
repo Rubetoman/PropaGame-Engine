@@ -9,10 +9,11 @@ class Texture
 public:
 	const char* name = "";
 	const char* path = "";
+	const char* extension = "";
 	unsigned id = 0u;
 	int width = 0;
 	int height = 0;
-	char* format = "";
+	const char* format = "";
 	Resize_Mode resize_mode = linear;
 	Wrap_Mode wrap_mode = clamp;
 	bool use_mipmap = false;

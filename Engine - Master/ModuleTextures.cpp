@@ -41,15 +41,6 @@ bool ModuleTextures::CleanUp()
 Texture* ModuleTextures::loadTexture(const char* path)
 {
 	assert(path != nullptr);
-	// Check the texture wasn't already loaded
-	for (std::vector<Texture*>::iterator it_m = textures.begin(); it_m != textures.end(); it_m++)
-	{
-		if ((*it_m)->path == path)
-		{
-			LOG("%c already loaded.", path);
-			return *it_m;
-		}
-	}
 
 	ILuint imageID;				// Create an image ID as a ULuint
 	ILboolean success;			// Create a flag to keep track of success/failure
@@ -59,20 +50,34 @@ Texture* ModuleTextures::loadTexture(const char* path)
 
 	Texture* nTexture = new Texture();
 
+	// SOLVE THIS TEMP VAR COPY
+	std::string name = nTexture->name;
+	std::string extension = nTexture->extension;
+
+	App->file->splitPath(path, nullptr, &name, &extension);
+	nTexture->path = path;
+	nTexture->name = name.c_str();
+	nTexture->extension = extension.c_str();
+
 	if (!ilLoadImage(path))
 	{
 		// If we failed to open the image file in the first place...
-		LOG("Image couldn't be found on Game dir, looking on Assets/Models/");
-		char * newPath = (char *)malloc(1 + strlen("Assets/Models/") + strlen(path));
+		LOG("Image couldn't be found on %s, looking on Assets/Models/", path);
+		char * newPath = (char *)malloc(1 + strlen("Assets/Models/") + strlen(nTexture->name) + strlen(".") + strlen(nTexture->extension));
 		strcpy(newPath, "Assets/Models/");
-		strcat(newPath, path);
+		strcat(newPath, nTexture->name);
+		strcat(newPath, ".");
+		strcat(newPath, nTexture->extension);
 
 		if (!ilLoadImage(newPath))
 		{
-			LOG("Image couldn't be found on Game dir, looking on Assets/Models/textures/");
-			newPath = (char *)malloc(1 + strlen("Assets/Models/textures/") + strlen(path));
+			LOG("Image couldn't be found on %s, looking on Assets/Models/textures/", newPath);
+			newPath = (char *)malloc(1 + strlen("Assets/Models/textures/") + strlen(nTexture->name) + strlen(".") + strlen(nTexture->extension));
 			strcpy(newPath, "Assets/Models/textures/");
-			strcat(newPath, path);
+			strcat(newPath, nTexture->name);
+			strcat(newPath, ".");
+			strcat(newPath, nTexture->extension);
+
 			if (!ilLoadImage(newPath))
 			{
 				LOG("Image couldn't be found");
@@ -80,14 +85,20 @@ Texture* ModuleTextures::loadTexture(const char* path)
 				return nTexture;
 			}
 		}
-		free(newPath);
+		nTexture->path = newPath;
+		//free(newPath);
 	}
 
-	std::string name = path;
-
-	App->file->splitPath(path, nullptr, &name, nullptr);
-	nTexture->path = path;
-	nTexture->name = name.c_str();
+	// Check the texture wasn't already loaded
+	for (std::vector<Texture*>::iterator it_m = textures.begin(); it_m != textures.end(); ++it_m)
+	{
+		if (strcmp((*it_m)->path, nTexture->path) == 0)
+		{
+			LOG("%s already loaded.", nTexture->path);
+			delete nTexture;
+			return *it_m;
+		}
+	}
 
 	GLuint textureID = 0;							// Create a texture ID as a GLuint
 	glGenTextures(1, &textureID);					// Generate a new texture

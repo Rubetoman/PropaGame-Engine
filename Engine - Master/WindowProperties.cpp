@@ -21,7 +21,7 @@ void WindowProperties::Draw()
 		ImGui::Text("Current loaded file has %d meshes", App->model_loader->meshes.size());
 		ImGui::NewLine();
 		int count = 0;
-		for (std::vector<ModuleModelLoader::mesh*>::iterator it_m = App->model_loader->meshes.begin(); it_m != App->model_loader->meshes.end(); it_m++)
+		for (std::vector<ModuleModelLoader::mesh*>::iterator it_m = App->model_loader->meshes.begin(); it_m != App->model_loader->meshes.end(); ++it_m)
 		{
 			ModuleModelLoader::mesh* mesh = (*it_m);
 			ImGui::Text("Mesh name: %s", mesh->name.c_str());
@@ -49,6 +49,7 @@ void WindowProperties::Draw()
 			{
 				if (mesh->texture != 0)
 				{
+					ImGui::Text("Texture name: %s", mesh->texture->name);
 					ImGui::Text("Texture Size:\n Width: %d | Height: %d", mesh->texture->width, mesh->texture->height);
 					float panelWidth = ImGui::GetWindowContentRegionWidth();
 					float conversionFactor = panelWidth / mesh->texture->width;
