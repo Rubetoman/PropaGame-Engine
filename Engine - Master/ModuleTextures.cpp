@@ -55,7 +55,7 @@ Texture* ModuleTextures::loadTexture(const char* path)
 	std::string extension = nTexture->extension;
 
 	App->file->splitPath(path, nullptr, &name, &extension);
-	nTexture->path = path;
+	strcpy_s(nTexture->path, PATH_SIZE, path);
 	strcpy_s(nTexture->name, NAME_SIZE, name.c_str());
 	strcpy_s(nTexture->extension, EXTEN_SIZE, extension.c_str());
 
@@ -85,8 +85,8 @@ Texture* ModuleTextures::loadTexture(const char* path)
 				return nTexture;
 			}
 		}
-		nTexture->path = newPath;
-		//free(newPath);
+		strcpy_s(nTexture->path, PATH_SIZE, newPath);
+		free(newPath);
 	}
 
 	// Check the texture wasn't already loaded

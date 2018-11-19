@@ -11,7 +11,7 @@ class Texture
 {
 public:
 	char name[NAME_SIZE] = "";
-	const char* path = "";
+	char path[PATH_SIZE] = "";
 	char extension[EXTEN_SIZE] = "";
 	unsigned id = 0u;
 	int width = 0;
