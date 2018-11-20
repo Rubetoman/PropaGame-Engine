@@ -55,9 +55,28 @@ Texture* ModuleTextures::loadTexture(const char* path)
 	std::string extension = nTexture->extension;
 
 	App->file->splitPath(path, nullptr, &name, &extension);
+
+	if(PATH_SIZE < sizeof(path))
+	{ 
+		LOG("Error, loading texture, path too long"); 
+		return nTexture;
+	}
 	strcpy_s(nTexture->path, PATH_SIZE, path);
+	
+	if (NAME_SIZE < sizeof(name.c_str()))
+	{
+		LOG("Error, loading texture, name too long");
+		return nTexture;
+	}
 	strcpy_s(nTexture->name, NAME_SIZE, name.c_str());
+
+	if (NAME_SIZE < sizeof(extension.c_str())) 
+	{
+		LOG("Error, loading texture, extension too long"); 
+		return nTexture;
+	}
 	strcpy_s(nTexture->extension, EXTEN_SIZE, extension.c_str());
+
 
 	if (!ilLoadImage(path))
 	{

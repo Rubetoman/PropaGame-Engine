@@ -1,7 +1,7 @@
 #ifndef __TEXTURE_H__
 #define __TEXTURE_H__
-#define NAME_SIZE 20
-#define PATH_SIZE 100
+#define NAME_SIZE 50
+#define PATH_SIZE 250
 #define EXTEN_SIZE 4
 
 enum Resize_Mode { nearest, linear };

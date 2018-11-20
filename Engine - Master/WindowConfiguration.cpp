@@ -130,7 +130,7 @@ void WindowConfiguration::Draw()
 				float panelWidth = ImGui::GetWindowContentRegionWidth();
 				float conversionFactor = panelWidth / texture->width;
 				ImVec2 imageSize = { texture->height *conversionFactor, panelWidth };
-				ImGui::Image((ImTextureID)texture->path, imageSize);
+				ImGui::Image((ImTextureID)texture->id, imageSize);
 			}
 			ImGui::NewLine();
 		}
