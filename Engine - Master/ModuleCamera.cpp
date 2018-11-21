@@ -111,22 +111,22 @@ void ModuleCamera::RotateCameraInput()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) 
 	{
-		mainCamera->pitch += mainCamera->rotation_speed * App->deltaTime;
+		mainCamera->pitch += mainCamera->rotation_speed * App->time->delta_time;
 		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) 
 	{
-		mainCamera->pitch -= mainCamera->rotation_speed * App->deltaTime;
+		mainCamera->pitch -= mainCamera->rotation_speed * App->time->delta_time;
 		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) 
 	{
-		mainCamera->yaw -= mainCamera->rotation_speed * App->deltaTime;
+		mainCamera->yaw -= mainCamera->rotation_speed * App->time->delta_time;
 		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) 
 	{
-		mainCamera->yaw += mainCamera->rotation_speed * App->deltaTime;
+		mainCamera->yaw += mainCamera->rotation_speed * App->time->delta_time;
 		mainCamera->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F))
@@ -176,8 +176,8 @@ void ModuleCamera::MouseInputTranslation(const iPoint& mouse_position)
 	x_offset *= mainCamera->rotation_speed * mouse_sensitivity;
 	y_offset *= mainCamera->rotation_speed * mouse_sensitivity;
 
-	mainCamera->position -= mainCamera->side.Mul(x_offset) * App->deltaTime;
-	mainCamera->position -= mainCamera->up.Mul(y_offset) * App->deltaTime;
+	mainCamera->position -= mainCamera->side.Mul(x_offset) * App->time->delta_time;
+	mainCamera->position -= mainCamera->up.Mul(y_offset) * App->time->delta_time;
 }
 
 void ModuleCamera::MouseInputRotation(const iPoint& mouse_position)
@@ -205,8 +205,8 @@ void ModuleCamera::MouseInputRotation(const iPoint& mouse_position)
 
 void ModuleCamera::WheelInputTranslation(const iPoint& wheel_motion)
 {
-	mainCamera->position -= mainCamera->side.Mul(wheel_motion.x) * 10 * mainCamera->speed * App->deltaTime;
-	mainCamera->position -= mainCamera->front.Mul(-wheel_motion.y) * 10 * mainCamera->speed * App->deltaTime;
+	mainCamera->position -= mainCamera->side.Mul(wheel_motion.x) * 10 * mainCamera->speed * App->time->delta_time;
+	mainCamera->position -= mainCamera->front.Mul(-wheel_motion.y) * 10 * mainCamera->speed * App->time->delta_time;
 }
 
 void ModuleCamera::FitCamera(const AABB &boundingBox)

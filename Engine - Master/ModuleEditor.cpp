@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "ModuleTime.h"
 #include "Window.h"
 #include "WindowScene.h"
 #include "WindowAbout.h"
@@ -61,9 +62,9 @@ update_status ModuleEditor::PreUpdate()
 
 	// Update performance
 	performance->fps_log.erase(performance->fps_log.begin());
-	performance->fps_log.push_back(App->FPS);
+	performance->fps_log.push_back(App->time->FPS);
 	performance->ms_log.erase(performance->ms_log.begin());
-	performance->ms_log.push_back(App->deltaTime * 1000);
+	performance->ms_log.push_back(App->time->delta_time);
 
 	return UPDATE_CONTINUE;
 }

@@ -11,12 +11,14 @@
 #include "ModuleShader.h"
 #include "ModuleModelLoader.h"
 #include "ModuleFileManager.h"
+#include "ModuleTime.h"
 
 using namespace std;
 
 Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
+	modules.push_back(time = new ModuleTime());
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(window = new ModuleWindow());
 	modules.push_back(renderer = new ModuleRender());
@@ -40,9 +42,6 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	lastTickCount = 0;
-	deltaTime = 0;
-
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();
 
@@ -52,8 +51,6 @@ bool Application::Init()
 update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
-
-	Tick();
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PreUpdate();
@@ -75,21 +72,6 @@ bool Application::CleanUp()
 		ret = (*it)->CleanUp();
 
 	return ret;
-}
-
-void Application::Tick()
-{
-	frameCounter++;
-	float ticksNow = SDL_GetTicks();
-	deltaTime = (ticksNow - lastTickCount) / 1000.0f;
-	auxTimer += deltaTime;
-	lastTickCount = ticksNow;
-	if (auxTimer >= 1.0f)
-	{
-		FPS = frameCounter;
-		frameCounter = 0;
-		auxTimer = 0.0f;
-	}
 }
 
 #endif /*__APPLICATION_CPP__*/

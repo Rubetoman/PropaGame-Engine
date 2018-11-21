@@ -2,65 +2,74 @@
 #define __TIMER_H__
 
 #include "SDL.h"
-class MsTimer 
-{
-	Uint32 startTicks = 0;		// Ticks number at timer start
-	Uint32 lastTickCount = 0;	// How many ticks passed last time it was checked
-	Uint32 time = 0;		// Time in milliseconds
 
-	
+class Timer
+{
 public:
+	bool running = false;
+
+private:
+	// Milliseconds
+	Uint32 start_ticks = 0;		// Ticks number at timer start
+	Uint32 time = 0;			// Time in milliseconds
+	Uint32 skiped_time = 0;		
+
+	// Microseconds
+	Uint32 start_ticks_mc = 0;	// Ticks number at timer start
+	Uint32 time_mc = 0;			// Time in microseconds
+	Uint32 skiped_time_mc = 0;			
+	const Uint64 frequency = SDL_GetPerformanceFrequency();
+
+public:
+	Timer() {};
+	~Timer() {};
+
 	inline void Start()
 	{
-		startTicks = SDL_GetTicks();
+		start_ticks = SDL_GetTicks();
+		start_ticks_mc = SDL_GetPerformanceCounter();
+		running = true;
 	}
 
 	inline Uint32 Read()
 	{
-		return (SDL_GetTicks() - startTicks);
+		if (running)
+			time = (SDL_GetTicks() - start_ticks + skiped_time);
+		return time;
+	}
+
+	inline float Read_Seconds()
+	{
+		if(running)
+			time = (SDL_GetTicks() - start_ticks + skiped_time) / 1000.0f;
+		return time;
+	}
+
+	inline Uint32 Read_Mc()
+	{
+		if(running)
+			time = (SDL_GetPerformanceCounter() - start_ticks_mc + skiped_time_mc) * 1000 / frequency;
+		return time;
+	}
+
+	inline void Pause()
+	{
+		skiped_time += (SDL_GetTicks() - start_ticks);
+		skiped_time_mc += (SDL_GetPerformanceCounter() - start_ticks_mc) * 1000 / frequency;
+		running = false;
 	}
 
 	inline void Stop()
 	{
-		time = (SDL_GetTicks() - startTicks);
+		running = false;
 	}
 
 	inline void Reset()
 	{
-		time = 0;
+		start_ticks = SDL_GetTicks();
+		skiped_time = 0;
+		skiped_time_mc = 0;
 	}
 };
-
-class McTimer
-{
-private:
-	Uint64 startTicks = 0;		// Ticks number at timer start
-	Uint64 lastTickCount = 0;	// How many ticks passed last time it was checked
-	Uint64 time = 0;			// Time in milliseconds
-	static Uint64 frequency;
-
-public:
-	inline void Start()
-	{
-		startTicks = SDL_GetPerformanceCounter();
-	}
-
-	inline Uint64 Read()
-	{
-		return (SDL_GetPerformanceCounter() - startTicks) * 1000/ frequency;
-	}
-
-	inline void Stop()
-	{
-		time = (SDL_GetPerformanceCounter() - startTicks) * 1000/ frequency;
-	}
-
-	inline void Reset()
-	{
-		time = 0;
-	}
-};
-
-Uint64 McTimer::frequency = SDL_GetPerformanceFrequency();
 
 #endif // __TIMER_H__

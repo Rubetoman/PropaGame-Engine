@@ -8,6 +8,7 @@
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
 #include "WindowScene.h"
+#include "ModuleTime.h"
 #include "Point.h"
 #include "GL/glew.h"
 #include "SDL.h"
