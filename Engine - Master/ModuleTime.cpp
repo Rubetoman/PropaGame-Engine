@@ -82,8 +82,7 @@ void ModuleTime::Stop_Game()
 	total_frame_count = 0u;
 }
 
-void ModuleTime::Run_Frame()
+void ModuleTime::Step()
 {
-	game_running = Game_State::Running;
-	game_clock.Start();
+	step_frame = true;
 }

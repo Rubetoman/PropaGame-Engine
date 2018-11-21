@@ -20,7 +20,7 @@ public:
 	void Start_Game();
 	void Pause_Game(bool pause);
 	void Stop_Game();
-	void Run_Frame();
+	void Step();
 
 public:
 
@@ -42,9 +42,10 @@ public:
 	Timer fps_timer;		// Timer reseted each second
 
 	Game_State game_running = Game_State::Stoped;	// Is the game running?
+	bool step_frame = false;	// If the clock is to be paused again after one step
 	
 private:
-	unsigned frame_count = 0u;			// Frames counter
+	unsigned frame_count = 0u;	// Frames counter
 };
 
 #endif /*__MODULETIME_H__*/

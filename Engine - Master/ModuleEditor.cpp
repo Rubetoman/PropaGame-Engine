@@ -198,9 +198,19 @@ void ModuleEditor::ShowMainMenuBar()
 			else if(App->time->game_running == Game_State::Paused)
 				App->time->Pause_Game(false);
 		}
-		if (ImGui::Button("Step"))
+		// Step
+		if (App->time->step_frame)
 		{
-
+			App->time->Pause_Game(true);
+			App->time->step_frame = false;
+		}
+		if (App->time->game_running != Game_State::Running)
+		{
+			if (ImGui::Button("Step"))
+			{
+				App->time->step_frame = true;
+				App->time->Pause_Game(false);
+			}
 		}
 		ImGui::Separator();
 		ImGui::EndMainMenuBar();
