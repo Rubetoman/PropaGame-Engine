@@ -64,13 +64,13 @@ update_status ModuleEditor::PreUpdate()
 	performance->fps_log.erase(performance->fps_log.begin());
 	performance->fps_log.push_back(App->time->FPS);
 	performance->ms_log.erase(performance->ms_log.begin());
-	performance->ms_log.push_back(App->time->real_delta_time);
+	performance->ms_log.push_back(App->time->real_delta_time * 1000.0f);
 
 	// Update game performance
 	configuration->fps_game_log.erase(configuration->fps_game_log.begin());
 	configuration->fps_game_log.push_back(App->time->FPS);
 	configuration->ms_game_log.erase(configuration->ms_game_log.begin());
-	configuration->ms_game_log.push_back(App->time->delta_time);
+	configuration->ms_game_log.push_back(App->time->delta_time * 1000.0f);
 
 	return UPDATE_CONTINUE;
 }

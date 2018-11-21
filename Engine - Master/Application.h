@@ -26,6 +26,8 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	void FinishUpdate();
+
 public:
 	ModuleRender* renderer = nullptr;
 	ModuleWindow* window = nullptr;

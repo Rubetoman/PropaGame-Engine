@@ -107,6 +107,10 @@ void WindowConfiguration::Draw()
 	if (ImGui::CollapsingHeader("Time"))
 	{
 		// FPS & Miliseconds for each frame
+		static int fps = App->time->max_fps;
+		if (ImGui::SliderInt("MaxFPS", &fps, 1, 120))
+			App->time->max_fps = fps;
+
 		char title[35];
 		sprintf_s(title, 25, "Framerate %0.1f", fps_game_log[fps_game_log.size() - 1]);
 		ImGui::PlotLines("##framerate", &fps_game_log[0], fps_game_log.size(), 0, title, 0.0f, 200.0f, ImVec2(310, 50));

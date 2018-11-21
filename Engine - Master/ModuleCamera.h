@@ -55,7 +55,7 @@ public:
 	// Mouse 
 	bool new_click = true;
 	bool new_scroll = true;
-	float mouse_sensitivity = 3;
+	float mouse_sensitivity = 0.003;
 	float last_x = SCREEN_WIDTH / 2;
 	float last_y = SCREEN_HEIGHT / 2;
 

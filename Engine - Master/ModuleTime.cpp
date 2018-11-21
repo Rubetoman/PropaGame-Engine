@@ -26,12 +26,12 @@ update_status ModuleTime::Update()
 	// Time update
 	real_time = real_time_clock.Read_Seconds();
 
-	real_delta_time = frame_timer.Read(); 	// Time for one frame (Real Time)
+	real_delta_time = frame_timer.Read_Seconds(); 	// Time for one frame (Real Time)
 	if (game_running == Game_State::Running)
 	{
-		++total_frame_count;				// Game frames count
-		delta_time = frame_timer.Read();	// Time for one frame (Game Clock)
-		time = game_clock.Read_Seconds();	// Time since the game started (Game Clock)
+		++total_frame_count;						// Game frames count
+		delta_time = frame_timer.Read_Seconds();	// Time for one frame (Game Clock)
+		time = game_clock.Read_Seconds();			// Time since the game started (Game Clock)
 	}
 	frame_timer.Reset();
 

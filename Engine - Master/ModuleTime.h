@@ -44,6 +44,8 @@ public:
 	Game_State game_running = Game_State::Stoped;	// Is the game running?
 	bool step_frame = false;	// If the clock is to be paused again after one step
 	
+	unsigned max_fps = 144u;
+
 private:
 	unsigned frame_count = 0u;	// Frames counter
 };

@@ -61,6 +61,8 @@ update_status Application::Update()
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
 
+	FinishUpdate();
+
 	return ret;
 }
 
@@ -72,6 +74,16 @@ bool Application::CleanUp()
 		ret = (*it)->CleanUp();
 
 	return ret;
+}
+
+void Application::FinishUpdate()
+{
+	if (App->time->game_running == Game_State::Running)
+	{
+		int ms_cap = 1000 / time->max_fps;
+		if (time->frame_timer.Read() < ms_cap)
+			SDL_Delay(ms_cap - time->frame_timer.Read());
+	}
 }
 
 #endif /*__APPLICATION_CPP__*/

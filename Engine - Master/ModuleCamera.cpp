@@ -30,7 +30,7 @@ update_status ModuleCamera::PreUpdate()
 	{
 		TranslateCameraInput();
 		RotateCameraInput();
-		CameraSpeedInput(5.0f);
+		CameraSpeedInput(3.0f);
 	}
 
 	return UPDATE_CONTINUE;
