@@ -19,8 +19,8 @@ public:
 	math::float3&	side = math::float3(0, 0, 0);
 	math::float3&	up = math::float3(0, 0, 0);			// Up vector of the camera
 
-	float			speed = 1.0f;
-	float			rotation_speed = 65.0f;
+	float			speed = 0.01f;
+	float			rotation_speed = 0.065f;
 
 	// Camera transformation matrix
 	//math::float4x4 model_view;

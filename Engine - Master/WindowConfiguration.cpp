@@ -4,6 +4,8 @@
 WindowConfiguration::WindowConfiguration(const char* name) : Window(name)
 {
 	active = true;
+	fps_game_log.resize(50);
+	ms_game_log.resize(100);
 }
 
 WindowConfiguration::~WindowConfiguration()
@@ -102,18 +104,29 @@ void WindowConfiguration::Draw()
 		ImGui::PopItemWidth();
 	}
 
-	if (ImGui::CollapsingHeader("Mesh"))
+	if (ImGui::CollapsingHeader("Time"))
 	{
-		if (ImGui::Button("Use Chekers Texture"))
-		{
-			App->model_loader->ChangeMeshTexture("Checkers_Texture.jpg");
-		}
-	}
+		// FPS & Miliseconds for each frame
+		char title[35];
+		sprintf_s(title, 25, "Framerate %0.1f", fps_game_log[fps_game_log.size() - 1]);
+		ImGui::PlotLines("##framerate", &fps_game_log[0], fps_game_log.size(), 0, title, 0.0f, 200.0f, ImVec2(310, 50));
+		sprintf_s(title, 25, "Milliseconds %0.1f", ms_game_log[ms_game_log.size() - 1]);
+		ImGui::PlotHistogram("##framerate", &ms_game_log[0], ms_game_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 50));
+		ImGui::Separator();
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "Time since App start: %f seconds", App->time->real_time);
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "Frames since App start: %u", App->time->real_total_frame_count);
 
-	if (ImGui::CollapsingHeader("Input"))
-	{
-		ImGui::Text("Mouse Position:");
-		ImGui::Text("X: %d | Y: %d", App->input->GetMousePosition().x, App->input->GetMousePosition().y);
+		if(App->time->game_running == Game_State::Stoped)
+		{
+			ImGui::TextDisabled("Time since Game start: 0.0000000 seconds");
+			ImGui::TextDisabled("Frames since Game start: 0");
+		}
+		else
+		{
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Time since Game start: %f seconds", App->time->time);
+			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Frames since Game start: %u", App->time->total_frame_count);
+		}
+
 	}
 
 	if (ImGui::CollapsingHeader("Textures"))
@@ -134,6 +147,20 @@ void WindowConfiguration::Draw()
 			}
 			ImGui::NewLine();
 		}
+	}
+
+	if (ImGui::CollapsingHeader("Mesh"))
+	{
+		if (ImGui::Button("Use Chekers Texture"))
+		{
+			App->model_loader->ChangeMeshTexture("Checkers_Texture.jpg");
+		}
+	}
+
+	if (ImGui::CollapsingHeader("Input"))
+	{
+		ImGui::Text("Mouse Position:");
+		ImGui::Text("X: %d | Y: %d", App->input->GetMousePosition().x, App->input->GetMousePosition().y);
 	}
 	ImGui::End();
 }

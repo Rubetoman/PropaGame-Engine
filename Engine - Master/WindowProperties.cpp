@@ -14,7 +14,7 @@ WindowProperties::~WindowProperties()
 
 void WindowProperties::Draw()
 {
-	ImGui::Begin("Properties", &active, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_AlwaysVerticalScrollbar);
+	ImGui::Begin("Model Info", &active, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
 	if (App->model_loader->meshes.size() > 0)
 	{

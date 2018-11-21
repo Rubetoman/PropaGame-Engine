@@ -12,6 +12,8 @@ public:
 
 	void Draw();
 
+	std::vector<float> fps_game_log;
+	std::vector<float> ms_game_log;
 };
 
 #endif /*__WINDOWCONFIGURATION_H__*/

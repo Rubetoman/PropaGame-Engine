@@ -12,7 +12,7 @@ Camera::~Camera()
 
 void Camera::TranslateCamera(math::float3 direction)
 {
-	position += direction * speed * App->time->delta_time;
+	position += direction * speed * App->time->real_delta_time;
 }
 
 void Camera::RotateCamera() 

@@ -11,7 +11,7 @@ public:
 private:
 	// Milliseconds
 	Uint32 start_ticks = 0;		// Ticks number at timer start
-	Uint32 time = 0;			// Time in milliseconds
+	float time = 0.0f;			// Time in milliseconds
 	Uint32 skiped_time = 0;		
 
 	// Microseconds

@@ -64,7 +64,13 @@ update_status ModuleEditor::PreUpdate()
 	performance->fps_log.erase(performance->fps_log.begin());
 	performance->fps_log.push_back(App->time->FPS);
 	performance->ms_log.erase(performance->ms_log.begin());
-	performance->ms_log.push_back(App->time->delta_time);
+	performance->ms_log.push_back(App->time->real_delta_time);
+
+	// Update game performance
+	configuration->fps_game_log.erase(configuration->fps_game_log.begin());
+	configuration->fps_game_log.push_back(App->time->FPS);
+	configuration->ms_game_log.erase(configuration->ms_game_log.begin());
+	configuration->ms_game_log.push_back(App->time->delta_time);
 
 	return UPDATE_CONTINUE;
 }
@@ -155,15 +161,16 @@ void ModuleEditor::ShowMainMenuBar()
 			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
 			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
 			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
-			ImGui::Separator();
-			if (ImGui::MenuItem("Properties", NULL, properties->isActive())) { properties->toggleActive(); }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window"))
 		{
+			if (ImGui::MenuItem("Scene", NULL, scene->isActive())) { scene->toggleActive(); }
+			ImGui::Separator();
 			if (ImGui::MenuItem("Performance", NULL, performance->isActive())) { performance->toggleActive(); }
 			if (ImGui::MenuItem("Console", NULL, console->isActive())) { console->toggleActive(); }
 			if (ImGui::MenuItem("Configuration", NULL, configuration->isActive())) { configuration->toggleActive(); }
+			if (ImGui::MenuItem("Model Info", NULL, properties->isActive())) { properties->toggleActive(); }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Help"))
@@ -173,6 +180,29 @@ void ModuleEditor::ShowMainMenuBar()
 			if (ImGui::MenuItem("View GIT Repository")) { ShowInBrowser("https://github.com/Rubetoman/SDL-OpenGL-Engine-V2"); }
 			ImGui::EndMenu();
 		}
+		ImGui::SameLine(300); ImGui::Separator();
+		if (App->time->game_running == Game_State::Stoped)
+		{
+			if (ImGui::Button("Play"))
+				App->time->Start_Game();
+		}
+		else
+		{
+			if (ImGui::Button("Stop"))
+				App->time->Stop_Game();
+		}
+		if (ImGui::Button("Pause"))
+		{
+			if(App->time->game_running == Game_State::Running)
+				App->time->Pause_Game(true);
+			else if(App->time->game_running == Game_State::Paused)
+				App->time->Pause_Game(false);
+		}
+		if (ImGui::Button("Step"))
+		{
+
+		}
+		ImGui::Separator();
 		ImGui::EndMainMenuBar();
 	}
 }

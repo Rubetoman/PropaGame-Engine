@@ -5,6 +5,8 @@
 #include "Timer.h"
 #include "SDL.h"
 
+enum class Game_State{ Running, Paused, Stoped };
+
 class ModuleTime : public Module
 {
 public:
@@ -16,8 +18,9 @@ public:
 	bool CleanUp();
 
 	void Start_Game();
-	void Pause_Game();
+	void Pause_Game(bool pause);
 	void Stop_Game();
+	void Run_Frame();
 
 public:
 
@@ -28,6 +31,7 @@ public:
 	int FPS = 0;						// Number of frames passed in one second
 
 	// Real Time Clock
+	unsigned real_total_frame_count = 0u;	// App graphics frames since game start
 	float real_time = 0.0f;
 	float real_delta_time = 0.0f;
 
@@ -37,7 +41,7 @@ public:
 	Timer frame_timer;		// Timer reseted each frame
 	Timer fps_timer;		// Timer reseted each second
 
-	bool game_running = false;	// Is the game running?
+	Game_State game_running = Game_State::Stoped;	// Is the game running?
 	
 private:
 	unsigned frame_count = 0u;			// Frames counter
