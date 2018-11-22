@@ -14,6 +14,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl.h"
+#include "debugdraw.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;

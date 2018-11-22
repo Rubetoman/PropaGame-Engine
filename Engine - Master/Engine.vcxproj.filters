@@ -168,12 +168,17 @@
     <ClCompile Include="WindowConfiguration.cpp">
       <Filter>Modules\EditorWindows</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="WindowProperties.cpp">
       <Filter>Modules\EditorWindows</Filter>
     </ClCompile>
     <ClCompile Include="WindowHardware.cpp">
       <Filter>Modules\EditorWindows</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTime.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleDebugDraw.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -413,9 +418,17 @@
     <ClInclude Include="Timer.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleTime.h" />
     <ClInclude Include="WindowHardware.h">
       <Filter>Modules\EditorWindows</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleTime.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleDebugDraw.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="debugdraw.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,13 +4,16 @@
 ModuleModelLoader::ModuleModelLoader()
 {
 }
+
 ModuleModelLoader::~ModuleModelLoader()
 {
 }
+
 bool ModuleModelLoader::Init()
 {
 	return LoadMesh("Assets/Models/BakerHouse.fbx");
 }
+
 update_status ModuleModelLoader::Update()
 {
 	return UPDATE_CONTINUE;

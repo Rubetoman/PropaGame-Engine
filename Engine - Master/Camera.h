@@ -24,7 +24,7 @@ public:
 
 	// Camera transformation matrix
 	//math::float4x4 model_view;
-	//math::float4x4 view_matrix;
+	math::float4x4 view_matrix;
 	//math::float4x4 result_matrix;
 
 	// Camera frustum
@@ -42,6 +42,7 @@ public:
 	// Frustum
 	const void		InitFrustum();
 	math::float4x4	ProjectionMatrix();
+	math::float4x4  GetViewMatrix();
 	void			SetFrustum(unsigned& w, unsigned& h);
 	const void		UpdatePitchYaw();
 };

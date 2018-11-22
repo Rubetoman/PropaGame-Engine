@@ -90,8 +90,9 @@ update_status ModuleRender::Update()
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &Model[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &App->camera->mainCamera->LookAt(App->camera->mainCamera->position + App->camera->mainCamera->front)[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &App->camera->mainCamera->ProjectionMatrix()[0][0]);
+	dd::xzSquareGrid(10, 100, 0, 1, ddVec3(0, 0, 0));
 	DrawCoordinates();
-	DrawPlane();
+	//DrawPlane();
 	glUseProgram(0);
 
 	//Draw meshes

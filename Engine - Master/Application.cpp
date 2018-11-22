@@ -12,6 +12,7 @@
 #include "ModuleModelLoader.h"
 #include "ModuleFileManager.h"
 #include "ModuleTime.h"
+#include "ModuleDebugDraw.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ Application::Application()
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(file = new ModuleFileManager());
 	modules.push_back(model_loader = new ModuleModelLoader());
+	modules.push_back(debug_draw = new ModuleDebugDraw());
 }
 
 Application::~Application()
