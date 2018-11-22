@@ -18,7 +18,9 @@ void WindowScene::Draw()
 	ImGui::Image((ImTextureID)App->renderer->renderedTexture, { (float)App->window->screen_width, (float)App->window->screen_height }, { 0,1 }, { 1,0 });
 
 
-	focus = ImGui::IsWindowFocused();
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) != KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) != KEY_REPEAT)
+		focus = ImGui::IsMouseHoveringWindow();
+
 	ImGui::End();
 }
 

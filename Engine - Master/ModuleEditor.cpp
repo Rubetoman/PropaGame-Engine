@@ -79,7 +79,7 @@ update_status ModuleEditor::Update()
 {
 	ShowMainMenuBar();
 
-	ImGui::ShowDemoWindow();	//Example Window
+	//ImGui::ShowDemoWindow();	//Example Window
 	return update;
 }
 
