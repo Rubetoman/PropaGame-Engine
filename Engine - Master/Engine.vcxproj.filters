@@ -168,12 +168,23 @@
     <ClCompile Include="WindowConfiguration.cpp">
       <Filter>Modules\EditorWindows</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="WindowProperties.cpp">
       <Filter>Modules\EditorWindows</Filter>
     </ClCompile>
     <ClCompile Include="WindowHardware.cpp">
       <Filter>Modules\EditorWindows</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTime.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Other\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScene.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -413,9 +424,20 @@
     <ClInclude Include="Timer.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleTime.h" />
     <ClInclude Include="WindowHardware.h">
       <Filter>Modules\EditorWindows</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleTime.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Other\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScene.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -456,6 +478,9 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{9303a084-0d31-4eaf-b50d-e1d8921405b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other\Components">
+      <UniqueIdentifier>{413df4ea-5aec-4512-a596-ed6f33d70030}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

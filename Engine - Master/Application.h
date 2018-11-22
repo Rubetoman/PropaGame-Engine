@@ -15,6 +15,7 @@ class ModuleShader;
 class ModuleModelLoader;
 class ModuleFileManager;
 class ModuleTime;
+class ModuleScene;
 
 class Application
 {
@@ -39,6 +40,7 @@ public:
 	ModuleModelLoader* model_loader = nullptr;
 	ModuleFileManager* file = nullptr;
 	ModuleTime* time = nullptr;
+	ModuleScene* scene = nullptr;
 
 private:
 
