@@ -16,7 +16,7 @@ void WindowAbout::Draw()
 {
 	ImGui::Begin(name.c_str(), &active);   // Pointer to bool variable (close when click on button)
 	ImGui::Text(TITLE);
-	ImGui::Text("Version:	BT - 1");
+	ImGui::Text("Version:	BT - 2");
 	ImGui::Text("Games are not free of propaganda.");
 	ImGui::Text("C/C++ engine made by: ");
 	ImGui::NewLine(); ImGui::SameLine(30);
