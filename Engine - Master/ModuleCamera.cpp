@@ -33,6 +33,13 @@ update_status ModuleCamera::PreUpdate()
 		CameraSpeedInput(3.0f);
 	}
 
+	// Check when the mouse is right click is up
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP) 
+	{
+		SDL_ShowCursor(SDL_ENABLE);
+		new_click = true;
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -104,7 +111,8 @@ void ModuleCamera::RotateCameraInput()
 			MouseInputTranslation(App->input->GetMousePosition());
 			mainCamera->LookAt(math::float3(0, 0, 0));
 		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) 
+		{
 			SDL_ShowCursor(SDL_ENABLE);
 			new_click = true;
 		}
@@ -138,10 +146,6 @@ void ModuleCamera::RotateCameraInput()
 	{
 		SDL_ShowCursor(SDL_DISABLE);
 		MouseInputRotation(App->input->GetMousePosition());
-	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP) {
-		SDL_ShowCursor(SDL_ENABLE);
-		new_click = true;
 	}
 }
 
