@@ -1,11 +1,16 @@
 #include "WindowConfiguration.h"
 #include "ModuleWindow.h"
+#include "mmgr/mmgr.h"
 
 WindowConfiguration::WindowConfiguration(const char* name) : Window(name)
 {
 	active = true;
 	fps_game_log.resize(50);
 	ms_game_log.resize(100);
+
+	fps_log.resize(100);
+	ms_log.resize(100);
+	mem_log.resize(100);
 }
 
 WindowConfiguration::~WindowConfiguration()
@@ -104,18 +109,47 @@ void WindowConfiguration::Draw()
 		ImGui::PopItemWidth();
 	}
 
+	if (ImGui::CollapsingHeader("Performance"))
+	{
+		static int fps = App->time->max_fps;
+		if (ImGui::SliderInt("MaxFPS", &fps, 1, 144))
+			App->time->max_fps = fps;
+
+		// FPS & Miliseconds for each frame
+		char title[35];
+		sprintf_s(title, 25, "Framerate %0.1f", fps_log[fps_log.size() - 1]);
+		ImGui::PlotLines("##framerate", &fps_log[0], fps_log.size(), 0, title, 0.0f, 200.0f, ImVec2(310, 50));
+		sprintf_s(title, 25, "Milliseconds %0.1f", ms_log[ms_log.size() - 1]);
+		ImGui::PlotLines("##framerate", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 50));
+
+		// Memory stats
+		sMStats stats = m_getMemoryStatistics();
+		mem_log.erase(mem_log.begin());
+		mem_log.push_back((float)stats.totalReportedMemory);
+		sprintf_s(title, 35, "Memory Consumption (Bytes) %0.1f", mem_log[mem_log.size() - 1]);
+		ImGui::PlotLines("##memory", &mem_log[0], mem_log.size(), 0, title, 0.0f, (float)stats.peakReportedMemory * 1.2f, ImVec2(310, 50));
+		ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
+		ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
+		ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
+		ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
+		ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
+		ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
+		ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
+		ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
+		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+	}
+
 	if (ImGui::CollapsingHeader("Time"))
 	{
 		// FPS & Miliseconds for each frame
-		static int fps = App->time->max_fps;
-		if (ImGui::SliderInt("MaxFPS", &fps, 1, 120))
-			App->time->max_fps = fps;
-
 		char title[35];
 		sprintf_s(title, 25, "Framerate %0.1f", fps_game_log[fps_game_log.size() - 1]);
 		ImGui::PlotLines("##framerate", &fps_game_log[0], fps_game_log.size(), 0, title, 0.0f, 200.0f, ImVec2(310, 50));
 		sprintf_s(title, 25, "Milliseconds %0.1f", ms_game_log[ms_game_log.size() - 1]);
-		ImGui::PlotHistogram("##framerate", &ms_game_log[0], ms_game_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 50));
+		ImGui::PlotLines("##framerate", &ms_game_log[0], ms_game_log.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 50));
+		
+		ImGui::SliderFloat("Time Scale", &App->time->time_scale, 0.1f, 5.0f, "%0.1f");
+
 		ImGui::Separator();
 		ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "Time since App start: %f seconds", App->time->real_time);
 		ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "Frames since App start: %u", App->time->real_total_frame_count);

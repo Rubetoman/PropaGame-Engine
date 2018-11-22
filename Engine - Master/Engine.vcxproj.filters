@@ -165,16 +165,16 @@
     <ClCompile Include="WindowConsole.cpp">
       <Filter>Modules\EditorWindows</Filter>
     </ClCompile>
-    <ClCompile Include="WindowPerformance.cpp">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClCompile>
     <ClCompile Include="WindowConfiguration.cpp">
       <Filter>Modules\EditorWindows</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="WindowProperties.cpp">
       <Filter>Modules\EditorWindows</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleTime.cpp" />
+    <ClCompile Include="WindowHardware.cpp">
+      <Filter>Modules\EditorWindows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -404,9 +404,6 @@
     <ClInclude Include="WindowConsole.h">
       <Filter>Modules\EditorWindows</Filter>
     </ClInclude>
-    <ClInclude Include="WindowPerformance.h">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClInclude>
     <ClInclude Include="WindowConfiguration.h">
       <Filter>Modules\EditorWindows</Filter>
     </ClInclude>
@@ -417,6 +414,9 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTime.h" />
+    <ClInclude Include="WindowHardware.h">
+      <Filter>Modules\EditorWindows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\Assets\Shaders\Default.fs">

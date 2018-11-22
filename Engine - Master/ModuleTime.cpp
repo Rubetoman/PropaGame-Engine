@@ -30,8 +30,8 @@ update_status ModuleTime::Update()
 	if (game_running == Game_State::Running)
 	{
 		++total_frame_count;						// Game frames count
-		delta_time = frame_timer.Read_Seconds();	// Time for one frame (Game Clock)
-		time = game_clock.Read_Seconds();			// Time since the game started (Game Clock)
+		delta_time = frame_timer.Read_Seconds() / time_scale;	// Time for one frame (Game Clock)
+		time = time_scale * game_clock.Read_Seconds();			// Time since the game started (Game Clock)
 	}
 	frame_timer.Reset();
 

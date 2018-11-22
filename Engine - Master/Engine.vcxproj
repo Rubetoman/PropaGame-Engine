@@ -160,7 +160,7 @@
     <ClInclude Include="WindowAbout.h" />
     <ClInclude Include="WindowConfiguration.h" />
     <ClInclude Include="WindowConsole.h" />
-    <ClInclude Include="WindowPerformance.h" />
+    <ClInclude Include="WindowHardware.h" />
     <ClInclude Include="WindowProperties.h" />
     <ClInclude Include="WindowScene.h" />
   </ItemGroup>
@@ -222,7 +222,7 @@
     <ClCompile Include="WindowAbout.cpp" />
     <ClCompile Include="WindowConfiguration.cpp" />
     <ClCompile Include="WindowConsole.cpp" />
-    <ClCompile Include="WindowPerformance.cpp" />
+    <ClCompile Include="WindowHardware.cpp" />
     <ClCompile Include="WindowProperties.cpp" />
     <ClCompile Include="WindowScene.cpp" />
   </ItemGroup>

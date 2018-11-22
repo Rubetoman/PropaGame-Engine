@@ -9,7 +9,7 @@
 #include "WindowScene.h"
 #include "WindowAbout.h"
 #include "WindowConsole.h"
-#include "WindowPerformance.h"
+#include "WindowHardware.h"
 #include "WindowConfiguration.h"
 #include "WindowProperties.h"
 
@@ -39,7 +39,7 @@ bool ModuleEditor::Init()
 	editorWindows.push_back(scene = new WindowScene("Scene"));
 	editorWindows.push_back(about = new WindowAbout("About"));
 	editorWindows.push_back(console = new WindowConsole("console"));
-	editorWindows.push_back(performance = new WindowPerformance("performance"));
+	editorWindows.push_back(hardware = new WindowHardware("hardware"));
 	editorWindows.push_back(configuration = new WindowConfiguration("configuration"));
 	editorWindows.push_back(properties = new WindowProperties("properties"));
 
@@ -61,10 +61,10 @@ update_status ModuleEditor::PreUpdate()
 	CreateDockSpace();
 
 	// Update performance
-	performance->fps_log.erase(performance->fps_log.begin());
-	performance->fps_log.push_back(App->time->FPS);
-	performance->ms_log.erase(performance->ms_log.begin());
-	performance->ms_log.push_back(App->time->real_delta_time * 1000.0f);
+	configuration->fps_log.erase(configuration->fps_log.begin());
+	configuration->fps_log.push_back(App->time->FPS);
+	configuration->ms_log.erase(configuration->ms_log.begin());
+	configuration->ms_log.push_back(App->time->real_delta_time * 1000.0f);
 
 	// Update game performance
 	configuration->fps_game_log.erase(configuration->fps_game_log.begin());
@@ -79,7 +79,7 @@ update_status ModuleEditor::Update()
 {
 	ShowMainMenuBar();
 
-	//ImGui::ShowDemoWindow();	//Example Window
+	ImGui::ShowDemoWindow();	//Example Window
 	return update;
 }
 
@@ -167,10 +167,12 @@ void ModuleEditor::ShowMainMenuBar()
 		{
 			if (ImGui::MenuItem("Scene", NULL, scene->isActive())) { scene->toggleActive(); }
 			ImGui::Separator();
-			if (ImGui::MenuItem("Performance", NULL, performance->isActive())) { performance->toggleActive(); }
-			if (ImGui::MenuItem("Console", NULL, console->isActive())) { console->toggleActive(); }
 			if (ImGui::MenuItem("Configuration", NULL, configuration->isActive())) { configuration->toggleActive(); }
+			ImGui::Separator();
 			if (ImGui::MenuItem("Model Info", NULL, properties->isActive())) { properties->toggleActive(); }
+			if (ImGui::MenuItem("Hardware Info", NULL, hardware->isActive())) { hardware->toggleActive(); }
+			ImGui::Separator();
+			if (ImGui::MenuItem("Console", NULL, console->isActive())) { console->toggleActive(); }
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Help"))

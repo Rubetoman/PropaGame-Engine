@@ -78,12 +78,9 @@ bool Application::CleanUp()
 
 void Application::FinishUpdate()
 {
-	if (App->time->game_running == Game_State::Running)
-	{
-		int ms_cap = 1000 / time->max_fps;
-		if (time->frame_timer.Read() < ms_cap)
-			SDL_Delay(ms_cap - time->frame_timer.Read());
-	}
+	int ms_cap = 1000 / time->max_fps;
+	if (time->frame_timer.Read() < ms_cap)
+		SDL_Delay(ms_cap - time->frame_timer.Read());
 }
 
 #endif /*__APPLICATION_CPP__*/

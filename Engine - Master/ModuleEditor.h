@@ -10,7 +10,7 @@
 #include "WindowScene.h"
 #include "WindowAbout.h"
 #include "WindowConsole.h"
-#include "WindowPerformance.h"
+#include "WindowHardware.h"
 #include "WindowConfiguration.h"
 #include "WindowProperties.h"
 #include "SDL/include/SDL.h"
@@ -24,7 +24,7 @@ class Application;
 class WindowScene;
 class WindowAbout;
 class WindowConsole;
-class WindowPerformance;
+class WindowHardware;
 class WindowConfiguration;
 class WindowProperties;
 
@@ -63,7 +63,7 @@ public:
 	WindowScene* scene = nullptr;
 	WindowAbout* about = nullptr;
 	WindowConsole* console = nullptr;
-	WindowPerformance* performance = nullptr;
+	WindowHardware* hardware = nullptr;
 	WindowConfiguration* configuration = nullptr;
 	WindowProperties* properties = nullptr;
 

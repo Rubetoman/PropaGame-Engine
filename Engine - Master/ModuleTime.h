@@ -26,7 +26,7 @@ public:
 
 	unsigned total_frame_count = 0u;	// App graphics frames since game start
 	float time = 0.0f;					// Second since game start (Game Clock)
-	float time_scale = 0.0f;			// Scale at which game time is passing
+	float time_scale = 1.0f;			// Scale at which game time is passing
 	float delta_time = 0.0f;			// Miliseconds for one frame
 	int FPS = 0;						// Number of frames passed in one second
 
