@@ -4,8 +4,9 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 
-GameObject::GameObject()
+GameObject::GameObject(const char * name) : name(name)
 {
+
 }
 
 GameObject::~GameObject()

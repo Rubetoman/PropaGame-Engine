@@ -12,9 +12,11 @@ public:
 	~ModuleScene();
 
 	update_status Update();
+	bool CleanUp();
 
-	GameObject* CreateGameObject();
+	GameObject* CreateGameObject(const char * name);
 
+	GameObject* root = nullptr;
 	std::vector<GameObject*> game_objects;
 };
 

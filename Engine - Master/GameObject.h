@@ -11,7 +11,7 @@ enum class component_type;
 class GameObject
 {
 public:
-	GameObject();
+	GameObject(const char * name);
 	~GameObject();
 
 	void Update();

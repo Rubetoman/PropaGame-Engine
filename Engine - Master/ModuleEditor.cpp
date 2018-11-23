@@ -5,6 +5,8 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleTime.h"
+#include "ModuleScene.h"
+
 #include "Window.h"
 #include "WindowScene.h"
 #include "WindowAbout.h"
@@ -12,6 +14,8 @@
 #include "WindowHardware.h"
 #include "WindowConfiguration.h"
 #include "WindowProperties.h"
+
+
 
 ModuleEditor::ModuleEditor()
 {
@@ -163,6 +167,14 @@ void ModuleEditor::ShowMainMenuBar()
 			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
 			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
 			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Game Object"))
+		{
+			if (ImGui::MenuItem("Create Empty")) 
+			{ 
+				App->scene->CreateGameObject("Empty GameObject"); 
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window"))
