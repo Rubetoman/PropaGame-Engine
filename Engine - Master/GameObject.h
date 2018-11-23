@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#define GO_NAME_SIZE 24
+
 class Component;
 class ComponentTransform;
 enum class component_type;
@@ -20,7 +22,7 @@ public:
 	Component* CreateComponent(component_type type);
 
 	bool active = true;
-	std::string name;
+	std::string name = "GameObject";
 	
 	// Hierarchy
 	GameObject* parent = nullptr;

@@ -173,7 +173,7 @@ void ModuleEditor::ShowMainMenuBar()
 		{
 			if (ImGui::MenuItem("Create Empty")) 
 			{ 
-				App->scene->CreateGameObject("Empty GameObject"); 
+				App->scene->CreateGameObject("GameObject"); 
 			}
 			ImGui::EndMenu();
 		}
