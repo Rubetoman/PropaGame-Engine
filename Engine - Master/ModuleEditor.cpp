@@ -70,7 +70,7 @@ update_status ModuleEditor::PreUpdate()
 	configuration->fps_game_log.erase(configuration->fps_game_log.begin());
 	configuration->fps_game_log.push_back(App->time->FPS);
 	configuration->ms_game_log.erase(configuration->ms_game_log.begin());
-	configuration->ms_game_log.push_back(App->time->delta_time * 1000.0f);
+	configuration->ms_game_log.push_back(App->time->delta_time * App->time->time_scale * 1000.0f);
 
 	return UPDATE_CONTINUE;
 }
@@ -183,6 +183,7 @@ void ModuleEditor::ShowMainMenuBar()
 			ImGui::EndMenu();
 		}
 		ImGui::SameLine(300); ImGui::Separator();
+		// Show Play/Pause/Stop/Step buttons (depending on current Game State)
 		if (App->time->game_running == Game_State::Stoped)
 		{
 			if (ImGui::Button("Play"))
