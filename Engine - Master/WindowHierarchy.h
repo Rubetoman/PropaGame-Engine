@@ -2,6 +2,7 @@
 #define __WINDOWHIERARCHY_H__
 
 #include "Window.h"
+#include "GameObject.h"
 
 class WindowHierarchy : public Window
 {
@@ -10,6 +11,7 @@ public:
 	~WindowHierarchy();
 
 	void Draw();
+	GameObject* selected = false;
 };
 
 #endif /*__WINDOWHIERARCHY_H__*/

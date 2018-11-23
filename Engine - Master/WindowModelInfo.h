@@ -3,11 +3,11 @@
 
 #include "Window.h"
 
-class WindowProperties : public Window
+class WindowModelInfo : public Window
 {
 public:
-	WindowProperties(const char* name);
-	~WindowProperties();
+	WindowModelInfo(const char* name);
+	~WindowModelInfo();
 
 	void Draw();
 };

@@ -13,7 +13,7 @@
 #include "WindowConsole.h"
 #include "WindowHardware.h"
 #include "WindowConfiguration.h"
-#include "WindowProperties.h"
+#include "WindowModelInfo.h"
 #include "WindowHierarchy.h"
 #include "WindowInspector.h"
 
@@ -30,7 +30,7 @@ class WindowAbout;
 class WindowConsole;
 class WindowHardware;
 class WindowConfiguration;
-class WindowProperties;
+class WindowModelInfo;
 class WindowHierarchy;
 class WindowInspector;
 
@@ -71,7 +71,7 @@ public:
 	WindowConsole* console = nullptr;
 	WindowHardware* hardware = nullptr;
 	WindowConfiguration* configuration = nullptr;
-	WindowProperties* properties = nullptr;
+	WindowModelInfo* properties = nullptr;
 	WindowHierarchy* hierarchy = nullptr;
 	WindowInspector* inspector = nullptr;
 

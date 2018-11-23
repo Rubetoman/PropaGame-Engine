@@ -2,7 +2,6 @@
 
 #include "Application.h"
 #include "ModuleScene.h"
-#include "GameObject.h"
 #include <vector>
 #include <string>
 
@@ -18,12 +17,25 @@ WindowHierarchy::~WindowHierarchy()
 
 void WindowHierarchy::Draw()
 {
-	if (ImGui::Begin("Hierarchy"))
+	if (ImGui::Begin("Hierarchy", &active, ImGuiWindowFlags_NoFocusOnAppearing))
 	{
 		
 		for (std::vector<GameObject*>::iterator go = App->scene->game_objects.begin(); go != App->scene->game_objects.end(); ++go)
 		{
-			ImGui::Text((*go)->name.c_str());
+			unsigned flags = ImGuiTreeNodeFlags_Leaf;
+			flags |= (*go) == selected ? ImGuiTreeNodeFlags_Selected : 0;
+
+			if (ImGui::TreeNodeEx((*go)->name.c_str(), flags))
+			{
+				if (ImGui::IsItemHoveredRect())
+				{
+					if (ImGui::IsMouseClicked(0))
+					{
+						selected = (*go);
+					}
+				}
+				ImGui::TreePop();
+			}
 		}
 	}
 	ImGui::End();

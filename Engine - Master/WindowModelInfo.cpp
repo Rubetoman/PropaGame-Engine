@@ -1,18 +1,17 @@
-#include "WindowProperties.h"
+#include "WindowModelInfo.h"
 #include "ModuleModelLoader.h"
 #include "ModuleTextures.h"
 #include "Texture.h"
 
-WindowProperties::WindowProperties(const char* name) : Window(name)
-{
-	active = true;
-}
-
-WindowProperties::~WindowProperties()
+WindowModelInfo::WindowModelInfo(const char* name) : Window(name)
 {
 }
 
-void WindowProperties::Draw()
+WindowModelInfo::~WindowModelInfo()
+{
+}
+
+void WindowModelInfo::Draw()
 {
 	ImGui::Begin("Model Info", &active, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_AlwaysVerticalScrollbar);
 

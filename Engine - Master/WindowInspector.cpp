@@ -14,7 +14,7 @@ WindowInspector::~WindowInspector()
 
 void WindowInspector::Draw()
 {
-	if (ImGui::Begin("Inspector"))
+	if (ImGui::Begin("Inspector", &active, ImGuiWindowFlags_NoFocusOnAppearing))
 	{
 	}
 	ImGui::End();
