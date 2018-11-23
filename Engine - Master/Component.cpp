@@ -15,3 +15,8 @@ void Component::Update()
 {
 
 }
+
+void Component::DrawOnInspector()
+{
+	ImGui::Separator();
+}

@@ -1,6 +1,9 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_sdl.h"
+
 class GameObject;
 
 enum class component_type {Transform, Mesh, Material};
@@ -11,7 +14,7 @@ public:
 	Component();
 	virtual ~Component();
 
-	virtual void DrawOnInspector() {}
+	virtual void DrawOnInspector();
 	virtual void Enable() {active = true;};
 	virtual void Update();
 	virtual void Disable() { active = false; };

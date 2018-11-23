@@ -6,7 +6,7 @@
 
 GameObject::GameObject(const char * name) : name(name)
 {
-
+	CreateComponent(component_type::Transform);
 }
 
 GameObject::~GameObject()

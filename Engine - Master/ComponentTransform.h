@@ -10,6 +10,8 @@ public:
 	ComponentTransform();
 	~ComponentTransform();
 
+	void DrawOnInspector() override;
+
 	float3 position = float3().zero;
 	float3 rotation = float3().zero;
 	float3 scale = float3().zero;
