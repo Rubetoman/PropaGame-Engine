@@ -23,6 +23,7 @@ void WindowInspector::Draw()
 		GameObject* go = App->editor->hierarchy->selected;
 		if (go != nullptr)
 		{
+			ImGui::Checkbox("active", &go->active);
 			char *name = new char[GO_NAME_SIZE];
 			strcpy(name, go->name.c_str());
 			ImGui::InputText("Name", name, GO_NAME_SIZE);
