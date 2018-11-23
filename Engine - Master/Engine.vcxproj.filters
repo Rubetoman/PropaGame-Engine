@@ -180,11 +180,20 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Other\Components</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowHierarchy.cpp">
+      <Filter>Modules\EditorWindows</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowInspector.cpp">
+      <Filter>Modules\EditorWindows</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTransform.cpp">
+      <Filter>Other\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Other\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -433,11 +442,20 @@
     <ClInclude Include="GameObject.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Other\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleScene.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowHierarchy.h">
+      <Filter>Modules\EditorWindows</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowInspector.h">
+      <Filter>Modules\EditorWindows</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTransform.h">
+      <Filter>Other\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Other\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

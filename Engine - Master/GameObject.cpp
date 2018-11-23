@@ -1,4 +1,8 @@
 #include "GameObject.h"
+#include "Globals.h"
+
+#include "Component.h"
+#include "ComponentTransform.h"
 
 GameObject::GameObject()
 {
@@ -8,8 +12,24 @@ GameObject::~GameObject()
 {
 }
 
-void Update()
+void GameObject::Update()
 {
+}
+
+void GameObject::CleanUp()
+{
+	for (auto &component : components)
+	{
+		RELEASE(component);
+	}
+
+	for (auto &child : children)
+	{
+		RELEASE(child);
+	}
+
+	transform = nullptr;
+	parent = nullptr;
 }
 
 Component* GameObject::CreateComponent(component_type type)
@@ -19,8 +39,8 @@ Component* GameObject::CreateComponent(component_type type)
 	switch (type)
 	{
 	case component_type::Transform:
-		//component = new ComponentTransform(this);
-		//transform = (ComponentTransform*)component;
+		component = new ComponentTransform();
+		transform = (ComponentTransform*)component;
 		break;
 	case component_type::Mesh:
 		//component = new ComponentMesh(this);

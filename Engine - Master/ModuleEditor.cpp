@@ -42,6 +42,8 @@ bool ModuleEditor::Init()
 	editorWindows.push_back(hardware = new WindowHardware("hardware"));
 	editorWindows.push_back(configuration = new WindowConfiguration("configuration"));
 	editorWindows.push_back(properties = new WindowProperties("properties"));
+	editorWindows.push_back(hierarchy = new WindowHierarchy("hierarchy"));
+	editorWindows.push_back(inspector = new WindowInspector("inspector"));
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init(glsl_version);

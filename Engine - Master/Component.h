@@ -1,5 +1,5 @@
 #ifndef __COMPONENT_H__
-#define __COMPOMENT_H__
+#define __COMPONENT_H__
 
 class GameObject;
 
@@ -9,15 +9,17 @@ class Component
 {
 public:
 	Component();
-	~Component();
+	virtual ~Component();
 
-	component_type type;
-	bool active = true;
-	GameObject* my_go = nullptr;
-	
+	virtual void DrawOnInspector() {}
 	virtual void Enable() {active = true;};
 	virtual void Update();
 	virtual void Disable() { active = false; };
+
+public:
+	component_type type;
+	bool active = true;
+	GameObject* my_go = nullptr;
 };
 
 #endif /*__COMPONENT_H__*/
