@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleInput.h"
 #include <vector>
 #include <string>
 
@@ -27,9 +28,9 @@ void WindowHierarchy::Draw()
 
 			if (ImGui::TreeNodeEx((*go)->name.c_str(), flags))
 			{
-				if (ImGui::IsItemHoveredRect())
+				if (ImGui::IsItemHovered())
 				{
-					if (ImGui::IsMouseClicked(0))
+					if (ImGui::IsMouseClicked(0) || ImGui::IsMouseClicked(1))
 					{
 						selected = (*go);
 					}
@@ -37,6 +38,43 @@ void WindowHierarchy::Draw()
 				ImGui::TreePop();
 			}
 		}
+
+		// Popup
+		if (ImGui::IsMouseReleased(1) & ImGui::IsMouseHoveringWindow())
+		{
+			ImGui::OpenPopup("go_menu_popup");
+		}
+		if (ImGui::BeginPopup("go_menu_popup"))
+		{
+			if (ImGui::Selectable("Copy"))
+			{
+
+			}
+			if (ImGui::Selectable("Paste"))
+			{
+
+			}
+			ImGui::Separator();
+			if (selected != nullptr)
+			{
+				if (ImGui::Selectable("Duplicate"))
+				{
+
+				}
+				if (ImGui::Selectable("Delete"))
+				{
+
+				}
+				ImGui::Separator();
+			}
+			if (ImGui::Selectable("Create Empty"))
+			{
+				App->scene->CreateGameObject("GameObject");
+			}
+			ImGui::EndPopup();
+		}
+		
+
 	}
 	ImGui::End();
 }
