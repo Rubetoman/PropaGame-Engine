@@ -14,6 +14,8 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	void Draw();
+
 	GameObject* CreateGameObject(const char * name);
 
 	GameObject* root = nullptr;

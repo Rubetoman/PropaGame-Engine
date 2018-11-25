@@ -7,14 +7,15 @@
 class ComponentTransform : public Component
 { 
 public:
-	ComponentTransform();
+	ComponentTransform(GameObject* go);
 	~ComponentTransform();
 
 	void DrawOnInspector() override;
 
-	float3 position = float3().zero;
-	float3 rotation = float3().zero;
-	float3 scale = float3().zero;
+	math::float3 position = math::float3().zero;
+	math::float3 euler_rotation = math::float3().zero;
+	math::Quat rotation = math::Quat().identity;
+	math::float3 scale = math::float3().zero;
 };
 
 #endif /*__COMPOMENTTRANSFORM_H__*/

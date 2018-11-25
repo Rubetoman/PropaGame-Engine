@@ -11,7 +11,7 @@ enum class component_type {Transform, Mesh, Material};
 class Component
 {
 public:
-	Component();
+	Component(GameObject* go, component_type type);
 	virtual ~Component();
 
 	virtual void DrawOnInspector();

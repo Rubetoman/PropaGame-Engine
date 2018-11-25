@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <assimp/mesh.h>
+
 #define GO_NAME_SIZE 24
 
 class Component;
@@ -13,13 +15,18 @@ enum class component_type;
 class GameObject
 {
 public:
-	GameObject(const char * name);
+	GameObject(const char* name);
+	GameObject(const char* name, const aiMatrix4x4& transform);
 	~GameObject();
 
 	void Update();
 	void CleanUp();
 
+	void Draw();
+
 	Component* CreateComponent(component_type type);
+
+	std::vector<Component*> GameObject::GetComponents(component_type type) const;
 
 	bool active = true;
 	std::string name = "GameObject";

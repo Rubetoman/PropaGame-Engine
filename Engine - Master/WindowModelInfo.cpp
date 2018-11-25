@@ -15,7 +15,7 @@ void WindowModelInfo::Draw()
 {
 	ImGui::Begin("Model Info", &active, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
-	if (App->model_loader->meshes.size() > 0)
+	/*if (App->model_loader->meshes.size() > 0)
 	{
 		ImGui::Text("Current loaded file has %d meshes", App->model_loader->meshes.size());
 		ImGui::NewLine();
@@ -66,6 +66,6 @@ void WindowModelInfo::Draw()
 	}
 	else
 		ImGui::Text("No meshes loaded");
-
+		*/
 	ImGui::End();
 }

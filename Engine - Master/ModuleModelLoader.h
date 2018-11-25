@@ -50,7 +50,7 @@ public:
 	//void			DeleteMaterial(const int index);
 
 	const aiScene* scene = nullptr;
-	std::vector<mesh*>    meshes;
+	//std::vector<mesh*>    meshes;
 	//std::vector<material> materials;
 	math::float4x4        transform = math::float4x4::identity;
 };

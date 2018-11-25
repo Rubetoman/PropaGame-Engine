@@ -2,7 +2,7 @@
 #include "GameObject.h"
 
 
-Component::Component()
+Component::Component(GameObject* go, component_type type) : my_go(go), type(type)
 {
 }
 

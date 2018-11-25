@@ -1,5 +1,8 @@
 #include "ModuleModelLoader.h"
 #include "ModuleCamera.h"
+#include "ModuleScene.h"
+
+#include "ComponentMesh.h"
 
 ModuleModelLoader::ModuleModelLoader()
 {
@@ -19,11 +22,11 @@ update_status ModuleModelLoader::Update()
 bool ModuleModelLoader::CleanUp()
 {
 	// Delete loaded models
-	for (unsigned i = 0u; i < meshes.size(); ++i)
+	/*for (unsigned i = 0u; i < meshes.size(); ++i)
 	{
 		DeleteMesh(i);
 	}
-	meshes.clear();
+	meshes.clear();*/
 
 	/*for (unsigned i = 0u; i < materials.size(); ++i)
 	{
@@ -39,7 +42,7 @@ bool ModuleModelLoader::LoadMesh(const char* path)
 	scene = aiImportFile(path, postprocess_flags);
 	if (scene == nullptr)
 	{
-		aiGetErrorString();
+		LOG("Error, the file couldn't be loaded: %s \n", aiGetErrorString());
 		return false;
 	}
 	App->camera->BBtoLook = new AABB({ .0f, .0f, .0f }, { .0f, .0f, .0f });
@@ -70,33 +73,22 @@ bool ModuleModelLoader::LoadMesh(const char* path)
 void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 {
 	assert(scene != nullptr);
-
+	// Warning: Create parent GO for root
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
 	{
 		const aiMesh* src_mesh = scene->mMeshes[i];
 
-		// Generate mesh object
-		mesh* gen_mesh = new mesh();
-
+		// Generate Game Object with mesh component
 		aiNode* root = scene->mRootNode;
+		GameObject* go = new GameObject(src_mesh->mName.C_Str(), root->mTransformation);
+		ComponentMesh* mesh = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
+		App->scene->game_objects.push_back(go);
 
-		//Get node transformation
-		aiVector3D translation;
-		aiVector3D scaling;
-		aiQuaternion rotation;
-		root->mTransformation.Decompose(scaling, rotation, translation);
-		math::float3 pos(translation.x, translation.y, translation.z);
-		math::float3 scale(scaling.x, scaling.y, scaling.z);
-
-		gen_mesh->position = pos;
-		gen_mesh->scale = scale;
-
-		gen_mesh->name = src_mesh->mName.C_Str();
 		// vertex array objects (VAO)
 		//glGenVertexArrays(1, &gen_mesh.vao);
-		glGenBuffers(1, &gen_mesh->vbo);
+		glGenBuffers(1, &mesh->mesh->vbo);
 		//glBindVertexArray(gen_mesh.vao);
-		glBindBuffer(GL_ARRAY_BUFFER, gen_mesh->vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->mesh->vbo);
 
 		// Divide Buffer for position and UVs
 		glBufferData(GL_ARRAY_BUFFER, src_mesh->mNumVertices * (sizeof(float) * 3 + sizeof(float) * 2), nullptr, GL_STATIC_DRAW);
@@ -117,8 +109,8 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 
 		// Indices (faces)
 
-		glGenBuffers(1, &gen_mesh->ibo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gen_mesh->ibo);
+		glGenBuffers(1, &mesh->mesh->ibo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->mesh->ibo);
 
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, src_mesh->mNumFaces * (sizeof(unsigned) * 3), nullptr, GL_STATIC_DRAW);
 
@@ -142,12 +134,12 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		//glBindVertexArray(0);
 
 		//gen_mesh->material = src_mesh->mMaterialIndex;
-		gen_mesh->num_vertices = src_mesh->mNumVertices;
-		gen_mesh->num_indices = src_mesh->mNumFaces * 3;
+		mesh->mesh->num_vertices = src_mesh->mNumVertices;
+		mesh->mesh->num_indices = src_mesh->mNumFaces * 3;
 
-		gen_mesh->boundingBox.SetNegativeInfinity();
-		gen_mesh->boundingBox.Enclose((math::float3*)src_mesh->mVertices, gen_mesh->num_vertices);
-		App->camera->BBtoLook->Enclose(gen_mesh->boundingBox);
+		mesh->mesh->boundingBox.SetNegativeInfinity();
+		mesh->mesh->boundingBox.Enclose((math::float3*)src_mesh->mVertices, mesh->mesh->num_vertices);
+		App->camera->BBtoLook->Enclose(mesh->mesh->boundingBox);
 
 		// Load material
 		const aiMaterial* src_material = scene->mMaterials[src_mesh->mMaterialIndex];
@@ -158,13 +150,13 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 
 		if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
 		{
-			gen_mesh->texture = App->textures->loadTexture(file.data);
+			mesh->mesh->texture = App->textures->loadTexture(file.data);
 		}
 		else
 		{
 			LOG("Couldn't read the texture from .fbx file");
 		}
-		meshes.push_back(gen_mesh);
+		//meshes.push_back(gen_mesh);
 	}
 	App->camera->FitCamera(*App->camera->BBtoLook);
 }
@@ -177,13 +169,13 @@ void ModuleModelLoader::ChangeMeshTexture(const char * path)
 
 	//App->textures->unloadTexture((*meshes.begin())->texture);
 
-	for (std::vector<mesh*>::iterator it_m = meshes.begin(); it_m != meshes.end(); it_m++)
+	/*for (std::vector<mesh*>::iterator it_m = meshes.begin(); it_m != meshes.end(); it_m++)
 	{
 		(*it_m)->texture = tex;
-	}
+	}*/
 }
 
-void ModuleModelLoader::DeleteMesh(const int index)
+/*void ModuleModelLoader::DeleteMesh(const int index)
 {
 	if (meshes[index]->vbo != 0)
 	{
@@ -199,7 +191,7 @@ void ModuleModelLoader::DeleteMesh(const int index)
 	{
 		glDeleteBuffers(1, &meshes[index]->vao);
 	}
-}
+}*/
 
 /*void ModuleModelLoader::DeleteMaterial(const int index)
 {
