@@ -33,8 +33,8 @@ update_status ModuleCamera::PreUpdate()
 		CameraSpeedInput(3.0f);
 	}
 
-	// Check when the mouse is right click is up
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP) 
+	// Check when the mouse is right or left click is up
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		SDL_ShowCursor(SDL_ENABLE);
 		new_click = true;
@@ -142,7 +142,7 @@ void ModuleCamera::RotateCameraInput()
 		mainCamera->UpdatePitchYaw();
 		mainCamera->LookAt(math::float3(0, 0, 0));
 	}
-	else if(App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	if(App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
 		SDL_ShowCursor(SDL_DISABLE);
 		MouseInputRotation(App->input->GetMousePosition());
@@ -163,19 +163,19 @@ void ModuleCamera::CameraSpeedInput(float modifier)
 	}
 }
 
-void ModuleCamera::MouseInputTranslation(const iPoint& mouse_position)
+void ModuleCamera::MouseInputTranslation(const fPoint& mouse_position)
 {
 	if (new_click)
 	{
-		last_x = mouse_position.x;
-		last_y = mouse_position.y;
+		last_x = (float)mouse_position.x;
+		last_y = (float)mouse_position.y;
 		new_click = false;
 	}
 
-	int x_offset = mouse_position.x - last_x;
-	int y_offset = last_y - mouse_position.y;
-	last_x = mouse_position.x;
-	last_y = mouse_position.y;
+	float x_offset = (float)mouse_position.x - last_x;
+	float y_offset = last_y - (float)mouse_position.y;
+	last_x = (float)mouse_position.x;
+	last_y = (float)mouse_position.y;
 
 	x_offset *= mainCamera->rotation_speed * mouse_sensitivity;
 	y_offset *= mainCamera->rotation_speed * mouse_sensitivity;
@@ -184,19 +184,19 @@ void ModuleCamera::MouseInputTranslation(const iPoint& mouse_position)
 	mainCamera->position -= mainCamera->up.Mul(y_offset) * mainCamera->speed * App->time->real_delta_time;
 }
 
-void ModuleCamera::MouseInputRotation(const iPoint& mouse_position)
+void ModuleCamera::MouseInputRotation(const fPoint& mouse_position)
 {
 	if (new_click)
 	{
-		last_x = mouse_position.x;
-		last_y = mouse_position.y;
+		last_x = (float)mouse_position.x;
+		last_y = (float)mouse_position.y;
 		new_click = false;
 	}
 
-	int x_offset = mouse_position.x - last_x;
-	int y_offset = last_y - mouse_position.y;
-	last_x = mouse_position.x;
-	last_y = mouse_position.y;
+	float x_offset = (float)mouse_position.x - last_x;
+	float y_offset = last_y - (float)mouse_position.y;
+	last_x = (float)mouse_position.x;
+	last_y = (float)mouse_position.y;
 
 	x_offset *= mainCamera->rotation_speed * mouse_sensitivity;
 	y_offset *= mainCamera->rotation_speed * mouse_sensitivity;
@@ -207,7 +207,7 @@ void ModuleCamera::MouseInputRotation(const iPoint& mouse_position)
 	mainCamera->RotateCamera();
 }
 
-void ModuleCamera::WheelInputTranslation(const iPoint& wheel_motion)
+void ModuleCamera::WheelInputTranslation(const fPoint& wheel_motion)
 {
 	mainCamera->position -= mainCamera->side.Mul(wheel_motion.x) * 10 * mainCamera->speed * App->time->real_delta_time;
 	mainCamera->position -= mainCamera->front.Mul(-wheel_motion.y) * 10 * mainCamera->speed * App->time->real_delta_time;
