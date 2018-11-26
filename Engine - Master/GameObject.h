@@ -15,7 +15,9 @@ class GameObject
 {
 public:
 	GameObject(const char* name);
+	GameObject(const char* name, GameObject* parent);
 	GameObject(const char* name, const math::float4x4& new_transform);
+	GameObject(const char* name, const math::float4x4& new_transform, GameObject* parent);
 	~GameObject();
 
 	void Update();

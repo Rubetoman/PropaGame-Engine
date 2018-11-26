@@ -13,10 +13,24 @@ GameObject::GameObject(const char * name) : name(name)
 	CreateComponent(component_type::Transform);
 }
 
+GameObject::GameObject(const char* name, GameObject* parent) : name(name), parent(parent)
+{
+	CreateComponent(component_type::Transform);
+	parent->children.push_back(this);
+}
+
 GameObject::GameObject(const char* name, const math::float4x4& new_transform) : name(name)
 {
 	transform = (ComponentTransform*)CreateComponent(component_type::Transform);
 	transform->SetTransform(new_transform);
+}
+
+GameObject::GameObject(const char* name, const math::float4x4& new_transform, GameObject* parent) 
+	: name(name), parent(parent)
+{
+	transform = (ComponentTransform*)CreateComponent(component_type::Transform);
+	transform->SetTransform(new_transform);
+	parent->children.push_back(this);
 }
 
 GameObject::~GameObject()
@@ -49,6 +63,11 @@ void GameObject::Draw()
 {
 	if (!active) return;
 	if (transform == nullptr) return;
+
+	for (const auto &child : children)
+	{
+		child->Draw();
+	}
 
 	//Draw meshes
 	math::float4x4 proj = App->camera->mainCamera->ProjectionMatrix();

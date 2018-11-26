@@ -31,18 +31,22 @@ bool ModuleScene::CleanUp()
 
 void ModuleScene::Draw()
 {
-	// Warning: once child and parent are included to GO
-	//root->Draw();
+	root->Draw();
 	
-	for (auto &go : game_objects)
+	/*for (auto &go : game_objects)
 	{
 		go->Draw();
-	}
+	}*/
 }
 
 GameObject* ModuleScene::CreateGameObject(const char* name)
 {
-	GameObject* go = new GameObject(name);
-	game_objects.push_back(go);
+	GameObject* go = new GameObject(name, root);
+	return go;
+}
+
+GameObject* ModuleScene::CreateGameObject(const char* name, math::float4x4& transform)
+{
+	GameObject* go = new GameObject(name, transform, root);
 	return go;
 }

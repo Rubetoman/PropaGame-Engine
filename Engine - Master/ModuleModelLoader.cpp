@@ -79,7 +79,7 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		const aiMesh* src_mesh = scene->mMeshes[i];
 
 		// Generate Game Object with mesh component
-		GameObject* go = new GameObject(src_mesh->mName.C_Str(), (math::float4x4&)scene->mRootNode->mTransformation);
+		GameObject* go = App->scene->CreateGameObject(src_mesh->mName.C_Str(), (math::float4x4&)scene->mRootNode->mTransformation);
 		
 		// Avoid creating GO without name
 		if (go->name.size() < 1)
