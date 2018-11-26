@@ -3,6 +3,7 @@
 #include "ModuleRender.h"
 #include "Globals.h"
 
+#include "Brofiler.h"
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
@@ -25,6 +26,7 @@ int main(int argc, char ** argv)
 
 	while (state != MAIN_EXIT)
 	{
+		BROFILER_FRAME("Main");
 		switch (state)
 		{
 		case MAIN_CREATION:

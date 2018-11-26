@@ -1,5 +1,5 @@
 #include "ModuleCamera.h"
-
+#include "Brofiler.h"
 
 ModuleCamera::ModuleCamera()
 {
@@ -26,6 +26,7 @@ bool ModuleCamera::Init()
 
 update_status ModuleCamera::PreUpdate() 
 {
+	BROFILER_CATEGORY("ModuleCamera PreUpdate", Profiler::Color::Orchid)
 	if (App->editor->scene->IsFocused())
 	{
 		TranslateCameraInput();
