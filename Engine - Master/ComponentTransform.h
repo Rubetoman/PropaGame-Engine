@@ -10,6 +10,8 @@ public:
 	ComponentTransform(GameObject* go);
 	~ComponentTransform();
 
+	void SetTransform(const math::float4x4& transform);
+
 	void DrawOnInspector() override;
 
 	math::float3 position = math::float3().zero;

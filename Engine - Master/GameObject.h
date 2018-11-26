@@ -1,10 +1,9 @@
 #ifndef __GAMEOBJECT_H__
 #define __GAMEOBJECT_H__
 
+#include "MathGeoLib.h"
 #include <string>
 #include <vector>
-
-#include <assimp/mesh.h>
 
 #define GO_NAME_SIZE 24
 
@@ -16,7 +15,7 @@ class GameObject
 {
 public:
 	GameObject(const char* name);
-	GameObject(const char* name, const aiMatrix4x4& transform);
+	GameObject(const char* name, const math::float4x4& new_transform);
 	~GameObject();
 
 	void Update();

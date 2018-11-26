@@ -13,22 +13,10 @@ GameObject::GameObject(const char * name) : name(name)
 	CreateComponent(component_type::Transform);
 }
 
-GameObject::GameObject(const char* name, const aiMatrix4x4& transform) : name(name)
+GameObject::GameObject(const char* name, const math::float4x4& new_transform) : name(name)
 {
-	this->transform = (ComponentTransform*)CreateComponent(component_type::Transform);
-	
-	aiVector3D translation;
-	aiVector3D scaling;
-	aiQuaternion airotation;
-	transform.Decompose(scaling, airotation, translation);
-
-	this->transform->position = { translation.x, translation.y, translation.z };
-	this->transform->scale = { scaling.x, scaling.y, scaling.z };
-	this->transform->rotation = Quat(airotation.x, airotation.y, airotation.z, airotation.w);
-	this->transform->euler_rotation = this->transform->rotation.ToEulerXYZ();
-	this->transform->euler_rotation.x = math::RadToDeg(this->transform->euler_rotation.x);
-	this->transform->euler_rotation.y = math::RadToDeg(this->transform->euler_rotation.y);
-	this->transform->euler_rotation.z = math::RadToDeg(this->transform->euler_rotation.z);
+	transform = (ComponentTransform*)CreateComponent(component_type::Transform);
+	transform->SetTransform(new_transform);
 }
 
 GameObject::~GameObject()
