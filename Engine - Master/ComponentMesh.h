@@ -2,7 +2,8 @@
 #define __COMPOMENTMESH_H__
 
 #include "Component.h"
-#include "ModuleModelLoader.h"
+#include "Texture.h"
+#include "MathGeoLib.h"
 
 class ComponentMesh : public Component
 {
@@ -10,11 +11,22 @@ public:
 	ComponentMesh(GameObject* go);
 	~ComponentMesh();
 
-	//void DrawOnInspector() override;
+	void CleanUp() override;
+
+	void DrawOnInspector() override;
 
 	void RenderMesh(unsigned program, const math::float4x4& view, const math::float4x4& proj);
+	void DeleteMesh();
 
-	ModuleModelLoader::mesh* mesh;
+	// Mesh variables
+	unsigned vbo = 0u;
+	unsigned ibo = 0u;
+	unsigned vao = 0u;
+	unsigned num_vertices = 0u;
+	unsigned num_indices = 0u;
+	Texture* texture;
+
+	AABB boundingBox;
 };
 
 #endif

@@ -31,10 +31,6 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	void RenderMesh(const ModuleModelLoader::mesh* mesh,
-		unsigned program, const math::float4x4& model,
-		const math::float4x4& view, const math::float4x4& proj);
-
 	void WindowResized(unsigned width, unsigned height);
 	void CreateFrameBuffer();
 

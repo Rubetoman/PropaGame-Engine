@@ -195,7 +195,9 @@
     <ClCompile Include="WindowModelInfo.cpp">
       <Filter>Modules\EditorWindows</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentMesh.cpp" />
+    <ClCompile Include="ComponentMesh.cpp">
+      <Filter>Other\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -458,7 +460,9 @@
     <ClInclude Include="WindowModelInfo.h">
       <Filter>Modules\EditorWindows</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentMesh.h" />
+    <ClInclude Include="ComponentMesh.h">
+      <Filter>Other\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\Assets\Shaders\Default.fs">

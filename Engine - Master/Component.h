@@ -19,6 +19,8 @@ public:
 	virtual void Update();
 	virtual void Disable() { active = false; };
 
+	virtual void CleanUp();
+
 public:
 	component_type type;
 	bool active = true;

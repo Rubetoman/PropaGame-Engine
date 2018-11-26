@@ -10,7 +10,7 @@ ComponentTransform::~ComponentTransform()
 }
 void ComponentTransform::DrawOnInspector()
 {
-	Component::DrawOnInspector();
+	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Transform Component"))
 	{
 		ImGui::DragFloat3("Position", (float*)&position, 0.1f);

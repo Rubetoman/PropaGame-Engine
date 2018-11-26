@@ -79,17 +79,22 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		const aiMesh* src_mesh = scene->mMeshes[i];
 
 		// Generate Game Object with mesh component
-		aiNode* root = scene->mRootNode;
-		GameObject* go = new GameObject(src_mesh->mName.C_Str(), root->mTransformation);
+		GameObject* go = new GameObject(src_mesh->mName.C_Str(), scene->mRootNode->mTransformation);
+		
+		// Avoid creating GO without name
+		if (go->name.size() < 1)
+			go->name = "GameObject";
+
+		// Add Mesh Component
 		ComponentMesh* mesh = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
 		App->scene->game_objects.push_back(go);
 
 		// vertex array objects (VAO)
-		glGenVertexArrays(1, &mesh->mesh->vao);
-		glBindVertexArray(mesh->mesh->vao);
+		glGenVertexArrays(1, &mesh->vao);
+		glBindVertexArray(mesh->vao);
 
-		glGenBuffers(1, &mesh->mesh->vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->mesh->vbo);
+		glGenBuffers(1, &mesh->vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo);
 
 		// Divide Buffer for position and UVs
 		glBufferData(GL_ARRAY_BUFFER, src_mesh->mNumVertices * (sizeof(float) * 3 + sizeof(float) * 2), nullptr, GL_STATIC_DRAW);
@@ -108,8 +113,8 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 
 		// Indices (faces)
-		glGenBuffers(1, &mesh->mesh->ibo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->mesh->ibo);
+		glGenBuffers(1, &mesh->ibo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->ibo);
 
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, src_mesh->mNumFaces * (sizeof(unsigned) * 3), nullptr, GL_STATIC_DRAW);
 
@@ -158,12 +163,12 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		//gen_mesh->material = src_mesh->mMaterialIndex;
-		mesh->mesh->num_vertices = src_mesh->mNumVertices;
-		mesh->mesh->num_indices = src_mesh->mNumFaces * 3;
+		mesh->num_vertices = src_mesh->mNumVertices;
+		mesh->num_indices = src_mesh->mNumFaces * 3;
 
-		mesh->mesh->boundingBox.SetNegativeInfinity();
-		mesh->mesh->boundingBox.Enclose((math::float3*)src_mesh->mVertices, mesh->mesh->num_vertices);
-		App->camera->BBtoLook->Enclose(mesh->mesh->boundingBox);
+		mesh->boundingBox.SetNegativeInfinity();
+		mesh->boundingBox.Enclose((math::float3*)src_mesh->mVertices, mesh->num_vertices);
+		App->camera->BBtoLook->Enclose(mesh->boundingBox);
 
 		// Load material
 		const aiMaterial* src_material = scene->mMaterials[src_mesh->mMaterialIndex];
@@ -174,7 +179,7 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 
 		if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
 		{
-			mesh->mesh->texture = App->textures->loadTexture(file.data);
+			mesh->texture = App->textures->loadTexture(file.data);
 		}
 		else
 		{

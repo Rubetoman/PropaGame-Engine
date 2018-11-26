@@ -18,5 +18,10 @@ void Component::Update()
 
 void Component::DrawOnInspector()
 {
-	ImGui::Separator();
+	ImGui::Checkbox("active", &active);
+}
+
+void Component::CleanUp()
+{
+
 }

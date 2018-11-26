@@ -43,11 +43,13 @@ void GameObject::CleanUp()
 {
 	for (auto &component : components)
 	{
+		component->CleanUp();
 		RELEASE(component);
 	}
 
 	for (auto &child : children)
 	{
+		child->CleanUp();
 		RELEASE(child);
 	}
 
@@ -57,6 +59,7 @@ void GameObject::CleanUp()
 
 void GameObject::Draw()
 {
+	if (!active) return;
 	if (transform == nullptr) return;
 
 	//Draw meshes
