@@ -170,7 +170,6 @@
     <ClInclude Include="WindowHardware.h" />
     <ClInclude Include="WindowHierarchy.h" />
     <ClInclude Include="WindowInspector.h" />
-    <ClInclude Include="WindowModelInfo.h" />
     <ClInclude Include="WindowScene.h" />
   </ItemGroup>
   <ItemGroup>
@@ -239,7 +238,6 @@
     <ClCompile Include="WindowHardware.cpp" />
     <ClCompile Include="WindowHierarchy.cpp" />
     <ClCompile Include="WindowInspector.cpp" />
-    <ClCompile Include="WindowModelInfo.cpp" />
     <ClCompile Include="WindowScene.cpp" />
   </ItemGroup>
   <ItemGroup>

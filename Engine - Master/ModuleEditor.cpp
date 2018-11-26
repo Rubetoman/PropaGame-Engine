@@ -13,7 +13,6 @@
 #include "WindowConsole.h"
 #include "WindowHardware.h"
 #include "WindowConfiguration.h"
-#include "WindowModelInfo.h"
 
 
 
@@ -45,7 +44,6 @@ bool ModuleEditor::Init()
 	editorWindows.push_back(console = new WindowConsole("console"));
 	editorWindows.push_back(hardware = new WindowHardware("hardware"));
 	editorWindows.push_back(configuration = new WindowConfiguration("configuration"));
-	editorWindows.push_back(properties = new WindowModelInfo("properties"));
 	editorWindows.push_back(hierarchy = new WindowHierarchy("hierarchy"));
 	editorWindows.push_back(inspector = new WindowInspector("inspector"));
 
@@ -185,7 +183,7 @@ void ModuleEditor::ShowMainMenuBar()
 			ImGui::Separator();
 			if (ImGui::MenuItem("Configuration", NULL, configuration->isActive())) { configuration->toggleActive(); }
 			ImGui::Separator();
-			if (ImGui::MenuItem("Model Info", NULL, properties->isActive())) { properties->toggleActive(); }
+
 			if (ImGui::MenuItem("Hardware Info", NULL, hardware->isActive())) { hardware->toggleActive(); }
 			ImGui::Separator();
 			if (ImGui::MenuItem("Console", NULL, console->isActive())) { console->toggleActive(); }
