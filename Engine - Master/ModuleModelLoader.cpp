@@ -85,9 +85,10 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		App->scene->game_objects.push_back(go);
 
 		// vertex array objects (VAO)
-		//glGenVertexArrays(1, &gen_mesh.vao);
+		glGenVertexArrays(1, &mesh->mesh->vao);
+		glBindVertexArray(mesh->mesh->vao);
+
 		glGenBuffers(1, &mesh->mesh->vbo);
-		//glBindVertexArray(gen_mesh.vao);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->mesh->vbo);
 
 		// Divide Buffer for position and UVs
@@ -96,19 +97,17 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 
 		// Texture coords (UVs)
 		// MapBufferRange because we only want UV data from UVW
-		float2* texCoords = (float2*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(float) * 3 * src_mesh->mNumVertices,
+		math::float2* texCoords = (math::float2*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(float) * 3 * src_mesh->mNumVertices,
 			sizeof(float) * 2 * src_mesh->mNumVertices, GL_MAP_WRITE_BIT);
 
 		for (unsigned j = 0; j < src_mesh->mNumVertices; ++j)
 		{
-			texCoords[j] = float2(src_mesh->mTextureCoords[0][j].x, src_mesh->mTextureCoords[0][j].y);
+			texCoords[j] = math::float2(src_mesh->mTextureCoords[0][j].x, src_mesh->mTextureCoords[0][j].y);
 		}
 
 		glUnmapBuffer(GL_ARRAY_BUFFER);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		// Indices (faces)
-
 		glGenBuffers(1, &mesh->mesh->ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->mesh->ibo);
 
@@ -129,9 +128,34 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		}
 
 		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(
+			0,                  // attribute 0
+			3,                  // number of componentes (3 floats)
+			GL_FLOAT,           // data type
+			GL_FALSE,           // should be normalized?
+			0,                  // stride
+			(void*)0            // array buffer offset
+		);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(
+			1,                  // attribute 0
+			2,                  // number of componentes (3 floats)
+			GL_FLOAT,           // data type
+			GL_FALSE,           // should be normalized?
+			0,                  // stride
+			(void*)(sizeof(float) * 3 * src_mesh->mNumVertices)       // array buffer offset
+		);
+
+		// Disable VAO
+		glBindVertexArray(0);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+
+		// Disable VBO and EBO
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		
-		//glBindVertexArray(0);
 
 		//gen_mesh->material = src_mesh->mMaterialIndex;
 		mesh->mesh->num_vertices = src_mesh->mNumVertices;
@@ -156,7 +180,6 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		{
 			LOG("Couldn't read the texture from .fbx file");
 		}
-		//meshes.push_back(gen_mesh);
 	}
 	App->camera->FitCamera(*App->camera->BBtoLook);
 }
