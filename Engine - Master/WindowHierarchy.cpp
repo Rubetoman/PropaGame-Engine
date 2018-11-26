@@ -20,23 +20,23 @@ void WindowHierarchy::Draw()
 {
 	if (ImGui::Begin("Hierarchy", &active, ImGuiWindowFlags_NoFocusOnAppearing))
 	{
-		
-		for (std::vector<GameObject*>::iterator go = App->scene->game_objects.begin(); go != App->scene->game_objects.end(); ++go)
-		{
-			unsigned flags = ImGuiTreeNodeFlags_Leaf;
-			flags |= (*go) == selected ? ImGuiTreeNodeFlags_Selected : 0;
+		GameObject* node = App->scene->root;
+		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+		flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
 
-			if (ImGui::TreeNodeEx((*go)->name.c_str(), flags))
+		if (ImGui::TreeNodeEx(node->name.c_str(), flags))
+		{
+			if (ImGui::IsItemClicked() ||(ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
 			{
-				if (ImGui::IsItemHovered())
-				{
-					if (ImGui::IsMouseClicked(0) || ImGui::IsMouseClicked(1))
-					{
-						selected = (*go);
-					}
-				}
-				ImGui::TreePop();
+				selected = node;
 			}
+
+			// Children
+			for (auto &child : node->children)
+			{
+				DrawChildren(child);
+			}
+			ImGui::TreePop();
 		}
 
 		// Popup
@@ -66,15 +66,49 @@ void WindowHierarchy::Draw()
 
 				}
 				ImGui::Separator();
+				if (ImGui::Selectable("Create Empty"))
+				{
+					App->scene->CreateGameObject(GO_DEFAULT_NAME, selected);
+				}
 			}
-			if (ImGui::Selectable("Create Empty"))
+			else
 			{
-				App->scene->CreateGameObject("GameObject");
+				if (ImGui::Selectable("Create Empty"))
+				{
+					App->scene->CreateGameObject(GO_DEFAULT_NAME);
+				}
 			}
 			ImGui::EndPopup();
 		}
-		
-
 	}
 	ImGui::End();
+}
+
+void WindowHierarchy::DrawChildren(GameObject* node)
+{
+	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+	if (node->children.empty())
+	{
+		flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+	}
+	flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
+
+	if (ImGui::TreeNodeEx(node->name.c_str(), flags))
+	{
+		if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
+		{
+			selected = node;
+		}
+
+		// Children
+		for (auto &child : node->children)
+		{
+			DrawChildren(child);
+		}
+
+		if (!(flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
+		{
+			ImGui::TreePop();
+		}
+	}
 }

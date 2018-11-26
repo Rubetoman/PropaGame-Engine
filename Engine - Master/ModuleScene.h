@@ -17,7 +17,9 @@ public:
 	void Draw();
 
 	GameObject* CreateGameObject(const char* name);
+	GameObject* CreateGameObject(const char* name, GameObject* parent);
 	GameObject* CreateGameObject(const char* name, math::float4x4& transform);
+	GameObject* CreateGameObject(const char* name, math::float4x4& transform, GameObject* parent);
 
 	GameObject* root = nullptr;
 	std::vector<GameObject*> game_objects;

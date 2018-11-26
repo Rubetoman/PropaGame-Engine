@@ -6,6 +6,7 @@
 #include <vector>
 
 #define GO_NAME_SIZE 24
+#define GO_DEFAULT_NAME "GameObject"
 
 class Component;
 class ComponentTransform;
