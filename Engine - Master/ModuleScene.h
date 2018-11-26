@@ -23,6 +23,7 @@ public:
 
 	GameObject* root = nullptr;
 	std::vector<GameObject*> game_objects;
+	bool show_root = false;
 };
 
 #endif /*__MODULESCENE_H__*/

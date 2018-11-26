@@ -47,8 +47,8 @@ void WindowInspector::Draw()
 
 void WindowInspector::DrawComponents(GameObject* go)
 {
-	for (std::vector<Component*>::iterator comp = go->components.begin(); comp != go->components.end(); ++comp)
+	for (auto &comp : go->components)
 	{
-		(*comp)->DrawOnInspector();
+		comp->DrawOnInspector();
 	}
 }
