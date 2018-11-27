@@ -10,6 +10,9 @@
 
 class Component;
 class ComponentTransform;
+class ComponentMesh;
+class ComponentMaterial;
+
 enum class component_type;
 
 class GameObject
@@ -33,6 +36,8 @@ public:
 	void DeleteGameObject();
 	void Unchild();
 
+public:
+
 	bool active = true;
 	std::string name = "GameObject";
 	
@@ -42,6 +47,8 @@ public:
 
 	// Components
 	ComponentTransform* transform = nullptr;
+	ComponentMesh* mesh = nullptr;
+	ComponentMaterial* material = nullptr;
 	std::vector<Component*> components;
 };
 

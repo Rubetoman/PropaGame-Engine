@@ -7,6 +7,7 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 
 GameObject::GameObject(const char * name) : name(name)
 {
@@ -72,13 +73,13 @@ void GameObject::Draw()
 	//Draw meshes
 	math::float4x4 proj = App->camera->mainCamera->ProjectionMatrix();
 	math::float4x4 view = App->camera->mainCamera->LookAt(App->camera->mainCamera->position + App->camera->mainCamera->front);
-	
+
 	std::vector<Component*> meshes = GetComponents(component_type::Mesh);
 	for (auto &mesh : meshes)
 	{
 		if (mesh->active)
 		{
-			((ComponentMesh*)mesh)->RenderMesh(App->renderer->programText, view, proj);
+			((ComponentMesh*)mesh)->RenderMesh(App->renderer->programText, material->texture, view, proj);
 		}
 	}
 }
@@ -94,10 +95,26 @@ Component* GameObject::CreateComponent(component_type type)
 		transform = (ComponentTransform*)component;
 		break;
 	case component_type::Mesh:
-		component = new ComponentMesh(this);
+		if (mesh == nullptr)
+		{
+			component = new ComponentMesh(this);
+			mesh = (ComponentMesh*)component;
+		}
+		else
+		{
+			LOG("Warning: %s already has a Mesh Component attached.", name);
+		}
 		break;
 	case component_type::Material:
-		//component = new ComponentMaterial(this);
+		if (material == nullptr)
+		{
+			component = new ComponentMaterial(this);
+			material = (ComponentMaterial*)component;
+		}
+		else
+		{
+			LOG("Warning: %s already has a Material Component attached.", name);
+		}
 		break;
 	default:
 		break;

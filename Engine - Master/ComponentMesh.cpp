@@ -1,6 +1,5 @@
 #include "ComponentMesh.h"
 
-#include "GameObject.h"
 #include "ComponentTransform.h"
 
 #include "GL/glew.h"
@@ -44,7 +43,7 @@ void ComponentMesh::DrawOnInspector()
 	}*/
 }
 
-void ComponentMesh::RenderMesh(unsigned program, const math::float4x4& view, const math::float4x4& proj)
+void ComponentMesh::RenderMesh(unsigned program, const Texture* texture, const math::float4x4& view, const math::float4x4& proj)
 {
 	//Use shaders loaded in program
 	glUseProgram(program);

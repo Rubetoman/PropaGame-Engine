@@ -195,6 +195,9 @@
     <ClCompile Include="ComponentMesh.cpp">
       <Filter>Other\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentMaterial.cpp">
+      <Filter>Other\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -455,6 +458,9 @@
       <Filter>Other\Components</Filter>
     </ClInclude>
     <ClInclude Include="ComponentMesh.h">
+      <Filter>Other\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMaterial.h">
       <Filter>Other\Components</Filter>
     </ClInclude>
   </ItemGroup>

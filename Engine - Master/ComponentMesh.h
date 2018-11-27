@@ -15,7 +15,7 @@ public:
 
 	void DrawOnInspector() override;
 
-	void RenderMesh(unsigned program, const math::float4x4& view, const math::float4x4& proj);
+	void RenderMesh(unsigned program, const Texture* texture, const math::float4x4& view, const math::float4x4& proj);
 	void DeleteMesh();
 
 	// Mesh variables
@@ -24,7 +24,7 @@ public:
 	unsigned vao = 0u;
 	unsigned num_vertices = 0u;
 	unsigned num_indices = 0u;
-	Texture* texture;
+	//Texture* texture;
 
 	AABB boundingBox;
 };

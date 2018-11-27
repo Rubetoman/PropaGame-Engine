@@ -3,6 +3,7 @@
 #include "ModuleScene.h"
 
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 
 ModuleModelLoader::ModuleModelLoader()
 {
@@ -166,25 +167,34 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 
 		mesh->boundingBox.SetNegativeInfinity();
 		mesh->boundingBox.Enclose((math::float3*)src_mesh->mVertices, mesh->num_vertices);
-		App->camera->BBtoLook->Enclose(mesh->boundingBox);
 
-		// Load material
 		const aiMaterial* src_material = scene->mMaterials[src_mesh->mMaterialIndex];
 
-		aiString file;
-		aiTextureMapping mapping;
-		unsigned uvindex = 0;
+		if (src_material != nullptr)
+		{
+			// Load material
+			ComponentMaterial* material = (ComponentMaterial*)go->CreateComponent(component_type::Material);
 
-		if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
-		{
-			mesh->texture = App->textures->loadTexture(file.data);
+			aiString file;
+			aiTextureMapping mapping;
+			unsigned uvindex = 0;
+
+			if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
+			{
+				go->material->texture = App->textures->loadTexture(file.data);
+			}
+			else
+			{
+				LOG("Couldn't read the texture from .fbx file");
+			}
 		}
-		else
-		{
-			LOG("Couldn't read the texture from .fbx file");
-		}
+		
 	}
-	App->camera->FitCamera(*App->camera->BBtoLook);
+	if (go->mesh != nullptr)
+	{
+		App->camera->BBtoLook->Enclose(go->mesh->boundingBox);
+		App->camera->FitCamera(*App->camera->BBtoLook);
+	}
 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
