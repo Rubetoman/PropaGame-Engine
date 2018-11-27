@@ -20,9 +20,14 @@ public:
 	GameObject* CreateGameObject(const char* name, GameObject* parent);
 	GameObject* CreateGameObject(const char* name, math::float4x4& transform);
 	GameObject* CreateGameObject(const char* name, math::float4x4& transform, GameObject* parent);
+	
+	void DeleteGameObject(GameObject* go);
+	void Unchild(GameObject* go);
+
+public:
 
 	GameObject* root = nullptr;
-	std::vector<GameObject*> game_objects;
+	//std::vector<GameObject*> game_objects;
 };
 
 #endif /*__MODULESCENE_H__*/

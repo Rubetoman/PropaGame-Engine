@@ -49,6 +49,7 @@ void WindowInspector::DrawComponents(GameObject* go)
 {
 	for (std::vector<Component*>::iterator comp = go->components.begin(); comp != go->components.end(); ++comp)
 	{
-		(*comp)->DrawOnInspector();
+		if(*comp !=nullptr)
+			(*comp)->DrawOnInspector();
 	}
 }

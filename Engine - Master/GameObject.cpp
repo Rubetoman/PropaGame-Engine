@@ -118,3 +118,32 @@ std::vector<Component*> GameObject::GetComponents(component_type type) const
 	}
 	return comp;
 }
+
+int GameObject::GetChildNumber() const
+{
+	if (parent == nullptr)
+	{
+		LOG("Warning: GameObject doesn't have a parent");
+		return -1;
+	}
+	auto pos = std::find(parent->children.begin(), parent->children.end(), this) - parent->children.begin();
+	if (pos >= parent->children.size())
+	{
+		LOG("Warning: GameObject not found as a child of %s.", parent->name);
+		return -1;
+	}
+	return pos;
+}
+
+void GameObject::DeleteGameObject()
+{
+	Unchild();
+	CleanUp();
+	delete this;
+}
+
+void GameObject::Unchild()
+{
+	if (parent != nullptr)
+		parent->children.erase(parent->children.begin() + GetChildNumber());
+}

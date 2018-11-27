@@ -28,7 +28,10 @@ public:
 
 	Component* CreateComponent(component_type type);
 
-	std::vector<Component*> GameObject::GetComponents(component_type type) const;
+	std::vector<Component*> GetComponents(component_type type) const;
+	int GetChildNumber() const;
+	void DeleteGameObject();
+	void Unchild();
 
 	bool active = true;
 	std::string name = "GameObject";

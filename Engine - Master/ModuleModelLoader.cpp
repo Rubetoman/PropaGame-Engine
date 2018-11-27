@@ -87,7 +87,7 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 
 		// Add Mesh Component
 		ComponentMesh* mesh = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
-		App->scene->game_objects.push_back(go);
+		//App->scene->game_objects.push_back(go);
 
 		// vertex array objects (VAO)
 		glGenVertexArrays(1, &mesh->vao);

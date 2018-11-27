@@ -20,23 +20,26 @@ void WindowHierarchy::Draw()
 {
 	if (ImGui::Begin("Hierarchy", &active, ImGuiWindowFlags_NoFocusOnAppearing))
 	{
-		GameObject* node = App->scene->root;
-		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-		flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
-
-		if (ImGui::TreeNodeEx(node->name.c_str(), flags))
+		if (App->scene->root != nullptr)
 		{
-			if (ImGui::IsItemClicked() ||(ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
-			{
-				selected = node;
-			}
+			GameObject* node = App->scene->root;
+			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+			flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
 
-			// Children
-			for (auto &child : node->children)
+			if (ImGui::TreeNodeEx(node->name.c_str(), flags))
 			{
-				DrawChildren(child);
+				if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
+				{
+					selected = node;
+				}
+
+				// Children
+				for (auto &child : node->children)
+				{
+					DrawChildren(child);
+				}
+				ImGui::TreePop();
 			}
-			ImGui::TreePop();
 		}
 
 		// Popup
@@ -61,21 +64,26 @@ void WindowHierarchy::Draw()
 				{
 
 				}
+				if (ImGui::Selectable("Unchild"))
+				{
+					App->scene->Unchild(selected);
+				}
 				if (ImGui::Selectable("Delete"))
 				{
-
+					App->scene->DeleteGameObject(selected);
+					selected = nullptr;
 				}
 				ImGui::Separator();
 				if (ImGui::Selectable("Create Empty"))
 				{
-					App->scene->CreateGameObject(GO_DEFAULT_NAME, selected);
+					selected = App->scene->CreateGameObject(GO_DEFAULT_NAME, selected);
 				}
 			}
 			else
 			{
 				if (ImGui::Selectable("Create Empty"))
 				{
-					App->scene->CreateGameObject(GO_DEFAULT_NAME);
+					selected = App->scene->CreateGameObject(GO_DEFAULT_NAME);
 				}
 			}
 			ImGui::EndPopup();
