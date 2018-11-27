@@ -10,7 +10,7 @@ public:
 	ComponentMaterial(GameObject* go);
 	~ComponentMaterial();
 
-	//void DrawOnInspector() override;
+	void DrawOnInspector() override;
 
 	Texture* texture;
 };

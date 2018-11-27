@@ -10,3 +10,24 @@ ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_t
 ComponentMaterial::~ComponentMaterial()
 {
 }
+
+void ComponentMaterial::DrawOnInspector()
+{
+	ImGui::Separator();
+	if (ImGui::CollapsingHeader("Material Component"))
+	{
+		Component::DrawOnInspector();
+
+		if (texture != nullptr)
+		{
+			ImGui::Text("Texture name: %s", texture->name);
+			ImGui::Text("Texture Size:\n Width: %d | Height: %d", texture->width, texture->height);
+			float panelWidth = ImGui::GetWindowContentRegionWidth();
+			float conversionFactor = panelWidth / texture->width;
+			ImVec2 imageSize = { texture->height *conversionFactor, panelWidth };
+			ImGui::Image((ImTextureID)texture->id, imageSize);
+		}
+		else
+			ImGui::Text("No texture");
+	}
+}
