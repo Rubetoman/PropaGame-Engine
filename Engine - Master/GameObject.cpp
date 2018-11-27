@@ -123,7 +123,7 @@ int GameObject::GetChildNumber() const
 {
 	if (parent == nullptr)
 	{
-		LOG("Warning: GameObject doesn't have a parent");
+		LOG("Warning: %s doesn't have a parent", name);
 		return -1;
 	}
 	auto pos = std::find(parent->children.begin(), parent->children.end(), this) - parent->children.begin();
@@ -144,6 +144,10 @@ void GameObject::DeleteGameObject()
 
 void GameObject::Unchild()
 {
-	if (parent != nullptr)
-		parent->children.erase(parent->children.begin() + GetChildNumber());
+	if (parent == nullptr)
+	{
+		LOG("Warning: %s doesn't have a parent.", name);
+		return;
+	}
+	parent->children.erase(parent->children.begin() + GetChildNumber());
 }

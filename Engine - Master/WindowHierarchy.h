@@ -11,6 +11,7 @@ public:
 	~WindowHierarchy();
 
 	void Draw();
+	void DrawNode();
 	void DrawChildren(GameObject* node);
 	GameObject* selected = false;
 };

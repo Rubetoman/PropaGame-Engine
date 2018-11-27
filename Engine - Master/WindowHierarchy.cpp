@@ -21,36 +21,7 @@ void WindowHierarchy::Draw()
 	if (ImGui::Begin("Hierarchy", &active, ImGuiWindowFlags_NoFocusOnAppearing))
 	{
 		if (App->scene->root != nullptr)
-		{
-			if (App->scene->show_root)
-			{
-				GameObject* node = App->scene->root;
-				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-				flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
-
-				if (ImGui::TreeNodeEx(node->name.c_str(), flags))
-				{
-					if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
-					{
-						selected = node;
-					}
-
-					// Children
-					for (auto &child : node->children)
-					{
-						DrawChildren(child);
-					}
-					ImGui::TreePop();
-				}
-			}
-			else
-			{
-				for (auto &child : App->scene->root->children)
-				{
-					DrawChildren(child);
-				}
-			}
-		}
+			DrawNode();
 
 		// Popup
 		if (ImGui::IsMouseReleased(1) & ImGui::IsMouseHoveringWindow())
@@ -74,9 +45,10 @@ void WindowHierarchy::Draw()
 				{
 
 				}
-				if (ImGui::Selectable("Unchild"))
+				if ((selected->parent != App->scene->root) && (selected != App->scene->root))
 				{
-					App->scene->Unchild(selected);
+					if (ImGui::Selectable("Unchild"))
+						App->scene->Unchild(selected);
 				}
 				if (ImGui::Selectable("Delete"))
 				{
@@ -100,6 +72,38 @@ void WindowHierarchy::Draw()
 		}
 	}
 	ImGui::End();
+}
+
+void WindowHierarchy::DrawNode()
+{
+	if (App->scene->show_root)
+	{
+		GameObject* node = App->scene->root;
+		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+		flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
+
+		if (ImGui::TreeNodeEx(node->name.c_str(), flags))
+		{
+			if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
+			{
+				selected = node;
+			}
+
+			// Children
+			for (auto &child : node->children)
+			{
+				DrawChildren(child);
+			}
+			ImGui::TreePop();
+		}
+	}
+	else
+	{
+		for (auto &child : App->scene->root->children)
+		{
+			DrawChildren(child);
+		}
+	}
 }
 
 void WindowHierarchy::DrawChildren(GameObject* node)
