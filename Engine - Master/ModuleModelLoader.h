@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "Application.h"
 #include "ModuleTextures.h"
+#include "GameObject.h"
+
 #include "MathGeoLib.h"
 #include "GL/glew.h"
 #include "MathGeoLib.h"
@@ -28,7 +30,7 @@ public:
 
 	bool			LoadMesh(const char* path);
 	//void			LoadMaterial(const char* path);
-	void			GenerateMeshData(const aiScene* scene);
+	void			GenerateNodeMeshData(const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent);
 	void			ChangeMeshTexture(const char* path);
 	void			DeleteMesh(const int index);
 	//void			DeleteMaterial(const int index);

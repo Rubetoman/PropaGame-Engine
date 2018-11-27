@@ -47,7 +47,7 @@ bool ModuleModelLoader::LoadMesh(const char* path)
 	}
 	App->camera->BBtoLook = new AABB({ .0f, .0f, .0f }, { .0f, .0f, .0f });
 
-	GenerateMeshData(scene);
+	GenerateNodeMeshData(scene, scene->mRootNode, aiMatrix4x4(), App->scene->root);
 	aiReleaseImport(scene);
 	return true;
 }
@@ -70,24 +70,22 @@ bool ModuleModelLoader::LoadMesh(const char* path)
 	materials.push_back(gen_material);
 }*/
 
-void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
+void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent)
 {
-	assert(scene != nullptr);
-	// Warning: Create parent GO for root
-	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
+	assert(scene != nullptr); assert(node != nullptr);
+
+	aiMatrix4x4 transform = parent_transform * scene->mRootNode->mTransformation;
+	GameObject* go = App->scene->CreateGameObject(node->mName.C_Str(), (math::float4x4&)transform, parent);
+	// Avoid creating GO without name
+	if (go->name.size() < 1)
+		go->name = GO_DEFAULT_NAME;
+
+	for (unsigned i = 0; i < node->mNumMeshes; ++i)
 	{
-		const aiMesh* src_mesh = scene->mMeshes[i];
-
-		// Generate Game Object with mesh component
-		GameObject* go = App->scene->CreateGameObject(src_mesh->mName.C_Str(), (math::float4x4&)scene->mRootNode->mTransformation);
-		
-		// Avoid creating GO without name
-		if (go->name.size() < 1)
-			go->name = "GameObject";
-
 		// Add Mesh Component
 		ComponentMesh* mesh = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
-		//App->scene->game_objects.push_back(go);
+
+		const aiMesh* src_mesh = scene->mMeshes[node->mMeshes[i]];
 
 		// vertex array objects (VAO)
 		glGenVertexArrays(1, &mesh->vao);
@@ -187,6 +185,11 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene)
 		}
 	}
 	App->camera->FitCamera(*App->camera->BBtoLook);
+
+	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	{
+		GenerateNodeMeshData(scene, node->mChildren[i], transform, go);
+	}
 }
 
 void ModuleModelLoader::ChangeMeshTexture(const char * path)
