@@ -1,5 +1,6 @@
 #include "WindowConfiguration.h"
 #include "ModuleWindow.h"
+#include "ModuleScene.h"
 #include "mmgr/mmgr.h"
 
 WindowConfiguration::WindowConfiguration(const char* name) : Window(name)
@@ -52,6 +53,10 @@ void WindowConfiguration::Draw()
 			App->window->SetWindowBrightness(App->window->brightness);
 		}
 		ImGui::NewLine();
+	}
+	if (ImGui::CollapsingHeader("Scene"))
+	{
+		ImGui::Checkbox("Show scene root", &App->scene->show_root);
 	}
 	if (ImGui::CollapsingHeader("Camera"))
 	{
