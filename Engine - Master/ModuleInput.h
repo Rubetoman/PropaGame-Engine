@@ -58,19 +58,18 @@ public:
 	// Check for window events last frame
 	bool GetWindowEvent(EventWindow code) const;
 
-	// Get mouse / axis position
-	const iPoint& GetMouseMotion() const;
-	const iPoint& GetMousePosition() const;
-	// Get mouse wheel scroll
-	const iPoint& GetMouseWheel() const;
+	// Mouse Input
+	const fPoint& GetMouseMotion() const;	
+	const fPoint& GetMousePosition() const;		
+	const fPoint& GetMouseWheel() const;		
 
 private:
 	bool		windowEvents[WE_COUNT];
 	KeyState*	keyboard;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
-	iPoint		mouse_motion;
-	iPoint		mouse;
-	iPoint		wheel_motion;
+	fPoint		mouse_motion;
+	fPoint		mouse;
+	fPoint		wheel_motion;
 	bool		wheel_scroll;
 
 	char* dropped_filedir = nullptr;    // Pointer for directory of dropped file
