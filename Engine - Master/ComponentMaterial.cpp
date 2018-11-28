@@ -13,6 +13,7 @@ ComponentMaterial::~ComponentMaterial()
 
 void ComponentMaterial::DrawOnInspector()
 {
+	ImGui::PushID(this);
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Material Component"))
 	{
@@ -30,4 +31,5 @@ void ComponentMaterial::DrawOnInspector()
 		else
 			ImGui::Text("No texture");
 	}
+	ImGui::PopID();
 }

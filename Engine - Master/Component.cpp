@@ -18,7 +18,7 @@ void Component::Update()
 
 void Component::DrawOnInspector()
 {
-	ImGui::Checkbox("active", &active);
+	ImGui::Checkbox("Active", &active);
 }
 
 void Component::CleanUp()

@@ -27,6 +27,7 @@ void ComponentTransform::SetTransform(const math::float4x4& transform)
 
 void ComponentTransform::DrawOnInspector()
 {
+	ImGui::PushID(this);
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Transform Component"))
 	{
@@ -36,6 +37,7 @@ void ComponentTransform::DrawOnInspector()
 			math::DegToRad(euler_rotation.y), math::DegToRad(euler_rotation.z));
 		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f);
 	}
+	ImGui::PopID();
 }
 
 		

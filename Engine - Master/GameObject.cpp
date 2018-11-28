@@ -69,7 +69,14 @@ void GameObject::Draw()
 	{
 		child->Draw();
 	}
+	// Set Shader and Texture
 	unsigned program = App->renderer->programText;
+	Texture* texture = nullptr;
+	if (material != nullptr && material->active)
+	{
+		texture = material->texture;
+	}
+
 	//Draw meshes
 	glUseProgram(program);
 
@@ -81,7 +88,7 @@ void GameObject::Draw()
 	
 	if (mesh != nullptr && mesh->active)
 	{
-		((ComponentMesh*)mesh)->RenderMesh(App->renderer->programText, material->texture, view, proj);
+		((ComponentMesh*)mesh)->RenderMesh(App->renderer->programText, texture, view, proj);
 	}
 	glUseProgram(0);
 }
