@@ -75,7 +75,7 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 {
 	assert(scene != nullptr); assert(node != nullptr);
 
-	aiMatrix4x4 transform = parent_transform * scene->mRootNode->mTransformation;
+	aiMatrix4x4 transform = parent_transform * node->mTransformation;
 	GameObject* go = App->scene->CreateGameObject(node->mName.C_Str(), (math::float4x4&)transform, parent);
 
 	// Avoid creating GO without name or too long

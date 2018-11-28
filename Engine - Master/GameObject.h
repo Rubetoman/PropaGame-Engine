@@ -35,6 +35,8 @@ public:
 	int GetChildNumber() const;
 	void DeleteGameObject();
 	void Unchild();
+	math::float4x4 GetLocalTransform() const;
+	math::float4x4 GetGlobalTransform() const;
 
 public:
 

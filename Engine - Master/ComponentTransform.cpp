@@ -14,7 +14,7 @@ void ComponentTransform::SetTransform(const math::float4x4& transform)
 	math::float3 new_position;
 	math::float3 new_scale;
 	math::Quat new_rotation;
-	transform.Decompose(new_scale, new_rotation, new_position);
+	transform.Decompose(new_position, new_rotation, new_scale);
 
 	position = { new_position.x, new_position.y, new_position.z };
 	scale = { new_scale.x, new_scale.y, new_scale.z };
@@ -32,6 +32,8 @@ void ComponentTransform::DrawOnInspector()
 	{
 		ImGui::DragFloat3("Position", (float*)&position, 0.1f);
 		ImGui::DragFloat3("Rotation", (float*)&euler_rotation, 0.1f);
+		rotation = rotation.FromEulerXYZ(math::DegToRad(euler_rotation.x),
+			math::DegToRad(euler_rotation.y), math::DegToRad(euler_rotation.z));
 		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f);
 	}
 }

@@ -69,19 +69,21 @@ void GameObject::Draw()
 	{
 		child->Draw();
 	}
-
+	unsigned program = App->renderer->programText;
 	//Draw meshes
+	glUseProgram(program);
+
 	math::float4x4 proj = App->camera->mainCamera->ProjectionMatrix();
 	math::float4x4 view = App->camera->mainCamera->LookAt(App->camera->mainCamera->position + App->camera->mainCamera->front);
-
-	std::vector<Component*> meshes = GetComponents(component_type::Mesh);
-	for (auto &mesh : meshes)
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&GetGlobalTransform()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
+	
+	if (mesh != nullptr && mesh->active)
 	{
-		if (mesh->active)
-		{
-			((ComponentMesh*)mesh)->RenderMesh(App->renderer->programText, material->texture, view, proj);
-		}
+		((ComponentMesh*)mesh)->RenderMesh(App->renderer->programText, material->texture, view, proj);
 	}
+	glUseProgram(0);
 }
 
 Component* GameObject::CreateComponent(component_type type)
@@ -167,4 +169,20 @@ void GameObject::Unchild()
 		return;
 	}
 	parent->children.erase(parent->children.begin() + GetChildNumber());
+}
+
+math::float4x4 GameObject::GetLocalTransform() const
+{
+	if (transform == nullptr) 
+		return float4x4::identity;
+
+	return float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+}
+
+math::float4x4 GameObject::GetGlobalTransform() const
+{
+	if (parent != nullptr)
+		return parent->GetGlobalTransform() * GetLocalTransform();
+
+	return GetLocalTransform();
 }

@@ -31,14 +31,6 @@ void ComponentMesh::DrawOnInspector()
 
 void ComponentMesh::RenderMesh(unsigned program, const Texture* texture, const math::float4x4& view, const math::float4x4& proj)
 {
-	//Use shaders loaded in program
-	glUseProgram(program);
-
-	math::float4x4 Model(math::float4x4::identity); // Not moving anything
-	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&Model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
-	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
-
 	if (texture != nullptr)
 	{
 		glActiveTexture(GL_TEXTURE0);
@@ -52,7 +44,6 @@ void ComponentMesh::RenderMesh(unsigned program, const Texture* texture, const m
 	// Disable VAO
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glUseProgram(0);
 }
 
 void ComponentMesh::DeleteMesh()
