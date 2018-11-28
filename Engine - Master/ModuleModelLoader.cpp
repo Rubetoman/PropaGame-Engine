@@ -77,9 +77,11 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 
 	aiMatrix4x4 transform = parent_transform * scene->mRootNode->mTransformation;
 	GameObject* go = App->scene->CreateGameObject(node->mName.C_Str(), (math::float4x4&)transform, parent);
-	// Avoid creating GO without name
-	if (go->name.size() < 1)
+
+	// Avoid creating GO without name or too long
+	if (go->name.size() < 1 || node->mName.length > GO_NAME_SIZE)
 		go->name = GO_DEFAULT_NAME;
+
 
 	for (unsigned i = 0; i < node->mNumMeshes; ++i)
 	{
