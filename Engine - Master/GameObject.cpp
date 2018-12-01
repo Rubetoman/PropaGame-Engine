@@ -36,10 +36,45 @@ GameObject::GameObject(const char* name, const math::float4x4& new_transform, Ga
 
 GameObject::~GameObject()
 {
+	for (auto &component : components)
+	{
+		RELEASE(component);
+	}
+
+	for (auto &child : children)
+	{
+		RELEASE(child);
+	}
+
+	transform = nullptr;
+	mesh = nullptr;
+	material = nullptr;
+	parent = nullptr;
 }
 
 void GameObject::Update()
 {
+	for (std::list<GameObject*>::iterator it_child = children.begin(); it_child != children.end();)
+	{
+		(*it_child)->Update();
+
+		if ((*it_child)->flags & GOFlags::Copy)
+		{
+			(*it_child)->flags = (*it_child)->flags & ~GOFlags::Copy;
+			// TODO: Add copy option
+		}
+		if ((*it_child)->flags & GOFlags::Delete)
+		{
+			(*it_child)->flags = (*it_child)->flags & ~GOFlags::Delete;
+			(*it_child)->CleanUp();
+			//delete *it_child;
+			children.erase(it_child++);
+		}
+		else
+		{
+			++it_child;
+		}
+	}
 }
 
 void GameObject::CleanUp()
@@ -47,19 +82,15 @@ void GameObject::CleanUp()
 	for (auto &component : components)
 	{
 		component->CleanUp();
-		RELEASE(component);
 	}
 
 	for (auto &child : children)
 	{
 		child->CleanUp();
-		RELEASE(child);
 	}
-
-	transform = nullptr;
-	parent = nullptr;
 }
 
+#pragma region Game Object Related Functions
 void GameObject::Draw()
 {
 	if (!active) return;
@@ -85,7 +116,7 @@ void GameObject::Draw()
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&GetGlobalTransform()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
-	
+
 	if (mesh != nullptr && mesh->active)
 	{
 		((ComponentMesh*)mesh)->RenderMesh(App->renderer->programText, texture, view, proj);
@@ -93,6 +124,31 @@ void GameObject::Draw()
 	glUseProgram(0);
 }
 
+void GameObject::DeleteGameObject()
+{
+	Unchild();
+	CleanUp();
+	delete this;
+}
+
+math::float4x4 GameObject::GetLocalTransform() const
+{
+	if (transform == nullptr)
+		return float4x4::identity;
+
+	return float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+}
+
+math::float4x4 GameObject::GetGlobalTransform() const
+{
+	if (parent != nullptr)
+		return parent->GetGlobalTransform() * GetLocalTransform();
+
+	return GetLocalTransform();
+}
+#pragma endregion
+
+#pragma region Components Related Functions
 Component* GameObject::CreateComponent(component_type type)
 {
 	Component* component = nullptr;
@@ -145,29 +201,20 @@ std::vector<Component*> GameObject::GetComponents(component_type type) const
 	return comp;
 }
 
-int GameObject::GetChildNumber() const
+void GameObject::DeleteComponent(Component* component)
 {
-	if (parent == nullptr)
+	if (component != nullptr)
 	{
-		LOG("Warning: %s doesn't have a parent", name);
-		return -1;
+		components.erase(components.begin() + component->GetComponentNumber());
+		component->CleanUp();
+		RELEASE(component);
 	}
-	auto pos = std::find(parent->children.begin(), parent->children.end(), this) - parent->children.begin();
-	if (pos >= parent->children.size())
-	{
-		LOG("Warning: GameObject not found as a child of %s.", parent->name);
-		return -1;
-	}
-	return pos;
+	else
+		LOG("Warning: Component was nullptr.");
 }
+#pragma endregion
 
-void GameObject::DeleteGameObject()
-{
-	Unchild();
-	CleanUp();
-	delete this;
-}
-
+#pragma region Children Related Functions
 void GameObject::Unchild()
 {
 	if (parent == nullptr)
@@ -175,21 +222,6 @@ void GameObject::Unchild()
 		LOG("Warning: %s doesn't have a parent.", name);
 		return;
 	}
-	parent->children.erase(parent->children.begin() + GetChildNumber());
+	parent->children.remove(this);
 }
-
-math::float4x4 GameObject::GetLocalTransform() const
-{
-	if (transform == nullptr) 
-		return float4x4::identity;
-
-	return float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
-}
-
-math::float4x4 GameObject::GetGlobalTransform() const
-{
-	if (parent != nullptr)
-		return parent->GetGlobalTransform() * GetLocalTransform();
-
-	return GetLocalTransform();
-}
+#pragma endregion

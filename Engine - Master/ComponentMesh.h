@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Texture.h"
+#include "GameObject.h"
 #include "MathGeoLib.h"
 
 class ComponentMesh : public Component
@@ -17,6 +18,7 @@ public:
 
 	void RenderMesh(unsigned program, const Texture* texture, const math::float4x4& view, const math::float4x4& proj);
 	void DeleteMesh();
+	void Delete() override;
 
 	// Mesh variables
 	unsigned vbo = 0u;
@@ -24,7 +26,6 @@ public:
 	unsigned vao = 0u;
 	unsigned num_vertices = 0u;
 	unsigned num_indices = 0u;
-	//Texture* texture;
 
 	AABB boundingBox;
 };

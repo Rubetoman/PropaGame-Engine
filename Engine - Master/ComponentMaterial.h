@@ -2,6 +2,7 @@
 #define __COMPOMENTCOMPONENT_H__
 
 #include "Component.h"
+#include "GameObject.h"
 #include "Texture.h"
 
 class ComponentMaterial : public Component
@@ -11,6 +12,7 @@ public:
 	~ComponentMaterial();
 
 	void DrawOnInspector() override;
+	void Delete() override;
 
 	Texture* texture;
 };

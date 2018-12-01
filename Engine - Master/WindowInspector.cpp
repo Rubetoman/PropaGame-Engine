@@ -49,6 +49,7 @@ void WindowInspector::DrawComponents(GameObject* go)
 {
 	for (auto &comp : go->components)
 	{
-		comp->DrawOnInspector();
+		if(go != nullptr)
+			comp->DrawOnInspector();
 	}
 }

@@ -15,6 +15,7 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::CleanUp()
 {
+	Component::CleanUp();
 	DeleteMesh();
 }
 
@@ -63,4 +64,10 @@ void ComponentMesh::DeleteMesh()
 	{
 		glDeleteBuffers(1, &vao);
 	}
+}
+
+void ComponentMesh::Delete()
+{
+	my_go->mesh = nullptr;
+	Component::Delete();
 }

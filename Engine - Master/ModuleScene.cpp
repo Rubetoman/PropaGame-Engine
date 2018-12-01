@@ -15,19 +15,17 @@ ModuleScene::~ModuleScene()
 
 update_status ModuleScene::Update()
 {
+	root->Update();
 	Draw();
 	return UPDATE_CONTINUE;
 }
 
 bool ModuleScene::CleanUp()
 {
-	/*for (std::vector<GameObject*>::iterator it = game_objects.begin(); it != game_objects.end(); ++it)
-	{
-		RELEASE((*it));
-	}
-	game_objects.clear();*/
 	if (root != nullptr)
+	{
 		root->CleanUp();
+	}
 	return true;
 }
 

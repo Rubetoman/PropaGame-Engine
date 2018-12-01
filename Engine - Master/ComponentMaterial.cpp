@@ -1,5 +1,6 @@
 #include "ComponentMaterial.h"
 
+#include "Globals.h"
 #include "GL/glew.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_type::Material)
@@ -9,6 +10,7 @@ ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_t
 
 ComponentMaterial::~ComponentMaterial()
 {
+	Delete();
 }
 
 void ComponentMaterial::DrawOnInspector()
@@ -32,4 +34,15 @@ void ComponentMaterial::DrawOnInspector()
 			ImGui::Text("No texture");
 	}
 	ImGui::PopID();
+}
+
+void ComponentMaterial::Delete()
+{
+	if (texture != nullptr)
+	{
+		glDeleteTextures(1, (GLuint*)&texture->id);
+	}
+	RELEASE(texture);
+	my_go->material = nullptr;
+	Component::Delete();
 }

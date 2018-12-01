@@ -52,7 +52,7 @@ void WindowHierarchy::Draw()
 				}
 				if (ImGui::Selectable("Delete"))
 				{
-					App->scene->DeleteGameObject(selected);
+					selected->flags |= GOFlags::Delete;
 					selected = nullptr;
 				}
 				ImGui::Separator();

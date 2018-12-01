@@ -20,6 +20,9 @@ public:
 	virtual void Disable() { active = false; };
 
 	virtual void CleanUp();
+	virtual void Delete();
+
+	int GetComponentNumber() const;
 
 public:
 	component_type type;
