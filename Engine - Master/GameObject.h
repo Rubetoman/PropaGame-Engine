@@ -21,6 +21,7 @@ enum GOFlags
 	None = 0,
 	Delete = 1,
 	Copy = 2,
+	Duplicate = 3
 };
 
 inline GOFlags operator|(GOFlags a, GOFlags b)
@@ -52,6 +53,7 @@ public:
 	GameObject(const char* name, GameObject* parent);
 	GameObject(const char* name, const math::float4x4& new_transform);
 	GameObject(const char* name, const math::float4x4& new_transform, GameObject* parent);
+	GameObject::GameObject(const GameObject& go);
 	~GameObject();
 
 	void Update();

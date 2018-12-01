@@ -9,8 +9,10 @@ class ComponentMaterial : public Component
 {
 public:
 	ComponentMaterial(GameObject* go);
+	ComponentMaterial(const ComponentMaterial& comp);
 	~ComponentMaterial();
 
+	Component* Duplicate() override;
 	void DrawOnInspector() override;
 	void Delete() override;
 

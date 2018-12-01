@@ -43,7 +43,7 @@ void WindowHierarchy::Draw()
 			{
 				if (ImGui::Selectable("Duplicate"))
 				{
-
+					selected = App->scene->DuplicateGameObject(selected);
 				}
 				if ((selected->parent != App->scene->root) && (selected != App->scene->root))
 				{
@@ -78,6 +78,7 @@ void WindowHierarchy::DrawNode()
 {
 	if (App->scene->show_root)
 	{
+		ImGui::PushID(this);
 		GameObject* node = App->scene->root;
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 		flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
@@ -96,6 +97,7 @@ void WindowHierarchy::DrawNode()
 			}
 			ImGui::TreePop();
 		}
+		ImGui::PopID();
 	}
 	else
 	{
@@ -108,12 +110,13 @@ void WindowHierarchy::DrawNode()
 
 void WindowHierarchy::DrawChildren(GameObject* node)
 {
-	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick
+		| (node == selected ? ImGuiTreeNodeFlags_Selected : 0);
+	ImGui::PushID(this);
 	if (node->children.empty())
 	{
 		flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
-	flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
 
 	if (ImGui::TreeNodeEx(node->name.c_str(), flags))
 	{
@@ -133,4 +136,5 @@ void WindowHierarchy::DrawChildren(GameObject* node)
 			ImGui::TreePop();
 		}
 	}
+	ImGui::PopID();
 }

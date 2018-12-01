@@ -134,6 +134,14 @@ void ModuleScene::DeleteGameObject(GameObject* go)
 	go->DeleteGameObject();
 }
 
+GameObject* ModuleScene::DuplicateGameObject(const GameObject* go)
+{
+	GameObject* new_go = new GameObject(*go);
+	new_go->parent = go->parent;
+	new_go->parent->children.push_back(new_go);
+	return new_go;
+}
+
 void ModuleScene::Unchild(GameObject* go)
 {
 	if (go == nullptr)

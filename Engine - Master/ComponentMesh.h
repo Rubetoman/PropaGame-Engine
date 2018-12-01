@@ -10,8 +10,10 @@ class ComponentMesh : public Component
 {
 public:
 	ComponentMesh(GameObject* go);
+	ComponentMesh(const ComponentMesh& comp);
 	~ComponentMesh();
 
+	virtual Component* Duplicate() override;
 	void CleanUp() override;
 
 	void DrawOnInspector() override;

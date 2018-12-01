@@ -6,6 +6,12 @@ Component::Component(GameObject* go, component_type type) : my_go(go), type(type
 {
 }
 
+Component::Component(const Component& comp)
+{
+	my_go = comp.my_go;
+	type = comp.type;
+	active = comp.active;
+}
 
 Component::~Component()
 {

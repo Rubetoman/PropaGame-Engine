@@ -12,8 +12,10 @@ class Component
 {
 public:
 	Component(GameObject* go, component_type type);
+	Component(const Component& comp);
 	virtual ~Component();
 
+	virtual Component* Duplicate() = 0;
 	virtual void DrawOnInspector();
 	virtual void Enable() {active = true;};
 	virtual void Update();

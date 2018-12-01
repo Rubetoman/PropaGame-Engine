@@ -34,6 +34,35 @@ GameObject::GameObject(const char* name, const math::float4x4& new_transform, Ga
 	parent->children.push_back(this);
 }
 
+GameObject::GameObject(const GameObject& go)
+{
+	name = go.name;
+
+	for (const auto& component : go.components)
+	{
+		Component *new_comp = component->Duplicate();
+		components.push_back(new_comp);
+		if (new_comp->type == component_type::Transform)
+		{
+			transform = (ComponentTransform*)new_comp;
+		}
+		else if (new_comp->type == component_type::Mesh)
+		{
+			mesh = (ComponentMesh*)new_comp;
+		}
+		else if (new_comp->type == component_type::Material)
+		{
+			material = (ComponentMaterial*)new_comp;
+		}
+	}
+	for (const auto& child : go.children)
+	{
+		GameObject* new_child = new GameObject(*child);
+		new_child->parent = this;
+		children.push_back(new_child);
+	}
+}
+
 GameObject::~GameObject()
 {
 	for (auto &component : components)

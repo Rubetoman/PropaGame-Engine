@@ -8,8 +8,10 @@ class ComponentTransform : public Component
 { 
 public:
 	ComponentTransform(GameObject* go);
+	ComponentTransform(const ComponentTransform& comp);
 	~ComponentTransform();
 
+	Component* Duplicate() override;
 	void SetTransform(const math::float4x4& transform);
 
 	void DrawOnInspector() override;

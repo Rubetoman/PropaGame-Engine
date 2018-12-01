@@ -22,6 +22,7 @@ public:
 	GameObject* CreateGameObject(const char* name, math::float4x4& transform, GameObject* parent);
 	
 	void DeleteGameObject(GameObject* go);
+	GameObject* DuplicateGameObject(const GameObject* go);
 	void Unchild(GameObject* go);
 
 public:

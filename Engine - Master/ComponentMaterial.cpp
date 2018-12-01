@@ -7,10 +7,20 @@ ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_t
 {
 }
 
+ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(comp)
+{
+	// TODO: Create new texture or not delete it when they are used by other comp
+	texture = comp.texture;
+}
 
 ComponentMaterial::~ComponentMaterial()
 {
 	Delete();
+}
+
+Component* ComponentMaterial::Duplicate()
+{
+	return new ComponentMaterial(*this);
 }
 
 void ComponentMaterial::DrawOnInspector()

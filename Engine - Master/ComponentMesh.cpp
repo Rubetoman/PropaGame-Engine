@@ -8,9 +8,23 @@ ComponentMesh::ComponentMesh(GameObject* go) : Component(go, component_type::Mes
 {
 }
 
+ComponentMesh::ComponentMesh(const ComponentMesh& comp) : Component(comp)
+{
+	// TODO: Create new buffers or not delete when they are used by other comp
+	vbo = comp.vbo;
+	ibo = comp.ibo;
+	vao = comp.vao;
+	num_vertices = comp.num_vertices;
+	num_indices = comp.num_indices;
+}
 
 ComponentMesh::~ComponentMesh()
 {
+}
+
+Component* ComponentMesh::Duplicate()
+{
+	return new ComponentMesh(*this);
 }
 
 void ComponentMesh::CleanUp()

@@ -5,8 +5,21 @@ ComponentTransform::ComponentTransform(GameObject* go) : Component(go, component
 {
 }
 
+ComponentTransform::ComponentTransform(const ComponentTransform& comp) : Component(comp)
+{
+	position = comp.position;
+	euler_rotation = comp.euler_rotation;
+	rotation = comp.rotation;
+	scale = comp.scale;
+}
+
 ComponentTransform::~ComponentTransform()
 {
+}
+
+Component* ComponentTransform::Duplicate()
+{
+	return new ComponentTransform(*this);
 }
 
 void ComponentTransform::SetTransform(const math::float4x4& transform)
