@@ -84,13 +84,14 @@ void WindowHierarchy::DrawNode()
 		flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
 		bool node_open = ImGui::TreeNodeEx(node->name.c_str(), flags);
 		SetDragAndDrop(node);
+		
+		if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
+		{
+			selected = node;
+		}
+
 		if (node_open)
 		{
-			if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
-			{
-				selected = node;
-			}
-
 			// Children
 			for (auto &child : node->children)
 			{
@@ -120,13 +121,14 @@ void WindowHierarchy::DrawChildren(GameObject* node)
 	}
 	bool node_open = ImGui::TreeNodeEx(node->name.c_str(), flags);
 	SetDragAndDrop(node);
+
+	if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
+	{
+		selected = node;
+	}
+
 	if (node_open)
 	{
-		if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
-		{
-			selected = node;
-		}
-
 		// Children
 		for (auto &child : node->children)
 		{
@@ -155,7 +157,7 @@ void WindowHierarchy::SetDragAndDrop(GameObject* node)
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy"))
 		{
 			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
-			GameObject* drop_go = (GameObject *)*(const int*)payload->Data;
+			GameObject* drop_go = (GameObject*)*(const int*)payload->Data;
 			if (drop_go->parent != node)
 			{
 				drop_go->SetParent(node);
