@@ -158,7 +158,7 @@ void WindowHierarchy::SetDragAndDrop(GameObject* node)
 		{
 			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
 			GameObject* drop_go = (GameObject*)*(const int*)payload->Data;
-			if (drop_go->parent != node)
+			if ((drop_go->parent != node) && !(node->isForefather(*drop_go)))
 			{
 				drop_go->SetParent(node);
 			}

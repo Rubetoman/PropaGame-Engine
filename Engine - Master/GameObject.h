@@ -73,6 +73,7 @@ public:
 	// Children
 	void Unchild();
 	void SetParent(GameObject* new_parent);
+	bool isForefather(GameObject& go);
 
 public:
 

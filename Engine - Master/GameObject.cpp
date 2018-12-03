@@ -272,4 +272,14 @@ void GameObject::SetParent(GameObject* new_parent)
 	if (this->transform != nullptr)
 		this->transform->GlobalToLocal(this->parent->GetGlobalTransform());
 }
+
+bool GameObject::isForefather(GameObject& go)
+{
+	if (parent == nullptr)
+		return false;
+	else if (&go == parent)
+		return true;
+	else
+		return parent->isForefather(go);
+}
 #pragma endregion
