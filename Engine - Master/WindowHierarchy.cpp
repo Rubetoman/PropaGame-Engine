@@ -78,8 +78,8 @@ void WindowHierarchy::DrawNode()
 {
 	if (App->scene->show_root)
 	{
-		ImGui::PushID(this);
 		GameObject* node = App->scene->root;
+		ImGui::PushID(node);
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 		flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
 
