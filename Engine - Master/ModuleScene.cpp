@@ -149,7 +149,5 @@ void ModuleScene::Unchild(GameObject* go)
 		LOG("Warning: GameObject == nullptr.");
 		return;
 	}
-	go->Unchild();
-	go->parent = root;
-	root->children.push_back(go);
+	go->SetParent(root);
 }
