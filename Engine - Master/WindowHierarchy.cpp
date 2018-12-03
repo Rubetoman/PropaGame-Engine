@@ -82,8 +82,9 @@ void WindowHierarchy::DrawNode()
 		ImGui::PushID(node);
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 		flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
-
-		if (ImGui::TreeNodeEx(node->name.c_str(), flags))
+		bool node_open = ImGui::TreeNodeEx(node->name.c_str(), flags);
+		SetDragAndDrop(node);
+		if (node_open)
 		{
 			if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
 			{
@@ -117,8 +118,9 @@ void WindowHierarchy::DrawChildren(GameObject* node)
 	{
 		flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
-
-	if (ImGui::TreeNodeEx(node->name.c_str(), flags))
+	bool node_open = ImGui::TreeNodeEx(node->name.c_str(), flags);
+	SetDragAndDrop(node);
+	if (node_open)
 	{
 		if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
 		{
@@ -137,4 +139,28 @@ void WindowHierarchy::DrawChildren(GameObject* node)
 		}
 	}
 	ImGui::PopID();
+}
+
+void WindowHierarchy::SetDragAndDrop(GameObject* node)
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		GameObject* drag_go = node;
+		ImGui::SetDragDropPayload("DragDropHierarchy", &drag_go, sizeof(GameObject*), ImGuiCond_Once);
+		ImGui::Text("%s", node->name.c_str());
+		ImGui::EndDragDropSource();
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy"))
+		{
+			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
+			GameObject* drop_go = (GameObject *)*(const int*)payload->Data;
+			if (drop_go->parent != node)
+			{
+				drop_go->SetParent(node);
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
 }

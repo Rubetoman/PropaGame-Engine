@@ -13,6 +13,8 @@ public:
 	void Draw();
 	void DrawNode();
 	void DrawChildren(GameObject* node);
+	void SetDragAndDrop(GameObject* node);
+
 	GameObject* selected = false;
 };
 

@@ -253,4 +253,23 @@ void GameObject::Unchild()
 	}
 	parent->children.remove(this);
 }
+
+void GameObject::SetParent(GameObject* new_parent)
+{
+	if (new_parent == nullptr)
+		return;
+
+	new_parent->children.push_back(this);
+
+	// Set transform to global
+	if (this->transform != nullptr)
+		this->transform->LocalToGlobal(this->GetGlobalTransform());
+
+	this->parent->children.remove(this);
+	this->parent = new_parent;
+
+	// Adapt to new parent transformation
+	if (this->transform != nullptr)
+		this->transform->GlobalToLocal(this->parent->GetGlobalTransform());
+}
 #pragma endregion

@@ -13,6 +13,8 @@ public:
 
 	Component* Duplicate() override;
 	void SetTransform(const math::float4x4& transform);
+	void LocalToGlobal(const float4x4& global_transform);
+	void GlobalToLocal(const float4x4& local_transform);
 
 	void DrawOnInspector() override;
 

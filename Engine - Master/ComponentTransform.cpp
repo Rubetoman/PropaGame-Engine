@@ -38,6 +38,19 @@ void ComponentTransform::SetTransform(const math::float4x4& transform)
 	euler_rotation.z = math::RadToDeg(euler_rotation.z);
 }
 
+void ComponentTransform::LocalToGlobal(const float4x4& global_transform)
+{
+	float4x4 global = global_transform;
+	SetTransform(global);
+}
+
+void ComponentTransform::GlobalToLocal(const float4x4& local_transform)
+{
+	float4x4 global = float4x4::FromTRS(position, rotation, scale);
+	float4x4 local = local_transform.Inverted() * global;
+	SetTransform(local);
+}
+
 void ComponentTransform::DrawOnInspector()
 {
 	ImGui::PushID(this);
