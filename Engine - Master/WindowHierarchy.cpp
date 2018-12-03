@@ -112,7 +112,7 @@ void WindowHierarchy::DrawChildren(GameObject* node)
 {
 	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick
 		| (node == selected ? ImGuiTreeNodeFlags_Selected : 0);
-	ImGui::PushID(this);
+	ImGui::PushID(node);
 	if (node->children.empty())
 	{
 		flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
