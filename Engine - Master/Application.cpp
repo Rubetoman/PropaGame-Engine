@@ -13,6 +13,7 @@
 #include "ModuleFileManager.h"
 #include "ModuleTime.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleScene.h"
 
 using namespace std;
 
@@ -26,6 +27,7 @@ Application::Application()
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(shader = new ModuleShader());
+	modules.push_back(scene = new ModuleScene());
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(file = new ModuleFileManager());
 	modules.push_back(model_loader = new ModuleModelLoader());

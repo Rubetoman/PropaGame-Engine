@@ -6,13 +6,16 @@
 #include "ModuleModelLoader.h"
 #include "ModuleTextures.h"
 #include "Texture.h"
+
 #include "Window.h"
 #include "WindowScene.h"
 #include "WindowAbout.h"
 #include "WindowConsole.h"
 #include "WindowHardware.h"
 #include "WindowConfiguration.h"
-#include "WindowProperties.h"
+#include "WindowHierarchy.h"
+#include "WindowInspector.h"
+
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
 #include "imgui/imgui.h"
@@ -26,7 +29,8 @@ class WindowAbout;
 class WindowConsole;
 class WindowHardware;
 class WindowConfiguration;
-class WindowProperties;
+class WindowHierarchy;
+class WindowInspector;
 
 class ModuleEditor : public Module
 {
@@ -65,7 +69,8 @@ public:
 	WindowConsole* console = nullptr;
 	WindowHardware* hardware = nullptr;
 	WindowConfiguration* configuration = nullptr;
-	WindowProperties* properties = nullptr;
+	WindowHierarchy* hierarchy = nullptr;
+	WindowInspector* inspector = nullptr;
 
 private:
 	std::list<Window*> editorWindows;

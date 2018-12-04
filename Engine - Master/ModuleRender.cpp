@@ -1,5 +1,7 @@
 #include "ModuleRender.h"
 
+#include "ModuleScene.h"
+
 ModuleRender::ModuleRender()
 {
 }
@@ -96,16 +98,16 @@ update_status ModuleRender::Update()
 	glUseProgram(0);
 
 	//Draw meshes
-	math::float4x4 proj = App->camera->mainCamera->ProjectionMatrix();
+	/*math::float4x4 proj = App->camera->mainCamera->ProjectionMatrix();
 	math::float4x4 view = App->camera->mainCamera->LookAt(App->camera->mainCamera->position + App->camera->mainCamera->front);
 
 	for (unsigned i = 0; i < App->model_loader->meshes.size(); ++i)
 	{
 		const ModuleModelLoader::mesh* mesh = App->model_loader->meshes[i];
 
-		RenderMesh(mesh, programText,
+		App->scene-> RenderMesh(mesh, programText,
 			App->model_loader->transform, view, proj);
-	}
+	}*/
 
 	return UPDATE_CONTINUE;
 }
@@ -138,41 +140,7 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 	CreateFrameBuffer();
 }
 
-void ModuleRender::RenderMesh(const ModuleModelLoader::mesh* mesh, unsigned program,
-	const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj)
-{
-	assert(mesh != nullptr);
-	//Use shaders loaded in program
-	glUseProgram(program);
 
-	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
-	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
-	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
-
-	if (mesh->texture != nullptr)
-	{
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mesh->texture->id);
-		glUniform1i(glGetUniformLocation(program, "texture0"), 0);
-	}
-
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * mesh->num_vertices));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->ibo);
-	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, nullptr);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glUseProgram(0);
-
-}
 
 void ModuleRender::DrawCoordinates()
 {

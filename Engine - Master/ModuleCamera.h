@@ -42,9 +42,9 @@ public:
 	void		TranslateCameraInput();
 	void		RotateCameraInput();
 	void		CameraSpeedInput(float modifier);
-	void		MouseInputTranslation(const iPoint& mouse_position);
-	void		MouseInputRotation(const iPoint& mouse_position);
-	void		WheelInputTranslation(const iPoint& wheel_motion);
+	void		MouseInputTranslation(const fPoint& mouse_position);
+	void		MouseInputRotation(const fPoint& mouse_position);
+	void		WheelInputTranslation(const fPoint& wheel_motion);
 	void		FitCamera(const AABB &boundingBox);
 
 	// Camera
@@ -55,7 +55,7 @@ public:
 	// Mouse 
 	bool new_click = true;
 	bool new_scroll = true;
-	float mouse_sensitivity = 0.003;
+	float mouse_sensitivity = 0.6;
 	float last_x = SCREEN_WIDTH / 2;
 	float last_y = SCREEN_HEIGHT / 2;
 

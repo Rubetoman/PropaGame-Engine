@@ -5,13 +5,16 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleTime.h"
+#include "ModuleScene.h"
+
 #include "Window.h"
 #include "WindowScene.h"
 #include "WindowAbout.h"
 #include "WindowConsole.h"
 #include "WindowHardware.h"
 #include "WindowConfiguration.h"
-#include "WindowProperties.h"
+
+
 
 ModuleEditor::ModuleEditor()
 {
@@ -41,7 +44,8 @@ bool ModuleEditor::Init()
 	editorWindows.push_back(console = new WindowConsole("console"));
 	editorWindows.push_back(hardware = new WindowHardware("hardware"));
 	editorWindows.push_back(configuration = new WindowConfiguration("configuration"));
-	editorWindows.push_back(properties = new WindowProperties("properties"));
+	editorWindows.push_back(hierarchy = new WindowHierarchy("hierarchy"));
+	editorWindows.push_back(inspector = new WindowInspector("inspector"));
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init(glsl_version);
@@ -70,7 +74,7 @@ update_status ModuleEditor::PreUpdate()
 	configuration->fps_game_log.erase(configuration->fps_game_log.begin());
 	configuration->fps_game_log.push_back(App->time->FPS);
 	configuration->ms_game_log.erase(configuration->ms_game_log.begin());
-	configuration->ms_game_log.push_back(App->time->delta_time * 1000.0f);
+	configuration->ms_game_log.push_back(App->time->delta_time * App->time->time_scale * 1000.0f);
 
 	return UPDATE_CONTINUE;
 }
@@ -163,13 +167,23 @@ void ModuleEditor::ShowMainMenuBar()
 			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Game Object"))
+		{
+			if (ImGui::MenuItem("Create Empty")) 
+			{ 
+				App->scene->CreateGameObject("GameObject"); 
+			}
+			ImGui::EndMenu();
+		}
 		if (ImGui::BeginMenu("Window"))
 		{
 			if (ImGui::MenuItem("Scene", NULL, scene->isActive())) { scene->toggleActive(); }
+			if (ImGui::MenuItem("Inspector", NULL, inspector->isActive())) { inspector->toggleActive(); }
+			if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->isActive())) { hierarchy->toggleActive(); }
 			ImGui::Separator();
 			if (ImGui::MenuItem("Configuration", NULL, configuration->isActive())) { configuration->toggleActive(); }
 			ImGui::Separator();
-			if (ImGui::MenuItem("Model Info", NULL, properties->isActive())) { properties->toggleActive(); }
+
 			if (ImGui::MenuItem("Hardware Info", NULL, hardware->isActive())) { hardware->toggleActive(); }
 			ImGui::Separator();
 			if (ImGui::MenuItem("Console", NULL, console->isActive())) { console->toggleActive(); }
@@ -183,6 +197,7 @@ void ModuleEditor::ShowMainMenuBar()
 			ImGui::EndMenu();
 		}
 		ImGui::SameLine(300); ImGui::Separator();
+		// Show Play/Pause/Stop/Step buttons (depending on current Game State)
 		if (App->time->game_running == Game_State::Stoped)
 		{
 			if (ImGui::Button("Play"))

@@ -119,10 +119,10 @@ update_status ModuleInput::Update()
 			break;
 
 		case SDL_MOUSEMOTION:
-			mouse_motion.x = event.motion.xrel / SCREEN_SIZE;
-			mouse_motion.y = event.motion.yrel / SCREEN_SIZE;
-			mouse.x = event.motion.x / SCREEN_SIZE;
-			mouse.y = event.motion.y / SCREEN_SIZE;
+			mouse_motion.x = (float)event.motion.xrel / (float)App->window->screen_width;
+			mouse_motion.y = (float)event.motion.yrel / (float)App->window->screen_height;
+			mouse.x = (float)event.motion.x / (float)App->window->screen_width;
+			mouse.y = (float)event.motion.y / (float)App->window->screen_height;
 			break;
 		case SDL_MOUSEWHEEL:
 			wheel_motion.x = event.wheel.x;
@@ -160,17 +160,17 @@ bool ModuleInput::GetWindowEvent(EventWindow ev) const
 	return windowEvents[ev];
 }
 
-const iPoint& ModuleInput::GetMousePosition() const
+const fPoint& ModuleInput::GetMousePosition() const
 {
 	return mouse;
 }
 
-const iPoint& ModuleInput::GetMouseMotion() const
+const fPoint& ModuleInput::GetMouseMotion() const
 {
 	return mouse_motion;
 }
 
-const iPoint& ModuleInput::GetMouseWheel() const
+const fPoint& ModuleInput::GetMouseWheel() const
 {
 	return wheel_motion;
 }
