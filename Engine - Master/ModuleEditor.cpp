@@ -14,6 +14,7 @@
 #include "WindowHardware.h"
 #include "WindowConfiguration.h"
 
+#include "debugdraw.h"
 
 
 ModuleEditor::ModuleEditor()
@@ -107,6 +108,9 @@ bool ModuleEditor::CleanUp()
 
 void ModuleEditor::Draw()
 {
+	// Draw references
+	DrawDebugReferences();
+
 	for (std::list<Window*>::iterator it = editorWindows.begin(); it != editorWindows.end(); ++it)
 	{
 		if ((*it)->isActive())
@@ -121,9 +125,20 @@ void ModuleEditor::Draw()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void ModuleEditor::HandleInputs(SDL_Event& event) 
+void ModuleEditor::DrawDebugReferences()
 {
-	ImGui_ImplSDL2_ProcessEvent(&event);
+	if (show_grid)
+	{
+		dd::xzSquareGrid(-500.0f, 500.0f, 0.0f, 1.0f, math::float3(0.65f, 0.65f, 0.65f));
+	}
+
+	if (show_axis)
+	{
+		float axis_size = 5.0f;
+		dd::axisTriad(math::float4x4::identity, axis_size*0.125f, axis_size*1.25f, 0, true);
+	}
+
+	//dd::sphere(App->models->light.pos, math::float3(1.0f, 1.0f, 1.0f), 0.05f);
 }
 
 void ModuleEditor::CreateDockSpace() const
@@ -238,4 +253,9 @@ void ModuleEditor::ShowInBrowser(const char* url) const
 {
 	assert(url != nullptr);
 	ShellExecute(0, "open", url, 0, 0, SW_SHOW);
+}
+
+void ModuleEditor::HandleInputs(SDL_Event& event)
+{
+	ImGui_ImplSDL2_ProcessEvent(&event);
 }

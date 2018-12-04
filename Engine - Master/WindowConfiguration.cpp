@@ -54,9 +54,12 @@ void WindowConfiguration::Draw()
 		}
 		ImGui::NewLine();
 	}
-	if (ImGui::CollapsingHeader("Scene"))
+	if (ImGui::CollapsingHeader("Editor"))
 	{
 		ImGui::Checkbox("Show scene root", &App->scene->show_root);
+		ImGui::Separator();
+		ImGui::Checkbox("Show grid", &App->editor->show_grid); ImGui::SameLine();
+		ImGui::Checkbox("Show axis", &App->editor->show_axis);
 	}
 	if (ImGui::CollapsingHeader("Camera"))
 	{

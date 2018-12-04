@@ -1,38 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="imgui\imgui.cpp">
-      <Filter>Tools\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_demo.cpp">
-      <Filter>Tools\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_draw.cpp">
-      <Filter>Tools\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
-      <Filter>Tools\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_impl_sdl.cpp">
-      <Filter>Tools\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_widgets.cpp">
-      <Filter>Tools\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="log.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="ModuleCamera.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleDebugDraw.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleFileManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleInput.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleModelLoader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleRender.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleShader.cpp">
@@ -41,15 +33,47 @@
     <ClCompile Include="ModuleTextures.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleTime.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleWindow.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleModelLoader.cpp">
-      <Filter>Modules</Filter>
+    <ClCompile Include="WindowAbout.cpp">
+      <Filter>Modules\EditorWindow</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ModuleFileManager.cpp">
-      <Filter>Modules</Filter>
+    <ClCompile Include="WindowConfiguration.cpp">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowConsole.cpp">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowHardware.cpp">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowHierarchy.cpp">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowInspector.cpp">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowScene.cpp">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Other\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMaterial.cpp">
+      <Filter>Other\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMesh.cpp">
+      <Filter>Other\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTransform.cpp">
+      <Filter>Other\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\include\Geometry\AABB.cpp">
       <Filter>Tools\Math</Filter>
@@ -93,14 +117,35 @@
     <ClCompile Include="MathGeoLib\include\Geometry\Frustum.cpp">
       <Filter>Tools\Math</Filter>
     </ClCompile>
-    <ClCompile Include="MathGeoLib\include\Algorithm\Random\LCG.cpp">
-      <Filter>Tools\Math</Filter>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>Tools\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="MathGeoLib\include\Geometry\Line.cpp">
-      <Filter>Tools\Math</Filter>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>Tools\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="MathGeoLib\include\Geometry\LineSegment.cpp">
-      <Filter>Tools\Math</Filter>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
+      <Filter>Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_sdl.cpp">
+      <Filter>Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>Tools\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Tools\mmgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\include\Math\MathFunc.cpp">
       <Filter>Tools\Math</Filter>
@@ -110,9 +155,6 @@
     </ClCompile>
     <ClCompile Include="MathGeoLib\include\Math\MathOps.cpp">
       <Filter>Tools\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="mmgr\mmgr.cpp">
-      <Filter>Tools\mmgr</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\include\Geometry\OBB.cpp">
       <Filter>Tools\Math</Filter>
@@ -150,58 +192,14 @@
     <ClCompile Include="MathGeoLib\include\Geometry\TriangleMesh.cpp">
       <Filter>Tools\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Other</Filter>
+    <ClCompile Include="MathGeoLib\include\Algorithm\Random\LCG.cpp">
+      <Filter>Tools\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Other</Filter>
+    <ClCompile Include="MathGeoLib\include\Geometry\Line.cpp">
+      <Filter>Tools\Math</Filter>
     </ClCompile>
-    <ClCompile Include="WindowScene.cpp">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowAbout.cpp">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowConsole.cpp">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowConfiguration.cpp">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowHardware.cpp">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleTime.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleScene.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowHierarchy.cpp">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleTime.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleDebugDraw.cpp">
-      <Filter>Modules</Filter>
-    <ClCompile Include="WindowInspector.cpp">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClCompile>
-    <ClCompile Include="ComponentTransform.cpp">
-      <Filter>Other\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Other\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ComponentMesh.cpp">
-      <Filter>Other\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ComponentMaterial.cpp">
-      <Filter>Other\Components</Filter>
+    <ClCompile Include="MathGeoLib\include\Geometry\LineSegment.cpp">
+      <Filter>Tools\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -213,13 +211,25 @@
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleDebugDraw.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
     <ClInclude Include="ModuleEditor.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFileManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleInput.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleModelLoader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
     <ClInclude Include="ModuleRender.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScene.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleShader.h">
@@ -228,14 +238,50 @@
     <ClInclude Include="ModuleTextures.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleTime.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
     <ClInclude Include="ModuleWindow.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleModelLoader.h">
-      <Filter>Modules</Filter>
+    <ClInclude Include="Window.h">
+      <Filter>Modules\EditorWindow</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFileManager.h">
-      <Filter>Modules</Filter>
+    <ClInclude Include="WindowAbout.h">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowConfiguration.h">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowConsole.h">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowHardware.h">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowHierarchy.h">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowInspector.h">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowScene.h">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Other\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMaterial.h">
+      <Filter>Other\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMesh.h">
+      <Filter>Other\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTransform.h">
+      <Filter>Other\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\include\Geometry\AABB.h">
       <Filter>Tools\Math</Filter>
@@ -306,29 +352,23 @@
     <ClInclude Include="MathGeoLib\include\Math\FloatCmp.h">
       <Filter>Tools\Math</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\include\Geometry\LineSegment.h">
-      <Filter>Tools\Math</Filter>
-    </ClInclude>
     <ClInclude Include="MathGeoLib\include\Geometry\Frustum.h">
       <Filter>Tools\Math</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\include\Geometry\GeometryAll.h">
-      <Filter>Tools\Math</Filter>
+    <ClInclude Include="mmgr\mmgr.h">
+      <Filter>Tools\mmgr</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\include\Geometry\GeomType.h">
-      <Filter>Tools\Math</Filter>
+    <ClInclude Include="Timer.h">
+      <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\include\Geometry\HitInfo.h">
-      <Filter>Tools\Math</Filter>
+    <ClInclude Include="Texture.h">
+      <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\include\Geometry\KDTree.h">
-      <Filter>Tools\Math</Filter>
+    <ClInclude Include="GameObject.h">
+      <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h">
-      <Filter>Tools\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\include\Geometry\Line.h">
-      <Filter>Tools\Math</Filter>
+    <ClInclude Include="debugdraw.h">
+      <Filter>Tools\debugdraw</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\include\Math\MathAll.h">
       <Filter>Tools\Math</Filter>
@@ -350,9 +390,6 @@
     </ClInclude>
     <ClInclude Include="MathGeoLib\include\Math\MatrixProxy.h">
       <Filter>Tools\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="mmgr\mmgr.h">
-      <Filter>Tools\mmgr</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\include\Math\myassert.h">
       <Filter>Tools\Math</Filter>
@@ -414,64 +451,26 @@
     <ClInclude Include="MathGeoLib\include\Geometry\TriangleMesh.h">
       <Filter>Tools\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Other</Filter>
+    <ClInclude Include="MathGeoLib\include\Geometry\GeometryAll.h">
+      <Filter>Tools\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Other</Filter>
+    <ClInclude Include="MathGeoLib\include\Geometry\GeomType.h">
+      <Filter>Tools\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Modules\EditorWindows</Filter>
+    <ClInclude Include="MathGeoLib\include\Geometry\HitInfo.h">
+      <Filter>Tools\Math</Filter>
     </ClInclude>
-    <ClInclude Include="WindowScene.h">
-      <Filter>Modules\EditorWindows</Filter>
+    <ClInclude Include="MathGeoLib\include\Geometry\KDTree.h">
+      <Filter>Tools\Math</Filter>
     </ClInclude>
-    <ClInclude Include="WindowAbout.h">
-      <Filter>Modules\EditorWindows</Filter>
+    <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h">
+      <Filter>Tools\Math</Filter>
     </ClInclude>
-    <ClInclude Include="WindowConsole.h">
-      <Filter>Modules\EditorWindows</Filter>
+    <ClInclude Include="MathGeoLib\include\Geometry\Line.h">
+      <Filter>Tools\Math</Filter>
     </ClInclude>
-    <ClInclude Include="WindowConfiguration.h">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowHardware.h">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleTime.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleDebugDraw.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="debugdraw.h">
-      <Filter>Tools</Filter>
-    <ClInclude Include="GameObject.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleScene.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowHierarchy.h">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowInspector.h">
-      <Filter>Modules\EditorWindows</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentTransform.h">
-      <Filter>Other\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Other\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentMesh.h">
-      <Filter>Other\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentMaterial.h">
-      <Filter>Other\Components</Filter>
+    <ClInclude Include="MathGeoLib\include\Geometry\LineSegment.h">
+      <Filter>Tools\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -490,31 +489,34 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
-      <UniqueIdentifier>{f273c528-9d30-4e25-8811-eb3f2a1d9ff9}</UniqueIdentifier>
+      <UniqueIdentifier>{0bc1491b-2655-48cb-83c4-b2990c2b54ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools">
-      <UniqueIdentifier>{b7a25bb1-cb1f-43da-8ed6-3b4228ab1f0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\Math">
-      <UniqueIdentifier>{1aa0e302-61ac-40d0-b820-9767e6438e78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\mmgr">
-      <UniqueIdentifier>{5dccd5eb-0c86-4292-8e05-75ac315e7d03}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\imgui">
-      <UniqueIdentifier>{d0ae7675-f495-4de9-9ff9-2ef061a21c4f}</UniqueIdentifier>
+    <Filter Include="Modules\EditorWindow">
+      <UniqueIdentifier>{9423a05d-913b-4daa-9397-1b3a1bea42ce}</UniqueIdentifier>
     </Filter>
     <Filter Include="Other">
-      <UniqueIdentifier>{4d40cb57-0629-41d5-8b24-10296718b6e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules\EditorWindows">
-      <UniqueIdentifier>{d43654a0-758c-4df6-89e1-1b4dc01ff124}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{9303a084-0d31-4eaf-b50d-e1d8921405b3}</UniqueIdentifier>
+      <UniqueIdentifier>{9fbfcc0d-5065-4d86-95aa-b86a9a459813}</UniqueIdentifier>
     </Filter>
     <Filter Include="Other\Components">
-      <UniqueIdentifier>{413df4ea-5aec-4512-a596-ed6f33d70030}</UniqueIdentifier>
+      <UniqueIdentifier>{80222bc7-098e-4637-9e45-3f906fe1decd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{270d76e5-5740-4e35-87a6-fcc8fb04c9b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{1f73f0c4-84b8-48e2-9265-aad43dc5806d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Math">
+      <UniqueIdentifier>{211d6342-6a97-43c1-9ee1-34c0478fcaae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\mmgr">
+      <UniqueIdentifier>{ce1978fa-f8c8-4b8f-8ca9-55967c6810a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\imgui">
+      <UniqueIdentifier>{8a05671a-304e-48d2-a784-d3f2c73f8da6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\debugdraw">
+      <UniqueIdentifier>{294d6a48-5cd3-40ce-ac4f-59254e4224c7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
