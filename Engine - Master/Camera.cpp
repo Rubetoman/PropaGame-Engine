@@ -23,18 +23,16 @@ void Camera::RotateCamera()
 		pitch = -89.0f;
 
 	math::float3 rotation;
-	rotation.x = SDL_cosf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
-	rotation.y = SDL_sinf(degreesToRadians(pitch));
-	rotation.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
+	rotation.x = SDL_cosf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+	rotation.y = SDL_sinf(math::DegToRad(pitch));
+	rotation.z = SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
 	front = rotation.Normalized();
 
 	LookAt(position + front);
 }
 
-float4x4 Camera::LookAt(math::float3& target)
+math::float4x4 Camera::LookAt(math::float3& target)
 {
-	float4x4 view_matrix;
-
 	// projection
 	front = math::float3(target - position); front.Normalize();
 	side = math::float3(front.Cross(math::float3(0, 1, 0))); side.Normalize();
@@ -53,6 +51,11 @@ float4x4 Camera::LookAt(math::float3& target)
 float4x4 Camera::ProjectionMatrix()
 {
 	return frustum.ProjectionMatrix();;
+}
+
+float4x4 Camera::GetViewMatrix()
+{
+	return view_matrix;
 }
 
 

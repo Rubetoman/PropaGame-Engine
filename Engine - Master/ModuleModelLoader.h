@@ -32,8 +32,10 @@ public:
 	//void			LoadMaterial(const char* path);
 	void			GenerateNodeMeshData(const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent);
 	void			ChangeMeshTexture(const char* path);
-	void			DeleteMesh(const int index);
-	//void			DeleteMaterial(const int index);
+
+	// Shape Creation
+	void CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
+		unsigned slices, unsigned stacks, const math::float4& color);
 
 	const aiScene* scene = nullptr;
 	//std::vector<mesh*>    meshes;

@@ -41,9 +41,6 @@ public:
 
 	unsigned		fbo = 0u;
 	unsigned		rbo = 0u;
-
-	void			DrawCoordinates();
-	void			DrawPlane();
 };
 
 #endif

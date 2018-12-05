@@ -33,9 +33,6 @@ enum update_status
 		 }\
 	 }
 
-// Transform degrees to rads
-#define degreesToRadians(x) x*(3.141592f/180.0f)
-
 // Configuration -----------
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 720

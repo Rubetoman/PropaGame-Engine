@@ -6,6 +6,8 @@
 #include "GameObject.h"
 #include "MathGeoLib.h"
 
+struct par_shapes_mesh_s;
+
 class ComponentMesh : public Component
 {
 public:
@@ -18,6 +20,7 @@ public:
 
 	void DrawOnInspector() override;
 
+	void GenerateMesh(par_shapes_mesh_s* mesh);
 	void RenderMesh(unsigned program, const Texture* texture, const math::float4x4& view, const math::float4x4& proj);
 	void DeleteMesh();
 	void Delete() override;
@@ -28,6 +31,7 @@ public:
 	unsigned vao = 0u;
 	unsigned num_vertices = 0u;
 	unsigned num_indices = 0u;
+	std::vector<float3> vertices;
 
 	AABB boundingBox;
 };

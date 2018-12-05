@@ -5,16 +5,24 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 
+#define PAR_SHAPES_IMPLEMENTATION
+#include "par_shapes.h"
+#pragma warning(pop)
+
 ModuleModelLoader::ModuleModelLoader()
 {
 }
+
 ModuleModelLoader::~ModuleModelLoader()
 {
 }
+
 bool ModuleModelLoader::Init()
 {
+	CreateSphere("sphere0", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(1.0f, 1.0f, 1.0f), 20, 20, float4(0.f, 0.0f, 0.f, 1.0f));
 	return LoadMesh("Assets/Models/BakerHouse.fbx");
 }
+
 update_status ModuleModelLoader::Update()
 {
 	return UPDATE_CONTINUE;
@@ -218,28 +226,26 @@ void ModuleModelLoader::ChangeMeshTexture(const char * path)
 	}*/
 }
 
-/*void ModuleModelLoader::DeleteMesh(const int index)
+void ModuleModelLoader::CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
+	unsigned slices, unsigned stacks, const math::float4& color)
 {
-	if (meshes[index]->vbo != 0)
+	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(int(slices), int(stacks));
+
+	if (mesh == nullptr)
 	{
-		glDeleteBuffers(1, &meshes[index]->vbo);
+		LOG("Error: Sphere couldn't be created. Par_shapes returned nullptr.");
+		return;
 	}
 
-	if (meshes[index]->ibo != 0)
-	{
-		glDeleteBuffers(1, &meshes[index]->ibo);
-	}
+	par_shapes_scale(mesh, scale.x, scale.y, scale.z);
 	
-	if (meshes[index]->vao != 0)
-	{
-		glDeleteBuffers(1, &meshes[index]->vao);
-	}
-}*/
+	GameObject* sphere = App->scene->CreateGameObject(name, float4x4::FromTRS(position, rotation, scale));
+	
+	ComponentMesh* sphere_mesh = (ComponentMesh*)sphere->CreateComponent(component_type::Mesh);
+	sphere_mesh->GenerateMesh(mesh);
 
-/*void ModuleModelLoader::DeleteMaterial(const int index)
-{
-	if (materials[index].texture0 != 0)
-	{
-		App->textures->unloadTexture(materials[index].texture0);
-	}
-}*/
+	par_shapes_free_mesh(mesh);
+
+	ComponentMaterial* sphere_material = (ComponentMaterial*)sphere->CreateComponent(component_type::Material);
+	sphere_material->texture = App->textures->loadTexture("Checkers_Texture.jpg");
+}

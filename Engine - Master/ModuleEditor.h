@@ -46,6 +46,7 @@ public:
 
 	// ImGui
 	void Draw();
+	void DrawDebugReferences();
 	void CreateDockSpace() const;
 	void ShowMainMenuBar();
 	void ShowInBrowser(const char* url) const;
@@ -56,6 +57,9 @@ public:
 public:
 
 	update_status update = UPDATE_CONTINUE;
+
+	bool show_grid = true;
+	bool show_axis = true;
 
 	//The window we'll be rendering to
 	SDL_Window * window = nullptr;

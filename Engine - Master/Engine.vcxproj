@@ -85,6 +85,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="debugdraw.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ComponentMaterial.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ModuleFileManager.h" />
     <ClInclude Include="ModuleInput.h" />
@@ -161,6 +163,7 @@
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="ModuleTime.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="par_shapes.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
@@ -223,6 +226,7 @@
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleFileManager.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
