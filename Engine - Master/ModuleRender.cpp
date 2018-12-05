@@ -86,19 +86,24 @@ update_status ModuleRender::Update()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	// Draw References
+	App->editor->DrawDebugReferences();
+
+	// Draw Scene
+	App->scene->Draw();
+	
+	// Draw debug draw
+	App->debug_draw->Draw(App->camera->mainCamera, fbo, App->window->screen_height, App->window->screen_width);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleRender::PostUpdate()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	// Draw debug draw
-	App->debug_draw->Draw(App->camera->mainCamera, fbo, App->window->screen_height, App->window->screen_width);
-
 	// Draw editor
 	App->editor->Draw();
-
 	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;

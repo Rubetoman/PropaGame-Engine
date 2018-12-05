@@ -472,6 +472,9 @@
     <ClInclude Include="MathGeoLib\include\Geometry\LineSegment.h">
       <Filter>Tools\Math</Filter>
     </ClInclude>
+    <ClInclude Include="par_shapes.h">
+      <Filter>Tools\par_shapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\Assets\Shaders\Default.fs">
@@ -517,6 +520,9 @@
     </Filter>
     <Filter Include="Tools\debugdraw">
       <UniqueIdentifier>{294d6a48-5cd3-40ce-ac4f-59254e4224c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\par_shapes">
+      <UniqueIdentifier>{e6ac8fc0-fd2e-4514-a249-c4597a85a97a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -16,7 +16,7 @@ public:
 	void DrawOnInspector() override;
 	void Delete() override;
 
-	Texture* texture;
+	Texture* texture = nullptr;
 };
 
 #endif /*__COMPOMENTCOMPONENT_H__*/

@@ -16,7 +16,6 @@ ModuleScene::~ModuleScene()
 update_status ModuleScene::Update()
 {
 	root->Update();
-	Draw();
 	return UPDATE_CONTINUE;
 }
 

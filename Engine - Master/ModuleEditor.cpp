@@ -109,7 +109,7 @@ bool ModuleEditor::CleanUp()
 void ModuleEditor::Draw()
 {
 	// Draw references
-	DrawDebugReferences();
+	//DrawDebugReferences();
 
 	for (std::list<Window*>::iterator it = editorWindows.begin(); it != editorWindows.end(); ++it)
 	{
@@ -187,6 +187,10 @@ void ModuleEditor::ShowMainMenuBar()
 			if (ImGui::MenuItem("Create Empty")) 
 			{ 
 				App->scene->CreateGameObject("GameObject"); 
+			}
+			if (ImGui::MenuItem("Create Sphere"))
+			{
+				App->scene->CreateGameObject("GameObject");
 			}
 			ImGui::EndMenu();
 		}
