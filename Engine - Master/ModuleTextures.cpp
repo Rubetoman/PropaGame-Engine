@@ -29,11 +29,12 @@ bool ModuleTextures::Init()
 // Called before quitting
 bool ModuleTextures::CleanUp()
 {
-	for (int i = 0; i < textures.size(); ++i)
+	for (auto it_m = textures.begin(); it_m != textures.end();)
 	{
-		unloadTexture(textures[i]);
+		glDeleteTextures(1, &it_m->first->id);
+		delete it_m->first;
+		textures.erase(it_m++);
 	}
-	ilShutDown();
 	return true;
 }
 
@@ -109,13 +110,13 @@ Texture* ModuleTextures::loadTexture(const char* path)
 	}
 
 	// Check the texture wasn't already loaded
-	for (std::vector<Texture*>::iterator it_m = textures.begin(); it_m != textures.end(); ++it_m)
+	for (std::map<Texture*, unsigned>::iterator it_m = textures.begin(); it_m != textures.end(); ++it_m)
 	{
-		if (strcmp((*it_m)->path, nTexture->path) == 0)
+		if (strcmp((it_m)->first->path, nTexture->path) == 0)
 		{
 			LOG("%s already loaded.", nTexture->path);
 			delete nTexture;
-			return *it_m;
+			return it_m->first;
 		}
 	}
 
@@ -227,28 +228,34 @@ Texture* ModuleTextures::loadTexture(const char* path)
 	ilDeleteImages(1, &imageID);		// Because we have already copied image data into texture data we can release memory used by image.
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	textures.push_back(nTexture);
+	textures.insert(std::pair<Texture*, unsigned>(nTexture,1));
 
 	LOG("Texture creation successful.");
 	return nTexture;					// Return the GLuint to the texture so you can use it!
 }
 
-void ModuleTextures::unloadTexture(Texture* texture)
+bool ModuleTextures::unloadTexture(Texture* texture)
 {
+	bool deleted = false;
 	if (texture != nullptr)
 	{
-		for (std::vector<Texture*>::iterator it_m = textures.begin(); it_m != textures.end(); it_m++)
+		for (auto it_m = textures.begin(); it_m != textures.end();)
 		{
-			if ((*it_m)->id == texture->id)
+			if (it_m->first->id == texture->id)
 			{
-				textures.erase(it_m);
+				textures.erase(it_m++);
+				deleted = true;
 				break;
+			}
+			else
+			{
+				++it_m;
 			}
 		}
 		glDeleteTextures(1, &texture->id);
 		delete texture;
 	}
-	//textures.erase(textures.begin() + id-1);
+	return deleted;
 }
 
 /*void ModuleTextures::ReloadTexture(Texture& new_texture, Texture& texture) 

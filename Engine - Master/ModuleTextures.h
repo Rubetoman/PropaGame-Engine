@@ -10,7 +10,7 @@
 #include <GL/glew.h>
 #include <IL/il.h>
 #include <IL/ilut.h>
-#include <vector>
+#include <map>
 
 class ModuleTextures : public Module
 {
@@ -21,10 +21,10 @@ public:
 	bool Init();
 	bool CleanUp();
 	Texture* loadTexture(const char* path);
-	void unloadTexture(Texture* texture);
+	bool unloadTexture(Texture* texture);
 	//void ReloadTexture(Texture& new_texture, GLuint& texture);
 
-	std::vector<Texture*> textures;
+	std::map<Texture*, unsigned> textures;
 };
 
 #endif /*__MODULETEXTURES_H__*/

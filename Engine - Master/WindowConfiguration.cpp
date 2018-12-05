@@ -178,9 +178,9 @@ void WindowConfiguration::Draw()
 	if (ImGui::CollapsingHeader("Textures"))
 	{
 		ImGui::Text("Loaded textures:");
-		for (std::vector<Texture*>::iterator it_t = App->textures->textures.begin(); it_t != App->textures->textures.end(); ++it_t)
+		for (std::map<Texture*,unsigned>::iterator it_t = App->textures->textures.begin(); it_t != App->textures->textures.end(); ++it_t)
 		{
-			Texture* texture = (*it_t);
+			Texture* texture = (it_t->first);
 			if (ImGui::CollapsingHeader(texture->name))
 			{
 				ImGui::Text("Texture name: %s", texture->name);
