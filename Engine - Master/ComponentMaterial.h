@@ -17,6 +17,7 @@ public:
 	void Delete() override;
 
 	Texture* texture;
+	math::float4 color = math::float4::one;
 };
 
 #endif /*__COMPOMENTCOMPONENT_H__*/

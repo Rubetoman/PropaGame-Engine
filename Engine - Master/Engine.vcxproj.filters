@@ -471,12 +471,6 @@
     <None Include="Game\Assets\Shaders\Default.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Game\Assets\Shaders\Texture.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Game\Assets\Shaders\Texture.vs">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">

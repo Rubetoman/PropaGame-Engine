@@ -130,11 +130,12 @@ void GameObject::Draw()
 		child->Draw();
 	}
 	// Set Shader and Texture
-	unsigned program = App->renderer->programText;
+	unsigned program = App->renderer->program;
 	Texture* texture = nullptr;
 	if (material != nullptr && material->active)
 	{
 		texture = material->texture;
+		glUniform4fv(glGetUniformLocation(program,"newColor"), 1, (GLfloat*)&material->color);
 	}
 
 	//Draw meshes
@@ -145,10 +146,16 @@ void GameObject::Draw()
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&GetGlobalTransform()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
+	if (texture != nullptr)
+		glUniform1i(glGetUniformLocation(program, "use_color"), 0);
+	else
+	{
+		glUniform1i(glGetUniformLocation(program, "use_color"), 1);
+	}
 
 	if (mesh != nullptr && mesh->active)
 	{
-		((ComponentMesh*)mesh)->RenderMesh(App->renderer->programText, texture, view, proj);
+		((ComponentMesh*)mesh)->RenderMesh(program, texture, view, proj);
 	}
 	glUseProgram(0);
 }

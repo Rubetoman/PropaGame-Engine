@@ -60,9 +60,9 @@ bool ModuleRender::Init()
 
 	// Generate program with vertex and fragment shaders and load it to GL
 	program = App->shader->LoadShaders("Assets/Shaders/default.vs", "Assets/Shaders/default.fs");
-	programText = App->shader->LoadShaders("Assets/Shaders/texture.vs", "Assets/Shaders/texture.fs");
 
-	if (!program || !programText) {
+	if (!program) 
+	{
 		LOG("Error: Program cannot be compiled");
 		return false;
 	}
@@ -96,18 +96,6 @@ update_status ModuleRender::Update()
 	DrawPlane();
 	glUseProgram(0);
 
-	//Draw meshes
-	/*math::float4x4 proj = App->camera->mainCamera->ProjectionMatrix();
-	math::float4x4 view = App->camera->mainCamera->LookAt(App->camera->mainCamera->position + App->camera->mainCamera->front);
-
-	for (unsigned i = 0; i < App->model_loader->meshes.size(); ++i)
-	{
-		const ModuleModelLoader::mesh* mesh = App->model_loader->meshes[i];
-
-		App->scene-> RenderMesh(mesh, programText,
-			App->model_loader->transform, view, proj);
-	}*/
-
 	return UPDATE_CONTINUE;
 }
 
@@ -138,8 +126,6 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 	App->window->SetWindowSize(width, height, false);
 	CreateFrameBuffer();
 }
-
-
 
 void ModuleRender::DrawCoordinates()
 {
