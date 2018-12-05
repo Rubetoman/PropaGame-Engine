@@ -41,6 +41,7 @@ GameObject::GameObject(const GameObject& go)
 	for (const auto& component : go.components)
 	{
 		Component *new_comp = component->Duplicate();
+		new_comp->my_go = this;
 		components.push_back(new_comp);
 		if (new_comp->type == component_type::Transform)
 		{
@@ -241,9 +242,15 @@ void GameObject::DeleteComponent(Component* component)
 {
 	if (component != nullptr)
 	{
-		components.erase(components.begin() + component->GetComponentNumber());
-		component->CleanUp();
-		RELEASE(component);
+		int position = component->GetComponentNumber();
+		if (position > -1)
+		{
+			components.erase(components.begin() + position);
+			component->CleanUp();
+			RELEASE(component);
+		}
+		else
+			LOG("Error deleting component.");
 	}
 	else
 		LOG("Warning: Component was nullptr.");
