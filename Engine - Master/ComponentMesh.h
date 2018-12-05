@@ -18,7 +18,7 @@ public:
 	virtual Component* Duplicate() override;
 	void CleanUp() override;
 
-	void DrawOnInspector() override;
+	bool DrawOnInspector() override;
 
 	void GenerateMesh(par_shapes_mesh_s* mesh);
 	void RenderMesh(unsigned program, const Texture* texture, const math::float4x4& view, const math::float4x4& proj);

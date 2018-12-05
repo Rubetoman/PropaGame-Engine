@@ -51,7 +51,7 @@ void ComponentTransform::GlobalToLocal(const float4x4& local_transform)
 	SetTransform(local);
 }
 
-void ComponentTransform::DrawOnInspector()
+bool ComponentTransform::DrawOnInspector()
 {
 	ImGui::PushID(this);
 	ImGui::Separator();
@@ -64,6 +64,7 @@ void ComponentTransform::DrawOnInspector()
 		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f);
 	}
 	ImGui::PopID();
+	return false;
 }
 
 		

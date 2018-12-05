@@ -16,7 +16,7 @@ public:
 	virtual ~Component();
 
 	virtual Component* Duplicate() = 0;
-	virtual void DrawOnInspector();
+	virtual bool DrawOnInspector();
 	virtual void Enable() {active = true;};
 	virtual void Update();
 	virtual void Disable() { active = false; };

@@ -19,7 +19,7 @@ ModuleModelLoader::~ModuleModelLoader()
 
 bool ModuleModelLoader::Init()
 {
-	CreateSphere("sphere0", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(1.0f, 1.0f, 1.0f), 20, 20, float4(0.f, 0.0f, 0.f, 1.0f));
+	//CreateSphere("sphere0", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(1.0f, 1.0f, 1.0f), 20, 20, float4(0.f, 0.0f, 0.f, 1.0f));
 	return LoadMesh("Assets/Models/BakerHouse.fbx");
 }
 

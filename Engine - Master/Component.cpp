@@ -23,7 +23,7 @@ void Component::Update()
 
 }
 
-void Component::DrawOnInspector()
+bool Component::DrawOnInspector()
 {
 	ImGui::Checkbox("Active", &active);	ImGui::SameLine();
 	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
@@ -34,6 +34,7 @@ void Component::DrawOnInspector()
 	if (removed) Delete();
 
 	ImGui::PopStyleColor(3);
+	return removed;
 }
 
 void Component::CleanUp()

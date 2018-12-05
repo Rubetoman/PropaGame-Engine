@@ -36,17 +36,26 @@ void ComponentMesh::CleanUp()
 	DeleteMesh();
 }
 
-void ComponentMesh::DrawOnInspector()
+bool ComponentMesh::DrawOnInspector()
 {
 	ImGui::PushID(this);
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Mesh Component"))
 	{
-		Component::DrawOnInspector();
-		ImGui::Text("Triangles Count: %d", num_indices / 3);
-		ImGui::Text("Vertices Count: %d", num_vertices);
+		bool deleted = Component::DrawOnInspector();
+		if (!deleted)
+		{
+			ImGui::Text("Triangles Count: %d", num_indices / 3);
+			ImGui::Text("Vertices Count: %d", num_vertices);
+		}
+		else
+		{
+			ImGui::PopID();
+			return deleted;
+		}
 	}
 	ImGui::PopID();
+	return false;
 }
 
 void ComponentMesh::RenderMesh(unsigned program, const Texture* texture, const math::float4x4& view, const math::float4x4& proj)

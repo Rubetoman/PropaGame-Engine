@@ -15,7 +15,6 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(
 
 ComponentMaterial::~ComponentMaterial()
 {
-	Delete();
 }
 
 Component* ComponentMaterial::Duplicate()
@@ -23,15 +22,15 @@ Component* ComponentMaterial::Duplicate()
 	return new ComponentMaterial(*this);
 }
 
-void ComponentMaterial::DrawOnInspector()
+bool ComponentMaterial::DrawOnInspector()
 {
 	ImGui::PushID(this);
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Material Component"))
 	{
-		Component::DrawOnInspector();
+		bool deleted = Component::DrawOnInspector();
 
-		if (texture != nullptr)
+		if (texture != nullptr && !deleted)
 		{
 			ImGui::Text("Texture name: %s", texture->name);
 			ImGui::Text("Texture Size:\n Width: %d | Height: %d", texture->width, texture->height);
@@ -41,9 +40,14 @@ void ComponentMaterial::DrawOnInspector()
 			ImGui::Image((ImTextureID)texture->id, imageSize);
 		}
 		else
+		{
 			ImGui::Text("No texture");
+			ImGui::PopID();
+			return deleted;
+		}
 	}
 	ImGui::PopID();
+	return false;
 }
 
 void ComponentMaterial::Delete()

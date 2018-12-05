@@ -16,7 +16,7 @@ public:
 	void LocalToGlobal(const float4x4& global_transform);
 	void GlobalToLocal(const float4x4& local_transform);
 
-	void DrawOnInspector() override;
+	bool DrawOnInspector() override;
 
 	math::float3 position = math::float3().zero;
 	math::float3 euler_rotation = math::float3().zero;

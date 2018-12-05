@@ -13,7 +13,7 @@ public:
 	~ComponentMaterial();
 
 	Component* Duplicate() override;
-	void DrawOnInspector() override;
+	bool DrawOnInspector() override;
 	void Delete() override;
 
 	Texture* texture = nullptr;
