@@ -2,6 +2,7 @@
 
 #include "Globals.h"
 #include "GL/glew.h"
+#include "ModuleTextures.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_type::Material)
 {
@@ -11,6 +12,7 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(
 {
 	// TODO: Create new texture or not delete it when they are used by other comp
 	texture = comp.texture;
+	++App->textures->textures[texture];
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -52,11 +54,7 @@ bool ComponentMaterial::DrawOnInspector()
 
 void ComponentMaterial::Delete()
 {
-	if (texture != nullptr)
-	{
-		glDeleteTextures(1, (GLuint*)&texture->id);
-	}
-	RELEASE(texture);
+	App->textures->unloadTexture(texture);
 	my_go->material = nullptr;
 	Component::Delete();
 }

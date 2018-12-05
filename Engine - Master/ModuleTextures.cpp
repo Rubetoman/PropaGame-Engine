@@ -115,6 +115,7 @@ Texture* ModuleTextures::loadTexture(const char* path)
 		if (strcmp((it_m)->first->path, nTexture->path) == 0)
 		{
 			LOG("%s already loaded.", nTexture->path);
+			++it_m->second;
 			delete nTexture;
 			return it_m->first;
 		}
@@ -243,9 +244,18 @@ bool ModuleTextures::unloadTexture(Texture* texture)
 		{
 			if (it_m->first->id == texture->id)
 			{
-				textures.erase(it_m++);
-				deleted = true;
-				break;
+				// Check if the texture is used by another GO
+				if (it_m->second < 2)
+				{
+					textures.erase(it_m++);
+					deleted = true;
+					break;
+				}
+				else
+				{
+					--it_m->second;
+					return false;
+				}
 			}
 			else
 			{
