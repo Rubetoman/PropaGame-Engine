@@ -100,11 +100,23 @@ void ComponentMesh::Delete()
 
 void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 {
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
 
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	// Positions
+
+	/*for (unsigned i = 0; i< unsigned(mesh->npoints); ++i)
+	{
+		math::float3 point(mesh->points[i * 3], mesh->points[i * 3 + 1], mesh->points[i * 3 + 2]);
+		// TODO: Set position
+		//point = my_go->transform.TransformPos(point);
+		for (unsigned j = 0; j<3; ++j)
+		{
+			min_v[j] = min(min_v[j], point[i]);
+			max_v[j] = max(max_v[j], point[i]);
+		}
+	}*/
 
 	unsigned offset_acc = sizeof(math::float3);
 	unsigned normals_offset = 0;
@@ -119,7 +131,6 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float3)*mesh->npoints, mesh->points);
 
 	// normals
-
 	if (mesh->normals)
 	{
 		glBufferSubData(GL_ARRAY_BUFFER, normals_offset*mesh->npoints, sizeof(math::float3)*mesh->npoints, mesh->normals);
@@ -143,9 +154,15 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 	}
 
 	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
 	if (normals_offset != 0)
 	{
@@ -160,11 +177,13 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	//materialIndex = 0;
-	num_indices = mesh->ntriangles * 3;
 	vertices.reserve(mesh->npoints);
 	for (unsigned int i = 0; i < mesh->npoints; i++)
 	{
 		vertices.push_back(float3((float *)&mesh->points[i]));
 	}
+
+	//materialIndex = 0;
+	num_indices = mesh->ntriangles * 3;
+	num_vertices = mesh->npoints;
 }
