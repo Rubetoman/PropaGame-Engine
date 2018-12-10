@@ -153,6 +153,7 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 		*(indices++) = mesh->triangles[i];
 	}
 
+	// generate VAO
 	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -160,9 +161,10 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
 	if (normals_offset != 0)
 	{
@@ -174,6 +176,7 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
