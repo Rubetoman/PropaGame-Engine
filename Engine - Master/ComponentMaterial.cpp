@@ -38,6 +38,12 @@ bool ComponentMaterial::DrawOnInspector()
 	{
 		bool deleted = Component::DrawOnInspector();
 
+		ImGui::ColorEdit4("object color", (float*)&color);
+		ImGui::SliderFloat("shininess", &shininess, 0, 128.0f);
+		ImGui::SliderFloat("K ambient", &k_ambient, 0.0f, 1.0f);
+		ImGui::SliderFloat("K diffuse", &k_diffuse, 0.0f, 1.0f);
+		ImGui::SliderFloat("K specular", &k_specular, 0.0f, 1.0f);
+
 		if (texture != nullptr && !deleted)
 		{
 			ImGui::Text("Texture name: %s", texture->name);

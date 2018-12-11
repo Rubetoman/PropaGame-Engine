@@ -138,41 +138,6 @@ void GameObject::Draw()
 	{
 		((ComponentMesh*)mesh)->RenderMesh(view, proj);
 	}
-
-	/*
-	// Set Shader and Texture
-	unsigned program = App->shader->programs[0];
-	Texture* texture = nullptr;
-	if (material != nullptr && material->active)
-	{
-		texture = material->texture;
-		glUniform4fv(glGetUniformLocation(program,"newColor"), 1, (GLfloat*)&material->color);
-	}
-
-	//Draw meshes
-	glUseProgram(program);
-
-	math::float4x4 proj = App->camera->mainCamera->ProjectionMatrix();
-	math::float4x4 view = App->camera->mainCamera->LookAt(App->camera->mainCamera->position + App->camera->mainCamera->front);
-	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&GetGlobalTransform()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
-	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
-
-	glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&App->model_loader->light.pos);
-	glUniform1f(glGetUniformLocation(program, "ambient"), App->model_loader->ambient);
-
-	if (texture != nullptr)
-		glUniform1i(glGetUniformLocation(program, "use_diffuse_map"), 1);
-	else
-	{
-		glUniform1i(glGetUniformLocation(program, "use_diffuse_map"), 0);
-	}
-
-	if (mesh != nullptr && mesh->active)
-	{
-		((ComponentMesh*)mesh)->RenderMesh(program, texture, view, proj);
-	}
-	glUseProgram(0);*/
 }
 
 void GameObject::DeleteGameObject()

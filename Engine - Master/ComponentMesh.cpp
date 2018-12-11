@@ -65,7 +65,6 @@ bool ComponentMesh::DrawOnInspector()
 
 void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4& proj)
 {
-	// Set Shader and Texture
 	Texture* texture = nullptr;
 
 	//Draw meshes
