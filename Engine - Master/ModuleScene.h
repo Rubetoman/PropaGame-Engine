@@ -20,7 +20,8 @@ public:
 	GameObject* CreateGameObject(const char* name, GameObject* parent);
 	GameObject* CreateGameObject(const char* name, math::float4x4& transform);
 	GameObject* CreateGameObject(const char* name, math::float4x4& transform, GameObject* parent);
-	
+	GameObject* CreateSphere(unsigned size, unsigned slices, unsigned stacks, GameObject* parent);
+
 	void DeleteGameObject(GameObject* go);
 	GameObject* DuplicateGameObject(const GameObject* go);
 	void Unchild(GameObject* go);

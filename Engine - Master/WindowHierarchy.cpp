@@ -30,17 +30,14 @@ void WindowHierarchy::Draw()
 		}
 		if (ImGui::BeginPopup("go_menu_popup"))
 		{
-			if (ImGui::Selectable("Copy"))
-			{
-
-			}
-			if (ImGui::Selectable("Paste"))
-			{
-
-			}
-			ImGui::Separator();
+			// GO Management
 			if (selected != nullptr)
 			{
+				ImGui::Separator();
+				if (ImGui::Selectable("Copy"))
+				{
+
+				}
 				if (ImGui::Selectable("Duplicate"))
 				{
 					selected = App->scene->DuplicateGameObject(selected);
@@ -55,18 +52,26 @@ void WindowHierarchy::Draw()
 					selected->flags |= GOFlags::Delete;
 					selected = nullptr;
 				}
-				ImGui::Separator();
-				if (ImGui::Selectable("Create Empty"))
-				{
-					selected = App->scene->CreateGameObject(GO_DEFAULT_NAME, selected);
-				}
 			}
-			else
+			if (ImGui::Selectable("Paste"))
 			{
-				if (ImGui::Selectable("Create Empty"))
-				{
+
+			}
+			// GO Creation
+			ImGui::Separator();
+			if (ImGui::Selectable("Create Empty"))
+			{
+				if (selected != nullptr)
+					selected = App->scene->CreateGameObject(GO_DEFAULT_NAME, selected);
+				else
 					selected = App->scene->CreateGameObject(GO_DEFAULT_NAME);
-				}
+			}
+			if (ImGui::Selectable("Create Sphere"))
+			{
+				if (selected != nullptr)
+					selected = App->scene->CreateSphere(1u, 20u, 20u, selected);
+				else
+					App->model_loader->CreateSphere("sphere", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(1.0f, 1.0f, 1.0f), 20, 20, float4(0.f, 0.0f, 0.5f, 1.0f));
 			}
 			ImGui::EndPopup();
 		}

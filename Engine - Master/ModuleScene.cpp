@@ -1,5 +1,6 @@
 #include "ModuleScene.h"
 
+#include "ModuleModelLoader.h"
 #include <vector>
 
 ModuleScene::ModuleScene()
@@ -117,6 +118,24 @@ GameObject* ModuleScene::CreateGameObject(const char* name, math::float4x4& tran
 		LOG("Warning: parent == nullptr, creating GameObject without parent. \n ")
 		go = CreateGameObject(name, transform);
 	}
+	return go;
+}
+
+GameObject* ModuleScene::CreateSphere(unsigned size, unsigned slices, unsigned stacks, GameObject* parent)
+{
+	GameObject* go;
+
+	// Create a root in case it was deleted
+	if (root == nullptr)
+		root = new GameObject("World");
+
+	go = App->model_loader->CreateSphere("sphere", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(size, size, size), slices, stacks, float4(0.f, 0.0f, 0.5f, 1.0f));
+	
+	// Set parent
+	go->Unchild();
+	go->parent = parent;
+	parent->children.push_back(go);
+
 	return go;
 }
 

@@ -34,9 +34,9 @@ public:
 	void			ChangeMeshTexture(const char* path);
 
 	// Shape Creation
-	void CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
+	GameObject* CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
 		unsigned slices, unsigned stacks, const math::float4& color);
-	void CreateCylinder(const char* name, const math::float3& position, const math::Quat& rotation, float height,
+	GameObject* CreateCylinder(const char* name, const math::float3& position, const math::Quat& rotation, float height,
 		float radius, unsigned slices, unsigned stacks, const math::float4& color);
 
 	const aiScene* scene = nullptr;
