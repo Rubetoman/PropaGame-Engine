@@ -39,8 +39,19 @@ public:
 	GameObject* CreateCylinder(const char* name, const math::float3& position, const math::Quat& rotation, float height,
 		float radius, unsigned slices, unsigned stacks, const math::float4& color);
 
+public:
+
+	struct Light
+	{
+		math::float4 color = math::float4::one;
+		math::float3 pos = math::float3::one;
+	};
+
+	Light light;
+	float ambient = 0.0f;
+
 	const aiScene* scene = nullptr;
-	//std::vector<mesh*>    meshes;
-	//std::vector<material> materials;
+
+
 };
 #endif /* __MODULEMODELLOADER_H__ */

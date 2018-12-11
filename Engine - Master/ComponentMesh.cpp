@@ -1,6 +1,11 @@
 #include "ComponentMesh.h"
 
 #include "ComponentTransform.h"
+#include "ComponentMaterial.h"
+
+#include "Application.h"
+#include "ModuleShader.h"
+#include "ModuleModelLoader.h"
 
 #include "par_shapes.h"
 #include "GL/glew.h"
@@ -58,20 +63,56 @@ bool ComponentMesh::DrawOnInspector()
 	return false;
 }
 
-void ComponentMesh::RenderMesh(unsigned program, const Texture* texture, const math::float4x4& view, const math::float4x4& proj)
+void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4& proj)
 {
-	glActiveTexture(GL_TEXTURE0);
-	if (texture != nullptr)
+	// Set Shader and Texture
+	Texture* texture = nullptr;
+
+	//Draw meshes
+	unsigned program = App->shader->programs[my_go->material->program];
+	if (program < 1)
 	{
-		glBindTexture(GL_TEXTURE_2D, texture->id);
+		LOG("Program shader couldn't be found, it may not be loaded.");
+		return;
 	}
-	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
+
+	glUseProgram(program);
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&my_go->GetGlobalTransform()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
+
+	glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&App->model_loader->light.pos);
+	glUniform1f(glGetUniformLocation(program, "ambient"), App->model_loader->ambient);
+	glUniform1f(glGetUniformLocation(program, "shininess"), my_go->material->shininess);
+	glUniform1f(glGetUniformLocation(program, "k_ambient"), my_go->material->k_ambient);
+	glUniform1f(glGetUniformLocation(program, "k_diffuse"), my_go->material->k_diffuse);
+	glUniform1f(glGetUniformLocation(program, "k_specular"), my_go->material->k_specular);
+
+	if (my_go->material != nullptr && my_go->material->active)
+	{
+		texture = my_go->material->texture;
+		if (texture == nullptr)
+		{
+			glUniform1i(glGetUniformLocation(program, "use_diffuse_map"),0);
+			glUniform4fv(glGetUniformLocation(program, "object_color"), 1, (GLfloat*)&my_go->material->color);
+		}
+		else
+		{
+			glUniform1i(glGetUniformLocation(program, "use_diffuse_map"), 1);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texture->id);
+			glUniform1i(glGetUniformLocation(program, "diffuse_map"), 0);
+		}
+	}
+
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, nullptr);
 
 	// Disable VAO
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glUseProgram(0);
 }
 
 void ComponentMesh::DeleteMesh()

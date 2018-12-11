@@ -21,7 +21,7 @@ public:
 	bool DrawOnInspector() override;
 
 	void GenerateMesh(par_shapes_mesh_s* mesh);
-	void RenderMesh(unsigned program, const Texture* texture, const math::float4x4& view, const math::float4x4& proj);
+	void RenderMesh(const math::float4x4& view, const math::float4x4& proj);
 	void DeleteMesh();
 	void Delete() override;
 

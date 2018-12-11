@@ -3,11 +3,33 @@
 
 ModuleShader::ModuleShader()
 {
+	for (unsigned i = 0; i < PROGRAM_COUNT; ++i)
+	{
+		programs[i] = 0;
+	}
 }
 
 // Destructor
 ModuleShader::~ModuleShader()
 {
+}
+
+bool ModuleShader::Init()
+{
+	programs[DEFAULT] = LoadShaders("Assets/Shaders/default.vs", "Assets/Shaders/default.fs");
+	//programs[FLAT] = LoadShaders("Assets/Shaders/flat.vs", "Assets/Shaders/flat.fs");
+	//programs[GOURAUD] = LoadShaders("Assets/Shaders/gouraud.vs", "Assets/Shaders/gouraud.fs");
+	//programs[PHONG] = LoadShaders("Assets/Shaders/phong.vs", "Assets/Shaders/phong.fs");
+	//programs[BLINN] = LoadShaders("Assets/Shaders/blinn.vs", "Assets/Shaders/blinn.fs");
+
+	bool ok = true;
+
+	/*for (unsigned i = 0; ok && i < PROGRAM_COUNT; ++i)
+	{
+		ok = programs[i] != 0;
+	}*/
+
+	return ok;
 }
 
 GLuint ModuleShader::LoadShaders(const char* vertShaderPath, const char* fragShaderPath) {

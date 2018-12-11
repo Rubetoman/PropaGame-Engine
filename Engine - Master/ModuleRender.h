@@ -36,7 +36,7 @@ public:
 
 	void* context = nullptr;
 
-	GLuint program = 0;
+	//GLuint program = 0;
 	GLuint renderedTexture = 0;
 
 	unsigned		fbo = 0u;

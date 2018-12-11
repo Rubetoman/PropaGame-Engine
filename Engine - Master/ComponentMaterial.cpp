@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "GL/glew.h"
 #include "ModuleTextures.h"
+#include "ModuleShader.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_type::Material)
 {
@@ -10,7 +11,13 @@ ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_t
 
 ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(comp)
 {
+	program = comp.program;
 	texture = comp.texture;
+	color = comp.color;
+	shininess = comp.shininess;
+	k_specular = comp.k_specular;
+	k_diffuse = comp.k_diffuse;
+	k_ambient = comp.k_ambient;
 	++App->textures->textures[texture];
 }
 
