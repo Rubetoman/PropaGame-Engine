@@ -1,17 +1,22 @@
 #include "ModuleScene.h"
 
 #include "ModuleModelLoader.h"
+#include "ComponentTransform.h"
 #include <vector>
 
 ModuleScene::ModuleScene()
 {
 	root = new GameObject("World");
-	//game_objects.push_back(root);
+	light = CreateGameObject("Light", root);
+	light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
+	ambient = 0.3f;
 }
 
 
 ModuleScene::~ModuleScene()
 {
+	DeleteGameObject(root);
+	delete root;
 }
 
 update_status ModuleScene::Update()

@@ -21,8 +21,6 @@ bool ModuleModelLoader::Init()
 {
 	//CreateSphere("sphere", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(1.0f, 1.0f, 1.0f), 20, 20, float4(0.f, 0.0f, 0.5f, 1.0f));
 	//CreateCylinder("cylinder0", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, 2.0f, 1.0f, 30, 30, float4(0.f, 0.5f, 0.5f, 1.0f));
-	light.pos = math::float3(-2.0f, 0.0f, 6.0f);
-	ambient = 0.3f;
 
 	return LoadMesh("Assets/Models/BakerHouse.fbx");
 }

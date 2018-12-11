@@ -28,6 +28,9 @@ public:
 
 public:
 
+	GameObject* light;
+	float ambient = 0.0f;
+
 	GameObject* root = nullptr;
 	//std::vector<GameObject*> game_objects;
 	bool show_root = false;

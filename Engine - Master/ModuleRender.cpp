@@ -59,15 +59,6 @@ bool ModuleRender::Init()
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glViewport(0, 0, width, height);
 
-	// Generate program with vertex and fragment shaders and load it to GL
-	//program = App->shader->LoadShaders("Assets/Shaders/default.vs", "Assets/Shaders/default.fs");
-
-	/*if (!program) 
-	{
-		LOG("Error: Program cannot be compiled");
-		return false;
-	}*/
-
 	CreateFrameBuffer();
 
 	LOG("Renderer context creation successful.");

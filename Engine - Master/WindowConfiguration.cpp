@@ -60,6 +60,8 @@ void WindowConfiguration::Draw()
 		ImGui::Separator();
 		ImGui::Checkbox("Show grid", &App->editor->show_grid); ImGui::SameLine();
 		ImGui::Checkbox("Show axis", &App->editor->show_axis);
+		ImGui::Separator();
+		ImGui::SliderFloat("Ambient Light", &App->scene->ambient, 0.0f, 1.0f);
 	}
 	if (ImGui::CollapsingHeader("Camera"))
 	{

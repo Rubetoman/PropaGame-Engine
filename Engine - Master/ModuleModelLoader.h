@@ -41,15 +41,6 @@ public:
 
 public:
 
-	struct Light
-	{
-		math::float4 color = math::float4::one;
-		math::float3 pos = math::float3::one;
-	};
-
-	Light light;
-	float ambient = 0.0f;
-
 	const aiScene* scene = nullptr;
 
 

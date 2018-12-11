@@ -5,7 +5,7 @@
 
 #include "Application.h"
 #include "ModuleShader.h"
-#include "ModuleModelLoader.h"
+#include "ModuleScene.h"
 
 #include "par_shapes.h"
 #include "GL/glew.h"
@@ -81,8 +81,8 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
 
-	glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&App->model_loader->light.pos);
-	glUniform1f(glGetUniformLocation(program, "ambient"), App->model_loader->ambient);
+	glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&App->scene->light->transform->position);
+	glUniform1f(glGetUniformLocation(program, "ambient"), App->scene->ambient);
 	glUniform1f(glGetUniformLocation(program, "shininess"), my_go->material->shininess);
 	glUniform1f(glGetUniformLocation(program, "k_ambient"), my_go->material->k_ambient);
 	glUniform1f(glGetUniformLocation(program, "k_diffuse"), my_go->material->k_diffuse);
