@@ -1,5 +1,5 @@
-#ifndef __COMPOMENTCOMPONENT_H__
-#define __COMPOMENTCOMPONENT_H__
+#ifndef __COMPOMENTMATERIAL_H__
+#define __COMPOMENTMATERIAL_H__
 
 #include "Component.h"
 #include "GameObject.h"
@@ -28,4 +28,4 @@ public:
 
 };
 
-#endif /*__COMPOMENTCOMPONENT_H__*/
+#endif /*__COMPOMENTMATERIAL_H__*/
