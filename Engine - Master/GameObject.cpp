@@ -3,11 +3,13 @@
 
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
+#include "ModuleScene.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentLight.h"
 
 GameObject::GameObject(const char * name) : name(name)
 {
@@ -197,11 +199,35 @@ Component* GameObject::CreateComponent(component_type type)
 			LOG("Warning: %s already has a Material Component attached.", name);
 		}
 		break;
+	case component_type::Light:
+		if (GetComponents(component_type::Light).size() == 0)
+		{
+			component = new ComponentLight(this);
+			if (App!=nullptr)
+				App->scene->lights.push_back(this);
+		}
+		else
+		{
+			LOG("Warning: %s already has a Light Component attached.", name);
+		}
 	default:
 		break;
 	}
 	components.push_back(component);
 	return component;
+}
+
+Component* GameObject::GetComponent(component_type type) const
+{
+	for (auto &component : components)
+	{
+		if (component->type == type)
+		{
+			return component;
+		}
+	}
+	//LOG("Warning: %s doesn't have a %s component.", name, type);
+	return nullptr;
 }
 
 std::vector<Component*> GameObject::GetComponents(component_type type) const

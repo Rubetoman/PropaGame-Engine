@@ -4,6 +4,7 @@
 #include "GL/glew.h"
 
 #include "ComponentTransform.h"
+#include "ComponentLight.h"
 
 #include "ModuleTextures.h"
 #include "ModuleShader.h"
@@ -88,8 +89,22 @@ void ComponentMaterial::RenderMaterial()
 {
 	unsigned program = App->shader->programs[shader];
 
-	glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&App->scene->light->transform->position);
-	glUniform1f(glGetUniformLocation(program, "ambient"), App->scene->ambient);
+	// Light render
+	GameObject* light = App->scene->lights[0];
+	if (light != nullptr && light->active)
+	{
+		glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&light->transform->position);
+		ComponentLight* comp_light = (ComponentLight*)light->GetComponent(component_type::Light);
+		if(comp_light != nullptr && comp_light->active)
+			glUniform1f(glGetUniformLocation(program, "ambient"), comp_light->intensity);
+		else
+			glUniform1f(glGetUniformLocation(program, "ambient"), 0.0f);
+	}
+	else
+	{
+		glUniform1f(glGetUniformLocation(program, "ambient"), 0.0f);
+	}
+
 	glUniform1f(glGetUniformLocation(program, "shininess"), shininess);
 	glUniform1f(glGetUniformLocation(program, "k_ambient"), k_ambient);
 	glUniform1f(glGetUniformLocation(program, "k_diffuse"), k_diffuse);
@@ -108,6 +123,7 @@ void ComponentMaterial::RenderMaterial()
 		glUniform1i(glGetUniformLocation(program, "diffuse_map"), 0);
 	}
 }
+
 void ComponentMaterial::Delete()
 {
 	App->textures->unloadTexture(texture);

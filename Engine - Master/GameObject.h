@@ -67,6 +67,7 @@ public:
 
 	// Components
 	Component* CreateComponent(component_type type);
+	Component* GetComponent(component_type type) const;
 	std::vector<Component*> GetComponents(component_type type) const;
 	void DeleteComponent(Component* component);
 

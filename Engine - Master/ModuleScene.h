@@ -27,12 +27,9 @@ public:
 	void Unchild(GameObject* go);
 
 public:
-
-	GameObject* light;
-	float ambient = 0.0f;
+	std::vector<GameObject*> lights;	// List of all the lights on the scene
 
 	GameObject* root = nullptr;
-	//std::vector<GameObject*> game_objects;
 	bool show_root = false;
 };
 

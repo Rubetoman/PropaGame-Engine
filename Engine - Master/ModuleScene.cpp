@@ -2,14 +2,16 @@
 
 #include "ModuleModelLoader.h"
 #include "ComponentTransform.h"
+#include "ComponentLight.h"
 #include <vector>
 
 ModuleScene::ModuleScene()
 {
 	root = new GameObject("World");
-	light = CreateGameObject("Light", root);
-	light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
-	ambient = 0.3f;
+	GameObject* default_light = CreateGameObject("Default Light", root);
+	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
+	default_light->CreateComponent(component_type::Light);
+	lights.push_back(default_light);
 }
 
 

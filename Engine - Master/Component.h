@@ -6,7 +6,7 @@
 
 class GameObject;
 
-enum class component_type {Transform, Mesh, Material};
+enum class component_type {Transform, Mesh, Material, Light};
 
 class Component
 {

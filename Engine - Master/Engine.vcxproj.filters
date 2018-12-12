@@ -201,6 +201,9 @@
     <ClCompile Include="MathGeoLib\include\Geometry\LineSegment.cpp">
       <Filter>Tools\Math</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentLight.cpp">
+      <Filter>Other\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -474,6 +477,9 @@
     </ClInclude>
     <ClInclude Include="par_shapes.h">
       <Filter>Tools\par_shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentLight.h">
+      <Filter>Other\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
