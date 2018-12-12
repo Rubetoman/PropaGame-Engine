@@ -247,8 +247,16 @@
     <ClCompile Include="WindowScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game\Assets\Shaders\Blinn.fs" />
+    <None Include="Game\Assets\Shaders\Blinn.vs" />
     <None Include="Game\Assets\Shaders\Default.fs" />
     <None Include="Game\Assets\Shaders\Default.vs" />
+    <None Include="Game\Assets\Shaders\Flat.fs" />
+    <None Include="Game\Assets\Shaders\Flat.vs" />
+    <None Include="Game\Assets\Shaders\Gouraud.fs" />
+    <None Include="Game\Assets\Shaders\Gouraud.vs" />
+    <None Include="Game\Assets\Shaders\Phong.fs" />
+    <None Include="Game\Assets\Shaders\Phong.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

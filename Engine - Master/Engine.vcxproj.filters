@@ -483,6 +483,30 @@
     <None Include="Game\Assets\Shaders\Default.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Game\Assets\Shaders\Flat.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\Assets\Shaders\Flat.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\Assets\Shaders\Blinn.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\Assets\Shaders\Gouraud.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\Assets\Shaders\Gouraud.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\Assets\Shaders\Phong.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\Assets\Shaders\Phong.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\Assets\Shaders\Blinn.fs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">

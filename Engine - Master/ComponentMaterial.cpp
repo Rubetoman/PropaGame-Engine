@@ -38,20 +38,36 @@ bool ComponentMaterial::DrawOnInspector()
 	{
 		bool deleted = Component::DrawOnInspector();
 
+		// Shader
+		char* program_names[ModuleShader::PROGRAM_COUNT] = { "Default", "Flat", "Gouraud", "Phong", "Blinn"};
+		ImGui::Combo("shader", (int*)&program, program_names, ModuleShader::PROGRAM_COUNT);
+
 		ImGui::ColorEdit4("object color", (float*)&color);
 		ImGui::SliderFloat("shininess", &shininess, 0, 128.0f);
 		ImGui::SliderFloat("K ambient", &k_ambient, 0.0f, 1.0f);
 		ImGui::SliderFloat("K diffuse", &k_diffuse, 0.0f, 1.0f);
 		ImGui::SliderFloat("K specular", &k_specular, 0.0f, 1.0f);
+		ImGui::Separator();
 
+		// Texture
 		if (texture != nullptr && !deleted)
 		{
-			ImGui::Text("Texture name: %s", texture->name);
-			ImGui::Text("Texture Size:\n Width: %d | Height: %d", texture->width, texture->height);
-			float panelWidth = ImGui::GetWindowContentRegionWidth();
-			float conversionFactor = panelWidth / texture->width;
-			ImVec2 imageSize = { texture->height *conversionFactor, panelWidth };
-			ImGui::Image((ImTextureID)texture->id, imageSize);
+			// Button to remove texture
+			if (ImGui::Button("Remove Texture"))
+			{
+				App->textures->unloadTexture(texture);
+				texture = nullptr;
+			}
+			else
+			{
+				// Show texture info
+				ImGui::Text("Texture name: %s", texture->name);
+				ImGui::Text("Texture Size:\n Width: %d | Height: %d", texture->width, texture->height);
+				float panelWidth = ImGui::GetWindowContentRegionWidth();
+				float conversionFactor = panelWidth / texture->width;
+				ImVec2 imageSize = { texture->height *conversionFactor, panelWidth };
+				ImGui::Image((ImTextureID)texture->id, imageSize);
+			}
 		}
 		else
 		{
