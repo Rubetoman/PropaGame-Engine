@@ -5,7 +5,6 @@
 
 #include "Application.h"
 #include "ModuleShader.h"
-#include "ModuleScene.h"
 
 #include "par_shapes.h"
 #include "GL/glew.h"
@@ -68,7 +67,7 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 	Texture* texture = nullptr;
 
 	//Draw meshes
-	unsigned program = App->shader->programs[my_go->material->program];
+	unsigned program = App->shader->programs[my_go->material->shader];
 	if (program < 1)
 	{
 		LOG("Program shader couldn't be found, it may not be loaded.");
@@ -81,28 +80,10 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
 
-	glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&App->scene->light->transform->position);
-	glUniform1f(glGetUniformLocation(program, "ambient"), App->scene->ambient);
-	glUniform1f(glGetUniformLocation(program, "shininess"), my_go->material->shininess);
-	glUniform1f(glGetUniformLocation(program, "k_ambient"), my_go->material->k_ambient);
-	glUniform1f(glGetUniformLocation(program, "k_diffuse"), my_go->material->k_diffuse);
-	glUniform1f(glGetUniformLocation(program, "k_specular"), my_go->material->k_specular);
-
+	// Render Material
 	if (my_go->material != nullptr && my_go->material->active)
 	{
-		texture = my_go->material->texture;
-		if (texture == nullptr)
-		{
-			glUniform1i(glGetUniformLocation(program, "use_diffuse_map"),0);
-			glUniform4fv(glGetUniformLocation(program, "object_color"), 1, (GLfloat*)&my_go->material->color);
-		}
-		else
-		{
-			glUniform1i(glGetUniformLocation(program, "use_diffuse_map"), 1);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texture->id);
-			glUniform1i(glGetUniformLocation(program, "diffuse_map"), 0);
-		}
+		my_go->material->RenderMaterial();
 	}
 
 	glBindVertexArray(vao);

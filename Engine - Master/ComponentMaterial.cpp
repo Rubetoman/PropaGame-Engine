@@ -2,8 +2,12 @@
 
 #include "Globals.h"
 #include "GL/glew.h"
+
+#include "ComponentTransform.h"
+
 #include "ModuleTextures.h"
 #include "ModuleShader.h"
+#include "ModuleScene.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_type::Material)
 {
@@ -11,7 +15,7 @@ ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_t
 
 ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(comp)
 {
-	program = comp.program;
+	shader = comp.shader;
 	texture = comp.texture;
 	color = comp.color;
 	shininess = comp.shininess;
@@ -40,7 +44,7 @@ bool ComponentMaterial::DrawOnInspector()
 
 		// Shader
 		char* program_names[ModuleShader::PROGRAM_COUNT] = { "Default", "Flat", "Gouraud", "Phong", "Blinn"};
-		ImGui::Combo("shader", (int*)&program, program_names, ModuleShader::PROGRAM_COUNT);
+		ImGui::Combo("shader", (int*)&shader, program_names, ModuleShader::PROGRAM_COUNT);
 
 		ImGui::ColorEdit4("object color", (float*)&color);
 		ImGui::SliderFloat("shininess", &shininess, 0, 128.0f);
@@ -80,6 +84,30 @@ bool ComponentMaterial::DrawOnInspector()
 	return false;
 }
 
+void ComponentMaterial::RenderMaterial()
+{
+	unsigned program = App->shader->programs[shader];
+
+	glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&App->scene->light->transform->position);
+	glUniform1f(glGetUniformLocation(program, "ambient"), App->scene->ambient);
+	glUniform1f(glGetUniformLocation(program, "shininess"), shininess);
+	glUniform1f(glGetUniformLocation(program, "k_ambient"), k_ambient);
+	glUniform1f(glGetUniformLocation(program, "k_diffuse"), k_diffuse);
+	glUniform1f(glGetUniformLocation(program, "k_specular"), k_specular);
+
+	if (texture == nullptr)
+	{
+		glUniform1i(glGetUniformLocation(program, "use_diffuse_map"),0);
+		glUniform4fv(glGetUniformLocation(program, "object_color"), 1, (GLfloat*)&color);
+	}
+	else
+	{
+		glUniform1i(glGetUniformLocation(program, "use_diffuse_map"), 1);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture->id);
+		glUniform1i(glGetUniformLocation(program, "diffuse_map"), 0);
+	}
+}
 void ComponentMaterial::Delete()
 {
 	App->textures->unloadTexture(texture);

@@ -14,10 +14,11 @@ public:
 
 	Component* Duplicate() override;
 	bool DrawOnInspector() override;
+	void RenderMaterial();
 	void Delete() override;
 
 public:
-	unsigned program = 0;
+	unsigned shader = 0;
 	Texture* texture = nullptr;
 	math::float4 color = math::float4::zero;
 	float shininess = 64.0f;
