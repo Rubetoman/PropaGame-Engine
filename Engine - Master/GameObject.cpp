@@ -11,6 +11,8 @@
 #include "ComponentMaterial.h"
 #include "ComponentLight.h"
 
+#include "debugdraw.h"
+
 GameObject::GameObject(const char * name) : name(name)
 {
 	CreateComponent(component_type::Transform);
@@ -139,6 +141,11 @@ void GameObject::Draw()
 	if (mesh != nullptr && mesh->active)
 	{
 		((ComponentMesh*)mesh)->RenderMesh(view, proj);
+	}
+
+	if (GetComponent(component_type::Light) != nullptr)
+	{
+		dd::sphere(transform->position, math::float3(1.0f, 1.0f, 1.0f), 0.2f);
 	}
 }
 

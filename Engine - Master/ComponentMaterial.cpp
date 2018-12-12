@@ -94,8 +94,9 @@ void ComponentMaterial::RenderMaterial()
 	if (light != nullptr && light->active)
 	{
 		glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&light->transform->position);
+		
 		ComponentLight* comp_light = (ComponentLight*)light->GetComponent(component_type::Light);
-		if(comp_light != nullptr && comp_light->active)
+		if (comp_light != nullptr && comp_light->active)
 			glUniform1f(glGetUniformLocation(program, "ambient"), comp_light->intensity);
 		else
 			glUniform1f(glGetUniformLocation(program, "ambient"), 0.0f);
