@@ -52,7 +52,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>Assimp/include;DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>rapidjson-1.1.0/include;pcg-cpp-0.98/include;Assimp/include;DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
@@ -70,7 +70,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>Assimp/include;DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>rapidjson-1.1.0/include;pcg-cpp-0.98/include;Assimp/include;DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>

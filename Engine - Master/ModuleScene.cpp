@@ -3,7 +3,7 @@
 #include "ModuleModelLoader.h"
 #include "ComponentTransform.h"
 #include "ComponentLight.h"
-#include <vector>
+#include <random>
 
 ModuleScene::ModuleScene()
 {
@@ -19,6 +19,14 @@ ModuleScene::~ModuleScene()
 {
 	DeleteGameObject(root);
 	delete root;
+}
+
+bool ModuleScene::Init()
+{
+	pcg_extras::seed_seq_from<std::random_device> seed_source;
+	pcg32 rng(seed_source);
+	uuid_rng = rng;
+	return true;
 }
 
 update_status ModuleScene::Update()
@@ -176,3 +184,12 @@ void ModuleScene::Unchild(GameObject* go)
 	}
 	go->SetParent(root);
 }
+
+#pragma region scene management functions
+
+inline unsigned ModuleScene::GetNewUID()
+{
+	return uuid_rng();
+}
+
+#pragma endregion

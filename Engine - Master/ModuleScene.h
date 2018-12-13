@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "GameObject.h"
 #include <vector>
+#include "pcg_random.hpp"
 
 class ModuleScene : public Module
 {
@@ -11,8 +12,9 @@ public:
 	ModuleScene();
 	~ModuleScene();
 
-	update_status Update();
-	bool CleanUp();
+	bool Init() override;
+	update_status Update() override;
+	bool CleanUp() override;
 
 	void Draw();
 
@@ -26,7 +28,10 @@ public:
 	GameObject* DuplicateGameObject(const GameObject* go);
 	void Unchild(GameObject* go);
 
+	inline unsigned GetNewUID();
+
 public:
+	pcg32 uuid_rng;
 	std::vector<GameObject*> lights;	// List of all the lights on the scene
 
 	GameObject* root = nullptr;
