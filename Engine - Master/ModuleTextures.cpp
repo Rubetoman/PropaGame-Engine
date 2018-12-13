@@ -1,4 +1,5 @@
 #include "ModuleTextures.h"
+#include "ModuleResources.h"
 
 using namespace std;
 
@@ -29,11 +30,11 @@ bool ModuleTextures::Init()
 // Called before quitting
 bool ModuleTextures::CleanUp()
 {
-	for (auto it_m = textures.begin(); it_m != textures.end();)
+	for (auto it_m = App->resources->textures.begin(); it_m != App->resources->textures.end();)
 	{
 		glDeleteTextures(1, &it_m->first->id);
 		delete it_m->first;
-		textures.erase(it_m++);
+		App->resources->textures.erase(it_m++);
 	}
 	return true;
 }
@@ -110,7 +111,7 @@ Texture* ModuleTextures::loadTexture(const char* path)
 	}
 
 	// Check the texture wasn't already loaded
-	for (std::map<Texture*, unsigned>::iterator it_m = textures.begin(); it_m != textures.end(); ++it_m)
+	for (std::map<Texture*, unsigned>::iterator it_m = App->resources->textures.begin(); it_m != App->resources->textures.end(); ++it_m)
 	{
 		if (strcmp((it_m)->first->path, nTexture->path) == 0)
 		{
@@ -229,7 +230,7 @@ Texture* ModuleTextures::loadTexture(const char* path)
 	ilDeleteImages(1, &imageID);		// Because we have already copied image data into texture data we can release memory used by image.
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	textures.insert(std::pair<Texture*, unsigned>(nTexture,1));
+	App->resources->textures.insert(std::pair<Texture*, unsigned>(nTexture,1));
 
 	LOG("Texture creation successful.");
 	return nTexture;					// Return the GLuint to the texture so you can use it!
@@ -240,14 +241,14 @@ bool ModuleTextures::unloadTexture(Texture* texture)
 	bool deleted = false;
 	if (texture != nullptr)
 	{
-		for (auto it_m = textures.begin(); it_m != textures.end();)
+		for (auto it_m = App->resources->textures.begin(); it_m != App->resources->textures.end();)
 		{
 			if (it_m->first->id == texture->id)
 			{
 				// Check if the texture is used by another GO
 				if (it_m->second < 2)
 				{
-					textures.erase(it_m++);
+					App->resources->textures.erase(it_m++);
 					deleted = true;
 					break;
 				}

@@ -1,6 +1,7 @@
 #include "WindowConfiguration.h"
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
+#include "ModuleResources.h"
 #include "mmgr/mmgr.h"
 
 WindowConfiguration::WindowConfiguration(const char* name) : Window(name)
@@ -178,7 +179,7 @@ void WindowConfiguration::Draw()
 	if (ImGui::CollapsingHeader("Textures"))
 	{
 		ImGui::Text("Loaded textures:");
-		for (std::map<Texture*,unsigned>::iterator it_t = App->textures->textures.begin(); it_t != App->textures->textures.end(); ++it_t)
+		for (std::map<Texture*,unsigned>::iterator it_t = App->resources->textures.begin(); it_t != App->resources->textures.end(); ++it_t)
 		{
 			Texture* texture = (it_t->first);
 			if (ImGui::CollapsingHeader(texture->name))

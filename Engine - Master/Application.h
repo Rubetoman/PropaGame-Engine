@@ -17,6 +17,7 @@ class ModuleFileManager;
 class ModuleTime;
 class ModuleDebugDraw;
 class ModuleScene;
+class ModuleResources;
 
 class Application
 {
@@ -43,6 +44,7 @@ public:
 	ModuleTime* time = nullptr;
 	ModuleDebugDraw* debug_draw = nullptr;
 	ModuleScene* scene = nullptr;
+	ModuleResources* resources = nullptr;
 
 private:
 

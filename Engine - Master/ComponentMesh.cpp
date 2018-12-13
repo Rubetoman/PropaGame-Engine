@@ -67,7 +67,11 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 	Texture* texture = nullptr;
 
 	//Draw meshes
-	unsigned program = App->shader->programs[my_go->material->shader];
+	unsigned program = 0;
+
+	if (my_go->material != nullptr)
+		program = App->shader->programs[my_go->material->shader];
+
 	if (program < 1)
 	{
 		LOG("Program shader couldn't be found, it may not be loaded.");

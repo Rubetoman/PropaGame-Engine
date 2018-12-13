@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "GameObject.h"
-#include <vector>
+//#include <vector>
 
 class ModuleScene : public Module
 {
@@ -30,8 +30,6 @@ public:
 	inline const char* GenerateNewUID();
 
 public:
-	std::vector<GameObject*> lights;	// List of all the lights on the scene
-
 	GameObject* root = nullptr;
 	bool show_root = false;
 };

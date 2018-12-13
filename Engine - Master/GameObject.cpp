@@ -4,6 +4,7 @@
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
+#include "ModuleResources.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -211,7 +212,7 @@ Component* GameObject::CreateComponent(component_type type)
 		{
 			component = new ComponentLight(this);
 			if (App!=nullptr)
-				App->scene->lights.push_back(this);
+				App->resources->lights.push_back(this);
 		}
 		else
 		{

@@ -1,17 +1,13 @@
 #include "ModuleScene.h"
 
 #include "ModuleModelLoader.h"
+#include "ModuleResources.h"
 #include "ComponentTransform.h"
 #include "ComponentLight.h"
-#include "Util/crossguid/guid.hpp"
 
 ModuleScene::ModuleScene()
 {
 	root = new GameObject("World");
-	GameObject* default_light = CreateGameObject("Default Light", root);
-	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
-	default_light->CreateComponent(component_type::Light);
-	lights.push_back(default_light);
 }
 
 
@@ -23,6 +19,10 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
+	GameObject* default_light = CreateGameObject("Default Light", root);
+	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
+	default_light->CreateComponent(component_type::Light);
+	App->resources->lights.push_back(default_light);
 	return true;
 }
 
@@ -183,10 +183,5 @@ void ModuleScene::Unchild(GameObject* go)
 }
 
 #pragma region scene management functions
-
-inline const char* ModuleScene::GenerateNewUID()
-{
-	return xg::newGuid().str().c_str();
-}
 
 #pragma endregion

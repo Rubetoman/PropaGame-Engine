@@ -7,8 +7,8 @@
 #include "ComponentLight.h"
 
 #include "ModuleTextures.h"
+#include "ModuleResources.h"
 #include "ModuleShader.h"
-#include "ModuleScene.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_type::Material)
 {
@@ -23,7 +23,7 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(
 	k_specular = comp.k_specular;
 	k_diffuse = comp.k_diffuse;
 	k_ambient = comp.k_ambient;
-	++App->textures->textures[texture];
+	++App->resources->textures[texture];
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -90,7 +90,7 @@ void ComponentMaterial::RenderMaterial()
 	unsigned program = App->shader->programs[shader];
 
 	// Light render
-	GameObject* light = App->scene->lights[0];
+	GameObject* light = App->resources->lights[0];
 	if (light != nullptr && light->active)
 	{
 		glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&light->transform->position);

@@ -204,6 +204,9 @@
     <ClCompile Include="ComponentLight.cpp">
       <Filter>Other\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleResources.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -480,6 +483,9 @@
     </ClInclude>
     <ClInclude Include="ComponentLight.h">
       <Filter>Other\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleResources.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
