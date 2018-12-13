@@ -3,7 +3,7 @@
 #include "ModuleModelLoader.h"
 #include "ComponentTransform.h"
 #include "ComponentLight.h"
-#include <random>
+#include "Util/crossguid/guid.hpp"
 
 ModuleScene::ModuleScene()
 {
@@ -23,9 +23,6 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
-	pcg_extras::seed_seq_from<std::random_device> seed_source;
-	pcg32 rng(seed_source);
-	uuid_rng = rng;
 	return true;
 }
 
@@ -187,9 +184,9 @@ void ModuleScene::Unchild(GameObject* go)
 
 #pragma region scene management functions
 
-inline unsigned ModuleScene::GetNewUID()
+inline const char* ModuleScene::GenerateNewUID()
 {
-	return uuid_rng();
+	return xg::newGuid().str().c_str();
 }
 
 #pragma endregion
