@@ -207,6 +207,9 @@
     <ClCompile Include="ModuleResources.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Util\guid.cpp">
+      <Filter>Tools\crossguid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -487,6 +490,9 @@
     <ClInclude Include="ModuleResources.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Util\crossguid\guid.hpp">
+      <Filter>Tools\crossguid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\Assets\Shaders\Default.fs">
@@ -553,6 +559,9 @@
     </Filter>
     <Filter Include="Tools\par_shapes">
       <UniqueIdentifier>{e6ac8fc0-fd2e-4514-a249-c4597a85a97a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\crossguid">
+      <UniqueIdentifier>{280784fc-d904-42bb-a4dd-58c52640e793}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

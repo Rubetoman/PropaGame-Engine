@@ -1,7 +1,5 @@
 #include "ModuleResources.h"
 
-using namespace std;
-
 ModuleResources::ModuleResources()
 {
 }
@@ -9,4 +7,9 @@ ModuleResources::ModuleResources()
 
 ModuleResources::~ModuleResources()
 {
+}
+
+std::string ModuleResources::GenerateNewUID()
+{
+	return xg::newGuid().str();
 }

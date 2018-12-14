@@ -7,7 +7,6 @@
 
 ModuleScene::ModuleScene()
 {
-	root = new GameObject("World");
 }
 
 
@@ -19,6 +18,7 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
+	root = new GameObject("World");
 	GameObject* default_light = CreateGameObject("Default Light", root);
 	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
 	default_light->CreateComponent(component_type::Light);

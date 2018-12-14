@@ -15,10 +15,7 @@ public:
 	ModuleResources();
 	~ModuleResources();
 
-	inline const char* GenerateNewUID()
-	{
-		return xg::newGuid().str().c_str();
-	}
+	std::string GenerateNewUID();
 
 public:
 	std::vector<GameObject*> lights;		// List of all the lights on the scene

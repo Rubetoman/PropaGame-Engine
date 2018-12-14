@@ -2,6 +2,7 @@
 #define __GAMEOBJECT_H__
 
 #include "MathGeoLib.h"
+
 #include <string>
 #include <list>
 
@@ -78,6 +79,8 @@ public:
 
 public:
 
+	std::string uuid = "";
+	std::string parentUID = "";
 	bool active = true;
 	std::string name = "GameObject";
 	GOFlags flags = GOFlags::None;

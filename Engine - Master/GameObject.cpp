@@ -16,17 +16,21 @@
 
 GameObject::GameObject(const char * name) : name(name)
 {
+	uuid = App->resources->GenerateNewUID();
 	CreateComponent(component_type::Transform);
 }
 
 GameObject::GameObject(const char* name, GameObject* parent) : name(name), parent(parent)
 {
+	uuid = App->resources->GenerateNewUID();
+	parentUID = parent->uuid;
 	CreateComponent(component_type::Transform);
 	parent->children.push_back(this);
 }
 
 GameObject::GameObject(const char* name, const math::float4x4& new_transform) : name(name)
 {
+	uuid = App->resources->GenerateNewUID();
 	transform = (ComponentTransform*)CreateComponent(component_type::Transform);
 	transform->SetTransform(new_transform);
 }
@@ -34,6 +38,8 @@ GameObject::GameObject(const char* name, const math::float4x4& new_transform) : 
 GameObject::GameObject(const char* name, const math::float4x4& new_transform, GameObject* parent) 
 	: name(name), parent(parent)
 {
+	uuid = App->resources->GenerateNewUID();
+	parentUID = parent->uuid;
 	transform = (ComponentTransform*)CreateComponent(component_type::Transform);
 	transform->SetTransform(new_transform);
 	parent->children.push_back(this);
@@ -41,6 +47,8 @@ GameObject::GameObject(const char* name, const math::float4x4& new_transform, Ga
 
 GameObject::GameObject(const GameObject& go)
 {
+	uuid = App->resources->GenerateNewUID();
+	parentUID = go.parentUID;
 	name = go.name;
 
 	for (const auto& component : go.components)
