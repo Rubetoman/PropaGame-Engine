@@ -71,6 +71,8 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 
 	if (my_go->material != nullptr)
 		program = App->shader->programs[my_go->material->shader];
+	else
+		program = App->shader->programs[0];
 
 	if (program < 1)
 	{
