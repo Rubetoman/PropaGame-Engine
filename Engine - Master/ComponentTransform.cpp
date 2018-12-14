@@ -55,8 +55,16 @@ bool ComponentTransform::DrawOnInspector()
 {
 	ImGui::PushID(this);
 	ImGui::Separator();
+
 	if (ImGui::CollapsingHeader("Transform Component"))
 	{
+		// Serialization information
+		ImGui::Text("UUID: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), uuid.c_str());
+		ImGui::Text("GOUID: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), my_go_uid.c_str());
+		ImGui::Separator();
+
 		ImGui::DragFloat3("Position", (float*)&position, 0.1f);
 		ImGui::DragFloat3("Rotation", (float*)&euler_rotation, 0.1f);
 		rotation = rotation.FromEulerXYZ(math::DegToRad(euler_rotation.x),

@@ -40,6 +40,14 @@ bool Component::DrawOnInspector()
 	bool removed = ImGui::SmallButton("Delete Component");
 	if (removed) Delete();
 
+	// Serialization information
+	ImGui::Separator();
+	ImGui::Text("UUID: "); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), uuid.c_str());
+	ImGui::Text("GOUID: "); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), my_go_uid.c_str());
+	ImGui::Separator();
+
 	ImGui::PopStyleColor(3);
 	return removed;
 }

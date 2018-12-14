@@ -32,6 +32,14 @@ void WindowInspector::Draw()
 			go->name = name;
 			delete[] name;
 
+			// Serialization information
+			ImGui::Separator();
+			ImGui::Text("UUID: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), go->uuid.c_str());
+			ImGui::Text("Parent UID: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), go->parentUID.c_str());
+			ImGui::Separator();
+
 			if (go->components.size() > 0)
 			{
 				DrawComponents(go);
