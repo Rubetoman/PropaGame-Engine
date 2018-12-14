@@ -2,12 +2,19 @@
 #include "GameObject.h"
 #include "Globals.h"
 
+#include "Application.h"
+#include "ModuleResources.h"
+
 Component::Component(GameObject* go, component_type type) : my_go(go), type(type)
 {
+	uuid = App->resources->GenerateNewUID();
+	my_go_uid = my_go->uuid;
 }
 
 Component::Component(const Component& comp)
 {
+	uuid = App->resources->GenerateNewUID();
+	my_go_uid = comp.my_go_uid;
 	my_go = comp.my_go;
 	type = comp.type;
 	active = comp.active;

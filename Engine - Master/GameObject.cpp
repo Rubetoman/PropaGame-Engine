@@ -55,6 +55,7 @@ GameObject::GameObject(const GameObject& go)
 	{
 		Component *new_comp = component->Duplicate();
 		new_comp->my_go = this;
+		new_comp->my_go_uid = uuid;
 		components.push_back(new_comp);
 		if (new_comp->type == component_type::Transform)
 		{
@@ -294,6 +295,7 @@ void GameObject::SetParent(GameObject* new_parent)
 	if (new_parent == nullptr)
 		return;
 
+	parentUID = new_parent->uuid;
 	new_parent->children.push_back(this);
 
 	// Set transform to global

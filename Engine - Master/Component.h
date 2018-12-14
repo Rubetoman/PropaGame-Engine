@@ -27,6 +27,8 @@ public:
 	int GetComponentNumber() const;
 
 public:
+	std::string uuid = "";
+	std::string my_go_uid = "";
 	component_type type;
 	bool active = true;
 	GameObject* my_go = nullptr;
