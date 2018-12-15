@@ -25,6 +25,9 @@ public:
 	void DeleteMesh();
 	void Delete() override;
 
+	void Save(JSON_value* component) const override;
+
+public:
 	// Mesh variables
 	unsigned vbo = 0u;
 	unsigned ibo = 0u;

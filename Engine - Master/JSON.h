@@ -30,7 +30,11 @@ public:
 
 	void AddInt(const char* name, int value);
 	void AddUnsigned(const char* name, unsigned value);
-	void JSON_value::AddString(const char* name, const char* value);
+	void AddString(const char* name, const char* value);
+	void AddVec(const char* name, float* vec, int vector_size);
+	void AddVec3(const char* name, math::float3 vec);
+	void AddVec4(const char* name, math::float4 vec);
+	void AddQuat(const char* name, math::Quat quat);
 
 public:
 	rapidjson::Value* value = nullptr;

@@ -217,3 +217,24 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 	num_indices = mesh->ntriangles * 3;
 	num_vertices = mesh->npoints;
 }
+
+void ComponentMesh::Save(JSON_value* component) const
+{
+	Component::Save(component);
+
+	JSON_value* mesh = component->createValue();
+
+	unsigned vbo = 0u;
+	unsigned ibo = 0u;
+	unsigned vao = 0u;
+	unsigned num_vertices = 0u;
+	unsigned num_indices = 0u;
+	mesh->AddUnsigned("VBO", vbo);
+	mesh->AddUnsigned("IBO", ibo);
+	mesh->AddUnsigned("VAO", vao);
+	mesh->AddUnsigned("Number Vertices", num_vertices);
+	mesh->AddUnsigned("Number Indices", num_indices);
+	//TODO: Add vertices and BBox
+
+	component->addValue("", mesh);
+}

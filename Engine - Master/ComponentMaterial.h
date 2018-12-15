@@ -17,6 +17,8 @@ public:
 	void RenderMaterial();
 	void Delete() override;
 
+	void Save(JSON_value* component) const override;
+
 public:
 	unsigned shader = 0;
 	Texture* texture = nullptr;

@@ -18,6 +18,9 @@ public:
 
 	bool DrawOnInspector() override;
 
+	void Save(JSON_value* component) const override;
+
+public:
 	math::float3 position = math::float3().zero;
 	math::float3 euler_rotation = math::float3().zero;
 	math::Quat rotation = math::Quat().identity;

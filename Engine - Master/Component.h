@@ -1,6 +1,7 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 
+#include "JSON.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include <string>
@@ -26,6 +27,8 @@ public:
 	virtual void Delete();
 
 	int GetComponentNumber() const;
+
+	virtual void Save(JSON_value* component) const;
 
 public:
 	std::string uuid = "";

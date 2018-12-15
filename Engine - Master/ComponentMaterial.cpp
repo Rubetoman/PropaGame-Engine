@@ -131,3 +131,20 @@ void ComponentMaterial::Delete()
 	my_go->material = nullptr;
 	Component::Delete();
 }
+
+void ComponentMaterial::Save(JSON_value* component) const
+{
+	Component::Save(component);
+
+	JSON_value* material = component->createValue();
+
+	material->AddUnsigned("shader", shader);
+	material->AddUnsigned("texture", (unsigned)texture);
+	material->AddVec4("color", color);
+	material->AddUnsigned("shininess", shininess);
+	material->AddUnsigned("k_specular", k_specular);
+	material->AddUnsigned("k_diffuse", k_diffuse);
+	material->AddUnsigned("k_ambient", k_ambient);
+
+	component->addValue("", material);
+}

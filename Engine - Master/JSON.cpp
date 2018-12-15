@@ -85,6 +85,61 @@ void JSON_value::AddString(const char* name, const char* value)
 	this->value->AddMember(index, val, *alloc);
 }
 
+void JSON_value::AddVec(const char* name, float* vec, int vector_size)
+{
+	std::string str = name;
+	rapidjson::Value index(str.c_str(), str.size(), *alloc);
+
+	rapidjson::Value a(rapidjson::kArrayType);
+	for (int i = 0; i < vector_size; i++)
+	{
+		a.PushBack(vec[i], *alloc);
+	}
+
+	this->value->AddMember(index, a, *alloc);
+}
+
+void JSON_value::AddVec3(const char* name, math::float3 vec)
+{
+	std::string str = name;
+	rapidjson::Value index(str.c_str(), str.size(), *alloc);
+
+	rapidjson::Value a(rapidjson::kArrayType);
+	a.PushBack(vec.x, *alloc);
+	a.PushBack(vec.y, *alloc);
+	a.PushBack(vec.z, *alloc);
+
+	this->value->AddMember(index, a, *alloc);
+}
+
+void JSON_value::AddVec4(const char* name, math::float4 vec)
+{
+	std::string str = name;
+	rapidjson::Value index(str.c_str(), str.size(), *alloc);
+
+	rapidjson::Value a(rapidjson::kArrayType);
+	a.PushBack(vec.x, *alloc);
+	a.PushBack(vec.y, *alloc);
+	a.PushBack(vec.z, *alloc);
+	a.PushBack(vec.w, *alloc);
+
+	this->value->AddMember(index, a, *alloc);
+}
+
+void JSON_value::AddQuat(const char* name, math::Quat quat)
+{
+	std::string str = name;
+	rapidjson::Value index(str.c_str(), str.size(), *alloc);
+
+	rapidjson::Value a(rapidjson::kArrayType);
+	a.PushBack(quat.x, *alloc);
+	a.PushBack(quat.y, *alloc);
+	a.PushBack(quat.z, *alloc);
+	a.PushBack(quat.w, *alloc);
+
+	this->value->AddMember(index, a, *alloc);
+}
+
 #pragma endregion
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
