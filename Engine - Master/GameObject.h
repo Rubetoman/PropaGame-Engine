@@ -3,6 +3,7 @@
 
 #include "MathGeoLib.h"
 
+#include "JSON.h"
 #include <string>
 #include <list>
 
@@ -76,6 +77,9 @@ public:
 	void Unchild();
 	void SetParent(GameObject* new_parent);
 	bool isForefather(GameObject& go);
+
+	// JSON
+	void Save(JSON_value* gameobject);
 
 public:
 

@@ -320,3 +320,34 @@ bool GameObject::isForefather(GameObject& go)
 		return parent->isForefather(go);
 }
 #pragma endregion
+
+#pragma region JSON
+
+void GameObject::Save(JSON_value* go)
+{
+	JSON_value* gameObject = go->createValue();
+
+	gameObject->AddString("UID", uuid.c_str());
+	gameObject->AddString("ParentUID", parentUID.c_str());
+	gameObject->AddString("Name", name.c_str());
+	// TODO: include active state
+
+	JSON_value* Components = go->createValue();
+	Components->convertToArray();
+	for (std::vector<Component*>::iterator it_c = components.begin(); it_c != components.end(); it_c++)
+	{
+		// save components
+		//(*it_c)->Save(Components);
+	}
+
+	gameObject->addValue("Components", Components);
+
+	go->addValue("", gameObject);
+
+	for (std::list<GameObject*>::iterator it_c = children.begin(); it_c != children.end(); it_c++)
+	{
+		(*it_c)->Save(go);
+	}
+}
+
+#pragma endregion

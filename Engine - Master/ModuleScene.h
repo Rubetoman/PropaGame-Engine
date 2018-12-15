@@ -27,7 +27,7 @@ public:
 	GameObject* DuplicateGameObject(const GameObject* go);
 	void Unchild(GameObject* go);
 
-	inline const char* GenerateNewUID();
+	bool Save(JSON_file* document);
 
 public:
 	GameObject* root = nullptr;

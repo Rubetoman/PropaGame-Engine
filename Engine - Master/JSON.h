@@ -19,12 +19,19 @@ public:
 	JSON_value(rapidjson::Document::AllocatorType* allocator);
 	~JSON_value();
 
+	void JSON_value::convertToArray();
+
 	JSON_value* createValue();
 	void addValue(const char* name, JSON_value* value);
 	JSON_value* getValue(const char* name);
 
 	void setValue(rapidjson::Value* value);
 	rapidjson::Value* getRapidJSONValue();
+
+	void AddInt(const char* name, int value);
+	void AddUnsigned(const char* name, unsigned value);
+	void JSON_value::AddString(const char* name, const char* value);
+
 public:
 	rapidjson::Value* value = nullptr;
 	rapidjson::Document::AllocatorType* alloc = nullptr;

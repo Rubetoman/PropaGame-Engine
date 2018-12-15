@@ -184,4 +184,12 @@ void ModuleScene::Unchild(GameObject* go)
 
 #pragma region scene management functions
 
+bool ModuleScene::Save(JSON_file* document) 
+{
+	JSON_value* scene = document->createValue();
+	scene->AddString("name", "scene");
+	document->addValue("scene", scene);
+	root->Save(scene);
+	return true;
+}
 #pragma endregion

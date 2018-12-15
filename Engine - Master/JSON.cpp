@@ -14,6 +14,12 @@ JSON_value::~JSON_value()
 	RELEASE(value);
 }
 
+void JSON_value::convertToArray()
+{
+	RELEASE(value);
+	value = new rapidjson::Value(rapidjson::kArrayType);
+}
+
 JSON_value * JSON_value::createValue()
 {
 	return new JSON_value(alloc);
@@ -54,6 +60,29 @@ void JSON_value::setValue(rapidjson::Value * value)
 rapidjson::Value* JSON_value::getRapidJSONValue()
 {
 	return value;
+}
+
+void JSON_value::AddInt(const char* name, int value)
+{
+	std::string str = name;
+	rapidjson::Value index(str.c_str(), str.size(), *alloc);
+	this->value->AddMember(index, value, *alloc);
+}
+
+void JSON_value::AddUnsigned(const char* name, unsigned value)
+{
+	std::string str = name;
+	rapidjson::Value index(str.c_str(), str.size(), *alloc);
+	this->value->AddMember(index, value, *alloc);
+}
+
+void JSON_value::AddString(const char* name, const char* value)
+{
+	std::string str = name;
+	rapidjson::Value index(str.c_str(), str.size(), *alloc);
+	std::string str2 = value;
+	rapidjson::Value val(str2.c_str(), str2.size(), *alloc);
+	this->value->AddMember(index, val, *alloc);
 }
 
 #pragma endregion
