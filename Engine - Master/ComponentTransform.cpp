@@ -83,8 +83,22 @@ void ComponentTransform::Save(JSON_value* component) const
 
 	transform->AddVec3("Position", position);
 	transform->AddQuat("Rotation", rotation);
-	transform->AddVec3("Euler Rotation", euler_rotation);
 	transform->AddVec3("Scale", scale);
 
 	component->addValue("", transform);
-}			
+}	
+
+void ComponentTransform::Load(JSON_value* component)
+{
+	Component::Load(component);
+
+	position = component->GetVec3("Position");
+	rotation = component->GetQuat("Rotation");
+
+	euler_rotation = rotation.ToEulerXYZ();
+	euler_rotation.x = math::RadToDeg(euler_rotation.x);
+	euler_rotation.y = math::RadToDeg(euler_rotation.y);
+	euler_rotation.z = math::RadToDeg(euler_rotation.z);
+
+	scale = component->GetVec3("Scale");
+}

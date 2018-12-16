@@ -19,6 +19,7 @@ public:
 	bool DrawOnInspector() override;
 
 	void Save(JSON_value* component) const override;
+	void Load(JSON_value* component) override;
 
 public:
 	math::float3 position = math::float3().zero;

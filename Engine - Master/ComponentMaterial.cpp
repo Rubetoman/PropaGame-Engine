@@ -148,3 +148,16 @@ void ComponentMaterial::Save(JSON_value* component) const
 
 	component->addValue("", material);
 }
+
+void ComponentMaterial::Load(JSON_value* component)
+{
+	Component::Load(component);
+
+	shader = component->GetUnsigned("shader");
+	texture = (Texture*)component->GetUnsigned("texture");
+	color = component->GetVec4("color");
+	shininess = component->GetUnsigned("shininess");
+	k_specular = component->GetUnsigned("k_specular");
+	k_diffuse = component->GetUnsigned("k_diffuse");
+	k_ambient = component->GetUnsigned("k_ambient");
+}

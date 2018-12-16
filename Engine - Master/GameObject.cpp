@@ -363,8 +363,8 @@ void GameObject::Load(JSON_value* go)
 		{
 			JSON_value* componentData = Components->getValueFromArray(i); //Get the component data
 			//TODO: Add load to component
-			//Component* component = AddComponent((componentType)componentData->getInt("Type")); //Create the component type
-			//component->Load(componentData); //Load its info
+			Component* component = CreateComponent((component_type)componentData->GetInt("Type")); //Create the component type
+			component->Load(componentData); //Load its info
 		}
 	}
 }

@@ -29,6 +29,7 @@ public:
 	int GetComponentNumber() const;
 
 	virtual void Save(JSON_value* component) const;
+	virtual void Load(JSON_value* component);
 
 public:
 	std::string uuid = "";

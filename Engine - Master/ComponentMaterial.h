@@ -18,6 +18,7 @@ public:
 	void Delete() override;
 
 	void Save(JSON_value* component) const override;
+	void Load(JSON_value* component) override;
 
 public:
 	unsigned shader = 0;

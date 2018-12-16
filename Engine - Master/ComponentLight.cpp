@@ -40,3 +40,20 @@ bool ComponentLight::DrawOnInspector()
 	ImGui::PopID();
 	return false;
 }
+
+void ComponentLight::Save(JSON_value* component) const
+{
+	Component::Save(component);
+
+	JSON_value* light = component->createValue();
+
+	light->AddInt("intensity", intensity);
+	component->addValue("", light);
+}
+
+void ComponentLight::Load(JSON_value* component)
+{
+	Component::Load(component);
+	
+	intensity = component->GetInt("intensity");
+}

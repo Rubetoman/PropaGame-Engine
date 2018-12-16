@@ -87,3 +87,9 @@ void Component::Save(JSON_value* component) const
 
 	component->addValue("", comp);
 }
+
+void Component::Load(JSON_value* component)
+{
+	uuid = component->GetString("UID");
+	my_go_uid = component->GetString("GOUID");
+}

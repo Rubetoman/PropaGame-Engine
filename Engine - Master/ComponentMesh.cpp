@@ -224,11 +224,6 @@ void ComponentMesh::Save(JSON_value* component) const
 
 	JSON_value* mesh = component->createValue();
 
-	unsigned vbo = 0u;
-	unsigned ibo = 0u;
-	unsigned vao = 0u;
-	unsigned num_vertices = 0u;
-	unsigned num_indices = 0u;
 	mesh->AddUnsigned("VBO", vbo);
 	mesh->AddUnsigned("IBO", ibo);
 	mesh->AddUnsigned("VAO", vao);
@@ -237,4 +232,16 @@ void ComponentMesh::Save(JSON_value* component) const
 	//TODO: Add vertices and BBox
 
 	component->addValue("", mesh);
+}
+
+void ComponentMesh::Load(JSON_value* component)
+{
+	Component::Load(component);
+
+	vbo = component->GetUnsigned("VBO");
+	ibo = component->GetUnsigned("IBO");
+	vao = component->GetUnsigned("VAO");
+	num_vertices = component->GetUnsigned("Number Vertices");
+	num_indices = component->GetUnsigned("Number Indices");
+	//TODO: Add vertices and BBox
 }
