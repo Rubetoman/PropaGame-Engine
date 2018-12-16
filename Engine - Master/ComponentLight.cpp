@@ -1,9 +1,11 @@
 #include "ComponentLight.h"
 
-
+#include "Application.h"
+#include "ModuleResources.h"
 
 ComponentLight::ComponentLight(GameObject* go) : Component(go, component_type::Light)
 {
+	App->resources->lights.push_back(my_go);
 }
 
 ComponentLight::ComponentLight(const ComponentLight& comp) : Component(comp)

@@ -166,7 +166,20 @@ void ModuleEditor::ShowMainMenuBar()
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("Open")) {}
+			ImGui::Separator();
+			if (ImGui::MenuItem("New Scene"))
+			{
+				App->scene->NewScene();
+			}
+			if (ImGui::MenuItem("Load Scene")) 
+			{ 
+				App->scene->LoadScene("Scene01"); 
+			}
+			if (ImGui::MenuItem("Save Scene")) { 
+				App->scene->SaveScene("Scene01"); }
+			ImGui::Separator();
 			if (ImGui::MenuItem("Quit", "ALT+F4")) { update = UPDATE_STOP; }
+
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit"))

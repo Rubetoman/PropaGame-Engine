@@ -1,0 +1,224 @@
+{
+    "Root": [
+        {
+            "UID": "96f2807f-6581-46aa-b378-49540be01c99",
+            "ParentUID": "",
+            "Name": "World",
+            "Components": [
+                {
+                    "UID": "e9a88298-ad42-4b40-9823-ea05240af212",
+                    "GOUID": "96f2807f-6581-46aa-b378-49540be01c99",
+                    "Type": 0
+                },
+                {
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "4ecd4545-0c32-45dc-a650-68aead449ec1",
+            "ParentUID": "96f2807f-6581-46aa-b378-49540be01c99",
+            "Name": "Default Light",
+            "Components": [
+                {
+                    "UID": "8f1fdedc-6842-496e-9fa6-89e5f3968fc5",
+                    "GOUID": "4ecd4545-0c32-45dc-a650-68aead449ec1",
+                    "Type": 0
+                },
+                {
+                    "Position": [
+                        -2.0,
+                        0.0,
+                        6.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "81b8af2d-20db-499a-b4af-c9ed0bb68602",
+                    "GOUID": "4ecd4545-0c32-45dc-a650-68aead449ec1",
+                    "Type": 3
+                },
+                {
+                    "intensity": 0
+                }
+            ]
+        },
+        {
+            "UID": "0e7414b0-359e-42e8-9134-14d0b5e17d5f",
+            "ParentUID": "96f2807f-6581-46aa-b378-49540be01c99",
+            "Name": "RootNode",
+            "Components": [
+                {
+                    "UID": "3969b258-90e1-4848-98cf-df3156f2f908",
+                    "GOUID": "0e7414b0-359e-42e8-9134-14d0b5e17d5f",
+                    "Type": 0
+                },
+                {
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "ad163737-37c3-4aae-a74c-867a646cef89",
+            "ParentUID": "0e7414b0-359e-42e8-9134-14d0b5e17d5f",
+            "Name": "Chimney",
+            "Components": [
+                {
+                    "UID": "5bff82d7-4563-4151-9a6c-40b6a44e5dcb",
+                    "GOUID": "ad163737-37c3-4aae-a74c-867a646cef89",
+                    "Type": 0
+                },
+                {
+                    "Position": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "1cb432f5-8504-4ed7-8498-e870d36fa111",
+                    "GOUID": "ad163737-37c3-4aae-a74c-867a646cef89",
+                    "Type": 1
+                },
+                {
+                    "VBO": 1,
+                    "IBO": 2,
+                    "VAO": 1,
+                    "Number Vertices": 160,
+                    "Number Indices": 324
+                },
+                {
+                    "UID": "073c51d0-c23a-4d10-813a-2691fc79f50a",
+                    "GOUID": "ad163737-37c3-4aae-a74c-867a646cef89",
+                    "Type": 2
+                },
+                {
+                    "shader": 0,
+                    "texture": 168203736,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64,
+                    "k_specular": 1,
+                    "k_diffuse": 0,
+                    "k_ambient": 0
+                }
+            ]
+        },
+        {
+            "UID": "3ff94f27-650d-46e8-8a95-59ef07d3245e",
+            "ParentUID": "0e7414b0-359e-42e8-9134-14d0b5e17d5f",
+            "Name": "Baker_house",
+            "Components": [
+                {
+                    "UID": "ac9b46cb-5e46-43a3-8048-55ce529803dc",
+                    "GOUID": "3ff94f27-650d-46e8-8a95-59ef07d3245e",
+                    "Type": 0
+                },
+                {
+                    "Position": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "c88a4686-0e22-480c-9c29-d8124b415f9f",
+                    "GOUID": "3ff94f27-650d-46e8-8a95-59ef07d3245e",
+                    "Type": 1
+                },
+                {
+                    "VBO": 3,
+                    "IBO": 4,
+                    "VAO": 2,
+                    "Number Vertices": 1641,
+                    "Number Indices": 2751
+                },
+                {
+                    "UID": "21896df9-c313-4097-a1bd-e4b36f24ebcc",
+                    "GOUID": "3ff94f27-650d-46e8-8a95-59ef07d3245e",
+                    "Type": 2
+                },
+                {
+                    "shader": 0,
+                    "texture": 168203736,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64,
+                    "k_specular": 1,
+                    "k_diffuse": 0,
+                    "k_ambient": 0
+                }
+            ]
+        }
+    ]
+}

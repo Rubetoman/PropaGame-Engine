@@ -198,7 +198,7 @@ bool ModuleScene::Save(JSON_file* document)
 void ModuleScene::NewScene()
 {
 	root->DeleteGameObject();
-	RELEASE(root);
+	//delete(root);
 
 	root = new GameObject("World");
 }
