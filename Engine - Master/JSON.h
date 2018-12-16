@@ -24,6 +24,7 @@ public:
 	JSON_value* createValue();
 	void addValue(const char* name, JSON_value* value);
 	JSON_value* getValue(const char* name);
+	JSON_value* getValueFromArray(int index);
 
 	void setValue(rapidjson::Value* value);
 	rapidjson::Value* getRapidJSONValue();
@@ -35,6 +36,15 @@ public:
 	void AddVec3(const char* name, math::float3 vec);
 	void AddVec4(const char* name, math::float4 vec);
 	void AddQuat(const char* name, math::Quat quat);
+
+	int GetInt(const char* name);
+	unsigned GetUnsigned(const char* name);
+	float GetFloat(const char* name);
+	const char* GetString(const char* name);
+	float* GetVec(const char* name, int vector_size);
+	math::float3 GetVec3(const char* name);
+	math::float4 GetVec4(const char* name);
+	math::Quat GetQuat(const char* name);
 
 public:
 	rapidjson::Value* value = nullptr;

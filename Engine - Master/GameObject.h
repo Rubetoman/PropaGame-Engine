@@ -80,6 +80,7 @@ public:
 
 	// JSON
 	void Save(JSON_value* gameobject);
+	void Load(JSON_value* go);
 
 public:
 

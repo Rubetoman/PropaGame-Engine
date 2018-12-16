@@ -28,6 +28,9 @@ public:
 	void Unchild(GameObject* go);
 
 	bool Save(JSON_file* document);
+	void NewScene();
+	bool SaveScene(const char* scene_name);
+	bool LoadScene(const char* scene_name);
 
 public:
 	GameObject* root = nullptr;

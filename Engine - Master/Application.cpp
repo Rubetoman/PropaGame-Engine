@@ -15,6 +15,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleScene.h"
 #include "ModuleResources.h"
+#include "JSON.h"
 
 using namespace std;
 
@@ -34,6 +35,7 @@ Application::Application()
 	modules.push_back(model_loader = new ModuleModelLoader());
 	modules.push_back(debug_draw = new ModuleDebugDraw());
 	modules.push_back(resources = new ModuleResources());
+	json = new JSON();
 }
 
 Application::~Application()

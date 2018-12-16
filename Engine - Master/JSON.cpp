@@ -51,6 +51,19 @@ JSON_value* JSON_value::getValue(const char * name)
 	return nullptr;
 }
 
+JSON_value* JSON_value::getValueFromArray(int index)
+{
+	if (value->IsArray() && value->Size() > index)
+	{
+		rapidjson::Value& trueValue = value->operator[](index);
+		JSON_value* ret = new JSON_value(alloc);
+		ret->getRapidJSONValue()->CopyFrom(trueValue, *alloc, false);
+
+		return ret;
+	}
+	return nullptr;
+}
+
 void JSON_value::setValue(rapidjson::Value * value)
 {
 	RELEASE(this->value);
@@ -138,6 +151,114 @@ void JSON_value::AddQuat(const char* name, math::Quat quat)
 	a.PushBack(quat.w, *alloc);
 
 	this->value->AddMember(index, a, *alloc);
+}
+
+int JSON_value::GetInt(const char* name)
+{
+	if (value->HasMember(name))
+		return value->operator[](name).GetInt();
+	else
+		return 0;
+}
+
+unsigned JSON_value::GetUnsigned(const char * name)
+{
+	if (value->HasMember(name))
+		return value->operator[](name).GetUint();
+	else
+		return 0;
+}
+
+float JSON_value::GetFloat(const char * name)
+{
+	if (value->HasMember(name))
+		return value->operator[](name).GetFloat();
+	else
+		return 0.0f;
+}
+
+const char* JSON_value::GetString(const char* name)
+{
+	if (value->HasMember(name))
+		return value->operator[](name).GetString();
+	else
+		return "";
+}
+
+float* JSON_value::GetVec(const char* name, int vector_size)
+{
+	if (value->HasMember(name))
+	{
+		rapidjson::Value& a = value->operator[](name);
+		if (a.IsArray() && a.Size() >= vector_size)
+		{
+			float* ret = new float[vector_size]; //MEMLEAK
+			for (int i = 0; i < vector_size; i++)
+			{
+				ret[i] = a[i].GetFloat();
+			}
+
+			return ret;
+		}
+	}
+
+	return nullptr;
+}
+
+math::float3 JSON_value::GetVec3(const char* name)
+{
+	if (value->HasMember(name))
+	{
+		rapidjson::Value& a = value->operator[](name);
+		if (a.IsArray() && a.Size() >= 3)
+		{
+			float3 ret;
+			ret.x = a[0].GetFloat();
+			ret.y = a[1].GetFloat();
+			ret.z = a[2].GetFloat();
+
+			return ret;
+		}
+	}
+	return float3();
+}
+
+math::float4 JSON_value::GetVec4(const char* name)
+{
+	if (value->HasMember(name))
+	{
+		rapidjson::Value& a = value->operator[](name);
+		if (a.IsArray() && a.Size() >= 4)
+		{
+			float4 ret;
+			ret.x = a[0].GetFloat();
+			ret.y = a[1].GetFloat();
+			ret.z = a[2].GetFloat();
+			ret.w = a[3].GetFloat();
+
+			return ret;
+		}
+	}
+	return math::float4();
+}
+
+math::Quat JSON_value::GetQuat(const char* name)
+{
+	if (value->HasMember(name))
+	{
+		rapidjson::Value& a = value->operator[](name);
+		if (a.IsArray() && a.Size() >= 4)
+		{
+			Quat ret;
+			ret.x = a[0].GetFloat();
+			ret.y = a[1].GetFloat();
+			ret.z = a[2].GetFloat();
+			ret.w = a[3].GetFloat();
+
+			return ret;
+		}
+	}
+	return Quat();
 }
 
 #pragma endregion

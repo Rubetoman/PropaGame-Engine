@@ -43,4 +43,10 @@ enum update_status
 #define BRIGHTNESS 1.0f
 #define TITLE "PropaGame Engine"
 
+// PATHS -----------
+#define SCENES_FOLDER "Assets/Scenes/"
+
+// CUSTOM EXTENSIONS
+#define SCENES_EXTENSION ".proScene"
+
 #endif //__GLOBALS_H__

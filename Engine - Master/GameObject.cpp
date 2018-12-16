@@ -349,4 +349,24 @@ void GameObject::Save(JSON_value* go)
 	}
 }
 
+void GameObject::Load(JSON_value* go)
+{
+	uuid = go->GetString("UID");
+	parentUID = go->GetString("ParentUID");
+	name = go->GetString("Name");
+	// TODO: include active state
+
+	JSON_value* Components = go->getValue("Components"); //It is an array of values
+	if (Components->getRapidJSONValue()->IsArray()) //Just make sure
+	{
+		for (int i = 0; i < Components->getRapidJSONValue()->Size(); i++)
+		{
+			JSON_value* componentData = Components->getValueFromArray(i); //Get the component data
+			//TODO: Add load to component
+			//Component* component = AddComponent((componentType)componentData->getInt("Type")); //Create the component type
+			//component->Load(componentData); //Load its info
+		}
+	}
+}
+
 #pragma endregion

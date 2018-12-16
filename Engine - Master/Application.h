@@ -18,6 +18,7 @@ class ModuleTime;
 class ModuleDebugDraw;
 class ModuleScene;
 class ModuleResources;
+class JSON;
 
 class Application
 {
@@ -45,6 +46,7 @@ public:
 	ModuleDebugDraw* debug_draw = nullptr;
 	ModuleScene* scene = nullptr;
 	ModuleResources* resources = nullptr;
+	JSON* json = nullptr;
 
 private:
 
