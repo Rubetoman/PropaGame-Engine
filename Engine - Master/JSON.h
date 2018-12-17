@@ -32,6 +32,7 @@ public:
 	void AddInt(const char* name, int value);
 	void AddUnsigned(const char* name, unsigned value);
 	void AddFloat(const char* name, float value);
+	void AddBool(const char* name, bool value);
 	void AddString(const char* name, const char* value);
 	void AddVec(const char* name, float* vec, int vector_size);
 	void AddVec3(const char* name, math::float3 vec);
@@ -41,6 +42,7 @@ public:
 	int GetInt(const char* name);
 	unsigned GetUnsigned(const char* name);
 	float GetFloat(const char* name);
+	bool GetBool(const char* name);
 	const char* GetString(const char* name);
 	float* GetVec(const char* name, int vector_size);
 	math::float3 GetVec3(const char* name);

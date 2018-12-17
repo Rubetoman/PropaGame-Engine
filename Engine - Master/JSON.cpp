@@ -96,6 +96,13 @@ void JSON_value::AddFloat(const char* name, float value)
 	this->value->AddMember(index, value, *alloc);
 }
 
+void JSON_value::AddBool(const char* name, bool value)
+{
+	std::string str = name;
+	rapidjson::Value index(str.c_str(), str.size(), *alloc);
+	this->value->AddMember(index, value, *alloc);
+}
+
 void JSON_value::AddString(const char* name, const char* value)
 {
 	std::string str = name;
@@ -182,6 +189,14 @@ float JSON_value::GetFloat(const char * name)
 		return value->operator[](name).GetFloat();
 	else
 		return 0.0f;
+}
+
+bool JSON_value::GetBool(const char* name)
+{
+	if (value->HasMember(name))
+		return value->operator[](name).GetBool();
+	else
+		return false;
 }
 
 const char* JSON_value::GetString(const char* name)

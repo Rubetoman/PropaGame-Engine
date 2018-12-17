@@ -84,13 +84,14 @@ JSON_value* Component::Save(JSON_value* component) const
 	comp->AddString("UID", uuid.c_str());
 	comp->AddString("GOUID", my_go_uid.c_str());
 	comp->AddInt("Type", (int)type);
+	comp->AddBool("Active", active);
 
 	return comp;
-	//component->addValue("", comp);
 }
 
 void Component::Load(JSON_value* component)
 {
 	uuid = component->GetString("UID");
 	my_go_uid = component->GetString("GOUID");
+	active = component->GetBool("Active");
 }

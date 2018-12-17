@@ -338,7 +338,7 @@ void GameObject::Save(JSON_value* go)
 	gameObject->AddString("UID", uuid.c_str());
 	gameObject->AddString("ParentUID", parentUID.c_str());
 	gameObject->AddString("Name", name.c_str());
-	// TODO: include active state
+	gameObject->AddBool("Active", active);
 
 	JSON_value* Components = go->createValue();
 	Components->convertToArray();
@@ -363,7 +363,7 @@ void GameObject::Load(JSON_value* go)
 	uuid = go->GetString("UID");
 	parentUID = go->GetString("ParentUID");
 	name = go->GetString("Name");
-	// TODO: include active state
+	active = go->GetBool("Active");
 
 	JSON_value* Components = go->getValue("Components"); //It is an array of values
 	if (Components->getRapidJSONValue()->IsArray()) //Just make sure
