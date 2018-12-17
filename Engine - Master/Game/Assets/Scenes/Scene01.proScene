@@ -1,16 +1,14 @@
 {
     "Root": [
         {
-            "UID": "96f2807f-6581-46aa-b378-49540be01c99",
+            "UID": "c72c2cff-5729-4315-ae7c-a4c762cc7cb7",
             "ParentUID": "",
             "Name": "World",
             "Components": [
                 {
-                    "UID": "e9a88298-ad42-4b40-9823-ea05240af212",
-                    "GOUID": "96f2807f-6581-46aa-b378-49540be01c99",
-                    "Type": 0
-                },
-                {
+                    "UID": "3c9a6040-7bb4-4551-b7e3-3f77dedb913d",
+                    "GOUID": "c72c2cff-5729-4315-ae7c-a4c762cc7cb7",
+                    "Type": 0,
                     "Position": [
                         0.0,
                         0.0,
@@ -31,16 +29,14 @@
             ]
         },
         {
-            "UID": "4ecd4545-0c32-45dc-a650-68aead449ec1",
-            "ParentUID": "96f2807f-6581-46aa-b378-49540be01c99",
+            "UID": "54eda6d0-1869-4d69-a823-2e1f18fe2361",
+            "ParentUID": "c72c2cff-5729-4315-ae7c-a4c762cc7cb7",
             "Name": "Default Light",
             "Components": [
                 {
-                    "UID": "8f1fdedc-6842-496e-9fa6-89e5f3968fc5",
-                    "GOUID": "4ecd4545-0c32-45dc-a650-68aead449ec1",
-                    "Type": 0
-                },
-                {
+                    "UID": "3158da62-e88f-438d-a584-3d4161d4d188",
+                    "GOUID": "54eda6d0-1869-4d69-a823-2e1f18fe2361",
+                    "Type": 0,
                     "Position": [
                         -2.0,
                         0.0,
@@ -59,28 +55,24 @@
                     ]
                 },
                 {
-                    "UID": "81b8af2d-20db-499a-b4af-c9ed0bb68602",
-                    "GOUID": "4ecd4545-0c32-45dc-a650-68aead449ec1",
-                    "Type": 3
-                },
-                {
-                    "intensity": 0
+                    "UID": "050be3a1-8246-4aab-ba82-6460e8a39752",
+                    "GOUID": "54eda6d0-1869-4d69-a823-2e1f18fe2361",
+                    "Type": 3,
+                    "intensity": 0.7839999794960022
                 }
             ]
         },
         {
-            "UID": "0e7414b0-359e-42e8-9134-14d0b5e17d5f",
-            "ParentUID": "96f2807f-6581-46aa-b378-49540be01c99",
+            "UID": "e8776329-c298-44a2-a269-7c781430c35f",
+            "ParentUID": "c72c2cff-5729-4315-ae7c-a4c762cc7cb7",
             "Name": "RootNode",
             "Components": [
                 {
-                    "UID": "3969b258-90e1-4848-98cf-df3156f2f908",
-                    "GOUID": "0e7414b0-359e-42e8-9134-14d0b5e17d5f",
-                    "Type": 0
-                },
-                {
+                    "UID": "e063d6e3-e9a4-4a86-bbfa-8ee6b1b67efb",
+                    "GOUID": "e8776329-c298-44a2-a269-7c781430c35f",
+                    "Type": 0,
                     "Position": [
-                        0.0,
+                        -5.199999809265137,
                         0.0,
                         0.0
                     ],
@@ -99,20 +91,18 @@
             ]
         },
         {
-            "UID": "ad163737-37c3-4aae-a74c-867a646cef89",
-            "ParentUID": "0e7414b0-359e-42e8-9134-14d0b5e17d5f",
+            "UID": "5c86b59a-038a-4f7d-95aa-8c4682ac110a",
+            "ParentUID": "e8776329-c298-44a2-a269-7c781430c35f",
             "Name": "Chimney",
             "Components": [
                 {
-                    "UID": "5bff82d7-4563-4151-9a6c-40b6a44e5dcb",
-                    "GOUID": "ad163737-37c3-4aae-a74c-867a646cef89",
-                    "Type": 0
-                },
-                {
+                    "UID": "91136e05-2230-4d5e-96c1-d4d3808fdfca",
+                    "GOUID": "5c86b59a-038a-4f7d-95aa-8c4682ac110a",
+                    "Type": 0,
                     "Position": [
-                        1.0,
-                        1.0,
-                        1.0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "Rotation": [
                         0.0,
@@ -127,11 +117,9 @@
                     ]
                 },
                 {
-                    "UID": "1cb432f5-8504-4ed7-8498-e870d36fa111",
-                    "GOUID": "ad163737-37c3-4aae-a74c-867a646cef89",
-                    "Type": 1
-                },
-                {
+                    "UID": "a9f53d83-0958-415f-8b29-8de4641b5061",
+                    "GOUID": "5c86b59a-038a-4f7d-95aa-8c4682ac110a",
+                    "Type": 1,
                     "VBO": 1,
                     "IBO": 2,
                     "VAO": 1,
@@ -139,41 +127,37 @@
                     "Number Indices": 324
                 },
                 {
-                    "UID": "073c51d0-c23a-4d10-813a-2691fc79f50a",
-                    "GOUID": "ad163737-37c3-4aae-a74c-867a646cef89",
-                    "Type": 2
-                },
-                {
+                    "UID": "9a09c269-5095-4dfc-8e0e-acac3e10b668",
+                    "GOUID": "5c86b59a-038a-4f7d-95aa-8c4682ac110a",
+                    "Type": 2,
                     "shader": 0,
-                    "texture": 168203736,
+                    "texture": 167482344,
                     "color": [
                         0.0,
                         0.0,
                         0.0,
                         0.0
                     ],
-                    "shininess": 64,
-                    "k_specular": 1,
-                    "k_diffuse": 0,
-                    "k_ambient": 0
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "k_diffuse": 0.5,
+                    "k_ambient": 0.5
                 }
             ]
         },
         {
-            "UID": "3ff94f27-650d-46e8-8a95-59ef07d3245e",
-            "ParentUID": "0e7414b0-359e-42e8-9134-14d0b5e17d5f",
+            "UID": "54e23273-2f22-4125-b052-946adfd00b47",
+            "ParentUID": "e8776329-c298-44a2-a269-7c781430c35f",
             "Name": "Baker_house",
             "Components": [
                 {
-                    "UID": "ac9b46cb-5e46-43a3-8048-55ce529803dc",
-                    "GOUID": "3ff94f27-650d-46e8-8a95-59ef07d3245e",
-                    "Type": 0
-                },
-                {
+                    "UID": "5f922491-9ff8-4887-8810-c980c9c2e69f",
+                    "GOUID": "54e23273-2f22-4125-b052-946adfd00b47",
+                    "Type": 0,
                     "Position": [
-                        1.0,
-                        1.0,
-                        1.0
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "Rotation": [
                         0.0,
@@ -188,11 +172,9 @@
                     ]
                 },
                 {
-                    "UID": "c88a4686-0e22-480c-9c29-d8124b415f9f",
-                    "GOUID": "3ff94f27-650d-46e8-8a95-59ef07d3245e",
-                    "Type": 1
-                },
-                {
+                    "UID": "f3010acd-28e9-42c6-9de5-29b50ac29529",
+                    "GOUID": "54e23273-2f22-4125-b052-946adfd00b47",
+                    "Type": 1,
                     "VBO": 3,
                     "IBO": 4,
                     "VAO": 2,
@@ -200,23 +182,21 @@
                     "Number Indices": 2751
                 },
                 {
-                    "UID": "21896df9-c313-4097-a1bd-e4b36f24ebcc",
-                    "GOUID": "3ff94f27-650d-46e8-8a95-59ef07d3245e",
-                    "Type": 2
-                },
-                {
+                    "UID": "0ef45091-32ce-40b9-8cfc-0a5ca49af1d0",
+                    "GOUID": "54e23273-2f22-4125-b052-946adfd00b47",
+                    "Type": 2,
                     "shader": 0,
-                    "texture": 168203736,
+                    "texture": 167482344,
                     "color": [
                         0.0,
                         0.0,
                         0.0,
                         0.0
                     ],
-                    "shininess": 64,
-                    "k_specular": 1,
-                    "k_diffuse": 0,
-                    "k_ambient": 0
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "k_diffuse": 0.5,
+                    "k_ambient": 0.5
                 }
             ]
         }

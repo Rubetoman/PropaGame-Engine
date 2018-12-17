@@ -43,19 +43,19 @@ bool ComponentLight::DrawOnInspector()
 	return false;
 }
 
-void ComponentLight::Save(JSON_value* component) const
+JSON_value* ComponentLight::Save(JSON_value* component) const
 {
-	Component::Save(component);
+	JSON_value* light = Component::Save(component);
 
-	JSON_value* light = component->createValue();
-
-	light->AddInt("intensity", intensity);
+	light->AddFloat("intensity", intensity);
 	component->addValue("", light);
+
+	return light;
 }
 
 void ComponentLight::Load(JSON_value* component)
 {
 	Component::Load(component);
 	
-	intensity = component->GetInt("intensity");
+	intensity = component->GetFloat("intensity");
 }

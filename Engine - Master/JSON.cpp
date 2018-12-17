@@ -89,6 +89,13 @@ void JSON_value::AddUnsigned(const char* name, unsigned value)
 	this->value->AddMember(index, value, *alloc);
 }
 
+void JSON_value::AddFloat(const char* name, float value)
+{
+	std::string str = name;
+	rapidjson::Value index(str.c_str(), str.size(), *alloc);
+	this->value->AddMember(index, value, *alloc);
+}
+
 void JSON_value::AddString(const char* name, const char* value)
 {
 	std::string str = name;

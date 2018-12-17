@@ -78,14 +78,15 @@ int Component::GetComponentNumber() const
 	return pos;
 }
 
-void Component::Save(JSON_value* component) const
+JSON_value* Component::Save(JSON_value* component) const
 {
 	JSON_value* comp = component->createValue();
 	comp->AddString("UID", uuid.c_str());
 	comp->AddString("GOUID", my_go_uid.c_str());
 	comp->AddInt("Type", (int)type);
 
-	component->addValue("", comp);
+	return comp;
+	//component->addValue("", comp);
 }
 
 void Component::Load(JSON_value* component)

@@ -336,6 +336,7 @@ void GameObject::Save(JSON_value* go)
 	Components->convertToArray();
 	for (std::vector<Component*>::iterator it_c = components.begin(); it_c != components.end(); it_c++)
 	{
+
 		(*it_c)->Save(Components);
 	}
 

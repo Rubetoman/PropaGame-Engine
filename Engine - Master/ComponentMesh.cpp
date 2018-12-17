@@ -218,11 +218,9 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 	num_vertices = mesh->npoints;
 }
 
-void ComponentMesh::Save(JSON_value* component) const
+JSON_value* ComponentMesh::Save(JSON_value* component) const
 {
-	Component::Save(component);
-
-	JSON_value* mesh = component->createValue();
+	JSON_value* mesh = Component::Save(component);
 
 	mesh->AddUnsigned("VBO", vbo);
 	mesh->AddUnsigned("IBO", ibo);
@@ -232,6 +230,8 @@ void ComponentMesh::Save(JSON_value* component) const
 	//TODO: Add vertices and BBox
 
 	component->addValue("", mesh);
+
+	return mesh;
 }
 
 void ComponentMesh::Load(JSON_value* component)

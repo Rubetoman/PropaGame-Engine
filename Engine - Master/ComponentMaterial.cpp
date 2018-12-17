@@ -132,21 +132,21 @@ void ComponentMaterial::Delete()
 	Component::Delete();
 }
 
-void ComponentMaterial::Save(JSON_value* component) const
+JSON_value* ComponentMaterial::Save(JSON_value* component) const
 {
-	Component::Save(component);
-
-	JSON_value* material = component->createValue();
+	JSON_value* material = Component::Save(component);
 
 	material->AddUnsigned("shader", shader);
 	material->AddUnsigned("texture", (unsigned)texture);
 	material->AddVec4("color", color);
-	material->AddUnsigned("shininess", shininess);
-	material->AddUnsigned("k_specular", k_specular);
-	material->AddUnsigned("k_diffuse", k_diffuse);
-	material->AddUnsigned("k_ambient", k_ambient);
+	material->AddFloat("shininess", shininess);
+	material->AddFloat("k_specular", k_specular);
+	material->AddFloat("k_diffuse", k_diffuse);
+	material->AddFloat("k_ambient", k_ambient);
 
 	component->addValue("", material);
+
+	return material;
 }
 
 void ComponentMaterial::Load(JSON_value* component)
@@ -156,8 +156,8 @@ void ComponentMaterial::Load(JSON_value* component)
 	shader = component->GetUnsigned("shader");
 	texture = (Texture*)component->GetUnsigned("texture");
 	color = component->GetVec4("color");
-	shininess = component->GetUnsigned("shininess");
-	k_specular = component->GetUnsigned("k_specular");
-	k_diffuse = component->GetUnsigned("k_diffuse");
-	k_ambient = component->GetUnsigned("k_ambient");
+	shininess = component->GetFloat("shininess");
+	k_specular = component->GetFloat("k_specular");
+	k_diffuse = component->GetFloat("k_diffuse");
+	k_ambient = component->GetFloat("k_ambient");
 }

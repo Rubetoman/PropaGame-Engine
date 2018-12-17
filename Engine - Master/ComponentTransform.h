@@ -18,7 +18,7 @@ public:
 
 	bool DrawOnInspector() override;
 
-	void Save(JSON_value* component) const override;
+	JSON_value* Save(JSON_value* component) const override;
 	void Load(JSON_value* component) override;
 
 public:

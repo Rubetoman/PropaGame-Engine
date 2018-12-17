@@ -75,17 +75,17 @@ bool ComponentTransform::DrawOnInspector()
 	return false;
 }
 
-void ComponentTransform::Save(JSON_value* component) const
+JSON_value* ComponentTransform::Save(JSON_value* component) const
 {
-	Component::Save(component);
-
-	JSON_value* transform = component->createValue();
+	JSON_value* transform = Component::Save(component);
 
 	transform->AddVec3("Position", position);
 	transform->AddQuat("Rotation", rotation);
 	transform->AddVec3("Scale", scale);
 
 	component->addValue("", transform);
+
+	return transform;
 }	
 
 void ComponentTransform::Load(JSON_value* component)

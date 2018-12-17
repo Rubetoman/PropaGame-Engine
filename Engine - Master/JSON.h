@@ -31,6 +31,7 @@ public:
 
 	void AddInt(const char* name, int value);
 	void AddUnsigned(const char* name, unsigned value);
+	void AddFloat(const char* name, float value);
 	void AddString(const char* name, const char* value);
 	void AddVec(const char* name, float* vec, int vector_size);
 	void AddVec3(const char* name, math::float3 vec);
