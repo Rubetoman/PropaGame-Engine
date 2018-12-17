@@ -14,7 +14,7 @@
 
 #include "debugdraw.h"
 
-GameObject::GameObject(const char * name) : name(name)
+GameObject::GameObject(const char* name) : name(name)
 {
 	uuid = App->resources->GenerateNewUID();
 	CreateComponent(component_type::Transform);
@@ -191,8 +191,15 @@ Component* GameObject::CreateComponent(component_type type)
 	switch (type)
 	{
 	case component_type::Transform:
-		component = new ComponentTransform(this);
-		transform = (ComponentTransform*)component;
+		if (transform == nullptr)
+		{
+			component = new ComponentTransform(this);
+			transform = (ComponentTransform*)component;
+		}
+		else
+		{
+			LOG("Warning: %s already has a Transform Component attached.", name);
+		}
 		break;
 	case component_type::Mesh:
 		if (mesh == nullptr)
@@ -363,9 +370,17 @@ void GameObject::Load(JSON_value* go)
 		for (int i = 0; i < Components->getRapidJSONValue()->Size(); i++)
 		{
 			JSON_value* componentData = Components->getValueFromArray(i); //Get the component data
-			//TODO: Add load to component
-			Component* component = CreateComponent((component_type)componentData->GetInt("Type")); //Create the component type
-			component->Load(componentData); //Load its info
+
+			// If the component is a Transform just edit variables (because a GO is created with a Transform by default)
+			if ((component_type)componentData->GetInt("Type") == component_type::Transform && transform != nullptr)
+			{
+				transform->Load(componentData); //Load its info
+			}
+			else // If no create it as a new component
+			{
+				Component* component = CreateComponent((component_type)componentData->GetInt("Type"));
+				component->Load(componentData); //Load its info
+			}
 		}
 	}
 }

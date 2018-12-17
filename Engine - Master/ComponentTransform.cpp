@@ -38,6 +38,17 @@ void ComponentTransform::SetTransform(const math::float4x4& transform)
 	euler_rotation.z = math::RadToDeg(euler_rotation.z);
 }
 
+void ComponentTransform::SetTransform(const math::float3& pos, const math::Quat& rot, const math::float3& sca)
+{
+	position = pos;
+	scale = sca;
+	rotation = rot;
+	euler_rotation = rotation.ToEulerXYZ();
+	euler_rotation.x = math::RadToDeg(euler_rotation.x);
+	euler_rotation.y = math::RadToDeg(euler_rotation.y);
+	euler_rotation.z = math::RadToDeg(euler_rotation.z);
+}
+
 void ComponentTransform::LocalToGlobal(const float4x4& global_transform)
 {
 	float4x4 global = global_transform;
@@ -92,13 +103,5 @@ void ComponentTransform::Load(JSON_value* component)
 {
 	Component::Load(component);
 
-	position = component->GetVec3("Position");
-	rotation = component->GetQuat("Rotation");
-
-	euler_rotation = rotation.ToEulerXYZ();
-	euler_rotation.x = math::RadToDeg(euler_rotation.x);
-	euler_rotation.y = math::RadToDeg(euler_rotation.y);
-	euler_rotation.z = math::RadToDeg(euler_rotation.z);
-
-	scale = component->GetVec3("Scale");
+	SetTransform(component->GetVec3("Position"), component->GetQuat("Rotation"), component->GetVec3("Scale"));
 }
