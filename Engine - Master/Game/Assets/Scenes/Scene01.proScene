@@ -1,13 +1,13 @@
 {
     "Root": [
         {
-            "UID": "21b93f22-34c5-4e4f-82aa-5460e383377b",
+            "UID": "bf7f9047-f706-40c4-aed4-7d9863b4fe59",
             "ParentUID": "",
             "Name": "World",
             "Components": [
                 {
-                    "UID": "c6cb738c-aef9-45c5-bf7c-08bf6356f0c0",
-                    "GOUID": "21b93f22-34c5-4e4f-82aa-5460e383377b",
+                    "UID": "811a3596-9401-4199-b7f1-5fbac39c2810",
+                    "GOUID": "bf7f9047-f706-40c4-aed4-7d9863b4fe59",
                     "Type": 0,
                     "Position": [
                         0.0,
@@ -29,13 +29,13 @@
             ]
         },
         {
-            "UID": "be057927-d77a-4ed1-ae4f-ac857c4df151",
-            "ParentUID": "21b93f22-34c5-4e4f-82aa-5460e383377b",
+            "UID": "b3a02ee7-9b19-4574-a28c-ed0706410db0",
+            "ParentUID": "bf7f9047-f706-40c4-aed4-7d9863b4fe59",
             "Name": "Default Light",
             "Components": [
                 {
-                    "UID": "eb1bb539-6985-409a-b25f-16f2fb76d592",
-                    "GOUID": "be057927-d77a-4ed1-ae4f-ac857c4df151",
+                    "UID": "49bdd6f0-59e2-4fc8-9e1b-ccad471c21df",
+                    "GOUID": "b3a02ee7-9b19-4574-a28c-ed0706410db0",
                     "Type": 0,
                     "Position": [
                         -2.0,
@@ -55,25 +55,25 @@
                     ]
                 },
                 {
-                    "UID": "0848adb4-8f4e-426c-a7e3-9cbdb5c7aab0",
-                    "GOUID": "be057927-d77a-4ed1-ae4f-ac857c4df151",
+                    "UID": "55cdf0d4-2846-4b30-b9b1-fefdfb766e28",
+                    "GOUID": "b3a02ee7-9b19-4574-a28c-ed0706410db0",
                     "Type": 3,
-                    "intensity": 0.7910000085830689
+                    "intensity": 0.7429999709129334
                 }
             ]
         },
         {
-            "UID": "c7acb907-0bd3-4a1f-903b-a4c4e27df80c",
-            "ParentUID": "21b93f22-34c5-4e4f-82aa-5460e383377b",
+            "UID": "6113a555-bfe8-4e71-8cfc-681ddcc380ae",
+            "ParentUID": "bf7f9047-f706-40c4-aed4-7d9863b4fe59",
             "Name": "RootNode",
             "Components": [
                 {
-                    "UID": "f3ac9b41-e9e7-47f5-9b7b-59d5a0ca4c41",
-                    "GOUID": "c7acb907-0bd3-4a1f-903b-a4c4e27df80c",
+                    "UID": "c675cb53-ab8e-4b33-92f1-1ae83bd0f48f",
+                    "GOUID": "6113a555-bfe8-4e71-8cfc-681ddcc380ae",
                     "Type": 0,
                     "Position": [
                         0.0,
-                        1.399999976158142,
+                        0.0,
                         0.0
                     ],
                     "Rotation": [
@@ -91,13 +91,13 @@
             ]
         },
         {
-            "UID": "5058981a-dda4-4c1c-af82-2c75b99fa9fd",
-            "ParentUID": "c7acb907-0bd3-4a1f-903b-a4c4e27df80c",
+            "UID": "c4abd5f2-a30a-463a-9f11-0f668308d3b2",
+            "ParentUID": "6113a555-bfe8-4e71-8cfc-681ddcc380ae",
             "Name": "Chimney",
             "Components": [
                 {
-                    "UID": "4c8e9787-baa1-4f62-b6c9-54a5ca973f65",
-                    "GOUID": "5058981a-dda4-4c1c-af82-2c75b99fa9fd",
+                    "UID": "8ab4bea9-9f2f-4862-8207-71385d855f93",
+                    "GOUID": "c4abd5f2-a30a-463a-9f11-0f668308d3b2",
                     "Type": 0,
                     "Position": [
                         0.0,
@@ -113,12 +113,12 @@
                     "Scale": [
                         1.0,
                         1.0,
-                        1.0
+                        0.10000000149011612
                     ]
                 },
                 {
-                    "UID": "db7a5cdf-2ce5-46c9-b1ea-1564590008c9",
-                    "GOUID": "5058981a-dda4-4c1c-af82-2c75b99fa9fd",
+                    "UID": "093bc634-322a-4e9d-a372-c5ba5b96b9ad",
+                    "GOUID": "c4abd5f2-a30a-463a-9f11-0f668308d3b2",
                     "Type": 1,
                     "VBO": 1,
                     "IBO": 2,
@@ -127,11 +127,11 @@
                     "Number Indices": 324
                 },
                 {
-                    "UID": "6fccbf09-027a-42db-b3a2-80c0cd3ecba2",
-                    "GOUID": "5058981a-dda4-4c1c-af82-2c75b99fa9fd",
+                    "UID": "767d7fde-8b6f-4a6b-9823-3971cfc55467",
+                    "GOUID": "c4abd5f2-a30a-463a-9f11-0f668308d3b2",
                     "Type": 2,
                     "shader": 0,
-                    "texture": "Baker_house",
+                    "texture": "Assets/Models/textures/Baker_house.png",
                     "color": [
                         0.0,
                         0.0,
@@ -146,13 +146,13 @@
             ]
         },
         {
-            "UID": "8fb3b24b-e1e7-40f4-9b35-a10481d92796",
-            "ParentUID": "c7acb907-0bd3-4a1f-903b-a4c4e27df80c",
+            "UID": "417afa1d-e424-47a9-8eb0-cffdce03effc",
+            "ParentUID": "6113a555-bfe8-4e71-8cfc-681ddcc380ae",
             "Name": "Baker_house",
             "Components": [
                 {
-                    "UID": "10adb0a6-aef9-448d-b903-d9737a88caff",
-                    "GOUID": "8fb3b24b-e1e7-40f4-9b35-a10481d92796",
+                    "UID": "e9708399-f434-4ea7-9436-f99fda1ecfdf",
+                    "GOUID": "417afa1d-e424-47a9-8eb0-cffdce03effc",
                     "Type": 0,
                     "Position": [
                         0.0,
@@ -168,12 +168,12 @@
                     "Scale": [
                         1.0,
                         1.0,
-                        1.0
+                        0.10000000149011612
                     ]
                 },
                 {
-                    "UID": "c5faf45f-df27-4b89-9bec-6ff42fca96c0",
-                    "GOUID": "8fb3b24b-e1e7-40f4-9b35-a10481d92796",
+                    "UID": "d968f1a7-d011-46ef-b0a5-776a8fa76d88",
+                    "GOUID": "417afa1d-e424-47a9-8eb0-cffdce03effc",
                     "Type": 1,
                     "VBO": 3,
                     "IBO": 4,
@@ -182,11 +182,149 @@
                     "Number Indices": 2751
                 },
                 {
-                    "UID": "d557b848-b248-4cf5-bf85-44d78aede314",
-                    "GOUID": "8fb3b24b-e1e7-40f4-9b35-a10481d92796",
+                    "UID": "c5b55039-7ea5-457c-9325-54c8fbd134b6",
+                    "GOUID": "417afa1d-e424-47a9-8eb0-cffdce03effc",
                     "Type": 2,
                     "shader": 0,
-                    "texture": "Baker_house",
+                    "texture": "Assets/Models/textures/Baker_house.png",
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "k_diffuse": 0.5,
+                    "k_ambient": 0.5
+                }
+            ]
+        },
+        {
+            "UID": "3b37b311-b9ea-4233-8743-df8fcf23c468",
+            "ParentUID": "bf7f9047-f706-40c4-aed4-7d9863b4fe59",
+            "Name": "RootNode",
+            "Components": [
+                {
+                    "UID": "1e11edd0-be1c-44f8-8a2b-a3fcae9a60d7",
+                    "GOUID": "3b37b311-b9ea-4233-8743-df8fcf23c468",
+                    "Type": 0,
+                    "Position": [
+                        4.099999904632568,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "043073cc-3533-497a-a751-409f9bca4c9d",
+            "ParentUID": "6113a555-bfe8-4e71-8cfc-681ddcc380ae",
+            "Name": "Chimney",
+            "Components": [
+                {
+                    "UID": "fdaf2117-3656-4a12-97b1-e81016e61a52",
+                    "GOUID": "043073cc-3533-497a-a751-409f9bca4c9d",
+                    "Type": 0,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        0.10000000149011612
+                    ]
+                },
+                {
+                    "UID": "c16d98ce-2260-4550-a997-83b15cd9d2fd",
+                    "GOUID": "043073cc-3533-497a-a751-409f9bca4c9d",
+                    "Type": 1,
+                    "VBO": 1,
+                    "IBO": 2,
+                    "VAO": 1,
+                    "Number Vertices": 160,
+                    "Number Indices": 324
+                },
+                {
+                    "UID": "309273e9-edbf-4821-bfc7-c36c9a312b5d",
+                    "GOUID": "043073cc-3533-497a-a751-409f9bca4c9d",
+                    "Type": 2,
+                    "shader": 0,
+                    "texture": "Assets/Models/textures/Baker_house.png",
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "k_diffuse": 0.5,
+                    "k_ambient": 0.5
+                }
+            ]
+        },
+        {
+            "UID": "3b26e3a2-33b6-478d-a5f9-c30cbefe7059",
+            "ParentUID": "6113a555-bfe8-4e71-8cfc-681ddcc380ae",
+            "Name": "Baker_house",
+            "Components": [
+                {
+                    "UID": "88b08a02-efba-4341-bf19-6e9b62706322",
+                    "GOUID": "3b26e3a2-33b6-478d-a5f9-c30cbefe7059",
+                    "Type": 0,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        0.10000000149011612
+                    ]
+                },
+                {
+                    "UID": "d58b2dbd-9b99-4b40-b788-c9fb69c66d31",
+                    "GOUID": "3b26e3a2-33b6-478d-a5f9-c30cbefe7059",
+                    "Type": 1,
+                    "VBO": 3,
+                    "IBO": 4,
+                    "VAO": 2,
+                    "Number Vertices": 1641,
+                    "Number Indices": 2751
+                },
+                {
+                    "UID": "bd7afd22-e5fd-48be-8398-a7bd674af11f",
+                    "GOUID": "3b26e3a2-33b6-478d-a5f9-c30cbefe7059",
+                    "Type": 2,
+                    "shader": 0,
+                    "texture": "Assets/Models/textures/Baker_house.png",
                     "color": [
                         0.0,
                         0.0,
