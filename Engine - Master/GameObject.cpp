@@ -73,6 +73,7 @@ GameObject::GameObject(const GameObject& go)
 	for (const auto& child : go.children)
 	{
 		GameObject* new_child = new GameObject(*child);
+		new_child->parentUID = this->uuid;
 		new_child->parent = this;
 		children.push_back(new_child);
 	}
