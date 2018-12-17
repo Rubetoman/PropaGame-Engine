@@ -20,12 +20,7 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
-	root = new GameObject("World");
-	GameObject* default_light = CreateGameObject("Default Light", root);
-	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
-	default_light->CreateComponent(component_type::Light);
-	App->resources->lights.push_back(default_light);
-	return true;
+	return InitScene();
 }
 
 update_status ModuleScene::Update()
@@ -195,12 +190,22 @@ bool ModuleScene::Save(JSON_file* document)
 	return true;
 }
 
+bool ModuleScene::InitScene()
+{
+	root = new GameObject("World");
+	GameObject* default_light = CreateGameObject("Default Light", root);
+	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
+	default_light->CreateComponent(component_type::Light);
+	App->resources->lights.push_back(default_light);
+	return true;
+}
+
 void ModuleScene::NewScene()
 {
 	root->DeleteGameObject();
 	//delete(root);
 
-	root = new GameObject("World");
+	InitScene();
 }
 
 bool ModuleScene::SaveScene(const char* scene_name)
