@@ -1,13 +1,13 @@
 {
     "Root": [
         {
-            "UID": "c72c2cff-5729-4315-ae7c-a4c762cc7cb7",
+            "UID": "21b93f22-34c5-4e4f-82aa-5460e383377b",
             "ParentUID": "",
             "Name": "World",
             "Components": [
                 {
-                    "UID": "3c9a6040-7bb4-4551-b7e3-3f77dedb913d",
-                    "GOUID": "c72c2cff-5729-4315-ae7c-a4c762cc7cb7",
+                    "UID": "c6cb738c-aef9-45c5-bf7c-08bf6356f0c0",
+                    "GOUID": "21b93f22-34c5-4e4f-82aa-5460e383377b",
                     "Type": 0,
                     "Position": [
                         0.0,
@@ -29,13 +29,13 @@
             ]
         },
         {
-            "UID": "54eda6d0-1869-4d69-a823-2e1f18fe2361",
-            "ParentUID": "c72c2cff-5729-4315-ae7c-a4c762cc7cb7",
+            "UID": "be057927-d77a-4ed1-ae4f-ac857c4df151",
+            "ParentUID": "21b93f22-34c5-4e4f-82aa-5460e383377b",
             "Name": "Default Light",
             "Components": [
                 {
-                    "UID": "3158da62-e88f-438d-a584-3d4161d4d188",
-                    "GOUID": "54eda6d0-1869-4d69-a823-2e1f18fe2361",
+                    "UID": "eb1bb539-6985-409a-b25f-16f2fb76d592",
+                    "GOUID": "be057927-d77a-4ed1-ae4f-ac857c4df151",
                     "Type": 0,
                     "Position": [
                         -2.0,
@@ -55,25 +55,25 @@
                     ]
                 },
                 {
-                    "UID": "050be3a1-8246-4aab-ba82-6460e8a39752",
-                    "GOUID": "54eda6d0-1869-4d69-a823-2e1f18fe2361",
+                    "UID": "0848adb4-8f4e-426c-a7e3-9cbdb5c7aab0",
+                    "GOUID": "be057927-d77a-4ed1-ae4f-ac857c4df151",
                     "Type": 3,
-                    "intensity": 0.7839999794960022
+                    "intensity": 0.7910000085830689
                 }
             ]
         },
         {
-            "UID": "e8776329-c298-44a2-a269-7c781430c35f",
-            "ParentUID": "c72c2cff-5729-4315-ae7c-a4c762cc7cb7",
+            "UID": "c7acb907-0bd3-4a1f-903b-a4c4e27df80c",
+            "ParentUID": "21b93f22-34c5-4e4f-82aa-5460e383377b",
             "Name": "RootNode",
             "Components": [
                 {
-                    "UID": "e063d6e3-e9a4-4a86-bbfa-8ee6b1b67efb",
-                    "GOUID": "e8776329-c298-44a2-a269-7c781430c35f",
+                    "UID": "f3ac9b41-e9e7-47f5-9b7b-59d5a0ca4c41",
+                    "GOUID": "c7acb907-0bd3-4a1f-903b-a4c4e27df80c",
                     "Type": 0,
                     "Position": [
-                        -5.199999809265137,
                         0.0,
+                        1.399999976158142,
                         0.0
                     ],
                     "Rotation": [
@@ -91,13 +91,13 @@
             ]
         },
         {
-            "UID": "5c86b59a-038a-4f7d-95aa-8c4682ac110a",
-            "ParentUID": "e8776329-c298-44a2-a269-7c781430c35f",
+            "UID": "5058981a-dda4-4c1c-af82-2c75b99fa9fd",
+            "ParentUID": "c7acb907-0bd3-4a1f-903b-a4c4e27df80c",
             "Name": "Chimney",
             "Components": [
                 {
-                    "UID": "91136e05-2230-4d5e-96c1-d4d3808fdfca",
-                    "GOUID": "5c86b59a-038a-4f7d-95aa-8c4682ac110a",
+                    "UID": "4c8e9787-baa1-4f62-b6c9-54a5ca973f65",
+                    "GOUID": "5058981a-dda4-4c1c-af82-2c75b99fa9fd",
                     "Type": 0,
                     "Position": [
                         0.0,
@@ -117,8 +117,8 @@
                     ]
                 },
                 {
-                    "UID": "a9f53d83-0958-415f-8b29-8de4641b5061",
-                    "GOUID": "5c86b59a-038a-4f7d-95aa-8c4682ac110a",
+                    "UID": "db7a5cdf-2ce5-46c9-b1ea-1564590008c9",
+                    "GOUID": "5058981a-dda4-4c1c-af82-2c75b99fa9fd",
                     "Type": 1,
                     "VBO": 1,
                     "IBO": 2,
@@ -127,11 +127,11 @@
                     "Number Indices": 324
                 },
                 {
-                    "UID": "9a09c269-5095-4dfc-8e0e-acac3e10b668",
-                    "GOUID": "5c86b59a-038a-4f7d-95aa-8c4682ac110a",
+                    "UID": "6fccbf09-027a-42db-b3a2-80c0cd3ecba2",
+                    "GOUID": "5058981a-dda4-4c1c-af82-2c75b99fa9fd",
                     "Type": 2,
                     "shader": 0,
-                    "texture": 167482344,
+                    "texture": "Baker_house",
                     "color": [
                         0.0,
                         0.0,
@@ -146,13 +146,13 @@
             ]
         },
         {
-            "UID": "54e23273-2f22-4125-b052-946adfd00b47",
-            "ParentUID": "e8776329-c298-44a2-a269-7c781430c35f",
+            "UID": "8fb3b24b-e1e7-40f4-9b35-a10481d92796",
+            "ParentUID": "c7acb907-0bd3-4a1f-903b-a4c4e27df80c",
             "Name": "Baker_house",
             "Components": [
                 {
-                    "UID": "5f922491-9ff8-4887-8810-c980c9c2e69f",
-                    "GOUID": "54e23273-2f22-4125-b052-946adfd00b47",
+                    "UID": "10adb0a6-aef9-448d-b903-d9737a88caff",
+                    "GOUID": "8fb3b24b-e1e7-40f4-9b35-a10481d92796",
                     "Type": 0,
                     "Position": [
                         0.0,
@@ -172,8 +172,8 @@
                     ]
                 },
                 {
-                    "UID": "f3010acd-28e9-42c6-9de5-29b50ac29529",
-                    "GOUID": "54e23273-2f22-4125-b052-946adfd00b47",
+                    "UID": "c5faf45f-df27-4b89-9bec-6ff42fca96c0",
+                    "GOUID": "8fb3b24b-e1e7-40f4-9b35-a10481d92796",
                     "Type": 1,
                     "VBO": 3,
                     "IBO": 4,
@@ -182,11 +182,11 @@
                     "Number Indices": 2751
                 },
                 {
-                    "UID": "0ef45091-32ce-40b9-8cfc-0a5ca49af1d0",
-                    "GOUID": "54e23273-2f22-4125-b052-946adfd00b47",
+                    "UID": "d557b848-b248-4cf5-bf85-44d78aede314",
+                    "GOUID": "8fb3b24b-e1e7-40f4-9b35-a10481d92796",
                     "Type": 2,
                     "shader": 0,
-                    "texture": 167482344,
+                    "texture": "Baker_house",
                     "color": [
                         0.0,
                         0.0,

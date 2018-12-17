@@ -15,6 +15,8 @@ public:
 	ModuleResources();
 	~ModuleResources();
 
+	bool CleanUp() override;
+
 	std::string GenerateNewUID();
 
 public:

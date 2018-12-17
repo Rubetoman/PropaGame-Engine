@@ -196,14 +196,16 @@ bool ModuleScene::InitScene()
 	GameObject* default_light = CreateGameObject("Default Light", root);
 	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
 	default_light->CreateComponent(component_type::Light);
-	App->resources->lights.push_back(default_light);
 	return true;
 }
 
 void ModuleScene::NewScene()
 {
+	App->editor->hierarchy->selected = nullptr;
 	root->DeleteGameObject();
 	//delete(root);
+
+	App->resources->CleanUp();
 
 	InitScene();
 }
@@ -232,29 +234,30 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	JSON_file* scene = App->json->openReadFile(App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
 
 	JSON_value* go_root = scene->getValue("Root"); //It is an array of values
-
-	std::map<std::string, GameObject*> gameobjects;
-	for (int i = 0; i < go_root->getRapidJSONValue()->Size(); i++)
+	if (go_root->getRapidJSONValue()->IsArray()) //Just make sure
 	{
-		GameObject* go = new GameObject("");
-		go->Load(go_root->getValueFromArray(i));
-		gameobjects.insert(std::pair<std::string, GameObject*>(go->uuid, go));
-		//App->camera->BBtoLook->Enclose(go->);
-	}
-
-	for (std::map<std::string, GameObject*>::iterator it_go = gameobjects.begin(); it_go != gameobjects.end(); it_go++)
-	{
-		if ((*it_go).second->parentUID == "") //If it has no parent, add it to the scene list
-			root = (*it_go).second;
-		else
+		std::map<std::string, GameObject*> gameobjects;
+		for (int i = 0; i < go_root->getRapidJSONValue()->Size(); i++)
 		{
-			GameObject* parent = gameobjects[(*it_go).second->parentUID];
-			(*it_go).second->parent = parent;
-			parent->children.push_back((*it_go).second);
-			//parent->boundingBox.Enclose((*it_go).second->boundingBox);
+			GameObject* go = new GameObject("");
+			go->Load(go_root->getValueFromArray(i));
+			gameobjects.insert(std::pair<std::string, GameObject*>(go->uuid, go));
+			//App->camera->BBtoLook->Enclose(go->);
+		}
+
+		for (std::map<std::string, GameObject*>::iterator it_go = gameobjects.begin(); it_go != gameobjects.end(); it_go++)
+		{
+			if ((*it_go).second->parentUID == "") //If it has no parent, add it to the scene list
+				root = (*it_go).second;
+			else
+			{
+				GameObject* parent = gameobjects[(*it_go).second->parentUID];
+				(*it_go).second->parent = parent;
+				parent->children.push_back((*it_go).second);
+				//parent->boundingBox.Enclose((*it_go).second->boundingBox);
+			}
 		}
 	}
-
 	//App->camera->FitCamera(*App->camera->BBtoLook);
 	App->json->closeFile(scene);
 	return true;
