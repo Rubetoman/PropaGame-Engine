@@ -89,6 +89,8 @@ update_status ModuleEditor::Update()
 
 	if (show_scene_save_popup)
 		SceneSavePopup();
+	if (show_scene_load_popup)
+		SceneLoadPopup();
 
 	//ImGui::ShowDemoWindow();	//Example Window
 	return update;
@@ -205,7 +207,8 @@ void ModuleEditor::ShowMainMenuBar()
 			}
 			if (ImGui::MenuItem("Load Scene"))
 			{
-				App->scene->LoadScene("Scene01");
+				strcpy(temp_name, "");
+				show_scene_load_popup = true;
 			}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Quit", "ALT+F4")) { update = UPDATE_STOP; }
@@ -300,7 +303,7 @@ void ModuleEditor::SceneSavePopup()
 	{
 		ImGui::Text("Scene name:\n");
 		
-		ImGui::InputText("name", temp_name, 64);
+		ImGui::InputText(".proScene", temp_name, 64);
 		ImGui::Separator();
 
 		if (ImGui::Button("Save", ImVec2(120, 0))) 
@@ -315,6 +318,33 @@ void ModuleEditor::SceneSavePopup()
 		if (ImGui::Button("Cancel", ImVec2(120, 0)))
 		{
 			show_scene_save_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void ModuleEditor::SceneLoadPopup()
+{
+	ImGui::OpenPopup("Load Scene");
+	if (ImGui::BeginPopupModal("Load Scene", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Scene name:\n");
+
+		ImGui::InputText(".proScene", temp_name, 64);
+		ImGui::Separator();
+
+		if (ImGui::Button("Load", ImVec2(120, 0)))
+		{
+			App->scene->LoadScene(temp_name);
+			show_scene_load_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			show_scene_load_popup = false;
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndPopup();

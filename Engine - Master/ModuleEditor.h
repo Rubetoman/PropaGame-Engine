@@ -50,6 +50,7 @@ public:
 	void CreateDockSpace() const;
 	void ShowMainMenuBar();
 	void SceneSavePopup();
+	void SceneLoadPopup();
 	void ShowInBrowser(const char* url) const;
 
 	// SDL
@@ -79,6 +80,7 @@ public:
 
 	//Pop ups
 	bool show_scene_save_popup = false;
+	bool show_scene_load_popup = false;
 
 private:
 	std::list<Window*> editorWindows;

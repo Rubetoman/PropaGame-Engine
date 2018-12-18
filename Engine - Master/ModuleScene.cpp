@@ -254,6 +254,8 @@ bool ModuleScene::LoadScene(const char* scene_name)
 
 	JSON_file* scene = App->json->openReadFile(App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
 
+	name = scene_name;
+
 	JSON_value* go_root = scene->getValue("Root"); //It is an array of values
 	if (go_root->getRapidJSONValue()->IsArray()) //Just make sure
 	{
