@@ -36,6 +36,7 @@ public:
 public:
 	GameObject* root = nullptr;
 	bool show_root = false;
+	std::string name = "";
 };
 
 #endif /*__MODULESCENE_H__*/

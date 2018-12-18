@@ -49,6 +49,7 @@ public:
 	void DrawDebugReferences();
 	void CreateDockSpace() const;
 	void ShowMainMenuBar();
+	void SceneSavePopup();
 	void ShowInBrowser(const char* url) const;
 
 	// SDL
@@ -76,8 +77,12 @@ public:
 	WindowHierarchy* hierarchy = nullptr;
 	WindowInspector* inspector = nullptr;
 
+	//Pop ups
+	bool show_scene_save_popup = false;
+
 private:
 	std::list<Window*> editorWindows;
+	char temp_name[64] = "";
 };
 
 #endif // __MODULEEDITOR_H__

@@ -205,6 +205,8 @@ void ModuleScene::NewScene()
 	root->DeleteGameObject();
 	//delete(root);
 
+	name = "";
+
 	App->resources->CleanUp();
 
 	InitScene();

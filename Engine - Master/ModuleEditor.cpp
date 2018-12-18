@@ -54,6 +54,9 @@ bool ModuleEditor::Init()
 	// Setup style
 	ImGui::StyleColorsDark();
 
+	// Set default name for the scene
+	strcpy(temp_name, "Untitled");
+
 	return true;
 }
 
@@ -84,6 +87,9 @@ update_status ModuleEditor::Update()
 {
 	ShowMainMenuBar();
 
+	if (show_scene_save_popup)
+		SceneSavePopup();
+
 	//ImGui::ShowDemoWindow();	//Example Window
 	return update;
 }
@@ -108,6 +114,7 @@ bool ModuleEditor::CleanUp()
 
 void ModuleEditor::Draw()
 {
+
 	for (std::list<Window*>::iterator it = editorWindows.begin(); it != editorWindows.end(); ++it)
 	{
 		if ((*it)->isActive())
@@ -116,6 +123,7 @@ void ModuleEditor::Draw()
 			(*it)->Draw();
 		}
 	}
+
 	ImGui::End();
 
 	ImGui::Render();
@@ -169,14 +177,36 @@ void ModuleEditor::ShowMainMenuBar()
 			ImGui::Separator();
 			if (ImGui::MenuItem("New Scene"))
 			{
+				strcpy(temp_name, "Untitled");
 				App->scene->NewScene();
 			}
-			if (ImGui::MenuItem("Load Scene")) 
+			if (ImGui::MenuItem("Save Scene")) 
 			{ 
-				App->scene->LoadScene("Scene01"); 
+				if (App->scene->name.empty())
+				{
+					show_scene_save_popup = true;
+				}
+				else
+				{
+					App->scene->SaveScene(App->scene->name.c_str());
+				}
 			}
-			if (ImGui::MenuItem("Save Scene")) { 
-				App->scene->SaveScene("Scene01"); }
+			if (ImGui::MenuItem("Save Scene As..."))
+			{
+				if (!App->scene->name.empty())
+				{
+					strcpy(temp_name, App->scene->name.c_str());
+				}
+				else
+				{
+					strcpy(temp_name, "Untitled");
+				}		
+				show_scene_save_popup = true;
+			}
+			if (ImGui::MenuItem("Load Scene"))
+			{
+				App->scene->LoadScene("Scene01");
+			}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Quit", "ALT+F4")) { update = UPDATE_STOP; }
 
@@ -260,6 +290,34 @@ void ModuleEditor::ShowMainMenuBar()
 		}
 		ImGui::Separator();
 		ImGui::EndMainMenuBar();
+	}
+}
+
+void ModuleEditor::SceneSavePopup()
+{
+	ImGui::OpenPopup("Save Scene As");
+	if (ImGui::BeginPopupModal("Save Scene As", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Scene name:\n");
+		
+		ImGui::InputText("name", temp_name, 64);
+		ImGui::Separator();
+
+		if (ImGui::Button("Save", ImVec2(120, 0))) 
+		{
+			App->scene->name = temp_name;
+			App->scene->SaveScene(App->scene->name.c_str());
+			show_scene_save_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			show_scene_save_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
 	}
 }
 
