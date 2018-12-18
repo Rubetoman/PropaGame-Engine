@@ -362,6 +362,11 @@ void JSON_file::closeFile()
 JSON_file* JSON::openReadFile(const char* path)
 {
 	FILE* fp = fopen(path, "rb");
+
+	//Check fopen error
+	if (fp == nullptr)
+		return nullptr;
+
 	char readBuffer[65536];
 
 	return new JSON_file(new rapidjson::FileReadStream(fp, readBuffer, sizeof(readBuffer)), fp);
@@ -370,6 +375,11 @@ JSON_file* JSON::openReadFile(const char* path)
 JSON_file* JSON::openWriteFile(const char * path)
 {
 	FILE* fp = fopen(path, "wb");
+
+	//Check fopen error
+	if (fp == nullptr)
+		return nullptr;
+
 	char writeBuffer[65536];
 
 	return new JSON_file(new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer)), fp);

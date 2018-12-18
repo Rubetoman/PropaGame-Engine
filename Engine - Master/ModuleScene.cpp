@@ -227,6 +227,11 @@ bool ModuleScene::SaveScene(const char* scene_name)
 	SDL_SetWindowTitle(App->window->window, windowTitle.c_str());
 
 	JSON_file* scene = App->json->openWriteFile(App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
+	if (scene == nullptr)
+	{
+		LOG("Error saving scene in %s.", App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
+		return false;
+	}
 
 	JSON_value* gameObjects = scene->createValue();
 	gameObjects->convertToArray();
@@ -237,11 +242,23 @@ bool ModuleScene::SaveScene(const char* scene_name)
 	scene->Write();
 	App->json->closeFile(scene);
 
+	LOG("Scene saved successfully.");
 	return true;
 }
 
 bool ModuleScene::LoadScene(const char* scene_name)
 {
+	// Load scene file
+
+	LOG("Loading %s.", scene_name);
+
+	JSON_file* scene = App->json->openReadFile(App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
+	if (scene == nullptr)
+	{
+		LOG("Error loading scene, %s could not be opened.", App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
+		return false;
+	}
+
 	NewScene();
 
 	// Change window title
@@ -250,11 +267,11 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	windowTitle += TITLE;
 	SDL_SetWindowTitle(App->window->window, windowTitle.c_str());
 
-	App->camera->mainCamera->LookAt(math::float3(0.0f, 0.0f, 0.0f));
-
-	JSON_file* scene = App->json->openReadFile(App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
-
+	// Change scene name
 	name = scene_name;
+
+	// Look at origin
+	App->camera->mainCamera->LookAt(math::float3(0.0f, 0.0f, 0.0f));
 
 	JSON_value* go_root = scene->getValue("Root"); //It is an array of values
 	if (go_root->getRapidJSONValue()->IsArray()) //Just make sure
@@ -283,6 +300,8 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	}
 	//App->camera->FitCamera(*App->camera->BBtoLook);
 	App->json->closeFile(scene);
+
+	LOG("Scene load successful.");
 	return true;
 }
 

@@ -232,7 +232,7 @@ Texture* ModuleTextures::loadTexture(const char* path)
 
 	App->resources->textures.insert(std::pair<Texture*, unsigned>(nTexture,1));
 
-	LOG("Texture creation successful.");
+	LOG("Texture %s created successfully.", nTexture->name);
 	return nTexture;					// Return the GLuint to the texture so you can use it!
 }
 

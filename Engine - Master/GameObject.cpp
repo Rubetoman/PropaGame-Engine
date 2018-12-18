@@ -292,7 +292,7 @@ void GameObject::Unchild()
 {
 	if (parent == nullptr)
 	{
-		LOG("Warning: %s doesn't have a parent.", name);
+		LOG("Warning: %s doesn't have a parent.", name.c_str());
 		return;
 	}
 	parent->children.remove(this);
