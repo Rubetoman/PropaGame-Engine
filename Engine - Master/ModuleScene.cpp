@@ -1,5 +1,6 @@
 #include "ModuleScene.h"
 
+#include "Globals.h"
 #include "ModuleModelLoader.h"
 #include "ModuleResources.h"
 #include "ModuleCamera.h"
@@ -207,6 +208,11 @@ void ModuleScene::NewScene()
 
 	name = "";
 
+	// Change window title
+	std::string windowTitle = "Untitled - ";
+	windowTitle += TITLE;
+	SDL_SetWindowTitle(App->window->window, windowTitle.c_str());
+
 	App->resources->CleanUp();
 
 	InitScene();
@@ -214,6 +220,12 @@ void ModuleScene::NewScene()
 
 bool ModuleScene::SaveScene(const char* scene_name)
 {
+	// Change window title
+	std::string windowTitle = scene_name;
+	windowTitle += " - ";
+	windowTitle += TITLE;
+	SDL_SetWindowTitle(App->window->window, windowTitle.c_str());
+
 	JSON_file* scene = App->json->openWriteFile(App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
 
 	JSON_value* gameObjects = scene->createValue();
@@ -231,6 +243,13 @@ bool ModuleScene::SaveScene(const char* scene_name)
 bool ModuleScene::LoadScene(const char* scene_name)
 {
 	NewScene();
+
+	// Change window title
+	std::string windowTitle = scene_name;
+	windowTitle += " - ";
+	windowTitle += TITLE;
+	SDL_SetWindowTitle(App->window->window, windowTitle.c_str());
+
 	App->camera->mainCamera->LookAt(math::float3(0.0f, 0.0f, 0.0f));
 
 	JSON_file* scene = App->json->openReadFile(App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());

@@ -36,7 +36,9 @@ bool ModuleWindow::Init()
 		if (borderless) flags |= SDL_WINDOW_BORDERLESS;
 		SDL_GL_SetSwapInterval(vsync);
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, flags);
+		std::string windowTitle = "Untitled - ";
+		windowTitle += TITLE;
+		window = SDL_CreateWindow(windowTitle.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, flags);
 
 		if(window == nullptr)
 		{
