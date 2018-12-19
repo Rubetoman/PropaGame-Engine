@@ -37,7 +37,7 @@ public:
 	unsigned num_indices = 0u;
 	std::vector<float3> vertices;
 
-	AABB boundingBox;
+	AABB boundingBox = AABB();
 };
 
 #endif

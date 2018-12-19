@@ -61,6 +61,7 @@ void WindowConfiguration::Draw()
 		ImGui::Separator();
 		ImGui::Checkbox("Show grid", &App->editor->show_grid); ImGui::SameLine();
 		ImGui::Checkbox("Show axis", &App->editor->show_axis);
+		ImGui::Checkbox("Draw all BBox", &App->editor->drawAllBBox);
 	}
 	if (ImGui::CollapsingHeader("Camera"))
 	{

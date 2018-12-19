@@ -155,7 +155,8 @@ void GameObject::Draw()
 		((ComponentMesh*)mesh)->RenderMesh(view, proj);
 	}
 
-	DrawBBox();
+	if ((App->editor->hierarchy->selected == this) || (App->editor->drawAllBBox))
+		DrawBBox();
 
 	if (GetComponent(component_type::Light) != nullptr)
 	{

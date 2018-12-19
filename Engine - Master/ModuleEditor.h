@@ -62,6 +62,7 @@ public:
 
 	bool show_grid = true;
 	bool show_axis = true;
+	bool drawAllBBox = false;
 
 	//The window we'll be rendering to
 	SDL_Window * window = nullptr;
