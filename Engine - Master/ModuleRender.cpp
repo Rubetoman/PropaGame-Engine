@@ -145,7 +145,8 @@ void ModuleRender::CreateFrameBuffer()
 
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) 
+	{
 		LOG("Error: Framebuffer issue");
 	}
 

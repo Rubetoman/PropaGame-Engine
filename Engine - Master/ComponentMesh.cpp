@@ -23,6 +23,7 @@ ComponentMesh::ComponentMesh(const ComponentMesh& comp) : Component(comp)
 	num_indices = comp.num_indices;
 	vertices.reserve(comp.vertices.capacity());
 	vertices = comp.vertices;
+	boundingBox = comp.boundingBox;
 }
 
 ComponentMesh::~ComponentMesh()

@@ -210,7 +210,9 @@
     <ClCompile Include="Util\guid.cpp">
       <Filter>Tools\crossguid</Filter>
     </ClCompile>
-    <ClCompile Include="JSON.cpp" />
+    <ClCompile Include="JSON.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -494,7 +496,9 @@
     <ClInclude Include="Util\crossguid\guid.hpp">
       <Filter>Tools\crossguid</Filter>
     </ClInclude>
-    <ClInclude Include="JSON.h" />
+    <ClInclude Include="JSON.h">
+      <Filter>Other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\Assets\Shaders\Default.fs">

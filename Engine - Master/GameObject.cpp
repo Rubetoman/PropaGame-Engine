@@ -50,6 +50,7 @@ GameObject::GameObject(const GameObject& go)
 	uuid = App->resources->GenerateNewUID();
 	parentUID = go.parentUID;
 	name = go.name;
+	boundingBox = go.boundingBox;
 
 	for (const auto& component : go.components)
 	{
@@ -154,6 +155,8 @@ void GameObject::Draw()
 		((ComponentMesh*)mesh)->RenderMesh(view, proj);
 	}
 
+	DrawBBox();
+
 	if (GetComponent(component_type::Light) != nullptr)
 	{
 		dd::sphere(transform->position, math::float3(1.0f, 1.0f, 1.0f), 0.2f);
@@ -181,6 +184,37 @@ math::float4x4 GameObject::GetGlobalTransform() const
 		return parent->GetGlobalTransform() * GetLocalTransform();
 
 	return GetLocalTransform();
+}
+
+math::AABB GameObject::ComputeBBox() const 
+{
+	// TODO: Solve bugs and use pointers
+	boundingBox.SetNegativeInfinity();
+
+	// Child meshes
+	for (const auto &child : children)
+	{
+		child->ComputeBBox();
+		if (child->boundingBox.IsFinite())
+			boundingBox.Enclose(child->boundingBox);
+			
+	}
+
+	// Current GO meshes
+	if (mesh != nullptr)
+		boundingBox.Enclose(mesh->boundingBox);
+
+	// Apply transformation of our GO
+	boundingBox.TransformAsAABB(GetGlobalTransform());
+
+	return boundingBox;
+}
+
+void GameObject::DrawBBox() const 
+{
+	AABB bbox = ComputeBBox();
+	if(mesh!= nullptr)
+		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
 }
 #pragma endregion
 
