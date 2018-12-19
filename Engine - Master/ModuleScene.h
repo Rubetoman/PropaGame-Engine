@@ -32,6 +32,7 @@ public:
 	void NewScene();
 	bool SaveScene(const char* scene_name);
 	bool LoadScene(const char* scene_name);
+	bool DeleteScene(const char* scene_name);
 
 public:
 	GameObject* root = nullptr;

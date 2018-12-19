@@ -263,12 +263,19 @@ void ModuleEditor::ShowMainMenuBar()
 		if (App->time->game_running == Game_State::Stoped)
 		{
 			if (ImGui::Button("Play"))
+			{
+				App->scene->SaveScene("temporalScene");
 				App->time->Start_Game();
+			}
 		}
 		else
 		{
 			if (ImGui::Button("Stop"))
+			{
 				App->time->Stop_Game();
+				App->scene->LoadScene("temporalScene");
+				App->scene->DeleteScene("temporalScene");
+			}
 		}
 		if (ImGui::Button("Pause"))
 		{

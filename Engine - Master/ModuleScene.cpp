@@ -305,4 +305,17 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	return true;
 }
 
+bool ModuleScene::DeleteScene(const char* scene_name)
+{
+	bool deleted = App->json->deleteFile(App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
+
+	if (!deleted)
+	{
+		LOG("Error loading scene, %s could not be opened.", App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
+		return false;
+	}
+	else
+		return true;
+}
+
 #pragma endregion

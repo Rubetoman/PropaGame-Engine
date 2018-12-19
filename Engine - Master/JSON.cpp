@@ -372,7 +372,7 @@ JSON_file* JSON::openReadFile(const char* path)
 	return new JSON_file(new rapidjson::FileReadStream(fp, readBuffer, sizeof(readBuffer)), fp);
 }
 
-JSON_file* JSON::openWriteFile(const char * path)
+JSON_file* JSON::openWriteFile(const char* path)
 {
 	FILE* fp = fopen(path, "wb");
 
@@ -391,6 +391,17 @@ void JSON::closeFile(JSON_file* file)
 
 	RELEASE(file);
 	file = nullptr;
+}
+
+bool JSON::deleteFile(const char* path)
+{
+	int ret = remove(path);
+
+	//Check deletion error
+	if (ret = 0)
+		return true;
+	else
+		return false;
 }
 
 #pragma endregion

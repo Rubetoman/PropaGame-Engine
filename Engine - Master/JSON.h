@@ -92,6 +92,7 @@ public:
 	JSON_file* openReadFile(const char* path);
 	JSON_file* openWriteFile(const char* path);
 	void closeFile(JSON_file* file);
+	bool deleteFile(const char* path);
 };
 
 #endif __JSON_H__
