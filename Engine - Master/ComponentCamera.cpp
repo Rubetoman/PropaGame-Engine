@@ -4,6 +4,7 @@
 
 ComponentCamera::ComponentCamera(GameObject* go) : Component(go, component_type::Camera)
 {
+	camera = new Camera();
 	camera->InitFrustum();
 	CreateFrameBuffer();
 	if (go != nullptr)
@@ -12,6 +13,7 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go, component_type:
 
 ComponentCamera::ComponentCamera(const ComponentCamera& comp) : Component(comp)
 {
+	camera = new Camera();
 	camera = comp.camera;
 }
 

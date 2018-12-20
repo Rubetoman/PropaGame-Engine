@@ -2,9 +2,10 @@
 #define __COMPOMENTCAMERA_H__
 
 #include "Component.h"
+#include "Geometry/AABB.h"
 
-#include "GameObject.h"
-#include "Camera.h"
+class GameObject;
+class Camera;
 
 class ComponentCamera : public Component
 {
@@ -20,8 +21,8 @@ public:
 	void CreateFrameBuffer();
 
 public:
-	Camera* camera = new Camera();
-	AABB boundingBox;
+	Camera* camera = nullptr;
+	math::AABB boundingBox;
 
 	// Texture rendered to
 	unsigned		fbo = 0u;
