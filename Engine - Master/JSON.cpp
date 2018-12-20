@@ -204,7 +204,7 @@ const char* JSON_value::GetString(const char* name)
 	if (value->HasMember(name))
 		return value->operator[](name).GetString();
 	else
-		return "";
+		return nullptr;
 }
 
 float* JSON_value::GetVec(const char* name, int vector_size)

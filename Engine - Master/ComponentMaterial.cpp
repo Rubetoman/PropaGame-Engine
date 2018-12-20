@@ -137,7 +137,10 @@ JSON_value* ComponentMaterial::Save(JSON_value* component) const
 	JSON_value* material = Component::Save(component);
 
 	material->AddUnsigned("shader", shader);
-	material->AddString("texture", (texture->path));
+
+	if(texture != nullptr)
+		material->AddString("texture", (texture->path));
+
 	material->AddVec4("color", color);
 	material->AddFloat("shininess", shininess);
 	material->AddFloat("k_specular", k_specular);
@@ -154,7 +157,12 @@ void ComponentMaterial::Load(JSON_value* component)
 	Component::Load(component);
 
 	shader = component->GetUnsigned("shader");
-	texture = App->textures->loadTexture(component->GetString("texture"));
+	
+	// Get texture
+	const char* tx = component->GetString("texture");
+	if(tx != nullptr)
+		texture = App->textures->loadTexture(component->GetString("texture"));
+
 	color = component->GetVec4("color");
 	shininess = component->GetFloat("shininess");
 	k_specular = component->GetFloat("k_specular");
