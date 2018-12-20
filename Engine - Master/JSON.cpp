@@ -398,7 +398,7 @@ bool JSON::deleteFile(const char* path)
 	int ret = remove(path);
 
 	//Check deletion error
-	if (ret = 0)
+	if (ret == 0)
 		return true;
 	else
 		return false;
