@@ -9,7 +9,9 @@
 #include "ModuleEditor.h"
 #include "WindowScene.h"
 #include "ModuleTime.h"
+
 #include "Point.h"
+
 #include "GL/glew.h"
 #include "SDL.h"
 #include "MathGeoLib.h"
@@ -17,6 +19,7 @@
 #include <vector>
 
 class Camera;
+
 
 class ModuleCamera : public Module
 {

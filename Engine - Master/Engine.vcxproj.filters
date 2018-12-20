@@ -216,6 +216,9 @@
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>Other\Components</Filter>
     </ClCompile>
+    <ClCompile Include="WindowCamera.cpp">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -504,6 +507,9 @@
     </ClInclude>
     <ClInclude Include="ComponentCamera.h">
       <Filter>Other\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowCamera.h">
+      <Filter>Modules\EditorWindow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

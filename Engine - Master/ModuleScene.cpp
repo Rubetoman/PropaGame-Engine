@@ -193,10 +193,19 @@ bool ModuleScene::Save(JSON_file* document)
 
 bool ModuleScene::InitScene()
 {
+	// Root
 	root = new GameObject("World");
+	
+	// Default Light
 	GameObject* default_light = CreateGameObject("Default Light", root);
 	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
 	default_light->CreateComponent(component_type::Light);
+
+	// Game Main Camera
+	GameObject* game_camera = CreateGameObject("Game Camera", root);
+	game_camera->transform->position = math::float3(0.0f, 0.0f, 3.0f);
+	game_camera->CreateComponent(component_type::Camera);
+
 	return true;
 }
 

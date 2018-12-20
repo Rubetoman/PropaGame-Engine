@@ -15,6 +15,7 @@
 #include "WindowConfiguration.h"
 #include "WindowHierarchy.h"
 #include "WindowInspector.h"
+#include "ModuleCamera.h"
 
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
@@ -31,6 +32,7 @@ class WindowHardware;
 class WindowConfiguration;
 class WindowHierarchy;
 class WindowInspector;
+class WindowCamera;
 
 class ModuleEditor : public Module
 {
@@ -78,7 +80,7 @@ public:
 	WindowConfiguration* configuration = nullptr;
 	WindowHierarchy* hierarchy = nullptr;
 	WindowInspector* inspector = nullptr;
-
+	WindowCamera* camera = nullptr;
 	//Pop ups
 	bool show_scene_save_popup = false;
 	bool show_scene_load_popup = false;
