@@ -11,6 +11,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentLight.h"
+#include "ComponentCamera.h"
 
 #include "debugdraw.h"
 
@@ -270,6 +271,19 @@ Component* GameObject::CreateComponent(component_type type)
 		{
 			LOG("Warning: %s already has a Light Component attached.", name);
 		}
+		break;
+	case component_type::Camera:
+		if (GetComponents(component_type::Camera).size() == 0)
+		{
+			component = new ComponentCamera(this);
+			if (App != nullptr)
+				App->camera->cameras.push_back(this);
+		}
+		else
+		{
+			LOG("Warning: %s already has a Light Component attached.", name);
+		}
+		break;
 	default:
 		break;
 	}

@@ -1,6 +1,6 @@
 #include "ModuleCamera.h"
 
-
+#include "ComponentCamera.h"
 ModuleCamera::ModuleCamera()
 {
 }
@@ -17,7 +17,7 @@ bool ModuleCamera::Init()
 	mainCamera->up = float3(0, 1, 0);
 	mainCamera->yaw = -90.0f;
 	mainCamera->pitch = 0.0f;
-	cameras.push_back(mainCamera);
+	//cameras.push_back(mainCamera);
 
 	last_x = App->window->screen_width / 2;
 	last_y = App->window->screen_height / 2;
@@ -53,7 +53,24 @@ bool ModuleCamera::CleanUp()
 	return true;
 }
 
-
+void ModuleCamera::DeleteCamera(GameObject* go)
+{
+	if (go != nullptr)
+	{
+		ComponentCamera* camera = (ComponentCamera*)go->GetComponent(component_type::Camera);
+		int position = camera->GetCameraNumber();
+		if (position > -1)
+		{
+			cameras.erase(cameras.begin() + position);
+			camera->CleanUp();
+			RELEASE(camera);
+		}
+		else
+			LOG("Error deleting component.");
+	}
+	else
+		LOG("Warning: Component was nullptr.");
+}
 
 void ModuleCamera::UpdateScreenSize() 
 {

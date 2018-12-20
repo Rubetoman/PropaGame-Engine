@@ -37,6 +37,8 @@ public:
 	update_status   Update();
 	bool            CleanUp();
 
+	void		DeleteCamera(GameObject* go);
+
 	void		UpdateScreenSize();
 
 	void		TranslateCameraInput();
@@ -49,8 +51,7 @@ public:
 
 	// Camera
 	Camera* mainCamera = nullptr;			// Default camera
-	std::vector<bool> activeCameras;		// Vector of boleans to know which cameras are active
-	std::vector<Camera*> cameras;			// Vector with all the cameras on the scene
+	std::vector<GameObject*> cameras;		// Vector with all the cameras on the scene
 
 	// Mouse 
 	bool new_click = true;

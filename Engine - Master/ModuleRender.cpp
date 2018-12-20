@@ -2,7 +2,8 @@
 
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
-//#include "debugdraw.h"
+#include "ComponentCamera.h"
+
 ModuleRender::ModuleRender()
 {
 }
@@ -75,6 +76,7 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	// MAIN CAMERA TODO: CHANGE TO COMPONENT
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
@@ -87,7 +89,25 @@ update_status ModuleRender::Update()
 	// Draw debug draw
 	App->debug_draw->Draw(App->camera->mainCamera, fbo, App->window->screen_height, App->window->screen_width);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	// CAMERAS
+	for (auto &cameraGO : App->camera->cameras)
+	{
+		if (cameraGO->active)
+		{
+			ComponentCamera* camera = (ComponentCamera*)cameraGO->GetComponent(component_type::Camera);
+			if (camera->active)
+			{
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				glBindFramebuffer(GL_FRAMEBUFFER, camera->fbo);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+				// Draw Scene
+				App->scene->Draw();
+
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			}
+		}
+	}
 	return UPDATE_CONTINUE;
 }
 

@@ -213,6 +213,9 @@
     <ClCompile Include="JSON.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentCamera.cpp">
+      <Filter>Other\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -498,6 +501,9 @@
     </ClInclude>
     <ClInclude Include="JSON.h">
       <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentCamera.h">
+      <Filter>Other\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
