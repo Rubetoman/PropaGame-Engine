@@ -25,7 +25,7 @@ bool ModuleCamera::Init()
 	editor_camera_go->transform->position = math::float3(0.0f, 0.0f, 3.0f);
 	editor_camera_comp = (ComponentCamera*)editor_camera_go->CreateComponent(component_type::Editor_Camera);
 	App->window->SetWindowSize(App->window->screen_width, App->window->screen_height, true);
-	//cameras.push_back(mainCamera);
+	App->scene->scene_gos.push_back(editor_camera_go);
 
 	last_x = App->window->screen_width / 2;
 	last_y = App->window->screen_height / 2;

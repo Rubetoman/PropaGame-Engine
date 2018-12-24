@@ -35,8 +35,9 @@ public:
 	bool DeleteScene(const char* scene_name);
 
 public:
+	std::vector<GameObject*> scene_gos;
 	GameObject* root = nullptr;
-	bool show_root = false;
+	bool show_scene_gos = false;
 	std::string name = "";
 };
 

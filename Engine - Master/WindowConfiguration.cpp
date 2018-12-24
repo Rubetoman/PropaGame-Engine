@@ -64,7 +64,7 @@ void WindowConfiguration::Draw()
 	}
 	if (ImGui::CollapsingHeader("Editor"))
 	{
-		ImGui::Checkbox("Show scene root", &App->scene->show_root);
+		ImGui::Checkbox("Show hided GOs", &App->scene->show_scene_gos);
 		ImGui::Separator();
 		ImGui::Checkbox("Show grid", &App->editor->show_grid); ImGui::SameLine();
 		ImGui::Checkbox("Show axis", &App->editor->show_axis);

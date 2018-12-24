@@ -17,8 +17,16 @@ ModuleScene::ModuleScene()
 
 ModuleScene::~ModuleScene()
 {
-	DeleteGameObject(root);
-	delete root;
+	for (std::vector<GameObject*>::iterator it_go = scene_gos.begin(); it_go != scene_gos.end();)
+	{
+		DeleteGameObject(*it_go);
+		delete *it_go;
+		scene_gos.erase(it_go++);
+	}
+	scene_gos.clear();
+
+	//DeleteGameObject(root);
+	//delete root;
 }
 
 bool ModuleScene::Init()
@@ -197,7 +205,9 @@ bool ModuleScene::InitScene()
 {
 	// Root
 	root = new GameObject("World");
-	
+	scene_gos.push_back(root);
+
+	//TODO: Change it for an ambient light and added to scene_gos without parent
 	// Default Light
 	GameObject* default_light = CreateGameObject("Default Light", root);
 	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
