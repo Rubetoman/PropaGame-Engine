@@ -1,5 +1,10 @@
 #include "ModuleCamera.h"
 
+#include "Application.h"
+#include "ModuleInput.h"
+#include "ModuleEditor.h"
+#include "WindowScene.h"
+#include "ModuleTime.h"
 #include "ComponentCamera.h"
 ModuleCamera::ModuleCamera()
 {

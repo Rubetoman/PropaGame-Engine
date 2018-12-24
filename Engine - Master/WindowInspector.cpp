@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "ModuleEditor.h"
 
+#include "GameObject.h"
 #include <vector>
 
 WindowInspector::WindowInspector(const char* name) : Window(name)

@@ -1,5 +1,8 @@
 #include "WindowScene.h"
 
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
+
 WindowScene::WindowScene(const char* name) : Window(name)
 {
 	active = true;

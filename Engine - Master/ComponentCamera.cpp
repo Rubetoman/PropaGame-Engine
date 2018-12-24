@@ -2,6 +2,9 @@
 
 #include "ModuleCamera.h"
 
+#include "Application.h"
+#include "GameObject.h"
+
 ComponentCamera::ComponentCamera(GameObject* go) : Component(go, component_type::Camera)
 {
 	camera = new Camera();

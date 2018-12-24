@@ -2,9 +2,6 @@
 #define __CAMERA_H__
 
 #include "MathGeoLib.h"
-#include "Application.h"
-#include "ModuleWindow.h"
-#include "SDL.h"
 
 class Camera
 {

@@ -1,5 +1,9 @@
 #include "Camera.h"
 
+#include "Application.h"
+#include "ModuleWindow.h"
+#include "ModuleTime.h"
+
 Camera::Camera()
 {
 	InitFrustum();

@@ -2,9 +2,10 @@
 #define __COMPOMENTMESH_H__
 
 #include "Component.h"
-#include "Texture.h"
-#include "GameObject.h"
-#include "MathGeoLib.h"
+#include "Geometry/AABB.h"
+
+class Texture;
+class GameObject;
 
 struct par_shapes_mesh_s;
 
@@ -37,7 +38,7 @@ public:
 	unsigned num_indices = 0u;
 	std::vector<float3> vertices;
 
-	AABB boundingBox = AABB();
+	math::AABB boundingBox = math::AABB();
 };
 
 #endif

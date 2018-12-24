@@ -1,7 +1,12 @@
 #include "WindowConfiguration.h"
+
+#include "ModuleEditor.h"
+#include "ModuleTime.h"
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "ModuleResources.h"
+#include "ModuleInput.h"
+
 #include "mmgr/mmgr.h"
 
 WindowConfiguration::WindowConfiguration(const char* name) : Window(name)

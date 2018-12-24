@@ -4,22 +4,13 @@
 #include "Camera.h"
 #include "Module.h"
 #include "ModuleWindow.h"
-#include "Application.h"
-#include "ModuleInput.h"
-#include "ModuleEditor.h"
-#include "WindowScene.h"
-#include "ModuleTime.h"
 
 #include "Point.h"
-
-#include "GL/glew.h"
-#include "SDL.h"
-#include "MathGeoLib.h"
-#include "SDL/include/SDL.h"
+#include "Geometry/AABB.h"
 #include <vector>
 
 class Camera;
-
+class GameObject;
 
 class ModuleCamera : public Module
 {
@@ -50,7 +41,7 @@ public:
 	void		MouseInputTranslation(const fPoint& mouse_position);
 	void		MouseInputRotation(const fPoint& mouse_position);
 	void		WheelInputTranslation(const fPoint& wheel_motion);
-	void		FitCamera(const AABB &boundingBox);
+	void		FitCamera(const math::AABB &boundingBox);
 
 	// Camera
 	Camera* mainCamera = nullptr;			// Default camera
@@ -64,7 +55,7 @@ public:
 	float last_y = SCREEN_HEIGHT / 2;
 
 	// Mesh
-	AABB* BBtoLook = nullptr;
+	math::AABB* BBtoLook = nullptr;
 
 };
 

@@ -1,9 +1,8 @@
 #ifndef __MODULETIME_H__
 #define __MODULETIME_H__
 
-#include "Application.h"
+#include "Module.h"
 #include "Timer.h"
-#include "SDL.h"
 
 enum class Game_State{ Running, Paused, Stoped };
 

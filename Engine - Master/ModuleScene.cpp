@@ -4,6 +4,7 @@
 #include "ModuleModelLoader.h"
 #include "ModuleResources.h"
 #include "ModuleCamera.h"
+#include "ModuleEditor.h"
 
 #include "ComponentTransform.h"
 #include "ComponentLight.h"

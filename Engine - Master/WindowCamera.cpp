@@ -1,5 +1,6 @@
 #include "WindowCamera.h"
 
+#include "ModuleInput.h"
 #include "ModuleCamera.h"
 #include "ComponentCamera.h"
 

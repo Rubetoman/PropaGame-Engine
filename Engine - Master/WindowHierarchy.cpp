@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
+
+#include "GameObject.h"
 #include <vector>
 #include <string>
 
