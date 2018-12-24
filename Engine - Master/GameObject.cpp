@@ -296,7 +296,7 @@ Component* GameObject::GetComponent(component_type type) const
 {
 	for (auto &component : components)
 	{
-		if (component->type == type)
+		if (component != nullptr && component->type == type)
 		{
 			return component;
 		}

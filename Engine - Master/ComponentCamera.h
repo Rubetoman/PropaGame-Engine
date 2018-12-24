@@ -26,11 +26,12 @@ public:
 
 	// Frustum
 	const void		InitFrustum();
-	//math::float4x4	ProjectionMatrix();
-	//math::float4x4  GetViewMatrix();
 	void			SetFrustum(unsigned& w, unsigned& h);
 	const void		UpdatePitchYaw();
 
+	//JSON
+	JSON_value* Save(JSON_value* component) const;
+	void Load(JSON_value* component);
 public:
 	math::AABB boundingBox;
 

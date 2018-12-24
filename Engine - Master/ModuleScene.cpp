@@ -257,7 +257,10 @@ bool ModuleScene::SaveScene(const char* scene_name)
 	JSON_value* gameObjects = scene->createValue();
 	gameObjects->convertToArray();
 
-	root->Save(gameObjects);
+	for (auto &go : App->scene->scene_gos)
+	{
+		go->Save(gameObjects);
+	}
 
 	scene->addValue("Root", gameObjects);
 	scene->Write();
@@ -309,7 +312,11 @@ bool ModuleScene::LoadScene(const char* scene_name)
 		for (std::map<std::string, GameObject*>::iterator it_go = gameobjects.begin(); it_go != gameobjects.end(); it_go++)
 		{
 			if ((*it_go).second->parentUID == "") //If it has no parent, add it to the scene list
-				root = (*it_go).second;
+			{
+				scene_gos.push_back((*it_go).second);
+				if((*it_go).second->name == "World")
+					root = (*it_go).second;
+			}
 			else
 			{
 				GameObject* parent = gameobjects[(*it_go).second->parentUID];

@@ -25,7 +25,8 @@ ComponentCamera::~ComponentCamera()
 	glDeleteFramebuffers(1, &fbo);
 	glDeleteRenderbuffers(1, &rbo);
 	glDeleteTextures(1, &renderedTexture);
-	App->camera->DeleteCamera(my_go);
+	if(type != component_type::Editor_Camera)
+		App->camera->DeleteCamera(my_go);
 }
 
 Component* ComponentCamera::Duplicate()
@@ -179,6 +180,52 @@ const void ComponentCamera::UpdatePitchYaw()
 
 	if (math::IsNan(yaw))
 		yaw = 0.0f;
+}
+
+#pragma endregion
+
+#pragma region JSON
+
+JSON_value* ComponentCamera::Save(JSON_value* component) const
+{
+	JSON_value* camera = Component::Save(component);
+
+	camera->AddUnsigned("fbo", fbo);
+	camera->AddUnsigned("rbo", rbo);
+	camera->AddUnsigned("renderedTexture", renderedTexture);
+	camera->AddVec3("front", front);
+	camera->AddVec3("side", side);
+	camera->AddVec3("up", up);
+	camera->AddFloat("speed", speed);
+	camera->AddFloat("rotation_speed", rotation_speed);
+	camera->AddVec4x4("proj", proj);
+	//TODO: Save also frustrum
+	camera->AddVec4x4("view_matrix", view_matrix);
+	camera->AddFloat("pitch", pitch);
+	camera->AddFloat("yaw", yaw);
+
+	component->addValue("", camera);
+
+	return camera;
+}
+
+void ComponentCamera::Load(JSON_value* component)
+{
+	Component::Load(component);
+
+	fbo = component->GetUnsigned("fbo");
+	rbo = component->GetUnsigned("rbo");
+	renderedTexture = component->GetUnsigned("renderedTexture");
+	front = component->GetVec3("front");
+	side = component->GetVec3("side");
+	up = component->GetVec3("up");
+	speed = component->GetFloat("speed");
+	rotation_speed = component->GetFloat("rotation_speed");
+	proj = component->GetVec4x4("proj");
+	//TODO: Save also frustrum
+	view_matrix = component->GetVec4x4("view_matrix");
+	pitch = component->GetFloat("pitch");
+	yaw = component->GetFloat("yaw");
 }
 
 #pragma endregion
