@@ -193,15 +193,6 @@ math::AABB GameObject::ComputeBBox() const
 	// TODO: Solve bugs and use pointers
 	boundingBox.SetNegativeInfinity();
 
-	// Child meshes
-	for (const auto &child : children)
-	{
-		child->ComputeBBox();
-		if (child->boundingBox.IsFinite())
-			boundingBox.Enclose(child->boundingBox);
-			
-	}
-
 	// Current GO meshes
 	if (mesh != nullptr)
 		boundingBox.Enclose(mesh->boundingBox);
@@ -214,8 +205,8 @@ math::AABB GameObject::ComputeBBox() const
 
 void GameObject::DrawBBox() const 
 {
-	AABB bbox = ComputeBBox();
-	if(mesh!= nullptr)
+	math::AABB bbox = ComputeBBox();
+	if(mesh != nullptr)
 		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
 }
 #pragma endregion
@@ -281,7 +272,17 @@ Component* GameObject::CreateComponent(component_type type)
 		}
 		else
 		{
-			LOG("Warning: %s already has a Light Component attached.", name);
+			LOG("Warning: %s already has a Camera Component attached.", name);
+		}
+		break;
+	case component_type::Editor_Camera:
+		if (GetComponents(component_type::Camera).size() == 0)
+		{
+			component = new ComponentCamera(this);
+		}
+		else
+		{
+			LOG("Warning: %s already has a Camera Editor Component attached.", name);
 		}
 		break;
 	default:

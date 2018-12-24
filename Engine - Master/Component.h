@@ -8,7 +8,7 @@
 
 class GameObject;
 
-enum class component_type {Transform, Mesh, Material, Light, Camera};
+enum class component_type {Transform, Mesh, Material, Light, Camera, Editor_Camera};
 
 class Component
 {
