@@ -1,7 +1,6 @@
 #ifndef __MODULECAMERA_H__
 #define __MODULECAMERA_H__
 
-#include "Camera.h"
 #include "Module.h"
 #include "ModuleWindow.h"
 
@@ -9,8 +8,8 @@
 #include "Geometry/AABB.h"
 #include <vector>
 
-class Camera;
 class GameObject;
+class ComponentCamera;
 
 class ModuleCamera : public Module
 {
@@ -43,8 +42,11 @@ public:
 	void		WheelInputTranslation(const fPoint& wheel_motion);
 	void		FitCamera(const math::AABB &boundingBox);
 
-	// Camera
-	Camera* mainCamera = nullptr;			// Default camera
+	// Editor Camera
+	GameObject* editor_camera_go = nullptr;
+	ComponentCamera* editor_camera_comp = nullptr;
+
+	// Scene Cameras
 	std::vector<GameObject*> cameras;		// Vector with all the cameras on the scene
 
 	// Mouse 

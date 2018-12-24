@@ -4,7 +4,7 @@
 #include "Module.h"
 
 class DDRenderInterfaceCoreGL;
-class Camera;
+class ComponentCamera;
 
 class ModuleDebugDraw : public Module
 {
@@ -18,7 +18,7 @@ public:
 	update_status   Update();
 	bool            CleanUp();
 
-    void            Draw(Camera* camera, unsigned fbo, unsigned fb_width, unsigned fb_height);
+    void            Draw(ComponentCamera* camera, unsigned fbo, unsigned fb_width, unsigned fb_height);
 private:
 
     static DDRenderInterfaceCoreGL* implementation;

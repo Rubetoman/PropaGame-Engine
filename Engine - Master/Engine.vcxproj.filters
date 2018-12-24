@@ -72,9 +72,6 @@
     <ClCompile Include="ComponentTransform.cpp">
       <Filter>Other\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
     <ClCompile Include="MathGeoLib\include\Geometry\AABB.cpp">
       <Filter>Tools\Math</Filter>
     </ClCompile>
@@ -297,9 +294,6 @@
     </ClInclude>
     <ClInclude Include="ComponentTransform.h">
       <Filter>Other\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\include\Geometry\AABB.h">
       <Filter>Tools\Math</Filter>

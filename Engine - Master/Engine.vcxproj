@@ -84,7 +84,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentLight.h" />
     <ClInclude Include="debugdraw.h" />
@@ -184,7 +183,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentLight.cpp" />

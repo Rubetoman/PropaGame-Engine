@@ -60,8 +60,6 @@ bool ModuleRender::Init()
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glViewport(0, 0, width, height);
 
-	CreateFrameBuffer();
-
 	LOG("Renderer context creation successful.");
 	return true;
 }
@@ -76,8 +74,8 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	// MAIN CAMERA TODO: CHANGE TO COMPONENT
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->editor_camera_comp->fbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	// Draw References
@@ -87,7 +85,7 @@ update_status ModuleRender::Update()
 	App->scene->Draw();
 	
 	// Draw debug draw
-	App->debug_draw->Draw(App->camera->mainCamera, fbo, App->window->screen_height, App->window->screen_width);
+	App->debug_draw->Draw(App->camera->editor_camera_comp, App->camera->editor_camera_comp->fbo, App->window->screen_height, App->window->screen_width);
 
 	// CAMERAS
 	for (auto &cameraGO : App->camera->cameras)
@@ -134,43 +132,5 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
     glViewport(0, 0, width, height); 
 	App->window->SetWindowSize(width, height, false);
-	CreateFrameBuffer();
+	App->camera->editor_camera_comp->CreateFrameBuffer();
 }
-
-void ModuleRender::CreateFrameBuffer() 
-{
-	glDeleteFramebuffers(1, &fbo);
-	glDeleteTextures(1, &renderedTexture);
-	glDeleteRenderbuffers(1, &rbo);
-
-	glGenFramebuffers(1, &fbo);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-
-	glGenTextures(1, &renderedTexture);
-	glBindTexture(GL_TEXTURE_2D, renderedTexture);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->window->screen_width, App->window->screen_height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	glGenRenderbuffers(1, &rbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->window->screen_width, App->window->screen_height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) 
-	{
-		LOG("Error: Framebuffer issue");
-	}
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-}
-

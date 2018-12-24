@@ -7,6 +7,7 @@
 #include "ModuleEditor.h"
 
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 #include "ComponentLight.h"
 
 ModuleScene::ModuleScene()
@@ -281,7 +282,7 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	name = scene_name;
 
 	// Look at origin
-	App->camera->mainCamera->LookAt(math::float3(0.0f, 0.0f, 0.0f));
+	App->camera->editor_camera_comp->LookAt(math::float3(0.0f, 0.0f, 0.0f));
 
 	JSON_value* go_root = scene->getValue("Root"); //It is an array of values
 	if (go_root->getRapidJSONValue()->IsArray()) //Just make sure

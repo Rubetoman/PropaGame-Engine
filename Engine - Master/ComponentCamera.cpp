@@ -1,23 +1,23 @@
 #include "ComponentCamera.h"
 
 #include "ModuleCamera.h"
+#include "ModuleTime.h"
+#include "ComponentTransform.h"
 
 #include "Application.h"
 #include "GameObject.h"
 
 ComponentCamera::ComponentCamera(GameObject* go) : Component(go, component_type::Camera)
 {
-	camera = new Camera();
-	camera->InitFrustum();
+	InitFrustum();
 	CreateFrameBuffer();
 	if (go != nullptr)
-		camera->frustum.pos = go->boundingBox.CenterPoint();
+		frustum.pos = go->boundingBox.CenterPoint();
 }
 
 ComponentCamera::ComponentCamera(const ComponentCamera& comp) : Component(comp)
 {
-	camera = new Camera();
-	camera = comp.camera;
+	//TODO: Copy variables
 }
 
 ComponentCamera::~ComponentCamera()
@@ -42,8 +42,8 @@ bool ComponentCamera::DrawOnInspector()
 		bool deleted = Component::DrawOnInspector();
 		if (!deleted)
 		{
-			ImGui::SliderFloat("Near Plane Distance", &camera->frustum.nearPlaneDistance, 0.0f, camera->frustum.farPlaneDistance);
-			ImGui::SliderFloat("Far Plane Distance", &camera->frustum.farPlaneDistance, camera->frustum.nearPlaneDistance, 3000.0f);
+			ImGui::SliderFloat("Near Plane Distance", &frustum.nearPlaneDistance, 0.0f, frustum.farPlaneDistance);
+			ImGui::SliderFloat("Far Plane Distance", &frustum.farPlaneDistance, frustum.nearPlaneDistance, 3000.0f);
 			//ImGui::SliderInt("Aspect Ratio", (int)&camera->frustum.AspectRatio(), 0, 179);
 		}
 		else
@@ -102,3 +102,83 @@ void ComponentCamera::CreateFrameBuffer()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+
+void ComponentCamera::TranslateCamera(math::float3 direction)
+{
+	my_go->transform->position += direction * speed * App->time->real_delta_time;
+}
+
+void ComponentCamera::RotateCamera()
+{
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	math::float3 rotation;
+	rotation.x = SDL_cosf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+	rotation.y = SDL_sinf(math::DegToRad(pitch));
+	rotation.z = SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+	front = rotation.Normalized();
+
+	if(my_go != nullptr && my_go->transform != nullptr)
+		LookAt(my_go->transform->position + front);
+}
+
+math::float4x4 ComponentCamera::LookAt(math::float3& target)
+{
+	if (my_go == nullptr || my_go->transform == nullptr)
+		return view_matrix;
+
+	math::float3 position = my_go->transform->position;
+
+	// projection
+	front = math::float3(target - position); front.Normalize();
+	side = math::float3(front.Cross(math::float3(0, 1, 0))); side.Normalize();
+	up = math::float3(side.Cross(front));
+
+	view_matrix[0][0] = side.x;		view_matrix[0][1] = side.y;		view_matrix[0][2] = side.z;
+	view_matrix[1][0] = up.x;		view_matrix[1][1] = up.y;		view_matrix[1][2] = up.z;
+	view_matrix[2][0] = -front.x;	view_matrix[2][1] = -front.y;	view_matrix[2][2] = -front.z;
+
+	view_matrix[0][3] = -side.Dot(position);	view_matrix[1][3] = -up.Dot(position);	view_matrix[2][3] = front.Dot(position);
+	view_matrix[3][0] = 0.0f;					view_matrix[3][1] = 0.0f;				view_matrix[3][2] = 0.0f;			view_matrix[3][3] = 1.0f;
+
+	return view_matrix;
+}
+
+#pragma region Frustrum
+
+const void ComponentCamera::InitFrustum()
+{
+	frustum.type = math::FrustumType::PerspectiveFrustum;
+	frustum.pos = math::float3::zero;
+	frustum.front = -math::float3::unitZ;
+	frustum.up = math::float3::unitY;
+	frustum.nearPlaneDistance = 0.1f;
+	frustum.farPlaneDistance = 1000.0f;
+	frustum.verticalFov = math::pi / 4.0f;
+	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
+	// Calculate horizontal first
+	//frustum.horizontalFov = math::pi / 4.0f;
+	//frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5f)) *((float)App->window->screen_height / (float)App->window->screen_width);
+}
+
+void ComponentCamera::SetFrustum(unsigned& w, unsigned& h)
+{
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)w / (float)h));
+}
+
+const void ComponentCamera::UpdatePitchYaw()
+{
+	pitch = -math::RadToDeg(SDL_asinf(-front.y));
+	yaw = math::RadToDeg(SDL_atan2f(front.z, front.x));
+
+	if (math::IsNan(pitch))
+		pitch = 0.0f;
+
+	if (math::IsNan(yaw))
+		yaw = 0.0f;
+}
+
+#pragma endregion

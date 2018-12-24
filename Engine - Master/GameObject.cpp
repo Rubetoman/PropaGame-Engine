@@ -148,8 +148,8 @@ void GameObject::Draw()
 		child->Draw();
 	}
 
-	math::float4x4 proj = App->camera->mainCamera->ProjectionMatrix();
-	math::float4x4 view = App->camera->mainCamera->LookAt(App->camera->mainCamera->position + App->camera->mainCamera->front);
+	math::float4x4 proj = App->camera->editor_camera_comp->frustum.ProjectionMatrix();
+	math::float4x4 view = App->camera->editor_camera_comp->LookAt(App->camera->editor_camera_go->transform->position + App->camera->editor_camera_comp->front);
 
 	if (mesh != nullptr && mesh->active)
 	{
