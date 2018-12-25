@@ -2,6 +2,8 @@
 
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
+#include "ModuleResources.h"
+
 #include "ComponentCamera.h"
 
 WindowCamera::WindowCamera(const char* name) : Window(name)
@@ -20,9 +22,15 @@ void WindowCamera::Draw()
 	ImVec2 size = ImGui::GetWindowSize();
 	ImGui::SetCursorPos({ -(App->window->screen_width - size.x) / 2,-(App->window->screen_height - size.y) / 2 });
 	
-	ComponentCamera* camera = (ComponentCamera*)App->camera->cameras[0]->GetComponent(component_type::Camera);
-	ImGui::Image((ImTextureID)camera->renderedTexture, { (float)App->window->screen_width, (float)App->window->screen_height }, { 0,1 }, { 1,0 });
+	unsigned texture = App->resources->no_camera_texture->id;
+	if (!App->camera->cameras.empty())
+	{
+		ComponentCamera* camera = (ComponentCamera*)App->camera->cameras[0]->GetComponent(component_type::Camera);
+		if(camera->my_go->active && camera->active)
+			texture = camera->renderedTexture;
+	}
 
+	ImGui::Image((ImTextureID)texture, { (float)App->window->screen_width, (float)App->window->screen_height }, { 0,1 }, { 1,0 });
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) != KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) != KEY_REPEAT)
 		focus = ImGui::IsMouseHoveringWindow();
