@@ -26,7 +26,7 @@ void WindowCamera::Draw()
 	if (!App->camera->cameras.empty())
 	{
 		ComponentCamera* camera = (ComponentCamera*)App->camera->cameras[0]->GetComponent(component_type::Camera);
-		if(camera->my_go->active && camera->active)
+		if (camera->my_go->isActive() && camera->active)
 			texture = camera->renderedTexture;
 	}
 

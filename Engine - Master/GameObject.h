@@ -62,6 +62,7 @@ public:
 	void CleanUp();
 
 	// Game Object
+	bool isActive() const;
 	void Draw();
 	void DeleteGameObject();
 	math::float4x4 GetLocalTransform() const;

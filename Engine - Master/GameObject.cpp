@@ -138,6 +138,15 @@ void GameObject::CleanUp()
 }
 
 #pragma region Game Object Related Functions
+
+bool GameObject::isActive() const
+{
+	if (active == false || parent == nullptr)
+		return active;
+	else
+		return parent->isActive();
+}
+
 void GameObject::Draw()
 {
 	if (!active) return;
