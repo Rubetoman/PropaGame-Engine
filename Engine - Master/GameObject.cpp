@@ -235,7 +235,7 @@ Component* GameObject::CreateComponent(component_type type)
 		}
 		else
 		{
-			LOG("Warning: %s already has a Transform Component attached.", name);
+			LOG("Warning: %s already has a Transform Component attached.", name.c_str());
 		}
 		break;
 	case component_type::Mesh:
@@ -246,7 +246,7 @@ Component* GameObject::CreateComponent(component_type type)
 		}
 		else
 		{
-			LOG("Warning: %s already has a Mesh Component attached.", name);
+			LOG("Warning: %s already has a Mesh Component attached.", name.c_str());
 		}
 		break;
 	case component_type::Material:
@@ -257,7 +257,7 @@ Component* GameObject::CreateComponent(component_type type)
 		}
 		else
 		{
-			LOG("Warning: %s already has a Material Component attached.", name);
+			LOG("Warning: %s already has a Material Component attached.", name.c_str());
 		}
 		break;
 	case component_type::Light:
@@ -269,7 +269,7 @@ Component* GameObject::CreateComponent(component_type type)
 		}
 		else
 		{
-			LOG("Warning: %s already has a Light Component attached.", name);
+			LOG("Warning: %s already has a Light Component attached.", name.c_str());
 		}
 		break;
 	case component_type::Camera:
@@ -281,7 +281,7 @@ Component* GameObject::CreateComponent(component_type type)
 		}
 		else
 		{
-			LOG("Warning: %s already has a Camera Component attached.", name);
+			LOG("Warning: %s already has a Camera Component attached.", name.c_str());
 		}
 		break;
 	case component_type::Editor_Camera:
@@ -291,13 +291,16 @@ Component* GameObject::CreateComponent(component_type type)
 		}
 		else
 		{
-			LOG("Warning: %s already has a Camera Editor Component attached.", name);
+			LOG("Warning: %s already has a Camera Editor Component attached.", name.c_str());
 		}
 		break;
 	default:
 		break;
 	}
-	components.push_back(component);
+
+	if(component != nullptr)
+		components.push_back(component);
+
 	return component;
 }
 

@@ -49,6 +49,26 @@ void WindowInspector::Draw()
 			{
 				ImGui::Text("No components attached.");
 			}
+
+			if (ImGui::Button("Add Component", ImVec2(ImGui::GetWindowWidth(), 25))) 
+			{
+				ImGui::OpenPopup("AddComponentPopup");
+			}
+			ImGui::SameLine();
+
+			if (ImGui::BeginPopup("AddComponentPopup")) 
+			{
+				if (ImGui::Selectable("Mesh")) 
+				{
+					go->CreateComponent(component_type::Mesh);
+				}
+				ImGui::Separator();
+				if (ImGui::Selectable("Camera")) 
+				{
+					go->CreateComponent(component_type::Camera);
+				}
+				ImGui::EndPopup();
+			}
 		}
 	}
 	ImGui::End();
@@ -58,7 +78,7 @@ void WindowInspector::DrawComponents(GameObject* go)
 {
 	for (auto &comp : go->components)
 	{
-		if(go != nullptr)
+		if(comp != nullptr && go != nullptr)
 			comp->DrawOnInspector();
 	}
 }
