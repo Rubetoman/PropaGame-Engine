@@ -190,9 +190,6 @@ JSON_value* ComponentCamera::Save(JSON_value* component) const
 {
 	JSON_value* camera = Component::Save(component);
 
-	camera->AddUnsigned("fbo", fbo);
-	camera->AddUnsigned("rbo", rbo);
-	camera->AddUnsigned("renderedTexture", renderedTexture);
 	camera->AddVec3("front", front);
 	camera->AddVec3("side", side);
 	camera->AddVec3("up", up);
@@ -213,9 +210,6 @@ void ComponentCamera::Load(JSON_value* component)
 {
 	Component::Load(component);
 
-	fbo = component->GetUnsigned("fbo");
-	rbo = component->GetUnsigned("rbo");
-	renderedTexture = component->GetUnsigned("renderedTexture");
 	front = component->GetVec3("front");
 	side = component->GetVec3("side");
 	up = component->GetVec3("up");
