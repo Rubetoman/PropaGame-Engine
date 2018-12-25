@@ -15,6 +15,7 @@ public:
 	~ComponentCamera();
 
 	Component* Duplicate() override;
+	void Delete() override;
 	bool DrawOnInspector();
 
 	unsigned GetCameraNumber() const;

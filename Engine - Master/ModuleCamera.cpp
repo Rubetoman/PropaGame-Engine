@@ -66,6 +66,9 @@ void ModuleCamera::DeleteCamera(GameObject* go)
 	if (go != nullptr)
 	{
 		ComponentCamera* camera = (ComponentCamera*)go->GetComponent(component_type::Camera);
+		if (camera == nullptr)
+			return;
+
 		int position = camera->GetCameraNumber();
 		if (position > -1)
 		{

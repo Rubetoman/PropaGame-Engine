@@ -34,6 +34,12 @@ Component* ComponentCamera::Duplicate()
 	return new ComponentCamera(*this);
 }
 
+void ComponentCamera::Delete()
+{
+	App->camera->DeleteCamera(my_go);
+	Component::Delete();
+}
+
 bool ComponentCamera::DrawOnInspector()
 {
 	ImGui::PushID(this);
