@@ -11,6 +11,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentLight.h"
+#include "ComponentCamera.h"
 
 #include "debugdraw.h"
 
@@ -137,6 +138,15 @@ void GameObject::CleanUp()
 }
 
 #pragma region Game Object Related Functions
+
+bool GameObject::isActive() const
+{
+	if (active == false || parent == nullptr)
+		return active;
+	else
+		return parent->isActive();
+}
+
 void GameObject::Draw()
 {
 	if (!active) return;
@@ -147,8 +157,8 @@ void GameObject::Draw()
 		child->Draw();
 	}
 
-	math::float4x4 proj = App->camera->mainCamera->ProjectionMatrix();
-	math::float4x4 view = App->camera->mainCamera->LookAt(App->camera->mainCamera->position + App->camera->mainCamera->front);
+	math::float4x4 proj = App->camera->editor_camera_comp->frustum.ProjectionMatrix();
+	math::float4x4 view = App->camera->editor_camera_comp->LookAt(App->camera->editor_camera_go->transform->position + App->camera->editor_camera_comp->front);
 
 	if (mesh != nullptr && mesh->active)
 	{
@@ -192,15 +202,6 @@ math::AABB GameObject::ComputeBBox() const
 	// TODO: Solve bugs and use pointers
 	boundingBox.SetNegativeInfinity();
 
-	// Child meshes
-	for (const auto &child : children)
-	{
-		child->ComputeBBox();
-		if (child->boundingBox.IsFinite())
-			boundingBox.Enclose(child->boundingBox);
-			
-	}
-
 	// Current GO meshes
 	if (mesh != nullptr)
 		boundingBox.Enclose(mesh->boundingBox);
@@ -213,8 +214,8 @@ math::AABB GameObject::ComputeBBox() const
 
 void GameObject::DrawBBox() const 
 {
-	AABB bbox = ComputeBBox();
-	if(mesh!= nullptr)
+	math::AABB bbox = ComputeBBox();
+	if(mesh != nullptr)
 		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
 }
 #pragma endregion
@@ -270,6 +271,29 @@ Component* GameObject::CreateComponent(component_type type)
 		{
 			LOG("Warning: %s already has a Light Component attached.", name);
 		}
+		break;
+	case component_type::Camera:
+		if (GetComponents(component_type::Camera).size() == 0)
+		{
+			component = new ComponentCamera(this);
+			if (App != nullptr)
+				App->camera->cameras.push_back(this);
+		}
+		else
+		{
+			LOG("Warning: %s already has a Camera Component attached.", name);
+		}
+		break;
+	case component_type::Editor_Camera:
+		if (GetComponents(component_type::Camera).size() == 0)
+		{
+			component = new ComponentCamera(this);
+		}
+		else
+		{
+			LOG("Warning: %s already has a Camera Editor Component attached.", name);
+		}
+		break;
 	default:
 		break;
 	}
@@ -281,7 +305,7 @@ Component* GameObject::GetComponent(component_type type) const
 {
 	for (auto &component : components)
 	{
-		if (component->type == type)
+		if (component != nullptr && component->type == type)
 		{
 			return component;
 		}

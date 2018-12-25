@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "ModuleShader.h"
 
+#include "GameObject.h"
 #include "par_shapes.h"
 #include "GL/glew.h"
 

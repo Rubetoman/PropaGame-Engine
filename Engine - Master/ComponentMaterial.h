@@ -2,8 +2,9 @@
 #define __COMPOMENTMATERIAL_H__
 
 #include "Component.h"
-#include "GameObject.h"
-#include "Texture.h"
+
+class GameObject;
+class Texture;
 
 class ComponentMaterial : public Component
 {

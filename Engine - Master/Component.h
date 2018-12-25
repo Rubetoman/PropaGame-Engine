@@ -8,7 +8,7 @@
 
 class GameObject;
 
-enum class component_type {Transform, Mesh, Material, Light};
+enum class component_type {Transform, Mesh, Material, Light, Camera, Editor_Camera};
 
 class Component
 {
@@ -26,7 +26,7 @@ public:
 	virtual void CleanUp();
 	virtual void Delete();
 
-	int GetComponentNumber() const;
+	unsigned GetComponentNumber() const;
 
 	virtual JSON_value* Save(JSON_value* component) const;
 	virtual void Load(JSON_value* component);

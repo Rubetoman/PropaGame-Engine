@@ -4,8 +4,10 @@
 #include "ModuleModelLoader.h"
 #include "ModuleResources.h"
 #include "ModuleCamera.h"
+#include "ModuleEditor.h"
 
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 #include "ComponentLight.h"
 
 ModuleScene::ModuleScene()
@@ -15,8 +17,16 @@ ModuleScene::ModuleScene()
 
 ModuleScene::~ModuleScene()
 {
-	DeleteGameObject(root);
-	delete root;
+	for (std::vector<GameObject*>::iterator it_go = scene_gos.begin(); it_go != scene_gos.end();)
+	{
+		DeleteGameObject(*it_go);
+		delete *it_go;
+		scene_gos.erase(it_go++);
+	}
+	scene_gos.clear();
+
+	//DeleteGameObject(root);
+	//delete root;
 }
 
 bool ModuleScene::Init()
@@ -180,6 +190,17 @@ void ModuleScene::Unchild(GameObject* go)
 	go->SetParent(root);
 }
 
+unsigned ModuleScene::GetSceneGONumber(GameObject& go) const
+{
+	auto pos = std::find(scene_gos.begin(), scene_gos.end(), &go) - scene_gos.begin();
+	if (pos >= scene_gos.size())
+	{
+		LOG("Warning: go not found on scene_gos.");
+		return -1;
+	}
+	return pos;
+}
+
 #pragma region scene management functions
 
 bool ModuleScene::Save(JSON_file* document) 
@@ -193,18 +214,31 @@ bool ModuleScene::Save(JSON_file* document)
 
 bool ModuleScene::InitScene()
 {
+	// Root
 	root = new GameObject("World");
+	scene_gos.push_back(root);
+
+	//TODO: Change it for an ambient light and added to scene_gos without parent
+	// Default Light
 	GameObject* default_light = CreateGameObject("Default Light", root);
 	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
 	default_light->CreateComponent(component_type::Light);
+
+	// Game Main Camera
+	GameObject* game_camera = CreateGameObject("Game Camera", root);
+	game_camera->transform->position = math::float3(0.0f, 0.0f, 3.0f);
+	game_camera->CreateComponent(component_type::Camera);
+
 	return true;
 }
 
 void ModuleScene::NewScene()
 {
 	App->editor->hierarchy->selected = nullptr;
+
+	// Delete root
 	root->DeleteGameObject();
-	//delete(root);
+	scene_gos.erase(scene_gos.begin() + GetSceneGONumber(*root));
 
 	name = "";
 
@@ -259,7 +293,13 @@ bool ModuleScene::LoadScene(const char* scene_name)
 		return false;
 	}
 
-	NewScene();
+	App->editor->hierarchy->selected = nullptr;
+
+	// Delete root
+	root->DeleteGameObject();
+	scene_gos.erase(scene_gos.begin() + GetSceneGONumber(*root));
+
+	App->resources->CleanUp();
 
 	// Change window title
 	std::string windowTitle = scene_name;
@@ -271,7 +311,7 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	name = scene_name;
 
 	// Look at origin
-	App->camera->mainCamera->LookAt(math::float3(0.0f, 0.0f, 0.0f));
+	App->camera->editor_camera_comp->LookAt(math::float3(0.0f, 0.0f, 0.0f));
 
 	JSON_value* go_root = scene->getValue("Root"); //It is an array of values
 	if (go_root->getRapidJSONValue()->IsArray()) //Just make sure
@@ -288,7 +328,11 @@ bool ModuleScene::LoadScene(const char* scene_name)
 		for (std::map<std::string, GameObject*>::iterator it_go = gameobjects.begin(); it_go != gameobjects.end(); it_go++)
 		{
 			if ((*it_go).second->parentUID == "") //If it has no parent, add it to the scene list
-				root = (*it_go).second;
+			{
+				scene_gos.push_back((*it_go).second);
+				if((*it_go).second->name == "World")
+					root = (*it_go).second;
+			}
 			else
 			{
 				GameObject* parent = gameobjects[(*it_go).second->parentUID];

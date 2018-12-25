@@ -2,10 +2,6 @@
 #define __WINDOWSCENE_H__
 
 #include "Window.h"
-#include "Globals.h"
-#include "Application.h"
-#include "ModuleWindow.h"
-#include "ModuleInput.h"
 
 class WindowScene : public Window
 {

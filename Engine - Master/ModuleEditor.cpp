@@ -13,6 +13,7 @@
 #include "WindowConsole.h"
 #include "WindowHardware.h"
 #include "WindowConfiguration.h"
+#include "WindowCamera.h"
 
 #include "debugdraw.h"
 
@@ -41,6 +42,7 @@ bool ModuleEditor::Init()
 
 	// Add EditorWindows
 	editorWindows.push_back(scene = new WindowScene("Scene"));
+	editorWindows.push_back(camera = new WindowCamera("Camera"));
 	editorWindows.push_back(about = new WindowAbout("About"));
 	editorWindows.push_back(console = new WindowConsole("console"));
 	editorWindows.push_back(hardware = new WindowHardware("hardware"));
@@ -144,8 +146,6 @@ void ModuleEditor::DrawDebugReferences()
 		float axis_size = 5.0f;
 		dd::axisTriad(math::float4x4::identity, axis_size*0.125f, axis_size*1.25f, 0, true);
 	}
-
-	//dd::sphere(App->models->light.pos, math::float3(1.0f, 1.0f, 1.0f), 0.05f);
 }
 
 void ModuleEditor::CreateDockSpace() const
@@ -240,6 +240,7 @@ void ModuleEditor::ShowMainMenuBar()
 		if (ImGui::BeginMenu("Window"))
 		{
 			if (ImGui::MenuItem("Scene", NULL, scene->isActive())) { scene->toggleActive(); }
+			if (ImGui::MenuItem("Camera", NULL, camera->isActive())) { camera->toggleActive(); }
 			if (ImGui::MenuItem("Inspector", NULL, inspector->isActive())) { inspector->toggleActive(); }
 			if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->isActive())) { hierarchy->toggleActive(); }
 			ImGui::Separator();

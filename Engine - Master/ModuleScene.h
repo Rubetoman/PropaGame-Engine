@@ -27,6 +27,8 @@ public:
 	GameObject* DuplicateGameObject(const GameObject* go);
 	void Unchild(GameObject* go);
 
+	unsigned GetSceneGONumber(GameObject& go) const;
+
 	bool Save(JSON_file* document);
 	bool InitScene();
 	void NewScene();
@@ -35,8 +37,9 @@ public:
 	bool DeleteScene(const char* scene_name);
 
 public:
+	std::vector<GameObject*> scene_gos;
 	GameObject* root = nullptr;
-	bool show_root = false;
+	bool show_scene_gos = false;
 	std::string name = "";
 };
 

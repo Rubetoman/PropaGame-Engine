@@ -23,8 +23,6 @@ public:
 	Texture* loadTexture(const char* path);
 	bool unloadTexture(Texture* texture);
 	//void ReloadTexture(Texture& new_texture, GLuint& texture);
-
-	//std::map<Texture*, unsigned> textures;
 };
 
 #endif /*__MODULETEXTURES_H__*/

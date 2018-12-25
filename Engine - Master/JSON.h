@@ -38,6 +38,7 @@ public:
 	void AddVec3(const char* name, math::float3 vec);
 	void AddVec4(const char* name, math::float4 vec);
 	void AddQuat(const char* name, math::Quat quat);
+	void AddVec4x4(const char* name, math::float4x4 mat);
 
 	int GetInt(const char* name);
 	unsigned GetUnsigned(const char* name);
@@ -48,6 +49,7 @@ public:
 	math::float3 GetVec3(const char* name);
 	math::float4 GetVec4(const char* name);
 	math::Quat GetQuat(const char* name);
+	math::float4x4 GetVec4x4(const char* name);
 
 public:
 	rapidjson::Value* value = nullptr;

@@ -167,6 +167,23 @@ void JSON_value::AddQuat(const char* name, math::Quat quat)
 	this->value->AddMember(index, a, *alloc);
 }
 
+void JSON_value::AddVec4x4(const char* name, math::float4x4 mat)
+{
+	std::string str = name;
+	rapidjson::Value index(str.c_str(), str.size(), *alloc);
+
+	rapidjson::Value a(rapidjson::kArrayType);
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			a.PushBack(mat.v[i][j], *alloc);
+		}
+	}
+
+	this->value->AddMember(index, a, *alloc);
+}
+
 int JSON_value::GetInt(const char* name)
 {
 	if (value->HasMember(name))
@@ -281,6 +298,29 @@ math::Quat JSON_value::GetQuat(const char* name)
 		}
 	}
 	return Quat();
+}
+
+math::float4x4 JSON_value::GetVec4x4(const char* name)
+{
+	if (value->HasMember(name))
+	{
+		rapidjson::Value& a = value->operator[](name);
+		if (a.IsArray() && a.Size() >= 16)
+		{
+			float4x4 ret;
+			int count = 0;
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					ret.v[i][j] = a[count].GetFloat();
+					count++;
+				}
+			}
+			return ret;
+		}
+	}
+	return math::float4x4();
 }
 
 #pragma endregion

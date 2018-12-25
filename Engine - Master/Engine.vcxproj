@@ -84,7 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentLight.h" />
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="Component.h" />
@@ -173,6 +173,7 @@
     <ClInclude Include="Util\crossguid\guid.hpp" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowAbout.h" />
+    <ClInclude Include="WindowCamera.h" />
     <ClInclude Include="WindowConfiguration.h" />
     <ClInclude Include="WindowConsole.h" />
     <ClInclude Include="WindowHardware.h" />
@@ -182,8 +183,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentLight.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
@@ -247,6 +248,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Util\guid.cpp" />
     <ClCompile Include="WindowAbout.cpp" />
+    <ClCompile Include="WindowCamera.cpp" />
     <ClCompile Include="WindowConfiguration.cpp" />
     <ClCompile Include="WindowConsole.cpp" />
     <ClCompile Include="WindowHardware.cpp" />

@@ -2,7 +2,8 @@
 #define __WINDOWINSPECTOR_H__
 
 #include "Window.h"
-#include "GameObject.h"
+
+class GameObject;
 
 class WindowInspector : public Window
 {

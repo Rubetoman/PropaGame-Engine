@@ -67,7 +67,7 @@ void Component::Delete()
 	my_go->DeleteComponent(this);
 }
 
-int Component::GetComponentNumber() const
+unsigned Component::GetComponentNumber() const
 {
 	if (my_go == nullptr)
 	{
