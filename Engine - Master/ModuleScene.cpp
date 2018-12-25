@@ -190,6 +190,17 @@ void ModuleScene::Unchild(GameObject* go)
 	go->SetParent(root);
 }
 
+unsigned ModuleScene::GetSceneGONumber(GameObject& go) const
+{
+	auto pos = std::find(scene_gos.begin(), scene_gos.end(), &go) - scene_gos.begin();
+	if (pos >= scene_gos.size())
+	{
+		LOG("Warning: go not found on scene_gos.");
+		return -1;
+	}
+	return pos;
+}
+
 #pragma region scene management functions
 
 bool ModuleScene::Save(JSON_file* document) 
@@ -224,8 +235,10 @@ bool ModuleScene::InitScene()
 void ModuleScene::NewScene()
 {
 	App->editor->hierarchy->selected = nullptr;
+
+	// Delete root
 	root->DeleteGameObject();
-	//delete(root);
+	scene_gos.erase(scene_gos.begin() + GetSceneGONumber(*root));
 
 	name = "";
 
@@ -257,10 +270,7 @@ bool ModuleScene::SaveScene(const char* scene_name)
 	JSON_value* gameObjects = scene->createValue();
 	gameObjects->convertToArray();
 
-	for (auto &go : App->scene->scene_gos)
-	{
-		go->Save(gameObjects);
-	}
+	root->Save(gameObjects);
 
 	scene->addValue("Root", gameObjects);
 	scene->Write();
@@ -283,7 +293,13 @@ bool ModuleScene::LoadScene(const char* scene_name)
 		return false;
 	}
 
-	NewScene();
+	App->editor->hierarchy->selected = nullptr;
+
+	// Delete root
+	root->DeleteGameObject();
+	scene_gos.erase(scene_gos.begin() + GetSceneGONumber(*root));
+
+	App->resources->CleanUp();
 
 	// Change window title
 	std::string windowTitle = scene_name;

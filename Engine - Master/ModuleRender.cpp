@@ -93,7 +93,7 @@ update_status ModuleRender::Update()
 		if (cameraGO->active)
 		{
 			ComponentCamera* camera = (ComponentCamera*)cameraGO->GetComponent(component_type::Camera);
-			if (camera->active)
+			if (camera != nullptr && camera->active)
 			{
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
 				glBindFramebuffer(GL_FRAMEBUFFER, camera->fbo);

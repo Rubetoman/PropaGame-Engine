@@ -27,6 +27,8 @@ public:
 	GameObject* DuplicateGameObject(const GameObject* go);
 	void Unchild(GameObject* go);
 
+	unsigned GetSceneGONumber(GameObject& go) const;
+
 	bool Save(JSON_file* document);
 	bool InitScene();
 	void NewScene();

@@ -18,7 +18,7 @@ public:
 	bool CleanUp() override;
 
 	std::string GenerateNewUID();
-
+	unsigned GetLightNumber(GameObject& go) const;
 public:
 	std::vector<GameObject*> lights;		// List of all the lights on the scene
 	std::map<Texture*, unsigned> textures;	// Map of all the textures and number of objects that use that texture
