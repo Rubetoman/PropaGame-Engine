@@ -287,9 +287,10 @@ Component* GameObject::CreateComponent(component_type type)
 		}
 		break;
 	case component_type::Editor_Camera:
-		if (GetComponents(component_type::Camera).size() == 0)
+		if (App->camera->editor_camera_comp == nullptr)
 		{
 			component = new ComponentCamera(this);
+			component->type = component_type::Editor_Camera;
 		}
 		else
 		{

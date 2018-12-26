@@ -14,7 +14,10 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go, component_type:
 	CreateFrameBuffer();
 	if (go != nullptr)
 		frustum.pos = go->boundingBox.CenterPoint();
-	window = App->editor->CreateCameraWindow(*this);
+
+	// Avoid creating another window for editor camera
+	if(go != App->camera->editor_camera_go)
+		window = App->editor->CreateCameraWindow(*this);
 }
 
 ComponentCamera::ComponentCamera(const ComponentCamera& comp) : Component(comp)
