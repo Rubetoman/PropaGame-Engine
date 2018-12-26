@@ -49,10 +49,10 @@ bool ModuleScene::CleanUp()
 	return true;
 }
 
-void ModuleScene::Draw()
+void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj)
 {
 	if(root != nullptr)
-		root->Draw();
+		root->Draw(view, proj);
 }
 
 GameObject* ModuleScene::CreateGameObject(const char* name)

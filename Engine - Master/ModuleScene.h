@@ -15,7 +15,7 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
-	void Draw();
+	void Draw(const math::float4x4& view, const math::float4x4& proj);
 
 	GameObject* CreateGameObject(const char* name);
 	GameObject* CreateGameObject(const char* name, GameObject* parent);

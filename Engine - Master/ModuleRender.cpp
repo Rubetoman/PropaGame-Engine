@@ -2,8 +2,11 @@
 
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
-#include "ComponentCamera.h"
 #include "ModuleResources.h"
+#include "ModuleCamera.h"
+
+#include "ComponentTransform.h"
+#include "ComponentCamera.h"
 
 ModuleRender::ModuleRender()
 {
@@ -83,7 +86,9 @@ update_status ModuleRender::Update()
 	App->editor->DrawDebugReferences();
 
 	// Draw Scene
-	App->scene->Draw();
+	math::float4x4 proj = App->camera->editor_camera_comp->frustum.ProjectionMatrix();
+	math::float4x4 view = App->camera->editor_camera_comp->LookAt(App->camera->editor_camera_go->transform->position + App->camera->editor_camera_comp->front);
+	App->scene->Draw(view, proj);
 	
 	// Draw debug draw
 	App->debug_draw->Draw(App->camera->editor_camera_comp, App->camera->editor_camera_comp->fbo, App->window->screen_height, App->window->screen_width);
@@ -101,7 +106,9 @@ update_status ModuleRender::Update()
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 				// Draw Scene
-				App->scene->Draw();
+				proj = camera->frustum.ProjectionMatrix();
+				view = camera->LookAt(cameraGO->transform->position + camera->front);
+				App->scene->Draw(view, proj);
 
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			}

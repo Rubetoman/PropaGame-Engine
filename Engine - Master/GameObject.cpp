@@ -147,18 +147,15 @@ bool GameObject::isActive() const
 		return parent->isActive();
 }
 
-void GameObject::Draw()
+void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj)
 {
 	if (!active) return;
 	if (transform == nullptr) return;
 
 	for (const auto &child : children)
 	{
-		child->Draw();
+		child->Draw(view, proj);
 	}
-
-	math::float4x4 proj = App->camera->editor_camera_comp->frustum.ProjectionMatrix();
-	math::float4x4 view = App->camera->editor_camera_comp->LookAt(App->camera->editor_camera_go->transform->position + App->camera->editor_camera_comp->front);
 
 	if (mesh != nullptr && mesh->active)
 	{

@@ -63,7 +63,7 @@ public:
 
 	// Game Object
 	bool isActive() const;
-	void Draw();
+	void Draw(const math::float4x4& view, const math::float4x4& proj);
 	void DeleteGameObject();
 	math::float4x4 GetLocalTransform() const;
 	math::float4x4 GetGlobalTransform() const;
