@@ -6,6 +6,7 @@
 
 class GameObject;
 class Camera;
+class WindowCamera;
 
 class ComponentCamera : public Component
 {
@@ -58,6 +59,9 @@ public:
 	// Camera rotation
 	float pitch = 0.0f;
 	float yaw = -90.0f;
+
+	// Camera Window
+	WindowCamera* window = nullptr;
 };
 
 #endif /*__COMPOMENTCAMERA_H__*/

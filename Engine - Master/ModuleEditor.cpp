@@ -6,6 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleTime.h"
 #include "ModuleScene.h"
+#include "ModuleCamera.h"
 
 #include "Window.h"
 #include "WindowScene.h"
@@ -15,6 +16,8 @@
 #include "WindowConfiguration.h"
 #include "WindowCamera.h"
 
+#include "GameObject.h"
+#include "ComponentCamera.h"
 #include "debugdraw.h"
 
 
@@ -42,7 +45,6 @@ bool ModuleEditor::Init()
 
 	// Add EditorWindows
 	editorWindows.push_back(scene = new WindowScene("Scene"));
-	editorWindows.push_back(camera = new WindowCamera("Camera"));
 	editorWindows.push_back(about = new WindowAbout("About"));
 	editorWindows.push_back(console = new WindowConsole("console"));
 	editorWindows.push_back(hardware = new WindowHardware("hardware"));
@@ -240,15 +242,21 @@ void ModuleEditor::ShowMainMenuBar()
 		if (ImGui::BeginMenu("Window"))
 		{
 			if (ImGui::MenuItem("Scene", NULL, scene->isActive())) { scene->toggleActive(); }
-			if (ImGui::MenuItem("Camera", NULL, camera->isActive())) { camera->toggleActive(); }
 			if (ImGui::MenuItem("Inspector", NULL, inspector->isActive())) { inspector->toggleActive(); }
 			if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->isActive())) { hierarchy->toggleActive(); }
 			ImGui::Separator();
+			if (ImGui::BeginMenu("Cameras"))
+			{
+				for (auto &camera : App->camera->cameras)
+				{
+					ComponentCamera* cam = (ComponentCamera*)camera->GetComponent(component_type::Camera);
+					if (ImGui::MenuItem(camera->name.c_str(), NULL, cam->window->isActive())) { cam->window->toggleActive(); }
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::Separator();
 			if (ImGui::MenuItem("Configuration", NULL, configuration->isActive())) { configuration->toggleActive(); }
-			ImGui::Separator();
-
 			if (ImGui::MenuItem("Hardware Info", NULL, hardware->isActive())) { hardware->toggleActive(); }
-			ImGui::Separator();
 			if (ImGui::MenuItem("Console", NULL, console->isActive())) { console->toggleActive(); }
 			ImGui::EndMenu();
 		}
@@ -368,4 +376,30 @@ void ModuleEditor::ShowInBrowser(const char* url) const
 void ModuleEditor::HandleInputs(SDL_Event& event)
 {
 	ImGui_ImplSDL2_ProcessEvent(&event);
+}
+
+WindowCamera* ModuleEditor::CreateCameraWindow(ComponentCamera& camera)
+{
+	WindowCamera* newCamera = new WindowCamera(camera.my_go->name.c_str());
+	editorWindows.push_back(newCamera);
+	newCamera->camera = &camera;
+	if (App->camera->cameras.size() < 1)
+		newCamera->toggleActive();
+	return newCamera;
+}
+
+void ModuleEditor::DeleteCameraWindow(WindowCamera* camera)
+{
+	for (std::list<Window*>::iterator it_window = editorWindows.begin(); it_window != editorWindows.end();)
+	{
+		if (*it_window == camera)
+		{
+			delete *it_window;
+			editorWindows.erase(it_window++);
+		}
+		else
+		{
+			++it_window;
+		}
+	}
 }

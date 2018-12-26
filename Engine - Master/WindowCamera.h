@@ -3,6 +3,8 @@
 
 #include "Window.h"
 
+class ComponentCamera;
+
 class WindowCamera : public Window
 {
 public:
@@ -15,5 +17,6 @@ public:
 
 public:
 	bool focus = false;
+	ComponentCamera* camera = nullptr;
 };
 #endif /*__WINDOWCAMERA_H__*/

@@ -34,6 +34,8 @@ class WindowHierarchy;
 class WindowInspector;
 class WindowCamera;
 
+class ComponentCamera;
+
 class ModuleEditor : public Module
 {
 public:
@@ -58,6 +60,10 @@ public:
 	// SDL
 	void HandleInputs(SDL_Event& event);
 
+	// Cameras
+	WindowCamera* CreateCameraWindow(ComponentCamera& camera);
+	void DeleteCameraWindow(WindowCamera* camera);
+
 public:
 
 	update_status update = UPDATE_CONTINUE;
@@ -80,7 +86,7 @@ public:
 	WindowConfiguration* configuration = nullptr;
 	WindowHierarchy* hierarchy = nullptr;
 	WindowInspector* inspector = nullptr;
-	WindowCamera* camera = nullptr;
+
 	//Pop ups
 	bool show_scene_save_popup = false;
 	bool show_scene_load_popup = false;

@@ -30,7 +30,7 @@ public:
 	update_status   Update();
 	bool            CleanUp();
 
-	void		DeleteCamera(GameObject* go);
+	void		DeleteCamera(ComponentCamera* go);
 
 	void		UpdateScreenSize();
 

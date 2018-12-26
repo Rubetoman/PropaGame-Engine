@@ -277,7 +277,9 @@ Component* GameObject::CreateComponent(component_type type)
 		{
 			component = new ComponentCamera(this);
 			if (App != nullptr)
+			{
 				App->camera->cameras.push_back(this);
+			}
 		}
 		else
 		{

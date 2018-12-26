@@ -2,6 +2,7 @@
 
 #include "ModuleCamera.h"
 #include "ModuleTime.h"
+#include "ModuleEditor.h"
 #include "ComponentTransform.h"
 
 #include "Application.h"
@@ -13,6 +14,7 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go, component_type:
 	CreateFrameBuffer();
 	if (go != nullptr)
 		frustum.pos = go->boundingBox.CenterPoint();
+	window = App->editor->CreateCameraWindow(*this);
 }
 
 ComponentCamera::ComponentCamera(const ComponentCamera& comp) : Component(comp)
@@ -26,7 +28,7 @@ ComponentCamera::~ComponentCamera()
 	glDeleteRenderbuffers(1, &rbo);
 	glDeleteTextures(1, &renderedTexture);
 	if(type != component_type::Editor_Camera)
-		App->camera->DeleteCamera(my_go);
+		App->camera->DeleteCamera(this);
 }
 
 Component* ComponentCamera::Duplicate()
@@ -36,7 +38,7 @@ Component* ComponentCamera::Duplicate()
 
 void ComponentCamera::Delete()
 {
-	App->camera->DeleteCamera(my_go);
+	App->camera->DeleteCamera(this);
 	Component::Delete();
 }
 

@@ -61,13 +61,12 @@ bool ModuleCamera::CleanUp()
 	return true;
 }
 
-void ModuleCamera::DeleteCamera(GameObject* go)
+void ModuleCamera::DeleteCamera(ComponentCamera* camera)
 {
-	if (go != nullptr)
+	if (camera != nullptr)
 	{
-		ComponentCamera* camera = (ComponentCamera*)go->GetComponent(component_type::Camera);
-		if (camera == nullptr)
-			return;
+		// Delete Window
+		App->editor->DeleteCameraWindow(camera->window);
 
 		int position = camera->GetCameraNumber();
 		if (position > -1)
