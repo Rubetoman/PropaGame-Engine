@@ -1,6 +1,12 @@
 #include "ModuleResources.h"
 
 #include "ModuleTextures.h"
+#include "ModuleEditor.h"
+
+#include "GameObject.h"
+#include "Texture.h"
+#include "ComponentCamera.h"
+
 ModuleResources::ModuleResources()
 {
 }
@@ -47,4 +53,36 @@ unsigned ModuleResources::GetLightNumber(GameObject& go) const
 		return -1;
 	}
 	return pos;
+}
+
+unsigned ModuleResources::GetCameraNumber(GameObject& go) const
+{
+	auto pos = std::find(cameras.begin(), cameras.end(), &go) - cameras.begin();
+	if (pos >= cameras.size())
+	{
+		LOG("Warning: %s not found as a camera on list of cameras.", go.name);
+		return -1;
+	}
+	return pos;
+}
+
+void ModuleResources::DeleteCamera(ComponentCamera* camera)
+{
+	if (camera != nullptr)
+	{
+		// Delete Window
+		App->editor->DeleteCameraWindow(camera->window);
+
+		int position = GetCameraNumber(*camera->my_go);
+		if (position > -1)
+		{
+			cameras.erase(cameras.begin() + position);
+			camera->CleanUp();
+			//RELEASE(camera);
+		}
+		else
+			LOG("Error deleting component.");
+	}
+	else
+		LOG("Warning: Component was nullptr.");
 }

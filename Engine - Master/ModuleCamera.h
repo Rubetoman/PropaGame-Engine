@@ -30,8 +30,6 @@ public:
 	update_status   Update();
 	bool            CleanUp();
 
-	void		DeleteCamera(ComponentCamera* go);
-
 	void		UpdateScreenSize();
 
 	void		TranslateCameraInput();
@@ -42,12 +40,11 @@ public:
 	void		WheelInputTranslation(const fPoint& wheel_motion);
 	void		FitCamera(const math::AABB &boundingBox);
 
+public:
+
 	// Editor Camera
 	GameObject* editor_camera_go = nullptr;
 	ComponentCamera* editor_camera_comp = nullptr;
-
-	// Scene Cameras
-	std::vector<GameObject*> cameras;		// Vector with all the cameras on the scene
 
 	// Mouse 
 	bool new_click = true;

@@ -3,6 +3,8 @@
 #include "ModuleCamera.h"
 #include "ModuleTime.h"
 #include "ModuleEditor.h"
+#include "ModuleResources.h"
+
 #include "ComponentTransform.h"
 
 #include "Application.h"
@@ -31,7 +33,7 @@ ComponentCamera::~ComponentCamera()
 	glDeleteRenderbuffers(1, &rbo);
 	glDeleteTextures(1, &renderedTexture);
 	if(type != component_type::Editor_Camera)
-		App->camera->DeleteCamera(this);
+		App->resources->DeleteCamera(this);
 }
 
 Component* ComponentCamera::Duplicate()
@@ -41,7 +43,7 @@ Component* ComponentCamera::Duplicate()
 
 void ComponentCamera::Delete()
 {
-	App->camera->DeleteCamera(this);
+	App->resources->DeleteCamera(this);
 	Component::Delete();
 }
 
@@ -66,17 +68,6 @@ bool ComponentCamera::DrawOnInspector()
 	}
 	ImGui::PopID();
 	return false;
-}
-
-unsigned ComponentCamera::GetCameraNumber() const
-{
-	auto pos = std::find(App->camera->cameras.begin(), App->camera->cameras.end(), my_go) - App->camera->cameras.begin();
-	if (pos >= my_go->components.size())
-	{
-		LOG("Warning: %s not found as a camera on list of cameras.", my_go->name);
-		return -1;
-	}
-	return pos;
 }
 
 void ComponentCamera::CreateFrameBuffer()

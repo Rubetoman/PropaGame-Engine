@@ -3,6 +3,7 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ComponentCamera.h"
+#include "ModuleResources.h"
 
 ModuleRender::ModuleRender()
 {
@@ -88,7 +89,7 @@ update_status ModuleRender::Update()
 	App->debug_draw->Draw(App->camera->editor_camera_comp, App->camera->editor_camera_comp->fbo, App->window->screen_height, App->window->screen_width);
 
 	// CAMERAS
-	for (auto &cameraGO : App->camera->cameras)
+	for (auto &cameraGO : App->resources->cameras)
 	{
 		if (cameraGO->active)
 		{

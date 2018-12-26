@@ -61,27 +61,6 @@ bool ModuleCamera::CleanUp()
 	return true;
 }
 
-void ModuleCamera::DeleteCamera(ComponentCamera* camera)
-{
-	if (camera != nullptr)
-	{
-		// Delete Window
-		App->editor->DeleteCameraWindow(camera->window);
-
-		int position = camera->GetCameraNumber();
-		if (position > -1)
-		{
-			cameras.erase(cameras.begin() + position);
-			camera->CleanUp();
-			//RELEASE(camera);
-		}
-		else
-			LOG("Error deleting component.");
-	}
-	else
-		LOG("Warning: Component was nullptr.");
-}
-
 void ModuleCamera::UpdateScreenSize() 
 {
 	if (editor_camera_comp != nullptr)

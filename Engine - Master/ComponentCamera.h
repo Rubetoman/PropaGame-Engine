@@ -19,7 +19,6 @@ public:
 	void Delete() override;
 	bool DrawOnInspector();
 
-	unsigned GetCameraNumber() const;
 	void CreateFrameBuffer();
 
 	void			TranslateCamera(math::float3 direction);

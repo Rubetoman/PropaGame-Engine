@@ -7,7 +7,6 @@
 #include "ModuleModelLoader.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
-#include "ModuleCamera.h"
 #include "ModuleShader.h"
 #include "SDL.h"
 #include "GL/glew.h"

@@ -6,7 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleTime.h"
 #include "ModuleScene.h"
-#include "ModuleCamera.h"
+#include "ModuleResources.h"
 
 #include "Window.h"
 #include "WindowScene.h"
@@ -247,7 +247,7 @@ void ModuleEditor::ShowMainMenuBar()
 			ImGui::Separator();
 			if (ImGui::BeginMenu("Cameras"))
 			{
-				for (auto &camera : App->camera->cameras)
+				for (auto &camera : App->resources->cameras)
 				{
 					ComponentCamera* cam = (ComponentCamera*)camera->GetComponent(component_type::Camera);
 					if (ImGui::MenuItem(camera->name.c_str(), NULL, cam->window->isActive())) { cam->window->toggleActive(); }
@@ -383,7 +383,7 @@ WindowCamera* ModuleEditor::CreateCameraWindow(ComponentCamera& camera)
 	WindowCamera* newCamera = new WindowCamera(camera.my_go->name.c_str());
 	editorWindows.push_back(newCamera);
 	newCamera->camera = &camera;
-	if (App->camera->cameras.size() < 1)
+	if (App->resources->cameras.size() < 1)
 		newCamera->toggleActive();
 	return newCamera;
 }
