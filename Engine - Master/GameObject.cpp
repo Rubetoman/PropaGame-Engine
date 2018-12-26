@@ -165,12 +165,21 @@ void GameObject::Draw()
 		((ComponentMesh*)mesh)->RenderMesh(view, proj);
 	}
 
+	// Draw BBox on Editor
 	if ((App->editor->hierarchy->selected == this) || (App->editor->drawAllBBox))
 		DrawBBox();
 
+	// Draw a sphere on Editor
 	if (GetComponent(component_type::Light) != nullptr)
 	{
 		dd::sphere(transform->position, math::float3(1.0f, 1.0f, 1.0f), 0.2f);
+	}
+
+	// Draw a camera icon on Editor
+	if (GetComponent(component_type::Camera) != nullptr)
+	{
+		dd::cone(transform->position - math::float3(0.0f, 0.0f, 0.2f), math::float3(0.0f, 0.0f, -0.3f), math::float3(1.0f, 1.0f, 1.0f), 0.2f, 0.01f);
+		dd::box(transform->position, math::float3(1.0f, 1.0f, 1.0f), 0.4f, 0.4f, 0.4f);
 	}
 }
 
