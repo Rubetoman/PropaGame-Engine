@@ -172,11 +172,14 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj)
 		dd::sphere(transform->position, math::float3(1.0f, 1.0f, 1.0f), 0.2f);
 	}
 
-	// Draw a camera icon on Editor
-	if (GetComponent(component_type::Camera) != nullptr)
+	// Draw a camera icon and Frustum on Editor
+	ComponentCamera* camera = (ComponentCamera*)GetComponent(component_type::Camera);
+	if (camera != nullptr)
 	{
-		dd::cone(transform->position - math::float3(0.0f, 0.0f, 0.2f), math::float3(0.0f, 0.0f, -0.3f), math::float3(1.0f, 1.0f, 1.0f), 0.2f, 0.01f);
+		dd::cone(transform->position + (camera->frustum.front * 0.3f), 0.5f * camera->frustum.front, math::float3(1.0f, 1.0f, 1.0f), 0.2f, 0.01f);
 		dd::box(transform->position, math::float3(1.0f, 1.0f, 1.0f), 0.4f, 0.4f, 0.4f);
+
+		dd::frustum((camera->frustum.ProjectionMatrix() * camera->frustum.ViewMatrix()).Inverted(), dd::colors::Purple);
 	}
 }
 
