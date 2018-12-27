@@ -32,7 +32,12 @@ public:
 
 	void WindowResized(unsigned width, unsigned height);
 
+	void SetViewMatrix(ComponentCamera* camera) const;
+	void SetProjectionMatrix(ComponentCamera* camera) const;
+	void GenerateBlockUniforms();
+
 	void* context = nullptr;
+	unsigned ubo = 0u;
 };
 
 #endif

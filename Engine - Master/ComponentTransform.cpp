@@ -49,6 +49,21 @@ void ComponentTransform::SetTransform(const math::float3& pos, const math::Quat&
 	euler_rotation.z = math::RadToDeg(euler_rotation.z);
 }
 
+void ComponentTransform::SetRotation(const math::Quat& rot)
+{
+	rotation = rot;
+	euler_rotation = rotation.ToEulerXYZ();
+	euler_rotation.x = math::RadToDeg(euler_rotation.x);
+	euler_rotation.y = math::RadToDeg(euler_rotation.y);
+	euler_rotation.z = math::RadToDeg(euler_rotation.z);
+}
+
+void ComponentTransform::SetRotation(const math::float3& rot)
+{
+	euler_rotation = rot;
+	rotation.FromEulerXYZ(euler_rotation.x, euler_rotation.y, euler_rotation.z);
+}
+
 void ComponentTransform::LocalToGlobal(const float4x4& global_transform)
 {
 	float4x4 global = global_transform;

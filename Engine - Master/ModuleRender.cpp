@@ -87,7 +87,7 @@ update_status ModuleRender::Update()
 
 	// Draw Scene
 	math::float4x4 proj = App->camera->editor_camera_comp->frustum.ProjectionMatrix();
-	math::float4x4 view = App->camera->editor_camera_comp->LookAt(App->camera->editor_camera_go->transform->position + App->camera->editor_camera_comp->front);
+	math::float4x4 view = App->camera->editor_camera_comp->frustum.ViewMatrix();
 	App->scene->Draw(view, proj);
 	
 	// Draw debug draw
@@ -107,7 +107,8 @@ update_status ModuleRender::Update()
 
 				// Draw Scene
 				proj = camera->frustum.ProjectionMatrix();
-				view = camera->LookAt(cameraGO->transform->position + camera->front);
+				//view = camera->LookAt(cameraGO->transform->position + camera->front);
+				math::float4x4 view = camera->frustum.ViewMatrix();
 				App->scene->Draw(view, proj);
 
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);

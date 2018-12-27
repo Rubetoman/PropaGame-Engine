@@ -6,6 +6,7 @@
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
 #include "ModuleTime.h"
+#include "ModuleResources.h"
 #include "WindowScene.h"
 
 #include "ComponentTransform.h"
@@ -27,8 +28,6 @@ bool ModuleCamera::Init()
 	App->window->SetWindowSize(App->window->screen_width, App->window->screen_height, true);
 	App->scene->scene_gos.push_back(editor_camera_go);
 
-	last_x = App->window->screen_width / 2;
-	last_y = App->window->screen_height / 2;
 	return true;
 }
 
@@ -45,7 +44,6 @@ update_status ModuleCamera::PreUpdate()
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		SDL_ShowCursor(SDL_ENABLE);
-		new_click = true;
 	}
 
 	return UPDATE_CONTINUE;
@@ -53,6 +51,13 @@ update_status ModuleCamera::PreUpdate()
 
 update_status ModuleCamera::Update()
 {
+	editor_camera_comp->Update();
+
+	for (auto camera : App->resources->cameras)
+	{
+		camera->GetComponent(component_type::Camera)->Update();
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -75,33 +80,36 @@ void ModuleCamera::TranslateCameraInput()
 	if (editor_camera_comp == nullptr)
 		return;
 
+	float3 movement = float3::zero;
+
 	// Right click + WASD/QE translates the camera
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_Q))
 		{
-			editor_camera_comp->TranslateCamera(editor_camera_comp->up);
+			movement += math::float3::unitY * editor_camera_comp->speed * App->time->real_delta_time;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_E))
 		{
-			editor_camera_comp->TranslateCamera(-editor_camera_comp->up);
+			movement -= math::float3::unitY * editor_camera_comp->speed * App->time->real_delta_time;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_A))
 		{
-			editor_camera_comp->TranslateCamera(-editor_camera_comp->side);
+			movement -= editor_camera_comp->frustum.WorldRight() * editor_camera_comp->speed * App->time->real_delta_time;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_D))
 		{
-			editor_camera_comp->TranslateCamera(editor_camera_comp->side);
+			movement += editor_camera_comp->frustum.WorldRight() * editor_camera_comp->speed * App->time->real_delta_time;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_W))
 		{
-			editor_camera_comp->TranslateCamera(editor_camera_comp->front);
+			movement += editor_camera_comp->frustum.front * editor_camera_comp->speed * App->time->real_delta_time;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_S))
 		{
-			editor_camera_comp->TranslateCamera(-editor_camera_comp->front);
+			movement -= editor_camera_comp->frustum.front * editor_camera_comp->speed * App->time->real_delta_time;
 		}
+		editor_camera_go->transform->position += movement;
 	}
 
 	// Mouse wheel go forward or backwards
@@ -121,46 +129,26 @@ void ModuleCamera::RotateCameraInput()
 	{
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 		{
-			editor_camera_comp->UpdatePitchYaw();
 			SDL_ShowCursor(SDL_DISABLE);
-			MouseInputTranslation(App->input->GetMousePosition());
-			editor_camera_comp->LookAt(math::float3(0, 0, 0));
+			editor_camera_comp->Orbit(editor_camera_comp->rotation_speed * App->input->GetMouseMotion().x, editor_camera_comp->rotation_speed * App->input->GetMouseMotion().y);
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) 
 		{
 			SDL_ShowCursor(SDL_ENABLE);
-			new_click = true;
 		}
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) 
-	{
-		editor_camera_comp->pitch += editor_camera_comp->rotation_speed * App->time->real_delta_time;
-		editor_camera_comp->RotateCamera();
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) 
-	{
-		editor_camera_comp->pitch -= editor_camera_comp->rotation_speed * App->time->real_delta_time;
-		editor_camera_comp->RotateCamera();
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) 
-	{
-		editor_camera_comp->yaw -= editor_camera_comp->rotation_speed * App->time->real_delta_time;
-		editor_camera_comp->RotateCamera();
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) 
-	{
-		editor_camera_comp->yaw += editor_camera_comp->rotation_speed * App->time->real_delta_time;
-		editor_camera_comp->RotateCamera();
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F))
 	{
-		editor_camera_comp->UpdatePitchYaw();
 		editor_camera_comp->LookAt(math::float3(0, 0, 0));
 	}
 	if(App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
 		SDL_ShowCursor(SDL_DISABLE);
-		MouseInputRotation(App->input->GetMousePosition());
+		editor_camera_comp->Rotate(editor_camera_comp->rotation_speed * App->input->GetMouseMotion().x, editor_camera_comp->rotation_speed * App->input->GetMouseMotion().y);
+	}
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
+	{
+		SDL_ShowCursor(SDL_ENABLE);
 	}
 }
 
@@ -181,63 +169,12 @@ void ModuleCamera::CameraSpeedInput(float modifier)
 	}
 }
 
-void ModuleCamera::MouseInputTranslation(const fPoint& mouse_position)
-{
-	if (editor_camera_go == nullptr)
-		return;
-
-	if (new_click)
-	{
-		last_x = (float)mouse_position.x;
-		last_y = (float)mouse_position.y;
-		new_click = false;
-	}
-
-	float x_offset = (float)mouse_position.x - last_x;
-	float y_offset = last_y - (float)mouse_position.y;
-	last_x = (float)mouse_position.x;
-	last_y = (float)mouse_position.y;
-
-	x_offset *= editor_camera_comp->rotation_speed * mouse_sensitivity;
-	y_offset *= editor_camera_comp->rotation_speed * mouse_sensitivity;
-
-	editor_camera_go->transform->position -= editor_camera_comp->side.Mul(x_offset) * editor_camera_comp->speed * App->time->real_delta_time;
-	editor_camera_go->transform->position -= editor_camera_comp->up.Mul(y_offset) * editor_camera_comp->speed * App->time->real_delta_time;
-}
-
-void ModuleCamera::MouseInputRotation(const fPoint& mouse_position)
-{
-	if (editor_camera_go == nullptr)
-		return;
-
-	if (new_click)
-	{
-		last_x = (float)mouse_position.x;
-		last_y = (float)mouse_position.y;
-		new_click = false;
-	}
-
-	float x_offset = (float)mouse_position.x - last_x;
-	float y_offset = last_y - (float)mouse_position.y;
-	last_x = (float)mouse_position.x;
-	last_y = (float)mouse_position.y;
-
-	x_offset *= editor_camera_comp->rotation_speed * mouse_sensitivity;
-	y_offset *= editor_camera_comp->rotation_speed * mouse_sensitivity;
-
-	editor_camera_comp->yaw += x_offset;
-	editor_camera_comp->pitch += y_offset;
-
-	editor_camera_comp->RotateCamera();
-}
-
 void ModuleCamera::WheelInputTranslation(const fPoint& wheel_motion)
 {
 	if (editor_camera_go == nullptr)
 		return;
-
-	editor_camera_go->transform->position -= editor_camera_comp->side.Mul(wheel_motion.x) * 10 * editor_camera_comp->speed * App->time->real_delta_time;
-	editor_camera_go->transform->position -= editor_camera_comp->front.Mul(-wheel_motion.y) * 10 * editor_camera_comp->speed * App->time->real_delta_time;
+	
+	editor_camera_go->transform->position += editor_camera_comp->frustum.front.Mul(wheel_motion.y) * 10 * editor_camera_comp->speed * App->time->real_delta_time;
 }
 
 void ModuleCamera::FitCamera(const AABB &boundingBox)

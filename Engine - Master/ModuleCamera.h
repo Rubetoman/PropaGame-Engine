@@ -35,8 +35,6 @@ public:
 	void		TranslateCameraInput();
 	void		RotateCameraInput();
 	void		CameraSpeedInput(float modifier);
-	void		MouseInputTranslation(const fPoint& mouse_position);
-	void		MouseInputRotation(const fPoint& mouse_position);
 	void		WheelInputTranslation(const fPoint& wheel_motion);
 	void		FitCamera(const math::AABB &boundingBox);
 
@@ -47,11 +45,8 @@ public:
 	ComponentCamera* editor_camera_comp = nullptr;
 
 	// Mouse 
-	bool new_click = true;
 	bool new_scroll = true;
 	float mouse_sensitivity = 0.6;
-	float last_x = SCREEN_WIDTH / 2;
-	float last_y = SCREEN_HEIGHT / 2;
 
 	// Mesh
 	math::AABB* BBtoLook = nullptr;

@@ -83,7 +83,7 @@ void WindowConfiguration::Draw()
 		ImGui::Separator();*/
 
 		// Front, side and up vectors
-		ImGui::Text("Camera Vectors:");
+		/*ImGui::Text("Camera Vectors:");
 		ImGui::Text("Front: ");
 		ImGui::Text("X: "); ImGui::SameLine();
 		ImGui::Text(std::to_string(App->camera->editor_camera_comp->front.x).c_str());
@@ -118,7 +118,7 @@ void WindowConfiguration::Draw()
 		ImGui::Text("Yaw: "); ImGui::SameLine();
 		ImGui::Text(std::to_string(App->camera->editor_camera_comp->yaw).c_str());
 		ImGui::NewLine();
-		ImGui::Separator();
+		ImGui::Separator();*/
 
 		ImGui::PushItemWidth(100.0f);
 		ImGui::InputFloat("Camera Speed", &App->camera->editor_camera_comp->speed);

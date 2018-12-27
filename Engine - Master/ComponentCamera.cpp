@@ -36,6 +36,23 @@ ComponentCamera::~ComponentCamera()
 		App->resources->DeleteCamera(this);
 }
 
+void ComponentCamera::Update()
+{
+	//TODO: Set camera dirty when changes and recalculate frustum
+	if (my_go == nullptr) return;
+	if (my_go->transform == nullptr) return;
+
+	math::float4x4 transform = my_go->GetGlobalTransform();
+	frustum.pos = transform.TranslatePart();
+
+	// Avoid updating editor camera
+	if (type != component_type::Editor_Camera)
+	{
+		frustum.front = -transform.RotatePart().Mul(math::float3::unitZ).Normalized();
+		frustum.up = transform.RotatePart().Mul(math::float3::unitY).Normalized();
+	}
+}
+
 Component* ComponentCamera::Duplicate()
 {
 	return new ComponentCamera(*this);
@@ -111,43 +128,67 @@ void ComponentCamera::TranslateCamera(math::float3 direction)
 	my_go->transform->position += direction * speed * App->time->real_delta_time;
 }
 
-void ComponentCamera::RotateCamera()
+void ComponentCamera::Rotate(float dx, float dy)
 {
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
+	if (dx != 0) 
+	{
+		math::Quat rotation = math::Quat::RotateY(math::DegToRad(-dx)).Normalized();
+		frustum.front = rotation.Mul(frustum.front).Normalized();
+		frustum.up = rotation.Mul(frustum.up).Normalized();
 
-	math::float3 rotation;
-	rotation.x = SDL_cosf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
-	rotation.y = SDL_sinf(math::DegToRad(pitch));
-	rotation.z = SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
-	front = rotation.Normalized();
+		//TODO: Apply changes to transform
+		//my_go->transform->SetRotation( my_go->transform->rotation * rotation);
 
-	if(my_go != nullptr && my_go->transform != nullptr)
-		LookAt(my_go->transform->position + front);
+	}
+
+	if (dy != 0) 
+	{
+		math::Quat rotation = math::Quat::RotateAxisAngle(frustum.WorldRight(), math::DegToRad(-dy)).Normalized();
+		math::float3 validUp = rotation.Mul(frustum.up).Normalized();
+		// Avoiding gimbal lock
+		if (validUp.y > 0.0f) 
+		{
+			frustum.up = validUp;
+			frustum.front = rotation.Mul(frustum.front).Normalized();
+		}
+		//my_go->transform->SetRotation(my_go->transform->rotation * rotation);
+	}
 }
 
-math::float4x4 ComponentCamera::LookAt(math::float3& target)
+void ComponentCamera::Orbit(float dx, float dy) 
 {
-	if (my_go == nullptr || my_go->transform == nullptr)
-		return view_matrix;
+	// TODO: set up the orbit when no GO is selected in front of the camera
+	if (App->editor->hierarchy->selected == nullptr) return;
 
-	math::float3 position = my_go->transform->position;
+	AABB& bbox = App->editor->hierarchy->selected->boundingBox;
+	math::float3 center = bbox.CenterPoint();
 
-	// projection
-	front = math::float3(target - position); front.Normalize();
-	side = math::float3(front.Cross(math::float3(0, 1, 0))); side.Normalize();
-	up = math::float3(side.Cross(front));
+	if (dx != 0) 
+	{
+		math::Quat rotation = math::Quat::RotateY(math::DegToRad(-dx)).Normalized();
+		frustum.pos = rotation.Mul(frustum.pos);
+	}
 
-	view_matrix[0][0] = side.x;		view_matrix[0][1] = side.y;		view_matrix[0][2] = side.z;
-	view_matrix[1][0] = up.x;		view_matrix[1][1] = up.y;		view_matrix[1][2] = up.z;
-	view_matrix[2][0] = -front.x;	view_matrix[2][1] = -front.y;	view_matrix[2][2] = -front.z;
+	if (dy != 0) 
+	{
+		math::Quat rotation = math::Quat::RotateAxisAngle(frustum.WorldRight(), math::DegToRad(-dy)).Normalized();
+		math::float3 new_pos = rotation.Mul(frustum.pos);
+		if (!(abs(new_pos.x - center.x) < 0.5f && abs(new_pos.z - center.z) < 0.5f)) {
+			frustum.pos = new_pos;
+		}
+	}
 
-	view_matrix[0][3] = -side.Dot(position);	view_matrix[1][3] = -up.Dot(position);	view_matrix[2][3] = front.Dot(position);
-	view_matrix[3][0] = 0.0f;					view_matrix[3][1] = 0.0f;				view_matrix[3][2] = 0.0f;			view_matrix[3][3] = 1.0f;
+	my_go->transform->position = frustum.pos;
 
-	return view_matrix;
+	LookAt(center);
+}
+
+void ComponentCamera::LookAt(math::float3& target)
+{
+	math::float3 dir = (target - frustum.pos).Normalized();
+	math::float3x3 look = math::float3x3::LookAt(frustum.front, dir, frustum.up, math::float3::unitY);
+	frustum.front = look.Mul(frustum.front).Normalized();
+	frustum.up = look.Mul(frustum.up).Normalized();
 }
 
 #pragma region Frustrum
@@ -155,7 +196,7 @@ math::float4x4 ComponentCamera::LookAt(math::float3& target)
 const void ComponentCamera::InitFrustum()
 {
 	frustum.type = math::FrustumType::PerspectiveFrustum;
-	frustum.pos = math::float3::zero;
+	frustum.pos = my_go->transform->position;
 	frustum.front = -math::float3::unitZ;
 	frustum.up = math::float3::unitY;
 	frustum.nearPlaneDistance = 0.1f;
@@ -172,18 +213,6 @@ void ComponentCamera::SetFrustum(unsigned& w, unsigned& h)
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)w / (float)h));
 }
 
-const void ComponentCamera::UpdatePitchYaw()
-{
-	pitch = -math::RadToDeg(SDL_asinf(-front.y));
-	yaw = math::RadToDeg(SDL_atan2f(front.z, front.x));
-
-	if (math::IsNan(pitch))
-		pitch = 0.0f;
-
-	if (math::IsNan(yaw))
-		yaw = 0.0f;
-}
-
 #pragma endregion
 
 #pragma region JSON
@@ -192,16 +221,9 @@ JSON_value* ComponentCamera::Save(JSON_value* component) const
 {
 	JSON_value* camera = Component::Save(component);
 
-	camera->AddVec3("front", front);
-	camera->AddVec3("side", side);
-	camera->AddVec3("up", up);
 	camera->AddFloat("speed", speed);
 	camera->AddFloat("rotation_speed", rotation_speed);
-	camera->AddVec4x4("proj", proj);
 	//TODO: Save also frustrum
-	camera->AddVec4x4("view_matrix", view_matrix);
-	camera->AddFloat("pitch", pitch);
-	camera->AddFloat("yaw", yaw);
 
 	component->addValue("", camera);
 
@@ -212,16 +234,9 @@ void ComponentCamera::Load(JSON_value* component)
 {
 	Component::Load(component);
 
-	front = component->GetVec3("front");
-	side = component->GetVec3("side");
-	up = component->GetVec3("up");
 	speed = component->GetFloat("speed");
 	rotation_speed = component->GetFloat("rotation_speed");
-	proj = component->GetVec4x4("proj");
-	//TODO: Save also frustrum
-	view_matrix = component->GetVec4x4("view_matrix");
-	pitch = component->GetFloat("pitch");
-	yaw = component->GetFloat("yaw");
+	//TODO: Load also frustrum
 }
 
 #pragma endregion
