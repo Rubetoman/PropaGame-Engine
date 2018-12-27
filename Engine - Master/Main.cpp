@@ -45,6 +45,18 @@ int main(int argc, char ** argv)
 			else
 			{
 				state = MAIN_UPDATE;
+				LOG("Application Start --------------");
+			}
+
+			LOG("Application Start --------------");
+			if (App->Start() == false)
+			{
+				LOG("Application Start exits with error -----");
+				state = MAIN_EXIT;
+			}
+			else
+			{
+				state = MAIN_UPDATE;
 				LOG("Application Update --------------");
 			}
 

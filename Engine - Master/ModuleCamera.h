@@ -25,10 +25,11 @@ public:
 	ModuleCamera();
 	~ModuleCamera();
 
-	bool            Init();
-	update_status	PreUpdate();
-	update_status   Update();
-	bool            CleanUp();
+	bool            Init()		override;
+	bool			Start()		override;
+	update_status	PreUpdate() override;
+	update_status   Update()	override;
+	bool            CleanUp()	override;
 
 	void		UpdateScreenSize();
 

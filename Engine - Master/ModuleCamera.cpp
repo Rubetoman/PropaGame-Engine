@@ -31,6 +31,12 @@ bool ModuleCamera::Init()
 	return true;
 }
 
+bool ModuleCamera::Start()
+{
+	editor_camera_comp->LookAt(math::float3(0.0f, 0.0f, 0.0f));
+	return true;
+}
+
 update_status ModuleCamera::PreUpdate() 
 {
 	if (App->editor->scene->IsFocused())
