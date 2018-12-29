@@ -1,6 +1,15 @@
 #include "WindowConfiguration.h"
+
+#include "ModuleEditor.h"
+#include "ModuleTime.h"
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
+#include "ModuleResources.h"
+#include "ModuleInput.h"
+
+#include "ComponentTransform.h"
+#include "ComponentCamera.h"
+
 #include "mmgr/mmgr.h"
 
 WindowConfiguration::WindowConfiguration(const char* name) : Window(name)
@@ -56,63 +65,36 @@ void WindowConfiguration::Draw()
 	}
 	if (ImGui::CollapsingHeader("Editor"))
 	{
-		ImGui::Checkbox("Show scene root", &App->scene->show_root);
+		ImGui::Checkbox("Show hided GOs", &App->scene->show_scene_gos);
 		ImGui::Separator();
 		ImGui::Checkbox("Show grid", &App->editor->show_grid); ImGui::SameLine();
 		ImGui::Checkbox("Show axis", &App->editor->show_axis);
+		ImGui::Checkbox("Draw all BBox", &App->editor->drawAllBBox);
 	}
-	if (ImGui::CollapsingHeader("Camera"))
+	if (ImGui::CollapsingHeader("Editor Camera"))
 	{
-		ImGui::Text("Camera Position:");
-		ImGui::Text("X: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->position.x).c_str());
-		ImGui::SameLine(100); ImGui::Text("Y: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->position.y).c_str());
-		ImGui::SameLine(200); ImGui::Text("Z: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->position.z).c_str());
-		ImGui::NewLine();
+		ComponentCamera* camera = App->camera->editor_camera_comp;
+		GameObject* camera_go = camera->my_go;
+
+		ImGui::DragFloat3("Position", (float*)&camera_go->transform->position, 0.1f);
+		//TODO: Add rotation
+
 		ImGui::Separator();
 
-		// Front, side and up vectors
-		ImGui::Text("Camera Vectors:");
-		ImGui::Text("Front: ");
-		ImGui::Text("X: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->front.x).c_str());
-		ImGui::SameLine(100); ImGui::Text("Y: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->front.y).c_str());
-		ImGui::SameLine(200); ImGui::Text("Z: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->front.z).c_str());
-		ImGui::NewLine();
+		ImGui::Checkbox("Frustum Culling", &camera->frustum_culling);
+		// View mode
+		const char* items[] = { "Invalid", "Orthographic", "Perspective" };
+		ImGui::Combo("View type", (int*)&camera->frustum.type, items, IM_ARRAYSIZE(items));
 
-		ImGui::Text("Side: ");
-		ImGui::Text("X: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->side.x).c_str());
-		ImGui::SameLine(100); ImGui::Text("Y: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->side.y).c_str());
-		ImGui::SameLine(200); ImGui::Text("Z: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->side.z).c_str());
-		ImGui::NewLine();
+		ImGui::SliderFloat("Near Plane Distance", &camera->frustum.nearPlaneDistance, 0.0f, camera->frustum.farPlaneDistance);
+		ImGui::SliderFloat("Far Plane Distance", &camera->frustum.farPlaneDistance, camera->frustum.nearPlaneDistance, 3000.0f);
+		//ImGui::SliderFloat("Aspect Ratio", &frustum.AspectRatio(), 0, 179);
+		ImGui::SliderFloat("FOV", &camera->frustum.horizontalFov, 0.0f, 3.14f);
 
-		ImGui::Text("Up: ");
-		ImGui::Text("X: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->up.x).c_str());
-		ImGui::SameLine(100); ImGui::Text("Y: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->up.y).c_str());
-		ImGui::SameLine(200); ImGui::Text("Z: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->up.z).c_str());
-		ImGui::NewLine();
-		ImGui::Separator();
-
-		ImGui::Text("Camera Vectors:");
-		ImGui::Text("Pitch: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->pitch).c_str());
-		ImGui::Text("Yaw: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(App->camera->mainCamera->yaw).c_str());
-		ImGui::NewLine();
 		ImGui::Separator();
 
 		ImGui::PushItemWidth(100.0f);
-		ImGui::InputFloat("Camera Speed", &App->camera->mainCamera->speed);
+		ImGui::InputFloat("Camera Speed", &camera->speed);
 		ImGui::InputFloat("Mouse Sensitivity", &App->camera->mouse_sensitivity);
 		ImGui::PopItemWidth();
 	}
@@ -178,7 +160,7 @@ void WindowConfiguration::Draw()
 	if (ImGui::CollapsingHeader("Textures"))
 	{
 		ImGui::Text("Loaded textures:");
-		for (std::map<Texture*,unsigned>::iterator it_t = App->textures->textures.begin(); it_t != App->textures->textures.end(); ++it_t)
+		for (std::map<Texture*,unsigned>::iterator it_t = App->resources->textures.begin(); it_t != App->resources->textures.end(); ++it_t)
 		{
 			Texture* texture = (it_t->first);
 			if (ImGui::CollapsingHeader(texture->name))

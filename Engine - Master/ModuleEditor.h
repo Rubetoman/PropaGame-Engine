@@ -15,6 +15,7 @@
 #include "WindowConfiguration.h"
 #include "WindowHierarchy.h"
 #include "WindowInspector.h"
+#include "ModuleCamera.h"
 
 #include "SDL/include/SDL.h"
 #include "GL/glew.h"
@@ -31,6 +32,9 @@ class WindowHardware;
 class WindowConfiguration;
 class WindowHierarchy;
 class WindowInspector;
+class WindowCamera;
+
+class ComponentCamera;
 
 class ModuleEditor : public Module
 {
@@ -49,10 +53,16 @@ public:
 	void DrawDebugReferences();
 	void CreateDockSpace() const;
 	void ShowMainMenuBar();
+	void SceneSavePopup();
+	void SceneLoadPopup();
 	void ShowInBrowser(const char* url) const;
 
 	// SDL
 	void HandleInputs(SDL_Event& event);
+
+	// Cameras
+	WindowCamera* CreateCameraWindow(ComponentCamera& camera);
+	void DeleteCameraWindow(WindowCamera* camera);
 
 public:
 
@@ -60,6 +70,7 @@ public:
 
 	bool show_grid = true;
 	bool show_axis = true;
+	bool drawAllBBox = false;
 
 	//The window we'll be rendering to
 	SDL_Window * window = nullptr;
@@ -76,8 +87,13 @@ public:
 	WindowHierarchy* hierarchy = nullptr;
 	WindowInspector* inspector = nullptr;
 
+	//Pop ups
+	bool show_scene_save_popup = false;
+	bool show_scene_load_popup = false;
+
 private:
 	std::list<Window*> editorWindows;
+	char temp_name[64] = "";
 };
 
 #endif // __MODULEEDITOR_H__

@@ -14,6 +14,8 @@
 #include "ModuleTime.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleScene.h"
+#include "ModuleResources.h"
+#include "JSON.h"
 
 using namespace std;
 
@@ -21,9 +23,9 @@ Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(time = new ModuleTime());
-	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(window = new ModuleWindow());
 	modules.push_back(renderer = new ModuleRender());
+	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(shader = new ModuleShader());
@@ -32,6 +34,8 @@ Application::Application()
 	modules.push_back(file = new ModuleFileManager());
 	modules.push_back(model_loader = new ModuleModelLoader());
 	modules.push_back(debug_draw = new ModuleDebugDraw());
+	modules.push_back(resources = new ModuleResources());
+	json = new JSON();
 }
 
 Application::~Application()
@@ -48,6 +52,16 @@ bool Application::Init()
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();
+
+	return ret;
+}
+
+bool Application::Start()
+{
+	bool ret = true;
+
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
+		ret = (*it)->Start();
 
 	return ret;
 }

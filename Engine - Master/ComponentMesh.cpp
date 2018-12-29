@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "ModuleShader.h"
 
+#include "GameObject.h"
 #include "par_shapes.h"
 #include "GL/glew.h"
 
@@ -23,6 +24,7 @@ ComponentMesh::ComponentMesh(const ComponentMesh& comp) : Component(comp)
 	num_indices = comp.num_indices;
 	vertices.reserve(comp.vertices.capacity());
 	vertices = comp.vertices;
+	boundingBox = comp.boundingBox;
 }
 
 ComponentMesh::~ComponentMesh()
@@ -62,12 +64,19 @@ bool ComponentMesh::DrawOnInspector()
 	return false;
 }
 
+// BUG: Draw meshes makes imgui flick
 void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4& proj)
 {
 	Texture* texture = nullptr;
 
 	//Draw meshes
-	unsigned program = App->shader->programs[my_go->material->shader];
+	unsigned program = 0;
+
+	if (my_go->material != nullptr)
+		program = App->shader->programs[my_go->material->shader];
+	else
+		program = App->shader->programs[0];
+
 	if (program < 1)
 	{
 		LOG("Program shader couldn't be found, it may not be loaded.");
@@ -210,4 +219,32 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 	//materialIndex = 0;
 	num_indices = mesh->ntriangles * 3;
 	num_vertices = mesh->npoints;
+}
+
+JSON_value* ComponentMesh::Save(JSON_value* component) const
+{
+	JSON_value* mesh = Component::Save(component);
+
+	mesh->AddUnsigned("VBO", vbo);
+	mesh->AddUnsigned("IBO", ibo);
+	mesh->AddUnsigned("VAO", vao);
+	mesh->AddUnsigned("Number Vertices", num_vertices);
+	mesh->AddUnsigned("Number Indices", num_indices);
+	//TODO: Add vertices and BBox
+
+	component->addValue("", mesh);
+
+	return mesh;
+}
+
+void ComponentMesh::Load(JSON_value* component)
+{
+	Component::Load(component);
+
+	vbo = component->GetUnsigned("VBO");
+	ibo = component->GetUnsigned("IBO");
+	vao = component->GetUnsigned("VAO");
+	num_vertices = component->GetUnsigned("Number Vertices");
+	num_indices = component->GetUnsigned("Number Indices");
+	//TODO: Add vertices and BBox
 }

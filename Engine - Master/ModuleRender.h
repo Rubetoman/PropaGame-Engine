@@ -7,7 +7,6 @@
 #include "ModuleModelLoader.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
-#include "ModuleCamera.h"
 #include "ModuleShader.h"
 #include "SDL.h"
 #include "GL/glew.h"
@@ -32,15 +31,13 @@ public:
 	bool CleanUp();
 
 	void WindowResized(unsigned width, unsigned height);
-	void CreateFrameBuffer();
+
+	void SetViewMatrix(ComponentCamera* camera) const;
+	void SetProjectionMatrix(ComponentCamera* camera) const;
+	void GenerateBlockUniforms();
 
 	void* context = nullptr;
-
-	//GLuint program = 0;
-	GLuint renderedTexture = 0;
-
-	unsigned		fbo = 0u;
-	unsigned		rbo = 0u;
+	unsigned ubo = 0u;
 };
 
 #endif

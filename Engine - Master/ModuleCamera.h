@@ -1,22 +1,15 @@
 #ifndef __MODULECAMERA_H__
 #define __MODULECAMERA_H__
 
-#include "Camera.h"
 #include "Module.h"
 #include "ModuleWindow.h"
-#include "Application.h"
-#include "ModuleInput.h"
-#include "ModuleEditor.h"
-#include "WindowScene.h"
-#include "ModuleTime.h"
+
 #include "Point.h"
-#include "GL/glew.h"
-#include "SDL.h"
-#include "MathGeoLib.h"
-#include "SDL/include/SDL.h"
+#include "Geometry/AABB.h"
 #include <vector>
 
-class Camera;
+class GameObject;
+class ComponentCamera;
 
 class ModuleCamera : public Module
 {
@@ -32,35 +25,32 @@ public:
 	ModuleCamera();
 	~ModuleCamera();
 
-	bool            Init();
-	update_status	PreUpdate();
-	update_status   Update();
-	bool            CleanUp();
+	bool            Init()		override;
+	bool			Start()		override;
+	update_status	PreUpdate() override;
+	update_status   Update()	override;
+	bool            CleanUp()	override;
 
 	void		UpdateScreenSize();
 
 	void		TranslateCameraInput();
 	void		RotateCameraInput();
 	void		CameraSpeedInput(float modifier);
-	void		MouseInputTranslation(const fPoint& mouse_position);
-	void		MouseInputRotation(const fPoint& mouse_position);
 	void		WheelInputTranslation(const fPoint& wheel_motion);
-	void		FitCamera(const AABB &boundingBox);
+	void		FitCamera(const math::AABB &boundingBox);
 
-	// Camera
-	Camera* mainCamera = nullptr;			// Default camera
-	std::vector<bool> activeCameras;		// Vector of boleans to know which cameras are active
-	std::vector<Camera*> cameras;			// Vector with all the cameras on the scene
+public:
+
+	// Editor Camera
+	GameObject* editor_camera_go = nullptr;
+	ComponentCamera* editor_camera_comp = nullptr;
 
 	// Mouse 
-	bool new_click = true;
 	bool new_scroll = true;
 	float mouse_sensitivity = 0.6;
-	float last_x = SCREEN_WIDTH / 2;
-	float last_y = SCREEN_HEIGHT / 2;
 
 	// Mesh
-	AABB* BBtoLook = nullptr;
+	math::AABB* BBtoLook = nullptr;
 
 };
 

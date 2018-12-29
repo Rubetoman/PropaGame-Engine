@@ -74,7 +74,7 @@ void ModuleFileManager::splitPath(const char* full_path, std::string* path, std:
 	}
 }
 
-std::string ModuleFileManager::normalizePath(const char * path)
+std::string ModuleFileManager::normalizePath(const char* path)
 {
 	assert(path != nullptr);
 
@@ -87,4 +87,18 @@ std::string ModuleFileManager::normalizePath(const char * path)
 	}
 
 	return str.c_str();
+}
+
+std::string ModuleFileManager::getFullPath(const char* path, const char* atDirectory, const char* withExtension)
+{
+	std::string full_path = path;
+	if (atDirectory != nullptr || withExtension != nullptr)
+		App->file->splitPath(path, nullptr, &full_path, nullptr);
+
+	if (atDirectory != nullptr)
+		full_path = atDirectory + full_path;
+	if (withExtension != nullptr)
+		full_path += withExtension;
+
+	return full_path.c_str();
 }

@@ -7,8 +7,8 @@
 #include "ComponentLight.h"
 
 #include "ModuleTextures.h"
+#include "ModuleResources.h"
 #include "ModuleShader.h"
-#include "ModuleScene.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_type::Material)
 {
@@ -23,7 +23,7 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(
 	k_specular = comp.k_specular;
 	k_diffuse = comp.k_diffuse;
 	k_ambient = comp.k_ambient;
-	++App->textures->textures[texture];
+	++App->resources->textures[texture];
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -90,7 +90,7 @@ void ComponentMaterial::RenderMaterial()
 	unsigned program = App->shader->programs[shader];
 
 	// Light render
-	GameObject* light = App->scene->lights[0];
+	GameObject* light = App->resources->lights[0];
 	if (light != nullptr && light->active)
 	{
 		glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&light->transform->position);
@@ -130,4 +130,42 @@ void ComponentMaterial::Delete()
 	App->textures->unloadTexture(texture);
 	my_go->material = nullptr;
 	Component::Delete();
+}
+
+JSON_value* ComponentMaterial::Save(JSON_value* component) const
+{
+	JSON_value* material = Component::Save(component);
+
+	material->AddUnsigned("shader", shader);
+
+	if(texture != nullptr)
+		material->AddString("texture", (texture->path));
+
+	material->AddVec4("color", color);
+	material->AddFloat("shininess", shininess);
+	material->AddFloat("k_specular", k_specular);
+	material->AddFloat("k_diffuse", k_diffuse);
+	material->AddFloat("k_ambient", k_ambient);
+
+	component->addValue("", material);
+
+	return material;
+}
+
+void ComponentMaterial::Load(JSON_value* component)
+{
+	Component::Load(component);
+
+	shader = component->GetUnsigned("shader");
+	
+	// Get texture
+	const char* tx = component->GetString("texture");
+	if(tx != nullptr)
+		texture = App->textures->loadTexture(component->GetString("texture"));
+
+	color = component->GetVec4("color");
+	shininess = component->GetFloat("shininess");
+	k_specular = component->GetFloat("k_specular");
+	k_diffuse = component->GetFloat("k_diffuse");
+	k_ambient = component->GetFloat("k_ambient");
 }

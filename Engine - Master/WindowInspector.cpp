@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "ModuleEditor.h"
 
+#include "GameObject.h"
 #include <vector>
 
 WindowInspector::WindowInspector(const char* name) : Window(name)
@@ -32,6 +33,14 @@ void WindowInspector::Draw()
 			go->name = name;
 			delete[] name;
 
+			// Serialization information
+			ImGui::Separator();
+			ImGui::Text("UUID: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), go->uuid.c_str());
+			ImGui::Text("Parent UID: "); ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), go->parentUID.c_str());
+			ImGui::Separator();
+
 			if (go->components.size() > 0)
 			{
 				DrawComponents(go);
@@ -39,6 +48,26 @@ void WindowInspector::Draw()
 			else
 			{
 				ImGui::Text("No components attached.");
+			}
+
+			if (ImGui::Button("Add Component", ImVec2(ImGui::GetWindowWidth(), 25))) 
+			{
+				ImGui::OpenPopup("AddComponentPopup");
+			}
+			ImGui::SameLine();
+
+			if (ImGui::BeginPopup("AddComponentPopup")) 
+			{
+				if (ImGui::Selectable("Mesh")) 
+				{
+					go->CreateComponent(component_type::Mesh);
+				}
+				ImGui::Separator();
+				if (ImGui::Selectable("Camera")) 
+				{
+					go->CreateComponent(component_type::Camera);
+				}
+				ImGui::EndPopup();
 			}
 		}
 	}
@@ -49,7 +78,7 @@ void WindowInspector::DrawComponents(GameObject* go)
 {
 	for (auto &comp : go->components)
 	{
-		if(go != nullptr)
+		if(comp != nullptr && go != nullptr)
 			comp->DrawOnInspector();
 	}
 }

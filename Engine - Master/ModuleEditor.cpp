@@ -6,6 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleTime.h"
 #include "ModuleScene.h"
+#include "ModuleResources.h"
 
 #include "Window.h"
 #include "WindowScene.h"
@@ -13,7 +14,10 @@
 #include "WindowConsole.h"
 #include "WindowHardware.h"
 #include "WindowConfiguration.h"
+#include "WindowCamera.h"
 
+#include "GameObject.h"
+#include "ComponentCamera.h"
 #include "debugdraw.h"
 
 
@@ -54,6 +58,9 @@ bool ModuleEditor::Init()
 	// Setup style
 	ImGui::StyleColorsDark();
 
+	// Set default name for the scene
+	strcpy(temp_name, "Untitled");
+
 	return true;
 }
 
@@ -84,6 +91,11 @@ update_status ModuleEditor::Update()
 {
 	ShowMainMenuBar();
 
+	if (show_scene_save_popup)
+		SceneSavePopup();
+	if (show_scene_load_popup)
+		SceneLoadPopup();
+
 	//ImGui::ShowDemoWindow();	//Example Window
 	return update;
 }
@@ -108,6 +120,7 @@ bool ModuleEditor::CleanUp()
 
 void ModuleEditor::Draw()
 {
+
 	for (std::list<Window*>::iterator it = editorWindows.begin(); it != editorWindows.end(); ++it)
 	{
 		if ((*it)->isActive())
@@ -116,6 +129,7 @@ void ModuleEditor::Draw()
 			(*it)->Draw();
 		}
 	}
+
 	ImGui::End();
 
 	ImGui::Render();
@@ -134,8 +148,6 @@ void ModuleEditor::DrawDebugReferences()
 		float axis_size = 5.0f;
 		dd::axisTriad(math::float4x4::identity, axis_size*0.125f, axis_size*1.25f, 0, true);
 	}
-
-	//dd::sphere(App->models->light.pos, math::float3(1.0f, 1.0f, 1.0f), 0.05f);
 }
 
 void ModuleEditor::CreateDockSpace() const
@@ -166,7 +178,43 @@ void ModuleEditor::ShowMainMenuBar()
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("Open")) {}
+			ImGui::Separator();
+			if (ImGui::MenuItem("New Scene"))
+			{
+				strcpy(temp_name, "Untitled");
+				App->scene->NewScene();
+			}
+			if (ImGui::MenuItem("Save Scene")) 
+			{ 
+				if (App->scene->name.empty())
+				{
+					show_scene_save_popup = true;
+				}
+				else
+				{
+					App->scene->SaveScene(App->scene->name.c_str());
+				}
+			}
+			if (ImGui::MenuItem("Save Scene As..."))
+			{
+				if (!App->scene->name.empty())
+				{
+					strcpy(temp_name, App->scene->name.c_str());
+				}
+				else
+				{
+					strcpy(temp_name, "Untitled");
+				}		
+				show_scene_save_popup = true;
+			}
+			if (ImGui::MenuItem("Load Scene"))
+			{
+				strcpy(temp_name, "");
+				show_scene_load_popup = true;
+			}
+			ImGui::Separator();
 			if (ImGui::MenuItem("Quit", "ALT+F4")) { update = UPDATE_STOP; }
+
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit"))
@@ -197,11 +245,18 @@ void ModuleEditor::ShowMainMenuBar()
 			if (ImGui::MenuItem("Inspector", NULL, inspector->isActive())) { inspector->toggleActive(); }
 			if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->isActive())) { hierarchy->toggleActive(); }
 			ImGui::Separator();
+			if (ImGui::BeginMenu("Cameras"))
+			{
+				for (auto &camera : App->resources->cameras)
+				{
+					GameObject* camera_go = camera->my_go;
+					if (ImGui::MenuItem(camera_go->name.c_str(), NULL, camera->window->isActive())) { camera->window->toggleActive(); }
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::Separator();
 			if (ImGui::MenuItem("Configuration", NULL, configuration->isActive())) { configuration->toggleActive(); }
-			ImGui::Separator();
-
 			if (ImGui::MenuItem("Hardware Info", NULL, hardware->isActive())) { hardware->toggleActive(); }
-			ImGui::Separator();
 			if (ImGui::MenuItem("Console", NULL, console->isActive())) { console->toggleActive(); }
 			ImGui::EndMenu();
 		}
@@ -217,12 +272,19 @@ void ModuleEditor::ShowMainMenuBar()
 		if (App->time->game_running == Game_State::Stoped)
 		{
 			if (ImGui::Button("Play"))
+			{
+				App->scene->SaveScene("temporalScene");
 				App->time->Start_Game();
+			}
 		}
 		else
 		{
 			if (ImGui::Button("Stop"))
+			{
 				App->time->Stop_Game();
+				App->scene->LoadScene("temporalScene");
+				App->scene->DeleteScene("temporalScene");
+			}
 		}
 		if (ImGui::Button("Pause"))
 		{
@@ -250,6 +312,61 @@ void ModuleEditor::ShowMainMenuBar()
 	}
 }
 
+void ModuleEditor::SceneSavePopup()
+{
+	ImGui::OpenPopup("Save Scene As");
+	if (ImGui::BeginPopupModal("Save Scene As", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Scene name:\n");
+		
+		ImGui::InputText(".proScene", temp_name, 64);
+		ImGui::Separator();
+
+		if (ImGui::Button("Save", ImVec2(120, 0))) 
+		{
+			App->scene->name = temp_name;
+			App->scene->SaveScene(App->scene->name.c_str());
+			show_scene_save_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			show_scene_save_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void ModuleEditor::SceneLoadPopup()
+{
+	ImGui::OpenPopup("Load Scene");
+	if (ImGui::BeginPopupModal("Load Scene", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Scene name:\n");
+
+		ImGui::InputText(".proScene", temp_name, 64);
+		ImGui::Separator();
+
+		if (ImGui::Button("Load", ImVec2(120, 0)))
+		{
+			App->scene->LoadScene(temp_name);
+			show_scene_load_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			show_scene_load_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+}
+
 void ModuleEditor::ShowInBrowser(const char* url) const
 {
 	assert(url != nullptr);
@@ -259,4 +376,30 @@ void ModuleEditor::ShowInBrowser(const char* url) const
 void ModuleEditor::HandleInputs(SDL_Event& event)
 {
 	ImGui_ImplSDL2_ProcessEvent(&event);
+}
+
+WindowCamera* ModuleEditor::CreateCameraWindow(ComponentCamera& camera)
+{
+	WindowCamera* newCamera = new WindowCamera(camera.uuid.c_str());
+	editorWindows.push_back(newCamera);
+	newCamera->camera = &camera;
+	if (App->resources->cameras.size() < 1)
+		newCamera->toggleActive();
+	return newCamera;
+}
+
+void ModuleEditor::DeleteCameraWindow(WindowCamera* camera)
+{
+	for (std::list<Window*>::iterator it_window = editorWindows.begin(); it_window != editorWindows.end();)
+	{
+		if (*it_window == camera)
+		{
+			delete *it_window;
+			editorWindows.erase(it_window++);
+		}
+		else
+		{
+			++it_window;
+		}
+	}
 }

@@ -2,6 +2,8 @@
 #define __GAMEOBJECT_H__
 
 #include "MathGeoLib.h"
+
+#include "JSON.h"
 #include <string>
 #include <list>
 
@@ -12,6 +14,7 @@ class Component;
 class ComponentTransform;
 class ComponentMesh;
 class ComponentMaterial;
+class ComponentCamera;
 
 enum class component_type;
 
@@ -60,10 +63,13 @@ public:
 	void CleanUp();
 
 	// Game Object
-	void Draw();
+	bool isActive() const;
+	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
 	void DeleteGameObject();
 	math::float4x4 GetLocalTransform() const;
 	math::float4x4 GetGlobalTransform() const;
+	math::AABB ComputeBBox() const;
+	void DrawBBox() const;
 
 	// Components
 	Component* CreateComponent(component_type type);
@@ -76,11 +82,19 @@ public:
 	void SetParent(GameObject* new_parent);
 	bool isForefather(GameObject& go);
 
+	// JSON
+	void Save(JSON_value* gameobject);
+	void Load(JSON_value* go);
+
 public:
 
+	std::string uuid = "";
+	std::string parentUID = "";
 	bool active = true;
 	std::string name = "GameObject";
 	GOFlags flags = GOFlags::None;
+
+	math::AABB& boundingBox = AABB();
 	
 	// Hierarchy
 	GameObject* parent = nullptr;

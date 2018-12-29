@@ -2,7 +2,6 @@
 #define __APPLICATION_H__
 
 #include <list>
-#include "Globals.h"
 #include "Module.h"
 
 class ModuleRender;
@@ -17,6 +16,8 @@ class ModuleFileManager;
 class ModuleTime;
 class ModuleDebugDraw;
 class ModuleScene;
+class ModuleResources;
+class JSON;
 
 class Application
 {
@@ -25,6 +26,7 @@ public:
 	~Application();
 
 	bool Init();
+	bool Start();
 	update_status Update();
 	bool CleanUp();
 
@@ -43,6 +45,8 @@ public:
 	ModuleTime* time = nullptr;
 	ModuleDebugDraw* debug_draw = nullptr;
 	ModuleScene* scene = nullptr;
+	ModuleResources* resources = nullptr;
+	JSON* json = nullptr;
 
 private:
 

@@ -2,7 +2,8 @@
 #define __WINDOWHIERARCHY_H__
 
 #include "Window.h"
-#include "GameObject.h"
+
+class GameObject;
 
 class WindowHierarchy : public Window
 {

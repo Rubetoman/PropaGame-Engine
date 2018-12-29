@@ -1,0 +1,485 @@
+{
+    "Root": [
+        {
+            "UID": "862fd84d-44e4-4539-9f2b-2af51a24b64b",
+            "ParentUID": "",
+            "Name": "World",
+            "Active": true,
+            "Components": [
+                {
+                    "UID": "892ee66c-3893-4a95-a7d7-471fabdd5f23",
+                    "GOUID": "862fd84d-44e4-4539-9f2b-2af51a24b64b",
+                    "Type": 0,
+                    "Active": false,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "09d92a21-2b94-4f7a-9e81-9d85f368e8a0",
+            "ParentUID": "862fd84d-44e4-4539-9f2b-2af51a24b64b",
+            "Name": "RootNode",
+            "Active": true,
+            "Components": [
+                {
+                    "UID": "39db3f3a-8e2e-4a12-b933-215bbf222796",
+                    "GOUID": "09d92a21-2b94-4f7a-9e81-9d85f368e8a0",
+                    "Type": 0,
+                    "Active": false,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        0.10000000149011612
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "623072bc-7206-4e3b-bce5-49df82787d34",
+            "ParentUID": "09d92a21-2b94-4f7a-9e81-9d85f368e8a0",
+            "Name": "Baker_house",
+            "Active": true,
+            "Components": [
+                {
+                    "UID": "9d9f1890-4140-41b6-8c49-b4eb4278f6f9",
+                    "GOUID": "623072bc-7206-4e3b-bce5-49df82787d34",
+                    "Type": 0,
+                    "Active": false,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "f9d04a65-080b-49d1-be5b-dfbf49874a3b",
+                    "GOUID": "623072bc-7206-4e3b-bce5-49df82787d34",
+                    "Type": 1,
+                    "Active": true,
+                    "VBO": 3,
+                    "IBO": 4,
+                    "VAO": 2,
+                    "Number Vertices": 1641,
+                    "Number Indices": 2751
+                },
+                {
+                    "UID": "a6916d3c-d446-488c-9be5-b2064ba872ef",
+                    "GOUID": "623072bc-7206-4e3b-bce5-49df82787d34",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "texture": "Assets/Models/textures/Baker_house.png",
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "k_diffuse": 0.5,
+                    "k_ambient": 0.5
+                }
+            ]
+        },
+        {
+            "UID": "e366bf27-aeb3-44f3-9942-5cd25d5b1f37",
+            "ParentUID": "09d92a21-2b94-4f7a-9e81-9d85f368e8a0",
+            "Name": "Chimney",
+            "Active": true,
+            "Components": [
+                {
+                    "UID": "fade7dc1-4ce7-4994-b20d-c6aaca932ec7",
+                    "GOUID": "e366bf27-aeb3-44f3-9942-5cd25d5b1f37",
+                    "Type": 0,
+                    "Active": false,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "0d4da2cb-5133-48cc-a906-169f8b3b0ba6",
+                    "GOUID": "e366bf27-aeb3-44f3-9942-5cd25d5b1f37",
+                    "Type": 1,
+                    "Active": true,
+                    "VBO": 1,
+                    "IBO": 2,
+                    "VAO": 1,
+                    "Number Vertices": 160,
+                    "Number Indices": 324
+                },
+                {
+                    "UID": "a07fc771-e24b-4a1d-801c-38dc92a31df1",
+                    "GOUID": "e366bf27-aeb3-44f3-9942-5cd25d5b1f37",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "texture": "Assets/Models/textures/Baker_house.png",
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "k_diffuse": 0.5,
+                    "k_ambient": 0.5
+                }
+            ]
+        },
+        {
+            "UID": "0a967db6-ac2f-4b30-9798-611016ac883b",
+            "ParentUID": "862fd84d-44e4-4539-9f2b-2af51a24b64b",
+            "Name": "RootNode",
+            "Active": true,
+            "Components": [
+                {
+                    "UID": "ea6eaceb-f53a-4253-b990-9cb826a36347",
+                    "GOUID": "0a967db6-ac2f-4b30-9798-611016ac883b",
+                    "Type": 0,
+                    "Active": false,
+                    "Position": [
+                        -4.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        0.10000000149011612
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "75235e7d-94be-426b-89fc-86e73c37b596",
+            "ParentUID": "0a967db6-ac2f-4b30-9798-611016ac883b",
+            "Name": "Baker_house",
+            "Active": true,
+            "Components": [
+                {
+                    "UID": "c8dbc27d-be22-4c3e-a0c4-475151bf731e",
+                    "GOUID": "75235e7d-94be-426b-89fc-86e73c37b596",
+                    "Type": 0,
+                    "Active": false,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "aff6b7be-7c87-41a7-8779-07d74fa901f7",
+                    "GOUID": "75235e7d-94be-426b-89fc-86e73c37b596",
+                    "Type": 1,
+                    "Active": true,
+                    "VBO": 3,
+                    "IBO": 4,
+                    "VAO": 2,
+                    "Number Vertices": 1641,
+                    "Number Indices": 2751
+                },
+                {
+                    "UID": "f7167ae2-11b9-4e5c-9734-1941e4ef0515",
+                    "GOUID": "75235e7d-94be-426b-89fc-86e73c37b596",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "texture": "Assets/Models/textures/Baker_house.png",
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "k_diffuse": 0.5,
+                    "k_ambient": 0.5
+                }
+            ]
+        },
+        {
+            "UID": "ecf0d2eb-6d5b-4640-9ee0-7b9a7e7fe835",
+            "ParentUID": "0a967db6-ac2f-4b30-9798-611016ac883b",
+            "Name": "Chimney",
+            "Active": false,
+            "Components": [
+                {
+                    "UID": "041cfa89-b29e-4d72-afcb-5022c9631658",
+                    "GOUID": "ecf0d2eb-6d5b-4640-9ee0-7b9a7e7fe835",
+                    "Type": 0,
+                    "Active": false,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "75ba993b-d08c-4596-b918-5b2370ffc417",
+                    "GOUID": "ecf0d2eb-6d5b-4640-9ee0-7b9a7e7fe835",
+                    "Type": 1,
+                    "Active": true,
+                    "VBO": 1,
+                    "IBO": 2,
+                    "VAO": 1,
+                    "Number Vertices": 160,
+                    "Number Indices": 324
+                },
+                {
+                    "UID": "da95ee07-9be5-428c-9747-15e6781f200b",
+                    "GOUID": "ecf0d2eb-6d5b-4640-9ee0-7b9a7e7fe835",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "texture": "Assets/Models/textures/Baker_house.png",
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "k_diffuse": 0.5,
+                    "k_ambient": 0.5
+                }
+            ]
+        },
+        {
+            "UID": "60ea4e78-78f6-4d67-8e0c-168727d8ea02",
+            "ParentUID": "862fd84d-44e4-4539-9f2b-2af51a24b64b",
+            "Name": "sphere",
+            "Active": false,
+            "Components": [
+                {
+                    "UID": "8ee999ad-442e-4684-9b83-365695d7f8bc",
+                    "GOUID": "60ea4e78-78f6-4d67-8e0c-168727d8ea02",
+                    "Type": 0,
+                    "Active": false,
+                    "Position": [
+                        5.400000095367432,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "9ca99f8c-14fa-463a-80a0-f14b467e874c",
+                    "GOUID": "60ea4e78-78f6-4d67-8e0c-168727d8ea02",
+                    "Type": 1,
+                    "Active": false,
+                    "VBO": 9,
+                    "IBO": 10,
+                    "VAO": 5,
+                    "Number Vertices": 441,
+                    "Number Indices": 2280
+                },
+                {
+                    "UID": "ce3b1522-11a6-4efd-8a79-162053d0fa9f",
+                    "GOUID": "60ea4e78-78f6-4d67-8e0c-168727d8ea02",
+                    "Type": 2,
+                    "Active": false,
+                    "shader": 0,
+                    "texture": "Assets/Models/textures/Checkers_Texture.jpg",
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "k_diffuse": 0.5,
+                    "k_ambient": 0.5
+                }
+            ]
+        },
+        {
+            "UID": "727bf545-a56a-4f05-a3e0-54873f4f3a61",
+            "ParentUID": "862fd84d-44e4-4539-9f2b-2af51a24b64b",
+            "Name": "sphere",
+            "Active": false,
+            "Components": [
+                {
+                    "UID": "3190f39a-c507-48da-8db3-548a65c9d632",
+                    "GOUID": "727bf545-a56a-4f05-a3e0-54873f4f3a61",
+                    "Type": 0,
+                    "Active": false,
+                    "Position": [
+                        5.400000095367432,
+                        2.299999952316284,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ]
+                },
+                {
+                    "UID": "f9655d46-777b-4716-918c-455982477e69",
+                    "GOUID": "727bf545-a56a-4f05-a3e0-54873f4f3a61",
+                    "Type": 1,
+                    "Active": false,
+                    "VBO": 9,
+                    "IBO": 10,
+                    "VAO": 5,
+                    "Number Vertices": 441,
+                    "Number Indices": 2280
+                },
+                {
+                    "UID": "cd67c817-1897-4c30-be3f-99735df7e713",
+                    "GOUID": "727bf545-a56a-4f05-a3e0-54873f4f3a61",
+                    "Type": 2,
+                    "Active": false,
+                    "shader": 0,
+                    "texture": "Assets/Models/textures/Checkers_Texture.jpg",
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "k_diffuse": 0.5,
+                    "k_ambient": 0.5
+                }
+            ]
+        },
+        {
+            "UID": "b688c6b3-0aab-4b70-bf58-ba1918cc8e4e",
+            "ParentUID": "862fd84d-44e4-4539-9f2b-2af51a24b64b",
+            "Name": "Default Light",
+            "Active": true,
+            "Components": [
+                {
+                    "UID": "33665dc7-035e-4400-9c0c-cf5ed12a175a",
+                    "GOUID": "b688c6b3-0aab-4b70-bf58-ba1918cc8e4e",
+                    "Type": 0,
+                    "Active": false,
+                    "Position": [
+                        -2.0,
+                        0.0,
+                        6.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "77588ff1-c74e-4e8d-8d78-de012c03f992",
+                    "GOUID": "b688c6b3-0aab-4b70-bf58-ba1918cc8e4e",
+                    "Type": 3,
+                    "Active": true,
+                    "intensity": 0.6549999713897705
+                }
+            ]
+        }
+    ]
+}

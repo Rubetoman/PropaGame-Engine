@@ -2,8 +2,9 @@
 #define __COMPOMENTMATERIAL_H__
 
 #include "Component.h"
-#include "GameObject.h"
-#include "Texture.h"
+
+class GameObject;
+class Texture;
 
 class ComponentMaterial : public Component
 {
@@ -16,6 +17,9 @@ public:
 	bool DrawOnInspector() override;
 	void RenderMaterial();
 	void Delete() override;
+
+	JSON_value* Save(JSON_value* component) const override;
+	void Load(JSON_value* component) override;
 
 public:
 	unsigned shader = 0;

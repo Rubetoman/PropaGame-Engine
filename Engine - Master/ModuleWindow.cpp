@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 
+#include "ComponentCamera.h"
+
 ModuleWindow::ModuleWindow()
 {
 }
@@ -26,7 +28,7 @@ bool ModuleWindow::Init()
 	{
 		screen_width = SCREEN_WIDTH;
 		screen_height = SCREEN_HEIGHT;
-		SetWindowSize(screen_width, screen_height, true);
+		//SetWindowSize(screen_width, screen_height, true);
 
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 		
@@ -36,7 +38,9 @@ bool ModuleWindow::Init()
 		if (borderless) flags |= SDL_WINDOW_BORDERLESS;
 		SDL_GL_SetSwapInterval(vsync);
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, flags);
+		std::string windowTitle = "Untitled - ";
+		windowTitle += TITLE;
+		window = SDL_CreateWindow(windowTitle.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, flags);
 
 		if(window == nullptr)
 		{
@@ -120,7 +124,7 @@ void ModuleWindow::SetWindowSize(unsigned& w, unsigned& h, const bool useSDL)
 {
 	App->window->screen_width = w;
 	App->window->screen_height = h;
-	App->camera->mainCamera->SetFrustum(w,h);
+	App->camera->editor_camera_comp->SetFrustum(w,h);
 	if (useSDL)
 		SDL_SetWindowSize(window, screen_width, screen_height);
 }

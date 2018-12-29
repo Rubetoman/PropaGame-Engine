@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
+
+#include "GameObject.h"
 #include <vector>
 #include <string>
 
@@ -81,30 +83,41 @@ void WindowHierarchy::Draw()
 
 void WindowHierarchy::DrawNode()
 {
-	if (App->scene->show_root)
+	if (App->scene->show_scene_gos)
 	{
-		GameObject* node = App->scene->root;
-		ImGui::PushID(node);
-		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-		flags |= node == selected ? ImGuiTreeNodeFlags_Selected : 0;
-		bool node_open = ImGui::TreeNodeEx(node->name.c_str(), flags);
-		SetDragAndDrop(node);
-		
-		if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
+		for (auto &go : App->scene->scene_gos)
 		{
-			selected = node;
-		}
+			ImGui::PushID(go);
+			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+			flags |= go == selected ? ImGuiTreeNodeFlags_Selected : 0;
 
-		if (node_open)
-		{
-			// Children
-			for (auto &child : node->children)
+			//Check for children
+			if (go->children.empty())
 			{
-				DrawChildren(child);
+				flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 			}
-			ImGui::TreePop();
-		}
-		ImGui::PopID();
+
+			bool node_open = ImGui::TreeNodeEx(go->name.c_str(), flags);
+
+			if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
+			{
+				selected = go;
+			}
+
+			if (node_open)
+			{
+				// Children
+				for (auto &child : go->children)
+				{
+					DrawChildren(child);
+				}
+				if (!(flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
+				{
+					ImGui::TreePop();
+				}
+			}
+			ImGui::PopID();
+		}	
 	}
 	else
 	{

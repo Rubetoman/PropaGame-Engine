@@ -2,9 +2,10 @@
 #define __COMPOMENTMESH_H__
 
 #include "Component.h"
-#include "Texture.h"
-#include "GameObject.h"
-#include "MathGeoLib.h"
+#include "Geometry/AABB.h"
+
+class Texture;
+class GameObject;
 
 struct par_shapes_mesh_s;
 
@@ -25,6 +26,10 @@ public:
 	void DeleteMesh();
 	void Delete() override;
 
+	JSON_value* Save(JSON_value* component) const override;
+	void Load(JSON_value* component) override;
+
+public:
 	// Mesh variables
 	unsigned vbo = 0u;
 	unsigned ibo = 0u;
@@ -33,7 +38,7 @@ public:
 	unsigned num_indices = 0u;
 	std::vector<float3> vertices;
 
-	AABB boundingBox;
+	math::AABB boundingBox = math::AABB();
 };
 
 #endif

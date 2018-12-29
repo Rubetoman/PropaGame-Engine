@@ -1,6 +1,7 @@
 #include "ComponentLight.h"
 
-
+#include "Application.h"
+#include "ModuleResources.h"
 
 ComponentLight::ComponentLight(GameObject* go) : Component(go, component_type::Light)
 {
@@ -13,6 +14,9 @@ ComponentLight::ComponentLight(const ComponentLight& comp) : Component(comp)
 
 ComponentLight::~ComponentLight()
 {
+	unsigned pos = App->resources->GetLightNumber(*my_go);
+	if(pos <= 0)
+		App->resources->lights.erase(App->resources->lights.begin() + pos);
 }
 
 Component* ComponentLight::Duplicate()
@@ -39,4 +43,21 @@ bool ComponentLight::DrawOnInspector()
 	}
 	ImGui::PopID();
 	return false;
+}
+
+JSON_value* ComponentLight::Save(JSON_value* component) const
+{
+	JSON_value* light = Component::Save(component);
+
+	light->AddFloat("intensity", intensity);
+	component->addValue("", light);
+
+	return light;
+}
+
+void ComponentLight::Load(JSON_value* component)
+{
+	Component::Load(component);
+	
+	intensity = component->GetFloat("intensity");
 }
