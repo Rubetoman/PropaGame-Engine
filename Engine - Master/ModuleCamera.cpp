@@ -61,7 +61,7 @@ update_status ModuleCamera::Update()
 
 	for (auto camera : App->resources->cameras)
 	{
-		camera->GetComponent(component_type::Camera)->Update();
+		camera->Update();
 	}
 
 	return UPDATE_CONTINUE;

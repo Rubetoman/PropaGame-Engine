@@ -95,11 +95,10 @@ update_status ModuleRender::Update()
 	App->debug_draw->Draw(editor_camera, editor_camera->fbo, App->window->screen_height, App->window->screen_width);
 
 	// CAMERAS
-	for (auto &cameraGO : App->resources->cameras)
+	for (auto &camera : App->resources->cameras)
 	{
-		if (cameraGO->active)
+		if (camera->active)
 		{
-			ComponentCamera* camera = (ComponentCamera*)cameraGO->GetComponent(component_type::Camera);
 			if (camera != nullptr && camera->active)
 			{
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);

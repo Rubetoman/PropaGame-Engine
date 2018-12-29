@@ -73,7 +73,7 @@ GameObject::GameObject(const GameObject& go)
 		}
 		else if (new_comp->type == component_type::Camera)
 		{
-			App->resources->cameras.push_back(this);
+			App->resources->cameras.push_back((ComponentCamera*)new_comp);
 		}
 	}
 	for (const auto& child : go.children)
@@ -293,7 +293,7 @@ Component* GameObject::CreateComponent(component_type type)
 			component = new ComponentCamera(this);
 			if (App != nullptr)
 			{
-				App->resources->cameras.push_back(this);
+				App->resources->cameras.push_back((ComponentCamera*)component);
 			}
 		}
 		else

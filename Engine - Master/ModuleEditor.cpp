@@ -249,8 +249,8 @@ void ModuleEditor::ShowMainMenuBar()
 			{
 				for (auto &camera : App->resources->cameras)
 				{
-					ComponentCamera* cam = (ComponentCamera*)camera->GetComponent(component_type::Camera);
-					if (ImGui::MenuItem(camera->name.c_str(), NULL, cam->window->isActive())) { cam->window->toggleActive(); }
+					GameObject* camera_go = camera->my_go;
+					if (ImGui::MenuItem(camera_go->name.c_str(), NULL, camera->window->isActive())) { camera->window->toggleActive(); }
 				}
 				ImGui::EndMenu();
 			}

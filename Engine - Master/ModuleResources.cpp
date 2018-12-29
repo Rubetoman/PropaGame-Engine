@@ -55,12 +55,12 @@ unsigned ModuleResources::GetLightNumber(GameObject& go) const
 	return pos;
 }
 
-unsigned ModuleResources::GetCameraNumber(GameObject& go) const
+unsigned ModuleResources::GetCameraNumber(ComponentCamera& camera) const
 {
-	auto pos = std::find(cameras.begin(), cameras.end(), &go) - cameras.begin();
+	auto pos = std::find(cameras.begin(), cameras.end(), &camera) - cameras.begin();
 	if (pos >= cameras.size())
 	{
-		LOG("Warning: %s not found as a camera on list of cameras.", go.name);
+		LOG("Warning: %s not found as a camera on list of cameras.", camera.my_go->name);
 		return -1;
 	}
 	return pos;
@@ -73,7 +73,7 @@ void ModuleResources::DeleteCamera(ComponentCamera* camera)
 		// Delete Window
 		App->editor->DeleteCameraWindow(camera->window);
 
-		int position = GetCameraNumber(*camera->my_go);
+		int position = GetCameraNumber(*camera);
 		if (position > -1)
 		{
 			cameras.erase(cameras.begin() + position);

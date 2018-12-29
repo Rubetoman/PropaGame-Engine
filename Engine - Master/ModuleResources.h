@@ -24,8 +24,8 @@ public:
 	unsigned GetLightNumber(GameObject& go) const;
 
 	// Cameras
-	unsigned GetCameraNumber(GameObject& go) const;
-	void DeleteCamera(ComponentCamera* go);
+	unsigned GetCameraNumber(ComponentCamera& camera) const;
+	void DeleteCamera(ComponentCamera* camera);
 
 public:
 	std::vector<GameObject*> lights;		// List of all the lights on the scene
@@ -36,7 +36,7 @@ public:
 	Texture* no_camera_texture = nullptr;
 
 	// Scene Cameras
-	std::vector<GameObject*> cameras;		// Vector with all the cameras on the scene
+	std::vector<ComponentCamera*> cameras;		// Vector with all the cameras on the scene
 };
 
 #endif /*__MODULERESOURCES_H__*/
