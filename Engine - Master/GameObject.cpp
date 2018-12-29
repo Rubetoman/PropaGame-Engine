@@ -71,6 +71,10 @@ GameObject::GameObject(const GameObject& go)
 		{
 			material = (ComponentMaterial*)new_comp;
 		}
+		else if (new_comp->type == component_type::Camera)
+		{
+			App->resources->cameras.push_back(this);
+		}
 	}
 	for (const auto& child : go.children)
 	{

@@ -380,7 +380,7 @@ void ModuleEditor::HandleInputs(SDL_Event& event)
 
 WindowCamera* ModuleEditor::CreateCameraWindow(ComponentCamera& camera)
 {
-	WindowCamera* newCamera = new WindowCamera(camera.my_go->name.c_str());
+	WindowCamera* newCamera = new WindowCamera(camera.uuid.c_str());
 	editorWindows.push_back(newCamera);
 	newCamera->camera = &camera;
 	if (App->resources->cameras.size() < 1)

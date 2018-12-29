@@ -24,7 +24,19 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go, component_type:
 
 ComponentCamera::ComponentCamera(const ComponentCamera& comp) : Component(comp)
 {
-	//TODO: Copy variables
+	boundingBox = comp.boundingBox;
+
+	// Texture rendered to
+	CreateFrameBuffer();
+
+	speed = comp.speed;
+	rotation_speed = comp.rotation_speed;
+
+	// Camera frustum
+	frustum = comp.frustum;
+
+	// Camera Window
+	window = App->editor->CreateCameraWindow(*this);
 }
 
 ComponentCamera::~ComponentCamera()
