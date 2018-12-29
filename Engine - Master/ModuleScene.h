@@ -2,8 +2,12 @@
 #define __MODULESCENE_H__
 
 #include "Module.h"
-#include "GameObject.h"
-//#include <vector>
+#include "Math/float4x4.h"
+#include <vector>
+
+class GameObject;
+class ComponentCamera;
+class JSON_file;
 
 class ModuleScene : public Module
 {
@@ -15,7 +19,7 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
-	void Draw(const math::float4x4& view, const math::float4x4& proj);
+	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
 
 	GameObject* CreateGameObject(const char* name);
 	GameObject* CreateGameObject(const char* name, GameObject* parent);

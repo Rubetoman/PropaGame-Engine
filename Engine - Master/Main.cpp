@@ -48,7 +48,6 @@ int main(int argc, char ** argv)
 				LOG("Application Start --------------");
 			}
 
-			LOG("Application Start --------------");
 			if (App->Start() == false)
 			{
 				LOG("Application Start exits with error -----");

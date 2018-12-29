@@ -151,24 +151,27 @@ bool GameObject::isActive() const
 		return parent->isActive();
 }
 
-void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj)
+void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera)
 {
 	if (!active) return;
 	if (transform == nullptr) return;
 
 	for (const auto &child : children)
 	{
-		child->Draw(view, proj);
+		child->Draw(view, proj, camera);
 	}
+
+	// Compute and Draw BBox on Editor
+	boundingBox = ComputeBBox();
+	if ((App->editor->hierarchy->selected == this) || (App->editor->drawAllBBox))
+		DrawBBox();
 
 	if (mesh != nullptr && mesh->active)
 	{
-		((ComponentMesh*)mesh)->RenderMesh(view, proj);
+		// Avoid drawing mesh if it is not inside frustum
+		if (camera.ContainsAABB(boundingBox))
+			((ComponentMesh*)mesh)->RenderMesh(view, proj);
 	}
-
-	// Draw BBox on Editor
-	if ((App->editor->hierarchy->selected == this) || (App->editor->drawAllBBox))
-		DrawBBox();
 
 	// Draw a sphere on Editor
 	if (GetComponent(component_type::Light) != nullptr)
@@ -177,13 +180,13 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj)
 	}
 
 	// Draw a camera icon and Frustum on Editor
-	ComponentCamera* camera = (ComponentCamera*)GetComponent(component_type::Camera);
-	if (camera != nullptr)
+	ComponentCamera* camera_component = (ComponentCamera*)GetComponent(component_type::Camera);
+	if (camera_component != nullptr)
 	{
-		dd::cone(transform->position + (camera->frustum.front * 0.3f), 0.5f * camera->frustum.front, math::float3(1.0f, 1.0f, 1.0f), 0.2f, 0.01f);
+		dd::cone(transform->position + (camera_component->frustum.front * 0.3f), 0.5f * camera_component->frustum.front, math::float3(1.0f, 1.0f, 1.0f), 0.2f, 0.01f);
 		dd::box(transform->position, math::float3(1.0f, 1.0f, 1.0f), 0.4f, 0.4f, 0.4f);
 
-		dd::frustum((camera->frustum.ProjectionMatrix() * camera->frustum.ViewMatrix()).Inverted(), dd::colors::Purple);
+		dd::frustum((camera_component->frustum.ProjectionMatrix() * camera_component->frustum.ViewMatrix()).Inverted(), dd::colors::Purple);
 	}
 }
 
@@ -227,9 +230,8 @@ math::AABB GameObject::ComputeBBox() const
 
 void GameObject::DrawBBox() const 
 {
-	math::AABB bbox = ComputeBBox();
 	if(mesh != nullptr)
-		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
+		dd::aabb(boundingBox.minPoint, boundingBox.maxPoint, math::float3(255, 255, 0), true);
 }
 #pragma endregion
 

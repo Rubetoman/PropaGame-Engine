@@ -208,6 +208,43 @@ void ComponentCamera::LookAt(math::float3& target)
 	frustum.up = look.Mul(frustum.up).Normalized();
 }
 
+// tests if a AABBox is within the frustrum
+bool ComponentCamera::ContainsAABB(const math::AABB& boundingBox) const
+{
+	Plane planes[6];
+	float3 corners[8];
+	int counter = 0;
+
+	boundingBox.GetCornerPoints(corners);
+	frustum.GetPlanes(planes);
+
+	for (int i = 0; i < 6; i++)
+	{
+		//This number checks if the bb is outside of a plane
+		int aux_count = counter;
+
+		for (int j = 0; j < 8; j++)
+		{
+			if (!planes[i].IsOnPositiveSide(corners[j]))
+			{
+				counter++;
+				break;
+			}
+		}
+		if (aux_count == counter)
+		{
+			return false;
+		}
+	}
+
+	if (counter == 6)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 #pragma region Frustrum
 
 const void ComponentCamera::InitFrustum()

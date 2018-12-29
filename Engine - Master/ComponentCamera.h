@@ -28,6 +28,8 @@ public:
 	void			Orbit(float dx, float dy);
 	void			LookAt(math::float3& target);
 
+	bool ContainsAABB(const math::AABB& boundingBox) const;
+
 	// Frustum
 	const void		InitFrustum();
 	void			SetFrustum(unsigned& w, unsigned& h);

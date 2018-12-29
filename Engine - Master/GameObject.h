@@ -14,6 +14,7 @@ class Component;
 class ComponentTransform;
 class ComponentMesh;
 class ComponentMaterial;
+class ComponentCamera;
 
 enum class component_type;
 
@@ -63,7 +64,7 @@ public:
 
 	// Game Object
 	bool isActive() const;
-	void Draw(const math::float4x4& view, const math::float4x4& proj);
+	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
 	void DeleteGameObject();
 	math::float4x4 GetLocalTransform() const;
 	math::float4x4 GetGlobalTransform() const;

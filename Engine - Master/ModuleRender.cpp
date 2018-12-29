@@ -86,12 +86,13 @@ update_status ModuleRender::Update()
 	App->editor->DrawDebugReferences();
 
 	// Draw Scene
-	math::float4x4 proj = App->camera->editor_camera_comp->frustum.ProjectionMatrix();
-	math::float4x4 view = App->camera->editor_camera_comp->frustum.ViewMatrix();
-	App->scene->Draw(view, proj);
+	ComponentCamera* editor_camera = App->camera->editor_camera_comp;
+	math::float4x4 proj = editor_camera->frustum.ProjectionMatrix();
+	math::float4x4 view = editor_camera->frustum.ViewMatrix();
+	App->scene->Draw(view, proj, *editor_camera);
 	
 	// Draw debug draw
-	App->debug_draw->Draw(App->camera->editor_camera_comp, App->camera->editor_camera_comp->fbo, App->window->screen_height, App->window->screen_width);
+	App->debug_draw->Draw(editor_camera, editor_camera->fbo, App->window->screen_height, App->window->screen_width);
 
 	// CAMERAS
 	for (auto &cameraGO : App->resources->cameras)
@@ -109,7 +110,7 @@ update_status ModuleRender::Update()
 				proj = camera->frustum.ProjectionMatrix();
 				//view = camera->LookAt(cameraGO->transform->position + camera->front);
 				math::float4x4 view = camera->frustum.ViewMatrix();
-				App->scene->Draw(view, proj);
+				App->scene->Draw(view, proj, *camera);
 
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			}
