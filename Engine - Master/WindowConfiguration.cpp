@@ -81,14 +81,15 @@ void WindowConfiguration::Draw()
 
 		ImGui::Separator();
 
+		ImGui::Checkbox("Frustum Culling", &camera->frustum_culling);
+		// View mode
+		const char* items[] = { "Invalid", "Orthographic", "Perspective" };
+		ImGui::Combo("View type", (int*)&camera->frustum.type, items, IM_ARRAYSIZE(items));
+
 		ImGui::SliderFloat("Near Plane Distance", &camera->frustum.nearPlaneDistance, 0.0f, camera->frustum.farPlaneDistance);
 		ImGui::SliderFloat("Far Plane Distance", &camera->frustum.farPlaneDistance, camera->frustum.nearPlaneDistance, 3000.0f);
 		//ImGui::SliderFloat("Aspect Ratio", &frustum.AspectRatio(), 0, 179);
 		ImGui::SliderFloat("FOV", &camera->frustum.horizontalFov, 0.0f, 3.14f);
-
-		// View mode
-		const char* items[] = { "Invalid", "Orthographic", "Perspective" };
-		ImGui::Combo("View type", (int*)&camera->frustum.type, items, IM_ARRAYSIZE(items));
 
 		ImGui::Separator();
 

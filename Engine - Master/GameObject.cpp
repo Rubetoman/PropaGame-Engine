@@ -169,7 +169,7 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 	if (mesh != nullptr && mesh->active)
 	{
 		// Avoid drawing mesh if it is not inside frustum
-		if (camera.ContainsAABB(boundingBox))
+		if (!camera.frustum_culling || camera.ContainsAABB(boundingBox))
 			((ComponentMesh*)mesh)->RenderMesh(view, proj);
 	}
 

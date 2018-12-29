@@ -34,6 +34,7 @@ ComponentCamera::ComponentCamera(const ComponentCamera& comp) : Component(comp)
 
 	// Camera frustum
 	frustum = comp.frustum;
+	frustum_culling = comp.frustum_culling;
 
 	// Camera Window
 	window = App->editor->CreateCameraWindow(*this);
@@ -85,14 +86,15 @@ bool ComponentCamera::DrawOnInspector()
 		bool deleted = Component::DrawOnInspector();
 		if (!deleted)
 		{
+			ImGui::Checkbox("Frustum Culling", &frustum_culling);
+			// View mode
+			const char* items[] = { "Invalid", "Orthographic", "Perspective" };
+			ImGui::Combo("View type", (int*)&frustum.type, items, IM_ARRAYSIZE(items));
+
 			ImGui::SliderFloat("Near Plane Distance", &frustum.nearPlaneDistance, 0.0f, frustum.farPlaneDistance);
 			ImGui::SliderFloat("Far Plane Distance", &frustum.farPlaneDistance, frustum.nearPlaneDistance, 3000.0f);
 			//ImGui::SliderFloat("Aspect Ratio", &frustum.AspectRatio(), 0, 179);
 			ImGui::SliderFloat("FOV", &frustum.horizontalFov, 0.0f, 3.14f);
-
-			// View mode
-			const char* items[] = { "Invalid", "Orthographic", "Perspective" };
-			ImGui::Combo("View type", (int*)&frustum.type, items, IM_ARRAYSIZE(items));
 		}
 		else
 		{
@@ -282,6 +284,7 @@ JSON_value* ComponentCamera::Save(JSON_value* component) const
 	camera->AddFloat("farPlaneDistance", frustum.farPlaneDistance);
 	camera->AddFloat("horizontalFov", frustum.horizontalFov);
 	camera->AddInt("type", frustum.type);
+	camera->AddBool("frustum_culling", frustum_culling);
 
 	component->addValue("", camera);
 
@@ -299,6 +302,7 @@ void ComponentCamera::Load(JSON_value* component)
 	frustum.farPlaneDistance = component->GetFloat("farPlaneDistance");
 	frustum.horizontalFov = component->GetFloat("horizontalFov");
 	frustum.type = (FrustumType)component->GetInt("type");
+	frustum_culling = component->GetBool("frustum_culling");
 }
 
 #pragma endregion

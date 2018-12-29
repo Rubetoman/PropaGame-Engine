@@ -50,6 +50,7 @@ public:
 
 	// Camera frustum
 	math::Frustum frustum;
+	bool frustum_culling = true;
 
 	// Camera Window
 	WindowCamera* window = nullptr;
