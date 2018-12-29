@@ -240,7 +240,11 @@ JSON_value* ComponentCamera::Save(JSON_value* component) const
 
 	camera->AddFloat("speed", speed);
 	camera->AddFloat("rotation_speed", rotation_speed);
-	//TODO: Save also frustrum
+	//Save frustrum data
+	camera->AddFloat("nearPlaneDistance", frustum.nearPlaneDistance);
+	camera->AddFloat("farPlaneDistance", frustum.farPlaneDistance);
+	camera->AddFloat("horizontalFov", frustum.horizontalFov);
+	camera->AddInt("type", frustum.type);
 
 	component->addValue("", camera);
 
@@ -253,7 +257,11 @@ void ComponentCamera::Load(JSON_value* component)
 
 	speed = component->GetFloat("speed");
 	rotation_speed = component->GetFloat("rotation_speed");
-	//TODO: Load also frustrum
+	//Load frustrum data
+	frustum.nearPlaneDistance = component->GetFloat("nearPlaneDistance");
+	frustum.farPlaneDistance = component->GetFloat("farPlaneDistance");
+	frustum.horizontalFov = component->GetFloat("horizontalFov");
+	frustum.type = (FrustumType)component->GetInt("type");
 }
 
 #pragma endregion
