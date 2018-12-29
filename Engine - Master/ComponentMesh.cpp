@@ -64,6 +64,7 @@ bool ComponentMesh::DrawOnInspector()
 	return false;
 }
 
+// BUG: Draw meshes makes imgui flick
 void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4& proj)
 {
 	Texture* texture = nullptr;

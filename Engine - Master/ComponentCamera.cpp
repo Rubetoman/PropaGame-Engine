@@ -75,7 +75,12 @@ bool ComponentCamera::DrawOnInspector()
 		{
 			ImGui::SliderFloat("Near Plane Distance", &frustum.nearPlaneDistance, 0.0f, frustum.farPlaneDistance);
 			ImGui::SliderFloat("Far Plane Distance", &frustum.farPlaneDistance, frustum.nearPlaneDistance, 3000.0f);
-			//ImGui::SliderInt("Aspect Ratio", (int)&camera->frustum.AspectRatio(), 0, 179);
+			//ImGui::SliderFloat("Aspect Ratio", &frustum.AspectRatio(), 0, 179);
+			ImGui::SliderFloat("FOV", &frustum.horizontalFov, 0.0f, 3.14f);
+
+			// View mode
+			const char* items[] = { "Invalid", "Orthographic", "Perspective" };
+			ImGui::Combo("View type", (int*)&frustum.type, items, IM_ARRAYSIZE(items));
 		}
 		else
 		{
