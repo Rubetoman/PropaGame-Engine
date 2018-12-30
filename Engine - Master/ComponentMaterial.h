@@ -24,8 +24,8 @@ public:
 public:
 	unsigned shader = 0;
 	// Diffuse
-	Texture* texture = nullptr;
-	math::float4 color = math::float4::zero;
+	Texture* diffuse_map = nullptr;
+	math::float4 diffuse_color = math::float4::zero;
 	float k_diffuse = 0.5f;
 	// Specular
 	Texture* specular_map = nullptr;

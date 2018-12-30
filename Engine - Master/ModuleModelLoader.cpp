@@ -193,7 +193,7 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 
 			if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
 			{
-				go->material->texture = App->textures->loadTexture(file.data);
+				go->material->diffuse_map = App->textures->loadTexture(file.data);
 			}
 			else
 			{
@@ -249,7 +249,7 @@ GameObject* ModuleModelLoader::CreateSphere(const char* name, const math::float3
 	par_shapes_free_mesh(mesh);
 
 	ComponentMaterial* sphere_material = (ComponentMaterial*)sphere->CreateComponent(component_type::Material);
-	sphere_material->texture = App->textures->loadTexture("Checkers_Texture.jpg");
+	sphere_material->diffuse_map = App->textures->loadTexture("Checkers_Texture.jpg");
 
 	return sphere;
 }
@@ -287,7 +287,7 @@ GameObject* ModuleModelLoader::CreateCylinder(const char* name, const math::floa
 	par_shapes_free_mesh(mesh);
 
 	ComponentMaterial* cylinder_material = (ComponentMaterial*)cylinder->CreateComponent(component_type::Material);
-	cylinder_material->texture = App->textures->loadTexture("Checkers_Texture.jpg");
+	cylinder_material->diffuse_map = App->textures->loadTexture("Checkers_Texture.jpg");
 
 	return cylinder;
 }

@@ -17,13 +17,13 @@ ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_t
 ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(comp)
 {
 	shader = comp.shader;
-	texture = comp.texture;
-	color = comp.color;
+	diffuse_map = comp.diffuse_map;
+	diffuse_color = comp.diffuse_color;
 	shininess = comp.shininess;
 	k_specular = comp.k_specular;
 	k_diffuse = comp.k_diffuse;
 	k_ambient = comp.k_ambient;
-	++App->resources->textures[texture];
+	++App->resources->textures[diffuse_map];
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -47,7 +47,7 @@ bool ComponentMaterial::DrawOnInspector()
 		char* program_names[ModuleShader::PROGRAM_COUNT] = { "Default", "Flat", "Gouraud", "Phong", "Blinn"};
 		ImGui::Combo("shader", (int*)&shader, program_names, ModuleShader::PROGRAM_COUNT);
 
-		ImGui::ColorEdit4("object color", (float*)&color);
+		ImGui::ColorEdit4("object color", (float*)&diffuse_color);
 		ImGui::SliderFloat("shininess", &shininess, 0, 128.0f);
 		ImGui::SliderFloat("K ambient", &k_ambient, 0.0f, 1.0f);
 		ImGui::SliderFloat("K diffuse", &k_diffuse, 0.0f, 1.0f);
@@ -55,23 +55,23 @@ bool ComponentMaterial::DrawOnInspector()
 		ImGui::Separator();
 
 		// Texture
-		if (texture != nullptr && !deleted)
+		if (diffuse_map != nullptr && !deleted)
 		{
 			// Button to remove texture
 			if (ImGui::Button("Remove Texture"))
 			{
-				App->textures->unloadTexture(texture);
-				texture = nullptr;
+				App->textures->unloadTexture(diffuse_map);
+				diffuse_map = nullptr;
 			}
 			else
 			{
 				// Show texture info
-				ImGui::Text("Texture name: %s", texture->name);
-				ImGui::Text("Texture Size:\n Width: %d | Height: %d", texture->width, texture->height);
+				ImGui::Text("Texture name: %s", diffuse_map->name);
+				ImGui::Text("Texture Size:\n Width: %d | Height: %d", diffuse_map->width, diffuse_map->height);
 				float panelWidth = ImGui::GetWindowContentRegionWidth();
-				float conversionFactor = panelWidth / texture->width;
-				ImVec2 imageSize = { texture->height *conversionFactor, panelWidth };
-				ImGui::Image((ImTextureID)texture->id, imageSize);
+				float conversionFactor = panelWidth / diffuse_map->width;
+				ImVec2 imageSize = { diffuse_map->height *conversionFactor, panelWidth };
+				ImGui::Image((ImTextureID)diffuse_map->id, imageSize);
 			}
 		}
 		else
@@ -106,28 +106,50 @@ void ComponentMaterial::RenderMaterial()
 		glUniform1f(glGetUniformLocation(program, "ambient"), 0.0f);
 	}
 
-	glUniform1f(glGetUniformLocation(program, "shininess"), shininess);
-	glUniform1f(glGetUniformLocation(program, "k_ambient"), k_ambient);
-	glUniform1f(glGetUniformLocation(program, "k_diffuse"), k_diffuse);
-	glUniform1f(glGetUniformLocation(program, "k_specular"), k_specular);
-
-	if (texture == nullptr)
+	// Diffuse
+	glUniform4fv(glGetUniformLocation(program, "material.diffuse_color"), 1, (GLfloat*)&diffuse_color);
+	if (diffuse_map != nullptr)
 	{
-		glUniform1i(glGetUniformLocation(program, "use_diffuse_map"),0);
-		glUniform4fv(glGetUniformLocation(program, "object_color"), 1, (GLfloat*)&color);
-	}
-	else
-	{
-		glUniform1i(glGetUniformLocation(program, "use_diffuse_map"), 1);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture->id);
-		glUniform1i(glGetUniformLocation(program, "diffuse_map"), 0);
+		glBindTexture(GL_TEXTURE_2D, diffuse_map->id);
+		glUniform1i(glGetUniformLocation(program, "material.diffuse_map"), 0);
 	}
+
+	// Specular
+	glUniform3fv(glGetUniformLocation(program, "material.specular_color"), 1, (GLfloat*)&specular_color);
+	if (specular_map != nullptr)
+	{
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specular_map->id);
+		glUniform1i(glGetUniformLocation(program, "material.specular_map"), 1);
+	}
+
+	// Ambient
+	if (occlusion_map != nullptr)
+	{
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, occlusion_map->id);
+		glUniform1i(glGetUniformLocation(program, "material.occlusion_map"), 2);
+	}
+
+	// Emissive
+	glUniform3fv(glGetUniformLocation(program, "material.emissive_color"), 1, (GLfloat*)&specular_color);
+	if (emissive_map != nullptr)
+	{
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, emissive_map->id);
+		glUniform1i(glGetUniformLocation(program, "material.emissive_map"), 3);
+	}
+
+	glUniform1f(glGetUniformLocation(program, "material.shininess"), shininess);
+	glUniform1f(glGetUniformLocation(program, "material.k_ambient"), k_ambient);
+	glUniform1f(glGetUniformLocation(program, "material.k_diffuse"), k_diffuse);
+	glUniform1f(glGetUniformLocation(program, "material.k_specular"), k_specular);
 }
 
 void ComponentMaterial::Delete()
 {
-	App->textures->unloadTexture(texture);
+	App->textures->unloadTexture(diffuse_map);
 	my_go->material = nullptr;
 	Component::Delete();
 }
@@ -138,10 +160,10 @@ JSON_value* ComponentMaterial::Save(JSON_value* component) const
 
 	material->AddUnsigned("shader", shader);
 
-	if(texture != nullptr)
-		material->AddString("texture", (texture->path));
+	if(diffuse_map != nullptr)
+		material->AddString("texture", (diffuse_map->path));
 
-	material->AddVec4("color", color);
+	material->AddVec4("color", diffuse_color);
 	material->AddFloat("shininess", shininess);
 	material->AddFloat("k_specular", k_specular);
 	material->AddFloat("k_diffuse", k_diffuse);
@@ -161,9 +183,9 @@ void ComponentMaterial::Load(JSON_value* component)
 	// Get texture
 	const char* tx = component->GetString("texture");
 	if(tx != nullptr)
-		texture = App->textures->loadTexture(component->GetString("texture"));
+		diffuse_map = App->textures->loadTexture(component->GetString("texture"));
 
-	color = component->GetVec4("color");
+	diffuse_color = component->GetVec4("color");
 	shininess = component->GetFloat("shininess");
 	k_specular = component->GetFloat("k_specular");
 	k_diffuse = component->GetFloat("k_diffuse");

@@ -53,7 +53,8 @@ GLuint ModuleShader::LoadShaders(const char* vertShaderPath, const char* fragSha
 	glCompileShader(vertShader);
 	glGetShaderiv(vertShader, GL_COMPILE_STATUS, &compileStatus);
 
-	if (!compileStatus) {
+	if (!compileStatus) 
+	{
 		LOG("Error: Failed compiling vertex shader");
 		CheckCompilationErrors(vertShader);
 		return GL_FALSE;
@@ -63,7 +64,8 @@ GLuint ModuleShader::LoadShaders(const char* vertShaderPath, const char* fragSha
 	glCompileShader(fragShader);
 	glGetShaderiv(fragShader, GL_COMPILE_STATUS, &compileStatus);
 
-	if (!compileStatus) {
+	if (!compileStatus) 
+	{
 		LOG("Error: Failed compiling fragment shader");
 		CheckCompilationErrors(fragShader);
 		return GL_FALSE;
