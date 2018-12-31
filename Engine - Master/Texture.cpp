@@ -1,5 +1,8 @@
 #include "Texture.h"
 
+#include "Application.h"
+#include "ModuleResources.h"
+
 Texture::Texture()
 {
 }

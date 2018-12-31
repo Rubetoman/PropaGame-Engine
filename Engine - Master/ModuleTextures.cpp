@@ -40,7 +40,7 @@ bool ModuleTextures::CleanUp()
 }
 
 
-Texture* ModuleTextures::loadTexture(const char* path)
+Texture* ModuleTextures::loadTexture(const char* path, bool permanent)
 {
 	assert(path != nullptr);
 
@@ -111,7 +111,7 @@ Texture* ModuleTextures::loadTexture(const char* path)
 	}
 
 	// Check the texture wasn't already loaded
-	for (std::map<Texture*, unsigned>::iterator it_m = App->resources->textures.begin(); it_m != App->resources->textures.end(); ++it_m)
+	for (std::map<Texture*, int>::iterator it_m = App->resources->textures.begin(); it_m != App->resources->textures.end(); ++it_m)
 	{
 		if (strcmp((it_m)->first->path, nTexture->path) == 0)
 		{
@@ -230,7 +230,10 @@ Texture* ModuleTextures::loadTexture(const char* path)
 	ilDeleteImages(1, &imageID);		// Because we have already copied image data into texture data we can release memory used by image.
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	App->resources->textures.insert(std::pair<Texture*, unsigned>(nTexture,1));
+	if(permanent)
+		App->resources->textures.insert(std::pair<Texture*, unsigned>(nTexture, -1));
+	else
+		App->resources->textures.insert(std::pair<Texture*, unsigned>(nTexture,1));
 
 	LOG("Texture %s created successfully.", nTexture->name);
 	return nTexture;					// Return the GLuint to the texture so you can use it!
@@ -245,6 +248,10 @@ bool ModuleTextures::unloadTexture(Texture* texture)
 		{
 			if (it_m->first->id == texture->id)
 			{
+				// Avoid deleting permanent textures
+				if (it_m->second < 0)
+					return false;
+
 				// Check if the texture is used by another GO
 				if (it_m->second < 2)
 				{

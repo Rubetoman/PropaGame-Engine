@@ -20,7 +20,7 @@ public:
 
 	bool Init();
 	bool CleanUp();
-	Texture* loadTexture(const char* path);
+	Texture* loadTexture(const char* path, bool permanent); // Permanent boolean avoids deleting the texture when no in use
 	bool unloadTexture(Texture* texture);
 	//void ReloadTexture(Texture& new_texture, GLuint& texture);
 };

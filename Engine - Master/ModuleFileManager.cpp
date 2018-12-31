@@ -28,7 +28,7 @@ void ModuleFileManager::manageFile(const char* path)
 		{
 			App->textures->unloadTexture(App->model_loader->materials[i].texture0);
 		}*/
-		App->model_loader->ChangeMeshTexture(path);
+		App->textures->loadTexture(path, true);
 	}
 	else
 	{

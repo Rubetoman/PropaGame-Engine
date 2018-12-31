@@ -15,6 +15,11 @@ public:
 
 	Component* Duplicate() override;
 	bool DrawOnInspector() override;
+	void DrawDiffuseParameters();
+	void DrawSpecularParameters();
+	void DrawAmbientParameters();
+	void DrawEmissiveParameters();
+
 	void RenderMaterial();
 	void Delete() override;
 
@@ -38,6 +43,10 @@ public:
 	// Emissive
 	Texture* emissive_map = nullptr;
 	math::float3 emissive_color = math::float3::zero;
+
+private:
+	ImVec2 image_size = { 80.0f, 80.0f };			// Size of the texture icons for ImGui
+	ImVec4 info_color = { 1.0f, 1.0f, 0.0f, 1.0f };	// Color of the texture info for ImGui
 };
 
 #endif /*__COMPOMENTMATERIAL_H__*/

@@ -31,7 +31,7 @@ public:
 	std::vector<GameObject*> lights;		// List of all the lights on the scene
 
 	// Textures
-	std::map<Texture*, unsigned> textures;	// Map of all the textures and number of objects that use that texture
+	std::map<Texture*, int> textures;	// Map of all the textures and number of objects that use that texture
 	Texture* checkers_texture = nullptr;
 	Texture* no_camera_texture = nullptr;
 

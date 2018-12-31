@@ -22,8 +22,8 @@ ModuleResources::~ModuleResources()
 
 bool ModuleResources::Init()
 {
-	checkers_texture = App->textures->loadTexture(CHECKERS_TEXTURE);
-	no_camera_texture = App->textures->loadTexture(CAMERA_TEXTURE);
+	checkers_texture = App->textures->loadTexture(CHECKERS_TEXTURE, true);
+	no_camera_texture = App->textures->loadTexture(CAMERA_TEXTURE, true);
 
 	if (checkers_texture == nullptr || no_camera_texture == nullptr)
 		return false;

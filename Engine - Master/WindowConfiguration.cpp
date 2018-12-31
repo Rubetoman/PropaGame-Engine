@@ -160,7 +160,7 @@ void WindowConfiguration::Draw()
 	if (ImGui::CollapsingHeader("Textures"))
 	{
 		ImGui::Text("Loaded textures:");
-		for (std::map<Texture*,unsigned>::iterator it_t = App->resources->textures.begin(); it_t != App->resources->textures.end(); ++it_t)
+		for (std::map<Texture*,int>::iterator it_t = App->resources->textures.begin(); it_t != App->resources->textures.end(); ++it_t)
 		{
 			Texture* texture = (it_t->first);
 			if (ImGui::CollapsingHeader(texture->name))
@@ -174,14 +174,6 @@ void WindowConfiguration::Draw()
 				ImGui::Image((ImTextureID)texture->id, imageSize);
 			}
 			ImGui::NewLine();
-		}
-	}
-
-	if (ImGui::CollapsingHeader("Mesh"))
-	{
-		if (ImGui::Button("Use Chekers Texture"))
-		{
-			App->model_loader->ChangeMeshTexture("Checkers_Texture.jpg");
 		}
 	}
 
