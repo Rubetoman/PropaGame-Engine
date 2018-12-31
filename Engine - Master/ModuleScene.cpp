@@ -34,6 +34,12 @@ bool ModuleScene::Init()
 	return InitScene();
 }
 
+bool ModuleScene::Start()
+{
+	root->Init();
+	return true;
+}
+
 update_status ModuleScene::Update()
 {
 	root->Update();

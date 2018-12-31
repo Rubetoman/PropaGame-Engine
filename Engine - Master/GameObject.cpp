@@ -103,6 +103,15 @@ GameObject::~GameObject()
 	parent = nullptr;
 }
 
+void GameObject::Init()
+{
+	for (auto component : components)
+		component->Init();
+
+	for(auto child : children)
+		child->Init();
+}
+
 void GameObject::Update()
 {
 	for (std::list<GameObject*>::iterator it_child = children.begin(); it_child != children.end();)

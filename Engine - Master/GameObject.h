@@ -59,6 +59,7 @@ public:
 	GameObject::GameObject(const GameObject& go);
 	~GameObject();
 
+	void Init();
 	void Update();
 	void CleanUp();
 
