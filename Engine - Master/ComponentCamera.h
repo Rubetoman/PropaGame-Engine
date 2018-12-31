@@ -38,7 +38,6 @@ public:
 	JSON_value* Save(JSON_value* component) const;
 	void Load(JSON_value* component);
 public:
-	math::AABB boundingBox;
 
 	// Texture rendered to
 	unsigned		fbo = 0u;

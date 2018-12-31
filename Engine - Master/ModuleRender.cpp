@@ -90,9 +90,6 @@ update_status ModuleRender::Update()
 	math::float4x4 proj = editor_camera->frustum.ProjectionMatrix();
 	math::float4x4 view = editor_camera->frustum.ViewMatrix();
 	App->scene->Draw(view, proj, *editor_camera);
-	
-	// Draw debug draw
-	App->debug_draw->Draw(editor_camera, editor_camera->fbo, App->window->screen_height, App->window->screen_width);
 
 	// CAMERAS
 	for (auto &camera : App->resources->cameras)
@@ -115,6 +112,10 @@ update_status ModuleRender::Update()
 			}
 		}
 	}
+
+	// Draw debug draw
+	App->debug_draw->Draw(editor_camera, editor_camera->fbo, App->window->screen_height, App->window->screen_width);
+
 	return UPDATE_CONTINUE;
 }
 

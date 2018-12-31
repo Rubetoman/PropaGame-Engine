@@ -24,8 +24,6 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go, component_type:
 
 ComponentCamera::ComponentCamera(const ComponentCamera& comp) : Component(comp)
 {
-	boundingBox = comp.boundingBox;
-
 	// Texture rendered to
 	CreateFrameBuffer();
 
