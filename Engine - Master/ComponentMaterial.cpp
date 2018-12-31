@@ -47,39 +47,131 @@ bool ComponentMaterial::DrawOnInspector()
 		char* program_names[ModuleShader::PROGRAM_COUNT] = { "Default", "Flat", "Gouraud", "Phong", "Blinn"};
 		ImGui::Combo("shader", (int*)&shader, program_names, ModuleShader::PROGRAM_COUNT);
 
-		ImGui::ColorEdit4("object color", (float*)&diffuse_color);
-		ImGui::SliderFloat("shininess", &shininess, 0, 128.0f);
-		ImGui::SliderFloat("K ambient", &k_ambient, 0.0f, 1.0f);
-		ImGui::SliderFloat("K diffuse", &k_diffuse, 0.0f, 1.0f);
-		ImGui::SliderFloat("K specular", &k_specular, 0.0f, 1.0f);
+		
 		ImGui::Separator();
-
-		// Texture
-		if (diffuse_map != nullptr && !deleted)
+		ImVec2 imageSize = { 80.0f, 80.0f };
+		ImVec4 info_color = { 1.0f, 1.0f, 0.0f, 1.0f };
+		if (ImGui::TreeNode("Diffuse"))
 		{
-			// Button to remove texture
-			if (ImGui::Button("Remove Texture"))
+			// Texture
+			if (diffuse_map != nullptr && !deleted)
 			{
-				App->textures->unloadTexture(diffuse_map);
-				diffuse_map = nullptr;
+				ImGui::Columns(2, "diffuse_column", false);  // 2-ways, no border
+				ImGui::Image((ImTextureID)diffuse_map->id, imageSize);
+				// Show texture info
+				ImGui::NextColumn();
+				ImGui::Text("Texture:");
+				ImGui::TextColored(info_color, "%s", diffuse_map->name);
+				ImGui::TextColored(info_color, "(%d x %d) %s", diffuse_map->width, diffuse_map->height, diffuse_map->format);
+				ImGui::Checkbox("Mipmaps", &diffuse_map->use_mipmap);
+				// Button to remove texture
+				if (ImGui::Button("Remove Texture"))
+				{
+					App->textures->unloadTexture(diffuse_map);
+					diffuse_map = nullptr;
+				}
+				ImGui::Columns(1);
+
 			}
 			else
 			{
-				// Show texture info
-				ImGui::Text("Texture name: %s", diffuse_map->name);
-				ImGui::Text("Texture Size:\n Width: %d | Height: %d", diffuse_map->width, diffuse_map->height);
-				float panelWidth = ImGui::GetWindowContentRegionWidth();
-				float conversionFactor = panelWidth / diffuse_map->width;
-				ImVec2 imageSize = { diffuse_map->height *conversionFactor, panelWidth };
-				ImGui::Image((ImTextureID)diffuse_map->id, imageSize);
+				ImGui::Columns(2, "diffuse_column", false);  // 2-ways, no border
+				ImGui::Image((ImTextureID)-1, imageSize);
+				ImGui::NextColumn();
+				ImGui::Text("Texture:");
+				ImGui::Columns(1);
 			}
+			ImGui::ColorEdit4("diffuse color", (float*)&diffuse_color);
+			ImGui::SliderFloat("K diffuse", &k_diffuse, 0.0f, 1.0f);
+			ImGui::TreePop();
 		}
-		else
+		ImGui::Separator();
+		if (ImGui::TreeNode("Specular"))
 		{
-			ImGui::Text("No texture");
-			ImGui::PopID();
-			return deleted;
+			// Texture
+			if (specular_map != nullptr)
+			{
+				ImGui::Columns(2, "specular_column", false);  // 2-ways, no border
+
+				ImGui::Image((ImTextureID)specular_map->id, imageSize);
+				// Show texture info
+				ImGui::NextColumn();
+				ImGui::Text("Texture:");
+				ImGui::TextColored(info_color, "%s", specular_map->name);
+				ImGui::TextColored(info_color, "(%d x %d) %s", specular_map->width, specular_map->height, specular_map->format);
+				ImGui::Checkbox("Mipmaps", &specular_map->use_mipmap);
+				ImGui::Columns(1);
+			}
+			else
+			{
+				ImGui::Columns(2, "specular_column", false);  // 2-ways, no border
+				ImGui::Image((ImTextureID)-1, imageSize);
+				ImGui::NextColumn();
+				ImGui::Text("Texture:");
+				ImGui::Columns(1);
+			}
+
+			ImGui::ColorEdit3("specular color", (float*)&specular_color);
+			ImGui::SliderFloat("K specular", &k_specular, 0.0f, 1.0f);
+			ImGui::SliderFloat("shininess", &shininess, 0, 128.0f);
+			ImGui::TreePop();
 		}
+		ImGui::Separator();
+		if (ImGui::TreeNode("Ambient"))
+		{
+			// Texture
+			if (occlusion_map != nullptr)
+			{
+				ImGui::Columns(2, "occlusion_column", false);  // 2-ways, no border
+				ImGui::Image((ImTextureID)occlusion_map->id, imageSize);
+				// Show texture info
+				ImGui::NextColumn();
+				ImGui::Text("Texture:");
+				ImGui::TextColored(info_color, "%s", occlusion_map->name);
+				ImGui::TextColored(info_color, "(%d x %d) %s", occlusion_map->width, occlusion_map->height, occlusion_map->format);
+				ImGui::Checkbox("Mipmaps", &occlusion_map->use_mipmap);
+				ImGui::Columns(1);
+			}
+			else
+			{
+				ImGui::Columns(2, "occlusion_column", false);  // 2-ways, no border
+				ImGui::Image((ImTextureID)-1, imageSize);
+				ImGui::NextColumn();
+				ImGui::Text("Texture:");
+				ImGui::Columns(1);
+			}
+
+			ImGui::SliderFloat("K ambient", &k_ambient, 0.0f, 1.0f);
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
+		if (ImGui::TreeNode("Emissive"))
+		{
+			// Texture
+			if (emissive_map != nullptr)
+			{
+				ImGui::Columns(2, "emissive_column", false);  // 2-ways, no border
+				ImGui::Image((ImTextureID)emissive_map->id, imageSize);
+				// Show texture info
+				ImGui::NextColumn();
+				ImGui::Text("Texture:");
+				ImGui::TextColored(info_color, "%s", emissive_map->name);
+				ImGui::TextColored(info_color, "(%d x %d) %s", emissive_map->width, emissive_map->height, emissive_map->format);
+				ImGui::Checkbox("Mipmaps", &emissive_map->use_mipmap);
+				ImGui::Columns(1);
+			}
+			else
+			{
+				ImGui::Columns(2, "emissive_column", false);  // 2-ways, no border
+				ImGui::Image((ImTextureID)-1, imageSize);
+				ImGui::NextColumn();
+				ImGui::Text("Texture:");
+				ImGui::Columns(1);
+			}
+			ImGui::ColorEdit3("emissive color", (float*)&emissive_color);
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
 	}
 	ImGui::PopID();
 	return false;
