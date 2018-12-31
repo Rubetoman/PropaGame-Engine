@@ -30,17 +30,6 @@ ComponentMaterial::~ComponentMaterial()
 {
 }
 
-void ComponentMaterial::Init()
-{
-	// Init the color of the textures to white
-	if (diffuse_map != nullptr)
-		diffuse_color = math::float4::one;
-	if (specular_map != nullptr)
-		specular_color = math::float3::one;
-	if (emissive_map != nullptr)
-		emissive_color = math::float3::one;
-}
-
 Component* ComponentMaterial::Duplicate()
 {
 	return new ComponentMaterial(*this);

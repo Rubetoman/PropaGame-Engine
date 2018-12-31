@@ -13,8 +13,6 @@ public:
 	ComponentMaterial(const ComponentMaterial& comp);
 	~ComponentMaterial();
 
-	void Init() override;
-
 	Component* Duplicate() override;
 	bool DrawOnInspector() override;
 	void DrawDiffuseParameters();

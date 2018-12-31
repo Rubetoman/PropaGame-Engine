@@ -194,6 +194,8 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 			if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
 			{
 				go->material->diffuse_map = App->textures->loadTexture(file.data, false);
+				if (go->material != nullptr)
+					go->material->diffuse_color = math::float4::one;
 			}
 			else
 			{
