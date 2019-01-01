@@ -22,12 +22,8 @@ void ModuleFileManager::manageFile(const char* path)
 		App->model_loader->CleanUp();
 		App->model_loader->LoadMesh(path);
 	}
-	else if (extension == "png" || extension == "dds" || extension == "jpg")
+	else if (extension == "png" || extension == "dds" || extension == "jpg" || extension == "tif")
 	{
-		/*for (int i = 0; i < App->model_loader->materials.size(); ++i)
-		{
-			App->textures->unloadTexture(App->model_loader->materials[i].texture0);
-		}*/
 		App->textures->loadTexture(path, true);
 	}
 	else
