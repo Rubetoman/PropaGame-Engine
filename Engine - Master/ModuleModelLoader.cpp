@@ -58,7 +58,13 @@ bool ModuleModelLoader::LoadMesh(const char* path)
 	}
 	App->camera->BBtoLook = new AABB({ .0f, .0f, .0f }, { .0f, .0f, .0f });
 
-	GenerateNodeMeshData(scene, scene->mRootNode, aiMatrix4x4(), App->scene->root);
+	// Generate root node
+	aiMatrix4x4 root_transform = aiMatrix4x4() * scene->mRootNode->mTransformation;
+	GameObject* root_go = App->scene->CreateGameObject(scene->mRootNode->mName.C_Str(), (math::float4x4&)root_transform, App->scene->root);
+
+	// Generate meshes as root GOs
+	GenerateNodeMeshData(scene, scene->mRootNode, root_transform, root_go);
+
 	aiReleaseImport(scene);
 	return true;
 }
@@ -85,16 +91,15 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 {
 	assert(scene != nullptr); assert(node != nullptr);
 
-	aiMatrix4x4 transform = parent_transform * node->mTransformation;
-	GameObject* go = App->scene->CreateGameObject(node->mName.C_Str(), (math::float4x4&)transform, parent);
-
-	// Avoid creating GO without name or too long
-	if (go->name.size() < 1 || node->mName.length > GO_NAME_SIZE)
-		go->name = GO_DEFAULT_NAME;
-
-
 	for (unsigned i = 0; i < node->mNumMeshes; ++i)
 	{
+		aiMatrix4x4 transform = parent_transform * node->mTransformation;
+		GameObject* go = App->scene->CreateGameObject(node->mName.C_Str(), (math::float4x4&)transform, parent);
+
+		// Avoid creating GO without name or too long
+		if (go->name.size() < 1 || node->mName.length > GO_NAME_SIZE)
+			go->name = GO_DEFAULT_NAME;
+
 		// Add Mesh Component
 		ComponentMesh* mesh = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
 
@@ -202,17 +207,26 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 				LOG("Couldn't read the texture from .fbx file");
 			}
 		}
-		
-	}
-	if (go->mesh != nullptr)
-	{
-		App->camera->BBtoLook->Enclose(go->mesh->boundingBox);
-		App->camera->FitCamera(*App->camera->BBtoLook);
+
+		if (go->mesh != nullptr)
+		{
+			App->camera->BBtoLook->Enclose(go->mesh->boundingBox);
+			App->camera->FitCamera(*App->camera->BBtoLook);
+		}
+
+		for (unsigned int i = 0; i < node->mNumChildren; i++)
+		{
+			GenerateNodeMeshData(scene, node->mChildren[i], transform, go);
+		}
+
 	}
 
-	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	if(node->mNumMeshes == 0)
 	{
-		GenerateNodeMeshData(scene, node->mChildren[i], transform, go);
+		for (unsigned int i = 0; i < node->mNumChildren; i++)
+		{
+			GenerateNodeMeshData(scene, node->mChildren[i], parent_transform, parent);
+		}
 	}
 }
 
