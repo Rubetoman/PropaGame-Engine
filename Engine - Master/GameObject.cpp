@@ -212,6 +212,14 @@ math::float4x4 GameObject::GetGlobalTransform() const
 	return GetLocalTransform();
 }
 
+math::float3 GameObject::GetCenter() const
+{
+	if (mesh != nullptr)
+		return mesh->boundingBox.CenterPoint();
+	else
+		return transform->position;
+}
+
 math::AABB GameObject::ComputeBBox() const 
 {
 	AABB bbox;

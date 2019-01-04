@@ -68,6 +68,7 @@ public:
 	void DeleteGameObject();
 	math::float4x4 GetLocalTransform() const;
 	math::float4x4 GetGlobalTransform() const;
+	math::float3 GetCenter() const;
 	math::AABB ComputeBBox() const;
 	void DrawBBox(AABB bbox) const;
 

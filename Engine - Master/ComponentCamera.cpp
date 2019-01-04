@@ -172,13 +172,8 @@ void ComponentCamera::Rotate(float dx, float dy)
 	}
 }
 
-void ComponentCamera::Orbit(float dx, float dy) 
+void ComponentCamera::Orbit(math::float3 center, float dx, float dy) 
 {
-	// TODO: set up the orbit when no GO is selected in front of the camera
-	if (App->editor->hierarchy->selected == nullptr) return;
-
-	math::float3 center = App->editor->hierarchy->selected->transform->position;
-
 	if (dx != 0) 
 	{
 		math::Quat rotation = math::Quat::RotateY(math::DegToRad(-dx)).Normalized();
