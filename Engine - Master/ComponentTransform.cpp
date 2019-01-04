@@ -92,9 +92,11 @@ bool ComponentTransform::DrawOnInspector()
 		ImGui::Separator();
 
 		ImGui::DragFloat3("Position", (float*)&position, 0.1f);
-		ImGui::DragFloat3("Rotation", (float*)&euler_rotation, 0.1f);
-		rotation = rotation.FromEulerXYZ(math::DegToRad(euler_rotation.x),
-			math::DegToRad(euler_rotation.y), math::DegToRad(euler_rotation.z));
+		if (ImGui::DragFloat3("Rotation", (float*)&euler_rotation, 0.1f))
+		{
+			rotation = rotation.FromEulerXYZ(math::DegToRad(euler_rotation.x),
+				math::DegToRad(euler_rotation.y), math::DegToRad(euler_rotation.z));
+		}
 		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f);
 	}
 	ImGui::PopID();
