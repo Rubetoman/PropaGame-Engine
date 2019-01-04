@@ -231,7 +231,9 @@ JSON_value* ComponentMesh::Save(JSON_value* component) const
 	mesh->AddUnsigned("VAO", vao);
 	mesh->AddUnsigned("Number Vertices", num_vertices);
 	mesh->AddUnsigned("Number Indices", num_indices);
-	//TODO: Add vertices and BBox
+	//TODO: Add vertices
+	mesh->AddVec3("boundingBox min", boundingBox.minPoint);
+	mesh->AddVec3("boundingBox max", boundingBox.maxPoint);
 
 	component->addValue("", mesh);
 
@@ -247,5 +249,7 @@ void ComponentMesh::Load(JSON_value* component)
 	vao = component->GetUnsigned("VAO");
 	num_vertices = component->GetUnsigned("Number Vertices");
 	num_indices = component->GetUnsigned("Number Indices");
-	//TODO: Add vertices and BBox
+	//TODO: Add vertices
+	boundingBox.minPoint = component->GetVec3("boundingBox min");
+	boundingBox.maxPoint = component->GetVec3("boundingBox max");
 }

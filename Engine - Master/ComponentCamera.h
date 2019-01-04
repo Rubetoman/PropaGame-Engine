@@ -25,7 +25,7 @@ public:
 
 	void			TranslateCamera(math::float3 direction);
 	void			Rotate(float dx, float dy);
-	void			Orbit(float dx, float dy);
+	void			Orbit(math::float3 center, float dx, float dy);
 	void			LookAt(math::float3& target);
 
 	bool ContainsAABB(const math::AABB& boundingBox) const;
