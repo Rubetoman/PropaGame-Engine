@@ -14,8 +14,8 @@ ComponentCamera::ComponentCamera(GameObject* go) : Component(go, component_type:
 {
 	InitFrustum();
 	CreateFrameBuffer();
-	if (go != nullptr)
-		frustum.pos = go->boundingBox.CenterPoint();
+	if (go != nullptr && go->transform != nullptr)
+		frustum.pos = go->transform->position;
 
 	// Avoid creating another window for editor camera
 	if(go != App->camera->editor_camera_go)
@@ -172,14 +172,8 @@ void ComponentCamera::Rotate(float dx, float dy)
 	}
 }
 
-void ComponentCamera::Orbit(float dx, float dy) 
+void ComponentCamera::Orbit(math::float3 center, float dx, float dy) 
 {
-	// TODO: set up the orbit when no GO is selected in front of the camera
-	if (App->editor->hierarchy->selected == nullptr) return;
-
-	AABB& bbox = App->editor->hierarchy->selected->boundingBox;
-	math::float3 center = bbox.CenterPoint();
-
 	if (dx != 0) 
 	{
 		math::Quat rotation = math::Quat::RotateY(math::DegToRad(-dx)).Normalized();

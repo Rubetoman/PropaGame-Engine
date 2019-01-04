@@ -136,7 +136,13 @@ void ModuleCamera::RotateCameraInput()
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 		{
 			SDL_ShowCursor(SDL_DISABLE);
-			editor_camera_comp->Orbit(editor_camera_comp->rotation_speed * App->input->GetMouseMotion().x, editor_camera_comp->rotation_speed * App->input->GetMouseMotion().y);
+			math::float3 center;
+			if (App->editor->hierarchy->selected != nullptr)
+				center = App->editor->hierarchy->selected->GetCenter();
+			else
+				center = math::float3(0, 0, 0);
+
+			editor_camera_comp->Orbit(center, editor_camera_comp->rotation_speed * App->input->GetMouseMotion().x, editor_camera_comp->rotation_speed * App->input->GetMouseMotion().y);
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) 
 		{
@@ -145,7 +151,11 @@ void ModuleCamera::RotateCameraInput()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F))
 	{
-		editor_camera_comp->LookAt(math::float3(0, 0, 0));
+		GameObject* selected = App->editor->hierarchy->selected;
+		if (selected != nullptr)
+			editor_camera_comp->LookAt(selected->GetCenter());
+		else
+			editor_camera_comp->LookAt(math::float3(0, 0, 0));
 	}
 	if(App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{

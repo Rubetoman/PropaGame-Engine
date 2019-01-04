@@ -51,7 +51,6 @@ GameObject::GameObject(const GameObject& go)
 	uuid = App->resources->GenerateNewUID();
 	parentUID = go.parentUID;
 	name = go.name;
-	boundingBox = go.boundingBox;
 
 	for (const auto& component : go.components)
 	{
@@ -171,9 +170,9 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 	}
 
 	// Compute and Draw BBox on Editor
-	boundingBox = ComputeBBox();
+	AABB boundingBox = ComputeBBox();
 	if ((App->editor->hierarchy->selected == this) || (App->editor->drawAllBBox))
-		DrawBBox();
+		DrawBBox(boundingBox);
 
 	if (mesh != nullptr && mesh->active)
 	{
@@ -222,25 +221,38 @@ math::float4x4 GameObject::GetGlobalTransform() const
 	return GetLocalTransform();
 }
 
+math::float3 GameObject::GetCenter() const
+{
+	if (mesh != nullptr)
+		return mesh->boundingBox.CenterPoint();
+	else
+		return transform->position;
+}
+
 math::AABB GameObject::ComputeBBox() const 
 {
+	AABB bbox;
+
 	// TODO: Solve bugs and use pointers
-	boundingBox.SetNegativeInfinity();
+	bbox.SetNegativeInfinity();
 
 	// Current GO meshes
 	if (mesh != nullptr)
-		boundingBox.Enclose(mesh->boundingBox);
+		bbox.Enclose(mesh->boundingBox);
 
 	// Apply transformation of our GO
-	boundingBox.TransformAsAABB(GetGlobalTransform());
+	bbox.TransformAsAABB(GetGlobalTransform());
 
-	return boundingBox;
+	return bbox;
 }
 
-void GameObject::DrawBBox() const 
+void GameObject::DrawBBox(AABB bbox) const 
 {
 	if(mesh != nullptr)
-		dd::aabb(boundingBox.minPoint, boundingBox.maxPoint, math::float3(255, 255, 0), true);
+		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
+
+	for (auto child : children)
+		child->DrawBBox(child->ComputeBBox());
 }
 #pragma endregion
 
