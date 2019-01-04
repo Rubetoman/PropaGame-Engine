@@ -69,7 +69,7 @@ public:
 	math::float4x4 GetLocalTransform() const;
 	math::float4x4 GetGlobalTransform() const;
 	math::AABB ComputeBBox() const;
-	void DrawBBox() const;
+	void DrawBBox(AABB bbox) const;
 
 	// Components
 	Component* CreateComponent(component_type type);
@@ -93,8 +93,6 @@ public:
 	bool active = true;
 	std::string name = "GameObject";
 	GOFlags flags = GOFlags::None;
-
-	math::AABB& boundingBox = AABB();
 	
 	// Hierarchy
 	GameObject* parent = nullptr;
