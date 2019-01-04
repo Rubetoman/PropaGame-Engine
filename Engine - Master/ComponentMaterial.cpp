@@ -387,14 +387,30 @@ JSON_value* ComponentMaterial::Save(JSON_value* component) const
 
 	material->AddUnsigned("shader", shader);
 
+	// Save diffuse data
 	if(diffuse_map != nullptr)
-		material->AddString("texture", (diffuse_map->path));
+		material->AddString("diffuse_map", diffuse_map->path);
+	material->AddVec4("diffuse_color", diffuse_color);
+	material->AddFloat("k_diffuse", k_diffuse);
 
-	material->AddVec4("color", diffuse_color);
+	// Save specular data
+	if (specular_map != nullptr)
+		material->AddString("specular_map", specular_map->path);
+	material->AddVec3("specular_color", specular_color);
 	material->AddFloat("shininess", shininess);
 	material->AddFloat("k_specular", k_specular);
-	material->AddFloat("k_diffuse", k_diffuse);
+
+	// Save ambient data
+	if (occlusion_map != nullptr)
+		material->AddString("occlusion_map", occlusion_map->path);
 	material->AddFloat("k_ambient", k_ambient);
+
+	// Save emissive data
+	if (emissive_map != nullptr)
+		material->AddString("emissive_map", emissive_map->path);
+	material->AddVec3("emissive_color", emissive_color);
+
+
 
 	component->addValue("", material);
 
@@ -407,14 +423,30 @@ void ComponentMaterial::Load(JSON_value* component)
 
 	shader = component->GetUnsigned("shader");
 	
-	// Get texture
-	const char* tx = component->GetString("texture");
+	// Get diffuse data
+	const char* tx = component->GetString("diffuse_map");
 	if(tx != nullptr)
-		diffuse_map = App->textures->loadTexture(component->GetString("texture"), false);
+		diffuse_map = App->textures->loadTexture(tx, false);
+	diffuse_color = component->GetVec4("diffuse_color");
+	k_diffuse = component->GetFloat("k_diffuse");
 
-	diffuse_color = component->GetVec4("color");
+	// Get specular data
+	tx = component->GetString("specular_map");
+	if (tx != nullptr)
+		specular_map = App->textures->loadTexture(tx, false);
+	specular_color = component->GetVec3("specular_color");
 	shininess = component->GetFloat("shininess");
 	k_specular = component->GetFloat("k_specular");
-	k_diffuse = component->GetFloat("k_diffuse");
+
+	// Get ambient data
+	tx = component->GetString("occlusion_map");
+	if (tx != nullptr)
+		occlusion_map = App->textures->loadTexture(tx, false);
 	k_ambient = component->GetFloat("k_ambient");
+
+	// Get emissive data
+	tx = component->GetString("emissive_map");
+	if (tx != nullptr)
+		emissive_map = App->textures->loadTexture(tx, false);
+	emissive_color = component->GetVec3("emissive_color");
 }
