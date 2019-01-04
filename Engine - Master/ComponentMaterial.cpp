@@ -312,56 +312,66 @@ void ComponentMaterial::RenderMaterial()
 	{
 		glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&light->transform->position);
 		
-		ComponentLight* comp_light = (ComponentLight*)light->GetComponent(component_type::Light);
+		/*ComponentLight* comp_light = (ComponentLight*)light->GetComponent(component_type::Light);
 		if (comp_light != nullptr && comp_light->active)
 			glUniform1f(glGetUniformLocation(program, "ambient"), comp_light->intensity);
 		else
-			glUniform1f(glGetUniformLocation(program, "ambient"), 0.0f);
+			glUniform1f(glGetUniformLocation(program, "ambient"), 0.0f);*/
 	}
-	else
+	/*else
 	{
 		glUniform1f(glGetUniformLocation(program, "ambient"), 0.0f);
-	}
+	}*/
+
+	unsigned texture_numb = 0u;
 
 	// Diffuse
 	glUniform4fv(glGetUniformLocation(program, "material.diffuse_color"), 1, (GLfloat*)&diffuse_color);
 	if (diffuse_map != nullptr)
 	{
-		glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE0 + texture_numb);
 		glBindTexture(GL_TEXTURE_2D, diffuse_map->id);
-		glUniform1i(glGetUniformLocation(program, "material.diffuse_map"), 0);
+		glUniform1i(glGetUniformLocation(program, "material.diffuse_map"), texture_numb);
+		glDisable(GL_TEXTURE_2D);
+		++texture_numb;
 	}
 
 	// Specular
 	glUniform3fv(glGetUniformLocation(program, "material.specular_color"), 1, (GLfloat*)&specular_color);
+	glUniform1fv(glGetUniformLocation(program, "material.shininess"), 1, (GLfloat*)&shininess);
 	if (specular_map != nullptr)
 	{
-		glActiveTexture(GL_TEXTURE1);
+		glActiveTexture(GL_TEXTURE0 + texture_numb);
 		glBindTexture(GL_TEXTURE_2D, specular_map->id);
-		glUniform1i(glGetUniformLocation(program, "material.specular_map"), 1);
+		glUniform1i(glGetUniformLocation(program, "material.specular_map"), texture_numb);
+		glDisable(GL_TEXTURE_2D);
+		++texture_numb;
 	}
 
 	// Ambient
 	if (occlusion_map != nullptr)
 	{
-		glActiveTexture(GL_TEXTURE2);
+		glActiveTexture(GL_TEXTURE0 + texture_numb);
 		glBindTexture(GL_TEXTURE_2D, occlusion_map->id);
-		glUniform1i(glGetUniformLocation(program, "material.occlusion_map"), 2);
+		glUniform1i(glGetUniformLocation(program, "material.occlusion_map"), texture_numb);
+		glDisable(GL_TEXTURE_2D);
+		++texture_numb;
 	}
 
 	// Emissive
-	glUniform3fv(glGetUniformLocation(program, "material.emissive_color"), 1, (GLfloat*)&specular_color);
+	glUniform3fv(glGetUniformLocation(program, "material.emissive_color"), 1, (GLfloat*)&emissive_color);
 	if (emissive_map != nullptr)
 	{
-		glActiveTexture(GL_TEXTURE3);
+		glActiveTexture(GL_TEXTURE0 + texture_numb);
 		glBindTexture(GL_TEXTURE_2D, emissive_map->id);
-		glUniform1i(glGetUniformLocation(program, "material.emissive_map"), 3);
+		glUniform1i(glGetUniformLocation(program, "material.emissive_map"), texture_numb);
+		glDisable(GL_TEXTURE_2D);
+		++texture_numb;
 	}
 
-	glUniform1f(glGetUniformLocation(program, "material.shininess"), shininess);
-	glUniform1f(glGetUniformLocation(program, "material.k_ambient"), k_ambient);
-	glUniform1f(glGetUniformLocation(program, "material.k_diffuse"), k_diffuse);
-	glUniform1f(glGetUniformLocation(program, "material.k_specular"), k_specular);
+	glUniform1fv(glGetUniformLocation(program, "material.k_ambient"), 1, (GLfloat*)&k_ambient);
+	glUniform1fv(glGetUniformLocation(program, "material.k_diffuse"), 1, (GLfloat*)&k_diffuse);
+	glUniform1fv(glGetUniformLocation(program, "material.k_specular"), 1, (GLfloat*)&k_specular);
 }
 
 void ComponentMaterial::Delete()
