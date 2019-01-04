@@ -233,6 +233,9 @@ void GameObject::DrawBBox(AABB bbox) const
 {
 	if(mesh != nullptr)
 		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
+
+	for (auto child : children)
+		child->DrawBBox(child->ComputeBBox());
 }
 #pragma endregion
 
