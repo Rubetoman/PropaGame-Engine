@@ -222,11 +222,13 @@ bool ModuleScene::InitScene()
 {
 	// Root
 	root = new GameObject("World");
+	root->static_GO = true;
 	scene_gos.push_back(root);
 
 	//TODO: Change it for an ambient light and added to scene_gos without parent
 	// Default Light
 	GameObject* default_light = CreateGameObject("Default Light", root);
+	default_light->static_GO = true;
 	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
 	default_light->CreateComponent(component_type::Light);
 
