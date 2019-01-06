@@ -159,6 +159,24 @@ bool GameObject::isActive() const
 		return parent->isActive();
 }
 
+void GameObject::SetChildrenStatic(bool set) const
+{
+	for (auto child : children)
+	{
+		child->static_GO = set;
+		child->SetChildrenStatic(set);
+	}
+}
+
+void GameObject::SetForeparentsStatic(bool set) const
+{
+	if (parent != nullptr)
+	{
+		parent->static_GO = set;
+		parent->SetForeparentsStatic(set);
+	}
+}
+
 void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera)
 {
 	if (!active) return;

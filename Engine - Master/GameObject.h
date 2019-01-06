@@ -65,6 +65,8 @@ public:
 
 	// Game Object
 	bool isActive() const;
+	void SetChildrenStatic(bool set) const;
+	void SetForeparentsStatic(bool set) const;
 	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
 	void DeleteGameObject();
 	math::float4x4 GetLocalTransform() const;
