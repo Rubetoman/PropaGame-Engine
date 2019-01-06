@@ -168,12 +168,12 @@ void GameObject::SetChildrenStatic(bool set) const
 	}
 }
 
-void GameObject::SetForeparentsStatic(bool set) const
+void GameObject::SetForeparentStatic(bool set) const
 {
-	if (parent != nullptr)
+	if (parent != nullptr && parent != App->scene->root)
 	{
 		parent->static_GO = set;
-		parent->SetForeparentsStatic(set);
+		parent->SetForeparentStatic(set);
 	}
 }
 

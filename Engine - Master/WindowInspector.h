@@ -12,7 +12,12 @@ public:
 	~WindowInspector();
 
 	void Draw();
-	void DrawComponents(GameObject* go);
+	void DrawComponents(GameObject* go) const;
+	void StaticPopup(GameObject& go);
+
+public:
+
+	bool show_static_popup = false;
 };
 
 #endif /*__WINDOWINSPECTOR_H__*/

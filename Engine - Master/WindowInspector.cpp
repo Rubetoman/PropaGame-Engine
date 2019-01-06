@@ -33,7 +33,14 @@ void WindowInspector::Draw()
 			go->name = name;
 			delete[] name;
 
-			ImGui::Checkbox("static", &go->static_GO);
+			if (ImGui::Checkbox("static", &go->static_GO))
+			{
+				if(go->children.size() > 0)
+					show_static_popup = true;
+			}
+
+			if (show_static_popup)
+				StaticPopup(*go);
 
 			// Serialization information
 			ImGui::Separator();
@@ -76,11 +83,33 @@ void WindowInspector::Draw()
 	ImGui::End();
 }
 
-void WindowInspector::DrawComponents(GameObject* go)
+void WindowInspector::DrawComponents(GameObject* go) const
 {
 	for (auto &comp : go->components)
 	{
 		if(comp != nullptr && go != nullptr)
 			comp->DrawOnInspector();
+	}
+}
+
+void WindowInspector::StaticPopup(GameObject& go)
+{
+	ImGui::OpenPopup("Static");
+	if (ImGui::BeginPopupModal("Static", &show_static_popup))
+	{
+		ImGui::Text("Change static state of the children \nattached to this GameObject as well?");
+		ImGui::NewLine();
+		if (ImGui::Button("Yes", ImVec2(120, 0)))
+		{
+			go.SetChildrenStatic(go.static_GO);
+			show_static_popup = false;
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("No", ImVec2(120, 0)))
+			show_static_popup = false;
+
+		ImGui::EndPopup();
 	}
 }
