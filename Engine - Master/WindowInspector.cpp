@@ -25,13 +25,15 @@ void WindowInspector::Draw()
 		if (go != nullptr)
 		{
 			ImGui::Checkbox("active", &go->active);
-
+			ImGui::SameLine();
 			// Show name field
 			char *name = new char[GO_NAME_SIZE];
 			strcpy(name, go->name.c_str());
 			ImGui::InputText("Name", name, GO_NAME_SIZE);
 			go->name = name;
 			delete[] name;
+
+			ImGui::Checkbox("static", &go->static_GO);
 
 			// Serialization information
 			ImGui::Separator();

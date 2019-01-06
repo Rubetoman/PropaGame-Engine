@@ -93,6 +93,7 @@ public:
 	std::string uuid = "";
 	std::string parentUID = "";
 	bool active = true;
+	bool static_GO = false;
 	std::string name = "GameObject";
 	GOFlags flags = GOFlags::None;
 	
