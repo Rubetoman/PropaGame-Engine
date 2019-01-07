@@ -216,7 +216,9 @@
     <ClCompile Include="WindowCamera.cpp">
       <Filter>Modules\EditorWindow</Filter>
     </ClCompile>
-    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="Quadtree.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -506,7 +508,9 @@
     <ClInclude Include="WindowCamera.h">
       <Filter>Modules\EditorWindow</Filter>
     </ClInclude>
-    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="Quadtree.h">
+      <Filter>Other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\Assets\Shaders\Default.fs">

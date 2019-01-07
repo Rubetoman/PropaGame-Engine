@@ -8,6 +8,7 @@
 class GameObject;
 class ComponentCamera;
 class JSON_file;
+class Quadtree;
 
 class ModuleScene : public Module
 {
@@ -41,11 +42,16 @@ public:
 	bool LoadScene(const char* scene_name);
 	bool DeleteScene(const char* scene_name);
 
+	void FillQuadtree(GameObject* go);
+	void ComputeSceneQuadtree();
+
 public:
 	std::vector<GameObject*> scene_gos;
 	GameObject* root = nullptr;
 	bool show_scene_gos = false;
 	std::string name = "";
+
+	Quadtree* quadtree = nullptr;
 };
 
 #endif /*__MODULESCENE_H__*/

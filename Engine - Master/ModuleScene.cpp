@@ -6,6 +6,8 @@
 #include "ModuleCamera.h"
 #include "ModuleEditor.h"
 
+#include "Quadtree.h"
+
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
@@ -59,6 +61,8 @@ void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj, C
 {
 	if(root != nullptr)
 		root->Draw(view, proj, camera);
+
+	quadtree->Draw();
 }
 
 GameObject* ModuleScene::CreateGameObject(const char* name)
@@ -220,6 +224,8 @@ bool ModuleScene::Save(JSON_file* document)
 
 bool ModuleScene::InitScene()
 {
+	quadtree = new Quadtree();
+	
 	// Root
 	root = new GameObject("World");
 	root->static_GO = true;
@@ -242,6 +248,8 @@ bool ModuleScene::InitScene()
 
 void ModuleScene::NewScene()
 {
+	quadtree->Clear();
+
 	App->editor->hierarchy->selected = nullptr;
 
 	// Delete root
@@ -371,3 +379,26 @@ bool ModuleScene::DeleteScene(const char* scene_name)
 }
 
 #pragma endregion
+
+void ModuleScene::FillQuadtree(GameObject* go)
+{
+	if (go != nullptr && go->static_GO)
+	{
+		quadtree->Insert(go);
+
+		for (auto child : go->children)
+		{
+			FillQuadtree(child);
+		}
+	}
+}
+
+void ModuleScene::ComputeSceneQuadtree()
+{
+	quadtree->Clear();
+
+	for (auto go : scene_gos)
+	{
+		FillQuadtree(go);
+	}
+}

@@ -10,6 +10,7 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 
+#include "Quadtree.h"
 #include "mmgr/mmgr.h"
 
 WindowConfiguration::WindowConfiguration(const char* name) : Window(name)
@@ -70,6 +71,26 @@ void WindowConfiguration::Draw()
 		ImGui::Checkbox("Show grid", &App->editor->show_grid); ImGui::SameLine();
 		ImGui::Checkbox("Show axis", &App->editor->show_axis);
 		ImGui::Checkbox("Draw all BBox", &App->editor->drawAllBBox);
+	}
+	if (ImGui::CollapsingHeader("Quadtree"))
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.4f, 0.6f, 0.6f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.4f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.4f, 0.8f, 0.8f));
+		if (ImGui::Button("Generate Quadtree"))
+		{
+			App->scene->ComputeSceneQuadtree();
+		}
+		ImGui::PopStyleColor(3);
+
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.6f, 0.6f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(1.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(1.0f, 0.8f, 0.8f));
+		if (ImGui::Button("Delete Quadtree"))
+		{
+			App->scene->quadtree->Clear();
+		}
+		ImGui::PopStyleColor(3);
 	}
 	if (ImGui::CollapsingHeader("Editor Camera"))
 	{
