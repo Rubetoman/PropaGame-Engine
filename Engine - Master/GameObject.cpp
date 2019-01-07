@@ -51,6 +51,7 @@ GameObject::GameObject(const GameObject& go)
 	uuid = App->resources->GenerateNewUID();
 	parentUID = go.parentUID;
 	name = go.name;
+	static_GO = go.static_GO;
 
 	for (const auto& component : go.components)
 	{
