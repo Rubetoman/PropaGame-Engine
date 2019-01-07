@@ -168,6 +168,7 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="par_shapes.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Util\crossguid\guid.hpp" />
@@ -245,6 +246,7 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Util\guid.cpp" />
     <ClCompile Include="WindowAbout.cpp" />
