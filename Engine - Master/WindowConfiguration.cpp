@@ -74,6 +74,8 @@ void WindowConfiguration::Draw()
 	}
 	if (ImGui::CollapsingHeader("Quadtree"))
 	{
+		ImGui::Checkbox("Draw Quadtree", &App->scene->draw_quadtree);
+		ImGui::Separator();
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.4f, 0.6f, 0.6f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.4f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.4f, 0.8f, 0.8f));
