@@ -27,6 +27,7 @@ GameObject::GameObject(const char* name, GameObject* parent) : name(name), paren
 	parentUID = parent->uuid;
 	CreateComponent(component_type::Transform);
 	parent->children.push_back(this);
+	if (parent->static_GO && parent != App->scene->root) SetStatic(true);
 }
 
 GameObject::GameObject(const char* name, const math::float4x4& new_transform) : name(name)
@@ -44,6 +45,7 @@ GameObject::GameObject(const char* name, const math::float4x4& new_transform, Ga
 	transform = (ComponentTransform*)CreateComponent(component_type::Transform);
 	transform->SetTransform(new_transform);
 	parent->children.push_back(this);
+	if (parent->static_GO && parent != App->scene->root) SetStatic(true);
 }
 
 GameObject::GameObject(const GameObject& go)
@@ -160,11 +162,17 @@ bool GameObject::isActive() const
 		return parent->isActive();
 }
 
+void GameObject::SetStatic(bool set)
+{
+	static_GO = true;
+	App->scene->dirty = true;
+}
+
 void GameObject::SetChildrenStatic(bool set) const
 {
 	for (auto child : children)
 	{
-		child->static_GO = set;
+		child->SetStatic(set);
 		child->SetChildrenStatic(set);
 	}
 }
@@ -173,7 +181,7 @@ void GameObject::SetForeparentStatic(bool set) const
 {
 	if (parent != nullptr && parent != App->scene->root)
 	{
-		parent->static_GO = set;
+		parent->SetStatic(set);
 		parent->SetForeparentStatic(set);
 	}
 }
