@@ -102,6 +102,8 @@ bool ComponentTransform::DrawOnInspector()
 			rotation = rotation.FromEulerXYZ(math::DegToRad(euler_rotation.x),
 				math::DegToRad(euler_rotation.y), math::DegToRad(euler_rotation.z));
 			scale = float3::one;
+			if (my_go->static_GO)
+				App->scene->dirty = true;
 		}
 
 		if(ImGui::DragFloat3("Position", (float*)&position, 0.1f))
