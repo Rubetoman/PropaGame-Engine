@@ -62,7 +62,8 @@ void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj, C
 	if(root != nullptr)
 		root->Draw(view, proj, camera);
 
-	quadtree->Draw();
+	if(draw_quadtree)
+		quadtree->Draw();
 }
 
 GameObject* ModuleScene::CreateGameObject(const char* name)
@@ -380,6 +381,8 @@ bool ModuleScene::DeleteScene(const char* scene_name)
 
 #pragma endregion
 
+#pragma region Quadtree functions
+
 void ModuleScene::FillQuadtree(GameObject* go)
 {
 	if (go != nullptr && go->static_GO)
@@ -399,6 +402,22 @@ void ModuleScene::ComputeSceneQuadtree()
 
 	for (auto go : scene_gos)
 	{
+		ResizeQuadtree(go);
 		FillQuadtree(go);
 	}
 }
+
+void ModuleScene::ResizeQuadtree(GameObject* go)
+{
+	if (go != nullptr && go->static_GO)
+	{
+		quadtree->QuadTree_Box.Enclose(go->ComputeTotalBBox());
+
+		for (auto child : go->children)
+		{
+			ResizeQuadtree(child);
+		}
+	}
+}
+
+#pragma endregion

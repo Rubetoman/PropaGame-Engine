@@ -5,8 +5,7 @@
 
 Quadtree::Quadtree()
 {
-	QuadTree_Box.minPoint = { -10.0f,-10.0f,-10.0f };
-	QuadTree_Box.maxPoint = { 10.0f,10.0f,10.0f };
+	QuadTree_Box.SetNegativeInfinity();
 
 	maxElements = 1;
 	maxLevels = 3;
@@ -141,6 +140,7 @@ void Quadtree::Clear()
 		go = nullptr;
 	}
 	container.clear();
+	QuadTree_Box.SetNegativeInfinity();
 }
 
 void Quadtree::Draw() const

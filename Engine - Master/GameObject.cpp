@@ -265,13 +265,40 @@ math::AABB GameObject::ComputeBBox() const
 	return bbox;
 }
 
+math::AABB GameObject::ComputeTotalBBox() const
+{
+	AABB bbox;
+
+	// TODO: Solve bugs and use pointers
+	bbox.SetNegativeInfinity();
+
+	// Current GO meshes
+	if (mesh != nullptr)
+		bbox.Enclose(mesh->boundingBox);
+
+	// Apply transformation of our GO
+	bbox.TransformAsAABB(GetGlobalTransform());
+
+	for (const auto &child : children)
+	{
+		bbox.Enclose(child->ComputeTotalBBox());
+	}
+
+	return bbox;
+}
+
 void GameObject::DrawBBox(AABB bbox) const 
 {
 	if(mesh != nullptr)
 		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
 
 	for (auto child : children)
-		child->DrawBBox(child->ComputeBBox());
+		child->DrawBBox(child->ComputeTotalBBox());
+}
+
+void GameObject::DrawTotalBBox(AABB bbox) const
+{
+	dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
 }
 #pragma endregion
 

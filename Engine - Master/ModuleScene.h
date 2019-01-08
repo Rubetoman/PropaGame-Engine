@@ -44,6 +44,7 @@ public:
 
 	void FillQuadtree(GameObject* go);
 	void ComputeSceneQuadtree();
+	void ResizeQuadtree(GameObject* go);
 
 public:
 	std::vector<GameObject*> scene_gos;
@@ -51,7 +52,9 @@ public:
 	bool show_scene_gos = false;
 	std::string name = "";
 
+	// Scene Quadtree
 	Quadtree* quadtree = nullptr;
+	bool draw_quadtree = false;
 };
 
 #endif /*__MODULESCENE_H__*/
