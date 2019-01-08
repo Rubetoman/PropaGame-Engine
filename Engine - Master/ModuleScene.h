@@ -53,6 +53,8 @@ public:
 	bool show_scene_gos = false;
 	std::string name = "";
 
+	bool dirty = false; // True when a modification has been made
+
 	// Scene Quadtree
 	Quadtree* quadtree = nullptr;
 	bool draw_quadtree = false;

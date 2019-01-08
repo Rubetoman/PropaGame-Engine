@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "Component.h"
 #include "ModuleEditor.h"
+#include "ModuleScene.h"
 
 #include "GameObject.h"
 #include <vector>
@@ -37,6 +38,8 @@ void WindowInspector::Draw()
 			{
 				if(go->children.size() > 0)
 					show_static_popup = true;
+				
+				App->scene->dirty = true;
 			}
 
 			if (show_static_popup)

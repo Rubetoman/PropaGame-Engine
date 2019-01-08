@@ -45,6 +45,12 @@ bool ModuleScene::Start()
 
 update_status ModuleScene::Update()
 {
+	if (dirty)
+	{
+		ComputeSceneQuadtree();
+		dirty = false;
+	}
+
 	root->Update();
 	return UPDATE_CONTINUE;
 }
@@ -63,7 +69,6 @@ void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj, C
 	if (root != nullptr)
 	{
 		// Draw static GOs
-
 		quadtree->Intersect(static_gos, camera.frustum);
 		DrawStaticGameObjects(view, proj, camera);
 		static_gos.clear();
@@ -270,6 +275,8 @@ bool ModuleScene::InitScene()
 	game_camera->transform->position = math::float3(0.0f, 0.0f, 3.0f);
 	game_camera->CreateComponent(component_type::Camera);
 
+	dirty = true;
+
 	return true;
 }
 
@@ -387,6 +394,8 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	}
 	//App->camera->FitCamera(*App->camera->BBtoLook);
 	App->json->closeFile(scene);
+
+	dirty = true;
 
 	LOG("Scene load successful.");
 	return true;

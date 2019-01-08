@@ -1,5 +1,9 @@
 #include "ComponentTransform.h"
 
+#include "Application.h"
+#include "ModuleScene.h"
+
+#include "GameObject.h"
 
 ComponentTransform::ComponentTransform(GameObject* go) : Component(go, component_type::Transform)
 {
@@ -91,13 +95,23 @@ bool ComponentTransform::DrawOnInspector()
 		ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), my_go_uid.c_str());
 		ImGui::Separator();
 
-		ImGui::DragFloat3("Position", (float*)&position, 0.1f);
+		if(ImGui::DragFloat3("Position", (float*)&position, 0.1f))
+		{
+			if(my_go->static_GO)
+				App->scene->dirty = true;
+		}
 		if (ImGui::DragFloat3("Rotation", (float*)&euler_rotation, 0.1f))
 		{
 			rotation = rotation.FromEulerXYZ(math::DegToRad(euler_rotation.x),
 				math::DegToRad(euler_rotation.y), math::DegToRad(euler_rotation.z));
+			if (my_go->static_GO)
+				App->scene->dirty = true;
 		}
-		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f);
+		if(ImGui::DragFloat3("Scale", (float*)&scale, 0.1f))
+		{
+			if (my_go->static_GO)
+				App->scene->dirty = true;
+		}
 	}
 	ImGui::PopID();
 	return false;
