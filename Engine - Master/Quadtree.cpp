@@ -81,6 +81,53 @@ void Quadtree::Intersect(std::vector<GameObject*>& gos, const AABB& bbox)
 	}
 }
 
+void Quadtree::Intersect(std::vector<GameObject*>& gos, const Frustum& frustum)
+{
+	Plane planes[6];
+	float3 BBcorners[8];
+	int counter = 0;
+
+	QuadTree_Box.GetCornerPoints(BBcorners);
+	frustum.GetPlanes(planes);
+
+	for (int i = 0; i < 6; i++)
+	{
+		//This number checks if the bbox is outside of a plane
+		int aux_count = counter;
+
+		for (int j = 0; j < 8; j++)
+		{
+			if (!planes[i].IsOnPositiveSide(BBcorners[j]))
+			{
+				counter++;
+				break;
+			}
+		}
+		if (aux_count == counter)
+		{
+			break;
+		}
+	}
+
+	if (counter == 6)
+	{
+		if (children.size() <= 0)
+		{
+			for (int i = 0; i < container.size(); i++)
+			{
+				gos.push_back(container[i]);
+			}
+		}
+		else
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				children[i]->Intersect(gos, frustum);
+			}
+		}
+	}
+}
+
 void Quadtree::Split()
 {
 	/* view from top

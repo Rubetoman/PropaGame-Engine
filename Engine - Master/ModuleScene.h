@@ -22,6 +22,7 @@ public:
 	bool CleanUp() override;
 
 	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
+	void DrawStaticGameObjects(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
 
 	GameObject* CreateGameObject(const char* name);
 	GameObject* CreateGameObject(const char* name, GameObject* parent);
@@ -55,6 +56,8 @@ public:
 	// Scene Quadtree
 	Quadtree* quadtree = nullptr;
 	bool draw_quadtree = false;
+
+	std::vector<GameObject*> static_gos; // static GOs that intersect with the camera frustrum
 };
 
 #endif /*__MODULESCENE_H__*/

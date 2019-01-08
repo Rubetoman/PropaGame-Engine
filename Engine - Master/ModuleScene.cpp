@@ -11,6 +11,7 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
+#include "ComponentMesh.h"
 
 ModuleScene::ModuleScene()
 {
@@ -59,11 +60,36 @@ bool ModuleScene::CleanUp()
 
 void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera)
 {
-	if(root != nullptr)
+	if (root != nullptr)
+	{
+		// Draw static GOs
+
+		quadtree->Intersect(static_gos, camera.frustum);
+		DrawStaticGameObjects(view, proj, camera);
+		static_gos.clear();
+
+		// Draw non static GOs
 		root->Draw(view, proj, camera);
+	}
 
 	if(draw_quadtree)
 		quadtree->Draw();
+}
+
+void ModuleScene::DrawStaticGameObjects(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera)
+{
+	for (auto go : static_gos)
+	{
+		// Compute and Draw BBox on Editor
+		AABB boundingBox = go->ComputeBBox();
+
+		if (go->mesh != nullptr && go->mesh->active)
+		{
+			// Avoid drawing mesh if it is not inside frustum
+			if (!camera.frustum_culling || camera.ContainsAABB(boundingBox))
+				((ComponentMesh*)go->mesh)->RenderMesh(view, proj);
+		}
+	}
 }
 
 GameObject* ModuleScene::CreateGameObject(const char* name)

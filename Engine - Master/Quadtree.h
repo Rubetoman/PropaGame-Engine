@@ -15,7 +15,7 @@ public:
 
 	void Insert(GameObject* go);
 	void Intersect(std::vector<GameObject*>& gos, const AABB& bbox);
-
+	void Intersect(std::vector<GameObject*>& gos, const Frustum& frustum);
 	void Split();
 
 	void Clear();
