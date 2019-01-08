@@ -88,6 +88,11 @@ void WindowHierarchy::DrawNode()
 		for (auto &go : App->scene->scene_gos)
 		{
 			ImGui::PushID(go);
+
+			// Show with different color when it is a inactive GO
+			if (!go->active)
+				ImGui::PushStyleColor(ImGuiCol_Text, { 0.1f,0.1f,0.1f,0.9f });
+
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 			flags |= go == selected ? ImGuiTreeNodeFlags_Selected : 0;
 
@@ -116,6 +121,9 @@ void WindowHierarchy::DrawNode()
 					ImGui::TreePop();
 				}
 			}
+			if (!go->active)
+				ImGui::PopStyleColor();
+
 			ImGui::PopID();
 		}	
 	}
@@ -130,24 +138,33 @@ void WindowHierarchy::DrawNode()
 
 void WindowHierarchy::DrawChildren(GameObject* node)
 {
+	ImGui::PushID(node);
+
+	// Show with different color when it is a inactive GO
+	if (!node->active)
+		ImGui::PushStyleColor(ImGuiCol_Text, { 0.1f,0.1f,0.1f,0.9f });
+
+	// Flags
 	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick
 		| (node == selected ? ImGuiTreeNodeFlags_Selected : 0);
-	ImGui::PushID(node);
 	if (node->children.empty())
 	{
 		flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
 	bool node_open = ImGui::TreeNodeEx(node->name.c_str(), flags);
+
+	// Drag and drop
 	SetDragAndDrop(node);
 
+	// Select input
 	if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
 	{
 		selected = node;
 	}
 
+	// Draw children
 	if (node_open)
 	{
-		// Children
 		for (auto &child : node->children)
 		{
 			DrawChildren(child);
@@ -158,6 +175,10 @@ void WindowHierarchy::DrawChildren(GameObject* node)
 			ImGui::TreePop();
 		}
 	}
+
+	if (!node->active)
+		ImGui::PopStyleColor();
+
 	ImGui::PopID();
 }
 
