@@ -105,6 +105,7 @@ void WindowInspector::StaticPopup(GameObject& go)
 		if (ImGui::Button("Yes", ImVec2(120, 0)))
 		{
 			go.SetChildrenStatic(go.static_GO);
+			App->scene->dirty = true;
 			show_static_popup = false;
 		}
 
