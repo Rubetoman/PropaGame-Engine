@@ -211,7 +211,7 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 	}
 }
 
-void GameObject::DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode)
+void GameObject::DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode) const
 {
 	// Draw bbox
 	switch (bbox_mode)

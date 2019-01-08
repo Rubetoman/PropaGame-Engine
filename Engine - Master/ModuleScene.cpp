@@ -81,7 +81,7 @@ void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj, C
 		quadtree->Draw();
 }
 
-void ModuleScene::DrawStaticGameObjects(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera)
+void ModuleScene::DrawStaticGameObjects(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera) const
 {
 	for (auto go : static_gos)
 	{

@@ -22,7 +22,7 @@ public:
 	bool CleanUp() override;
 
 	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
-	void DrawStaticGameObjects(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
+	void DrawStaticGameObjects(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera) const;
 
 	GameObject* CreateGameObject(const char* name);
 	GameObject* CreateGameObject(const char* name, GameObject* parent);
