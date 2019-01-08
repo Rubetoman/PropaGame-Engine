@@ -72,10 +72,11 @@ public:
 	math::float4x4 GetLocalTransform() const;
 	math::float4x4 GetGlobalTransform() const;
 	math::float3 GetCenter() const;
-	math::AABB ComputeBBox() const;			// Computes a bbox for the GO mesh
-	math::AABB ComputeTotalBBox() const;	// Computes a bbox enclosing all children meshes
-	void DrawBBox(AABB bbox) const;			// Draws one bbox for each mesh (self and children)
-	void DrawTotalBBox(AABB bbox) const;	// Draws one bbox
+	math::AABB ComputeBBox() const;				// Computes a bbox for the GO mesh
+	math::AABB ComputeTotalBBox() const;		// Computes a bbox enclosing all children meshes
+	math::AABB ComputeStaticTotalBBox() const;	// Computes a bbox enclosing all static children meshes
+	void DrawBBox(AABB bbox) const;				// Draws one bbox for each mesh (self and children)
+	void DrawTotalBBox(AABB bbox) const;		// Draws one bbox
 
 	// Components
 	Component* CreateComponent(component_type type);

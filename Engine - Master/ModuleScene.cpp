@@ -437,7 +437,7 @@ void ModuleScene::ResizeQuadtree(GameObject* go)
 {
 	if (go != nullptr && go->static_GO)
 	{
-		quadtree->QuadTree_Box.Enclose(go->ComputeTotalBBox());
+		quadtree->QuadTree_Box.Enclose(go->ComputeStaticTotalBBox());
 
 		for (auto child : go->children)
 		{

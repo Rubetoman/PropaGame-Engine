@@ -289,6 +289,28 @@ math::AABB GameObject::ComputeTotalBBox() const
 	return bbox;
 }
 
+math::AABB GameObject::ComputeStaticTotalBBox() const
+{
+	AABB bbox;
+
+	// TODO: Solve bugs and use pointers
+	bbox.SetNegativeInfinity();
+
+	// Current GO meshes
+	if (mesh != nullptr && static_GO)
+		bbox.Enclose(mesh->boundingBox);
+
+	// Apply transformation of our GO
+	bbox.TransformAsAABB(GetGlobalTransform());
+
+	for (const auto &child : children)
+	{
+		bbox.Enclose(child->ComputeStaticTotalBBox());
+	}
+
+	return bbox;
+}
+
 void GameObject::DrawBBox(AABB bbox) const 
 {
 	if(mesh != nullptr)
