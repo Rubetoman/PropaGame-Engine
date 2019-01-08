@@ -95,6 +95,15 @@ bool ComponentTransform::DrawOnInspector()
 		ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), my_go_uid.c_str());
 		ImGui::Separator();
 
+		if (ImGui::Button("Default"))
+		{
+			position = float3::zero;
+			euler_rotation = float3::zero;
+			rotation = rotation.FromEulerXYZ(math::DegToRad(euler_rotation.x),
+				math::DegToRad(euler_rotation.y), math::DegToRad(euler_rotation.z));
+			scale = float3::one;
+		}
+
 		if(ImGui::DragFloat3("Position", (float*)&position, 0.1f))
 		{
 			if(my_go->static_GO)
