@@ -36,6 +36,9 @@ class WindowCamera;
 
 class ComponentCamera;
 
+
+enum class BBoxMode {Divide, All_Divide, Enclose, All_Enclose};
+
 class ModuleEditor : public Module
 {
 public:
@@ -70,7 +73,8 @@ public:
 
 	bool show_grid = true;
 	bool show_axis = true;
-	bool drawAllBBox = false;
+
+	BBoxMode bbox_mode = BBoxMode::Divide;
 
 	//The window we'll be rendering to
 	SDL_Window * window = nullptr;

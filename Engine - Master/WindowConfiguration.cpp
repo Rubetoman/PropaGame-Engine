@@ -70,7 +70,9 @@ void WindowConfiguration::Draw()
 		ImGui::Separator();
 		ImGui::Checkbox("Show grid", &App->editor->show_grid); ImGui::SameLine();
 		ImGui::Checkbox("Show axis", &App->editor->show_axis);
-		ImGui::Checkbox("Draw all BBox", &App->editor->drawAllBBox);
+
+		const char* modes[] = {"Selected mesh only", "BBox for each mesh on scene", "Selected GO enclosing children", "Enclose all"};
+		ImGui::Combo("BBox draw mode", (int*)&App->editor->bbox_mode, modes, IM_ARRAYSIZE(modes));
 	}
 	if (ImGui::CollapsingHeader("Quadtree"))
 	{

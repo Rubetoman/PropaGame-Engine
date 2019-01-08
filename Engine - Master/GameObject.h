@@ -17,6 +17,7 @@ class ComponentMaterial;
 class ComponentCamera;
 
 enum class component_type;
+enum class BBoxMode;
 
 #pragma region GOFlags
 enum GOFlags
@@ -68,7 +69,7 @@ public:
 	void SetChildrenStatic(bool set) const;
 	void SetForeparentStatic(bool set) const;
 	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
-	void DrawDebugShapes(math::AABB bbox);						// Draws editor debug shpaes (Spheres for lights, camera icons, frustrum lines, bboxes, etc.)
+	void DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode);		// Draws editor debug shpaes (Spheres for lights, camera icons, frustrum lines, bboxes, etc.)
 	void DeleteGameObject();
 	math::float4x4 GetLocalTransform() const;
 	math::float4x4 GetGlobalTransform() const;

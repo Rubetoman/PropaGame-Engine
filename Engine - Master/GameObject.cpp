@@ -189,10 +189,17 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 	}
 
 	// Compute BBox
-	AABB boundingBox = ComputeBBox();
+	AABB boundingBox;
+	BBoxMode bbox_mode = App->editor->bbox_mode;
+
+	if(bbox_mode == BBoxMode::Divide || bbox_mode == BBoxMode::Divide)
+		boundingBox = ComputeBBox();
+	else
+		boundingBox = ComputeTotalBBox();
+
 	// Draw debug shapes on editor camera
 	if (&camera == App->camera->editor_camera_comp)
-		DrawDebugShapes(boundingBox);
+		DrawDebugShapes(boundingBox, bbox_mode);
 
 	if (static_GO) return;	// Static GOs meshes are drawn using quadtree
 
@@ -204,11 +211,27 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 	}
 }
 
-void GameObject::DrawDebugShapes(math::AABB bbox)
+void GameObject::DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode)
 {
 	// Draw bbox
-	if ((App->editor->hierarchy->selected == this) || (App->editor->drawAllBBox))
+	switch (bbox_mode)
+	{
+	default:
+	case BBoxMode::Divide:
+		if (App->editor->hierarchy->selected == this)
+			DrawBBox(bbox);
+		break;
+	case BBoxMode::All_Divide:
 		DrawBBox(bbox);
+		break;
+	case BBoxMode::Enclose:
+		if (App->editor->hierarchy->selected == this)
+			DrawTotalBBox(bbox);
+		break;
+	case BBoxMode::All_Enclose:
+		DrawTotalBBox(bbox);
+		break;
+	}
 
 	// Draw a sphere on Editor
 	if (GetComponent(component_type::Light) != nullptr)
