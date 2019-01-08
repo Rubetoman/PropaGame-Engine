@@ -188,10 +188,11 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 		child->Draw(view, proj, camera);
 	}
 
-	// Compute and Draw BBox on Editor
+	// Compute BBox
 	AABB boundingBox = ComputeBBox();
-	if ((App->editor->hierarchy->selected == this) || (App->editor->drawAllBBox))
-		DrawBBox(boundingBox);
+	// Draw debug shapes on editor camera
+	if (&camera == App->camera->editor_camera_comp)
+		DrawDebugShapes(boundingBox);
 
 	if (static_GO) return;	// Static GOs meshes are drawn using quadtree
 
@@ -201,6 +202,13 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 		if (!camera.frustum_culling || camera.ContainsAABB(boundingBox))
 			((ComponentMesh*)mesh)->RenderMesh(view, proj);
 	}
+}
+
+void GameObject::DrawDebugShapes(math::AABB bbox)
+{
+	// Draw bbox
+	if ((App->editor->hierarchy->selected == this) || (App->editor->drawAllBBox))
+		DrawBBox(bbox);
 
 	// Draw a sphere on Editor
 	if (GetComponent(component_type::Light) != nullptr)
@@ -249,6 +257,9 @@ math::float3 GameObject::GetCenter() const
 	else
 		return transform->position;
 }
+#pragma endregion
+
+#pragma region BBox functions
 
 math::AABB GameObject::ComputeBBox() const 
 {
@@ -324,6 +335,7 @@ void GameObject::DrawTotalBBox(AABB bbox) const
 {
 	dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
 }
+
 #pragma endregion
 
 #pragma region Components Related Functions

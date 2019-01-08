@@ -68,10 +68,13 @@ public:
 	void SetChildrenStatic(bool set) const;
 	void SetForeparentStatic(bool set) const;
 	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
+	void DrawDebugShapes(math::AABB bbox);						// Draws editor debug shpaes (Spheres for lights, camera icons, frustrum lines, bboxes, etc.)
 	void DeleteGameObject();
 	math::float4x4 GetLocalTransform() const;
 	math::float4x4 GetGlobalTransform() const;
 	math::float3 GetCenter() const;
+
+	// BBox
 	math::AABB ComputeBBox() const;				// Computes a bbox for the GO mesh
 	math::AABB ComputeTotalBBox() const;		// Computes a bbox enclosing all children meshes
 	math::AABB ComputeStaticTotalBBox() const;	// Computes a bbox enclosing all static children meshes
