@@ -285,9 +285,16 @@ math::AABB GameObject::ComputeTotalBBox() const
 	// TODO: Solve bugs and use pointers
 	bbox.SetNegativeInfinity();
 
-	// Current GO meshes
+	// Enclose GO meshes if is not only small box 
 	if (mesh != nullptr)
+	{
 		bbox.Enclose(mesh->boundingBox);
+	}
+	else if (children.size() == 0)
+	{
+		bbox.maxPoint = math::float3(0.1f, 0.1f, 0.1f);
+		bbox.minPoint = math::float3(-0.1f, -0.1f, -0.1f);
+	}
 
 	// Apply transformation of our GO
 	bbox.TransformAsAABB(GetGlobalTransform());
@@ -307,16 +314,32 @@ math::AABB GameObject::ComputeStaticTotalBBox() const
 	// TODO: Solve bugs and use pointers
 	bbox.SetNegativeInfinity();
 
-	// Current GO meshes
-	if (mesh != nullptr && static_GO)
-		bbox.Enclose(mesh->boundingBox);
+	// Enclose GO meshes if is not only small box 
+	if (static_GO)
+	{
+		if (mesh != nullptr)
+		{
+			bbox.Enclose(mesh->boundingBox);
+		}
+		else if (children.size() == 0)
+		{
+			bbox.maxPoint = math::float3(0.1f, 0.1f, 0.1f);
+			bbox.minPoint = math::float3(-0.1f, -0.1f, -0.1f);
+		}
+	}
 
 	// Apply transformation of our GO
 	bbox.TransformAsAABB(GetGlobalTransform());
 
 	for (const auto &child : children)
 	{
-		bbox.Enclose(child->ComputeStaticTotalBBox());
+		if(mesh != nullptr)
+			bbox.Enclose(child->ComputeStaticTotalBBox());
+		else if(children.size() == 0)
+		{
+			bbox.maxPoint = math::float3(0, 0, 0);
+			bbox.minPoint = math::float3(0, 0, 0);
+		}
 	}
 
 	return bbox;
