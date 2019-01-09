@@ -68,16 +68,19 @@ void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj, C
 {
 	if (root != nullptr)
 	{
-		// Draw static GOs
-		quadtree->Intersect(static_gos, camera.frustum);
-		DrawStaticGameObjects(view, proj, camera);
-		static_gos.clear();
+		if (use_quadtree)
+		{
+			// Draw static GOs
+			quadtree->Intersect(static_gos, camera.frustum);
+			DrawStaticGameObjects(view, proj, camera);
+			static_gos.clear();
+		}
 
-		// Draw non static GOs
+		// Draw non static GOs (If quadtree is not in use will draw also static GOs)
 		root->Draw(view, proj, camera);
 	}
 
-	if(draw_quadtree)
+	if(use_quadtree && draw_quadtree)
 		quadtree->Draw();
 }
 

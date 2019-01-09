@@ -209,7 +209,7 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 	if (&camera == App->camera->editor_camera_comp)
 		DrawDebugShapes(boundingBox, bbox_mode);
 
-	if (static_GO) return;	// Static GOs meshes are drawn using quadtree
+	if (App->scene->use_quadtree && static_GO) return;	// Static GOs meshes are drawn using quadtree
 
 	if (mesh != nullptr && mesh->active)
 	{

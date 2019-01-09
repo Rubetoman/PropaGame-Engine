@@ -58,7 +58,7 @@ public:
 	// Scene Quadtree
 	Quadtree* quadtree = nullptr;
 	bool draw_quadtree = false;
-
+	bool use_quadtree = true;
 	std::vector<GameObject*> static_gos; // static GOs that intersect with the camera frustrum
 };
 
