@@ -362,7 +362,7 @@ math::AABB GameObject::ComputeStaticTotalBBox() const
 		{
 			bbox.Enclose(mesh->boundingBox);
 		}
-		else if (children.size() == 0)
+		else
 		{
 			bbox.maxPoint = math::float3(0.1f, 0.1f, 0.1f);
 			bbox.minPoint = math::float3(-0.1f, -0.1f, -0.1f);
@@ -373,7 +373,8 @@ math::AABB GameObject::ComputeStaticTotalBBox() const
 
 		for (const auto &child : children)
 		{
-			bbox.Enclose(child->ComputeStaticTotalBBox());
+			if(child->static_GO)
+				bbox.Enclose(child->ComputeStaticTotalBBox());
 		}
 	}
 
