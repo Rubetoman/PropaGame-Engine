@@ -14,8 +14,9 @@ public:
 	~Quadtree();
 
 	void Insert(GameObject* go);
-	void Intersect(std::vector<GameObject*>& gos, const AABB& bbox);
-	void Intersect(std::vector<GameObject*>& gos, const Frustum& frustum);
+	void Intersect(std::vector<GameObject*>& gos, const math::AABB& bbox);
+	void Intersect(std::vector<GameObject*>& gos, const math::Frustum& frustum);
+	void Intersect(std::vector<GameObject*>& gos, const math::LineSegment& line);
 	void Split();
 
 	void Clear();

@@ -60,7 +60,7 @@ void Quadtree::Insert(GameObject* go)
 	}
 }
 
-void Quadtree::Intersect(std::vector<GameObject*>& gos, const AABB& bbox)
+void Quadtree::Intersect(std::vector<GameObject*>& gos, const math::AABB& bbox)
 {
 	if (QuadTree_Box.Intersects(bbox))
 	{
@@ -81,7 +81,7 @@ void Quadtree::Intersect(std::vector<GameObject*>& gos, const AABB& bbox)
 	}
 }
 
-void Quadtree::Intersect(std::vector<GameObject*>& gos, const Frustum& frustum)
+void Quadtree::Intersect(std::vector<GameObject*>& gos, const math::Frustum& frustum)
 {
 	Plane planes[6];
 	float3 BBcorners[8];
@@ -123,6 +123,27 @@ void Quadtree::Intersect(std::vector<GameObject*>& gos, const Frustum& frustum)
 			for (int i = 0; i < 4; i++)
 			{
 				children[i]->Intersect(gos, frustum);
+			}
+		}
+	}
+}
+
+void Quadtree::Intersect(std::vector<GameObject*>& gos, const math::LineSegment& line)
+{
+	if (QuadTree_Box.Intersects(line))
+	{
+		if (children.size() <= 0)
+		{
+			for (int i = 0; i < container.size(); i++)
+			{
+				gos.push_back(container[i]);
+			}
+		}
+		else
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				children[i]->Intersect(gos, line);
 			}
 		}
 	}

@@ -20,6 +20,8 @@ void WindowScene::Draw()
 
 	ImVec2 size = ImGui::GetWindowSize();
 	ImGui::SetCursorPos({ -(App->window->screen_width - size.x) / 2,-(App->window->screen_height - size.y) / 2 });
+	viewport.x = ImGui::GetCursorPosX() + ImGui::GetWindowPos().x;
+	viewport.y = ImGui::GetCursorPosY() + ImGui::GetWindowPos().y;
 
 	if(App->camera != nullptr && App->camera->editor_camera_comp != nullptr)
 		ImGui::Image((ImTextureID)App->camera->editor_camera_comp->renderedTexture, { (float)App->window->screen_width, (float)App->window->screen_height }, { 0,1 }, { 1,0 });

@@ -206,7 +206,7 @@ void WindowConfiguration::Draw()
 	if (ImGui::CollapsingHeader("Input"))
 	{
 		ImGui::Text("Mouse Position:");
-		ImGui::Text("X: %d | Y: %d", App->input->GetMousePosition().x, App->input->GetMousePosition().y);
+		ImGui::Text("X: %d | Y: %d", (int)(App->input->GetMousePosition().x * App->window->screen_width), (int)(App->input->GetMousePosition().y * App->window->screen_height));
 	}
 	ImGui::End();
 }

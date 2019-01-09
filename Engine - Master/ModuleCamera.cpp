@@ -12,6 +12,9 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 
+#include "Quadtree.h"
+#include "debugdraw.h"
+
 ModuleCamera::ModuleCamera()
 {
 }
@@ -123,6 +126,11 @@ void ModuleCamera::TranslateCameraInput()
 	{
 		WheelInputTranslation(App->input->GetMouseWheel());
 	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT)
+	{
+		App->editor->hierarchy->selected = MousePick();
+	}
 }
 
 void ModuleCamera::RotateCameraInput() 
@@ -204,4 +212,24 @@ void ModuleCamera::FitCamera(const AABB &boundingBox)
 	editor_camera_go->transform->position.y = center.y;
 	editor_camera_go->transform->position.x = center.x;
 	editor_camera_comp->LookAt(math::float3(center.x,center.y,center.z));
+}
+
+GameObject* ModuleCamera::MousePick()
+{
+	const fPoint mousePosition = App->input->GetMousePosition();
+
+	float normalized_x = mousePosition.x * App->window->screen_width - App->editor->scene->viewport.x;
+	float normalized_y = mousePosition.y * App->window->screen_height - App->editor->scene->viewport.y;
+	normalized_x = (normalized_x / (App->window->screen_width / 2)) - 1.0f;
+	normalized_y = 1.0f - (normalized_y / (App->window->screen_height / 2));
+
+	raycast = editor_camera_comp->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+
+	
+	return nullptr;
+}
+
+void ModuleCamera::DrawRaycast() const
+{
+	dd::line(raycast.a, raycast.b, math::float3::zero);
 }

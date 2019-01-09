@@ -6,6 +6,7 @@
 
 #include "Point.h"
 #include "Geometry/AABB.h"
+#include "Geometry/LineSegment.h"
 #include <vector>
 
 class GameObject;
@@ -38,6 +39,8 @@ public:
 	void		CameraSpeedInput(float modifier);
 	void		WheelInputTranslation(const fPoint& wheel_motion);
 	void		FitCamera(const math::AABB &boundingBox);
+	GameObject* MousePick();
+	void		DrawRaycast() const;
 
 public:
 
@@ -48,6 +51,10 @@ public:
 	// Mouse 
 	bool new_scroll = true;
 	float mouse_sensitivity = 0.6;
+
+	//Mouse Picking
+	//std::vector<GameObject*> hitGOs;
+	math::LineSegment raycast;
 
 	// Mesh
 	math::AABB* BBtoLook = nullptr;

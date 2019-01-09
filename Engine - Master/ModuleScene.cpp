@@ -80,8 +80,13 @@ void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj, C
 		root->Draw(view, proj, camera);
 	}
 
-	if(use_quadtree && draw_quadtree)
-		quadtree->Draw();
+	if (&camera == App->camera->editor_camera_comp)
+	{
+		if (use_quadtree && draw_quadtree)
+			quadtree->Draw();
+
+		App->camera->DrawRaycast();
+	}
 }
 
 void ModuleScene::DrawStaticGameObjects(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera) const
