@@ -66,7 +66,8 @@ public:
 
 	// Game Object
 	bool isActive() const;
-	void SetStatic(bool set);
+	void SetStatic(bool set);		// Sets the GO to static and sets the scene dirty
+	bool isPureStatic() const;		// Returns true if all his parents are static, if else returns false
 	void SetChildrenStatic(bool set) const;
 	void SetForeparentStatic(bool set) const;
 	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);

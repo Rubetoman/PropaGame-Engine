@@ -164,8 +164,18 @@ bool GameObject::isActive() const
 
 void GameObject::SetStatic(bool set)
 {
-	static_GO = true;
+	static_GO = set;
 	App->scene->dirty = true;
+}
+
+bool GameObject::isPureStatic() const
+{
+	if (parent == nullptr && static_GO)
+		return true;
+	else if (!static_GO || !parent->static_GO)
+		return false;
+	else
+		return parent->isPureStatic();
 }
 
 void GameObject::SetChildrenStatic(bool set) const
@@ -209,7 +219,7 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 	if (&camera == App->camera->editor_camera_comp)
 		DrawDebugShapes(boundingBox, bbox_mode);
 
-	if (App->scene->use_quadtree && static_GO) return;	// Static GOs meshes are drawn using quadtree
+	if (App->scene->use_quadtree && isPureStatic()) return;	// Static GOs meshes are drawn using quadtree
 
 	if (mesh != nullptr && mesh->active)
 	{
@@ -357,19 +367,13 @@ math::AABB GameObject::ComputeStaticTotalBBox() const
 			bbox.maxPoint = math::float3(0.1f, 0.1f, 0.1f);
 			bbox.minPoint = math::float3(-0.1f, -0.1f, -0.1f);
 		}
-	}
 
-	// Apply transformation of our GO
-	bbox.TransformAsAABB(GetGlobalTransform());
+		// Apply transformation of our GO
+		bbox.TransformAsAABB(GetGlobalTransform());
 
-	for (const auto &child : children)
-	{
-		if(mesh != nullptr)
-			bbox.Enclose(child->ComputeStaticTotalBBox());
-		else if(children.size() == 0)
+		for (const auto &child : children)
 		{
-			bbox.maxPoint = math::float3(0, 0, 0);
-			bbox.minPoint = math::float3(0, 0, 0);
+			bbox.Enclose(child->ComputeStaticTotalBBox());
 		}
 	}
 
