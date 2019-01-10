@@ -3,8 +3,13 @@
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleResources.h"
+#include "ModuleScene.h"
+
+#include "WindowHierarchy.h"
 
 #include "ComponentCamera.h"
+
+#include "ImGuizmo/ImGuizmo.h"
 
 WindowScene::WindowScene(const char* name) : Window(name)
 {
@@ -30,6 +35,8 @@ void WindowScene::Draw()
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) != KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) != KEY_REPEAT)
 		focus = ImGui::IsMouseHoveringWindow();
+
+	App->scene->DrawImGuizmo(ImGuizmo::OPERATION::TRANSLATE);
 
 	ImGui::End();
 }

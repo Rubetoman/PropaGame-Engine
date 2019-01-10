@@ -2,6 +2,7 @@
 #define __MODULESCENE_H__
 
 #include "Module.h"
+#include "ImGuizmo/ImGuizmo.h"
 #include "Math/float4x4.h"
 #include <vector>
 
@@ -23,6 +24,7 @@ public:
 
 	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
 	void DrawStaticGameObjects(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera) const;
+	void DrawImGuizmo(ImGuizmo::OPERATION operation) const;
 
 	GameObject* CreateGameObject(const char* name);
 	GameObject* CreateGameObject(const char* name, GameObject* parent);

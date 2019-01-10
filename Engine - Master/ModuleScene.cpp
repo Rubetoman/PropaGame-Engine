@@ -7,6 +7,7 @@
 #include "ModuleEditor.h"
 
 #include "WindowHierarchy.h"
+#include "WindowScene.h"
 
 #include "Quadtree.h"
 
@@ -104,6 +105,42 @@ void ModuleScene::DrawStaticGameObjects(const math::float4x4& view, const math::
 			// Avoid drawing mesh if it is not inside frustum
 			if (!camera.frustum_culling || camera.ContainsAABB(boundingBox))
 				((ComponentMesh*)go->mesh)->RenderMesh(view, proj);
+		}
+	}
+}
+
+void ModuleScene::DrawImGuizmo(ImGuizmo::OPERATION operation) const
+{
+	math::float2 pos = App->editor->scene->viewport;
+	ImGuizmo::SetRect(pos.x, pos.y, App->window->screen_width, App->window->screen_height);
+	ImGuizmo::SetDrawlist();
+
+	ImGui::SetCursorPos({ 20,30 });
+
+	GameObject* selectedGO = App->editor->hierarchy->selected;
+
+	if (selectedGO != nullptr)
+	{
+		//ImGuizmo::Enable(!selectedGO->isPureStatic());
+
+		ComponentTransform* transform = selectedGO->transform;
+		ComponentCamera* editor_camera = App->camera->editor_camera_comp;
+
+		math::float4x4 model = float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+		math::float4x4 proj = editor_camera->frustum.ProjectionMatrix();
+		math::float4x4 view = editor_camera->frustum.ViewMatrix();
+
+		ImGuizmo::SetOrthographic(false);
+
+		model.Transpose();
+		view.Transpose();
+		proj.Transpose();
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj, operation, ImGuizmo::WORLD, (float*)&model, NULL, NULL, NULL, NULL);
+
+		if (ImGuizmo::IsUsing())
+		{
+			model.Transpose();
+			transform->SetTransform(model);
 		}
 	}
 }
