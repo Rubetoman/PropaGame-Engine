@@ -5,6 +5,8 @@
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 
+#include "WindowHierarchy.h"
+
 #include "GameObject.h"
 #include <vector>
 

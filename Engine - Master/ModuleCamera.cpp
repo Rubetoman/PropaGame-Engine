@@ -7,6 +7,8 @@
 #include "ModuleWindow.h"
 #include "ModuleTime.h"
 #include "ModuleResources.h"
+
+#include "WindowHierarchy.h"
 #include "WindowScene.h"
 
 #include "ComponentTransform.h"

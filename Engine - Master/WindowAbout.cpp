@@ -1,7 +1,11 @@
+#include "Application.h"
 #include "WindowAbout.h"
 #include "ModuleEditor.h"
-#include "GL/glew.h"
 
+#include "GL/glew.h"
+#include "Assimp/include/assimp/version.h"
+#include "IL/il.h"
+#include "SDL_version.h"
 
 WindowAbout::WindowAbout(const char* name) : Window(name)
 {

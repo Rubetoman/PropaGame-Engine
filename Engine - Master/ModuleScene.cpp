@@ -6,6 +6,8 @@
 #include "ModuleCamera.h"
 #include "ModuleEditor.h"
 
+#include "WindowHierarchy.h"
+
 #include "Quadtree.h"
 
 #include "ComponentTransform.h"

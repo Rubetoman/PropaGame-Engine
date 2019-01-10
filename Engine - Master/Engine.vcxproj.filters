@@ -220,7 +220,7 @@
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
-      <Filter>Tools</Filter>
+      <Filter>Tools\imguizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -515,7 +515,7 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="ImGuizmo\ImGuizmo.h">
-      <Filter>Tools</Filter>
+      <Filter>Tools\imguizmo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

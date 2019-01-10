@@ -6,6 +6,8 @@
 #include "ModuleScene.h"
 #include "ModuleResources.h"
 
+#include "WindowHierarchy.h"
+
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
