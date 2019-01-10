@@ -240,41 +240,40 @@ GameObject* ModuleCamera::MousePick()
 		}
 	}
 
-	float minDistance = -100.0f;
+	// Check which GO is nearest
+	float minDistance = raycast.Length();
 	GameObject* nearest_hit_GO = nullptr;
-	if (hitGOs.size() > 0)
+	for (auto go : hitGOs)
 	{
-		for (auto go : hitGOs)
+		ComponentMesh* mesh = go->mesh;
+		ComponentTransform* transform = go->transform;
+
+		if (mesh != nullptr && transform != nullptr)
 		{
-			ComponentMesh* mesh = go->mesh;
-			ComponentTransform* transform = go->transform;
+			math::LineSegment localTransformPikingLine(raycast);
+			localTransformPikingLine.Transform(transform->my_go->GetGlobalTransform().Inverted());
 
-			if (mesh != nullptr && transform != nullptr)
+			math::Triangle triangle;
+			for (unsigned i = 0; i < mesh->num_indices; i += 3)
 			{
-				math::LineSegment localTransformPikingLine(raycast);
-				localTransformPikingLine.Transform(transform->my_go->GetGlobalTransform().Inverted());
+				triangle.a = { mesh->vertices[mesh->indices[i] * 3], mesh->vertices[mesh->indices[i] * 3 + 1], mesh->vertices[mesh->indices[i] * 3 + 2] };
+				triangle.b = { mesh->vertices[mesh->indices[i + 1] * 3],mesh->vertices[mesh->indices[i + 1] * 3 + 1], mesh->vertices[mesh->indices[i + 1] * 3 + 2] };
+				triangle.c = { mesh->vertices[mesh->indices[i + 2] * 3], mesh->vertices[mesh->indices[i + 2] * 3 + 1], mesh->vertices[mesh->indices[i + 2] * 3 + 2] };
 
-				math::Triangle triangle;
-				for (unsigned i = 0; i < mesh->num_indices; i += 3)
+				float triangleDistance;
+				float3 hitPoint;
+				if (localTransformPikingLine.Intersects(triangle, &triangleDistance, &hitPoint))
 				{
-					triangle.a = { mesh->vertices[mesh->indices[i] * 3], mesh->vertices[mesh->indices[i] * 3 + 1], mesh->vertices[mesh->indices[i] * 3 + 2] };
-					triangle.b = { mesh->vertices[mesh->indices[i + 1] * 3],mesh->vertices[mesh->indices[i + 1] * 3 + 1], mesh->vertices[mesh->indices[i + 1] * 3 + 2] };
-					triangle.c = { mesh->vertices[mesh->indices[i + 2] * 3], mesh->vertices[mesh->indices[i + 2] * 3 + 1], mesh->vertices[mesh->indices[i + 2] * 3 + 2] };
-
-					float triangleDistance;
-					float3 hitPoint;
-					if (localTransformPikingLine.Intersects(triangle, &triangleDistance, &hitPoint))
+					if (triangleDistance < minDistance)
 					{
-						if (minDistance == -100.0f || triangleDistance < minDistance)
-						{
-							minDistance = triangleDistance;
-							nearest_hit_GO = go;
-						}
+						minDistance = triangleDistance;
+						nearest_hit_GO = go;
 					}
 				}
 			}
 		}
 	}
+
 	return nearest_hit_GO;
 }
 
