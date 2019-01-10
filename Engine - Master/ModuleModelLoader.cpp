@@ -1,6 +1,7 @@
 #include "ModuleModelLoader.h"
 #include "ModuleCamera.h"
 #include "ModuleScene.h"
+#include "ModuleResources.h"
 
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
@@ -182,8 +183,40 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 		mesh->num_vertices = src_mesh->mNumVertices;
 		mesh->num_indices = src_mesh->mNumFaces * 3;
 
+		//Copying Vertices array
+		mesh->vertices = new float[mesh->num_vertices * 3]; //It is checked below that at least has 1 face, so at least 3 vertices
+		memcpy(mesh->vertices, src_mesh->mVertices, sizeof(float)*mesh->num_vertices * 3);
+
+		//Copying Face Normals
+		if (src_mesh->HasNormals())
+		{
+			mesh->num_normals = src_mesh->mNumVertices;
+			mesh->normals = new float[mesh->num_normals * 3];
+			memcpy(mesh->normals, src_mesh->mNormals, sizeof(float)*mesh->num_normals * 3);
+		}
+
+		//Copying indices
+		mesh->num_indices = src_mesh->mNumFaces * 3;
+		mesh->indices = new unsigned[mesh->num_indices]; // assume each face is a triangle
+
+		for (int j = 0; j < src_mesh->mNumFaces; ++j)
+		{
+			if (src_mesh->mFaces[j].mNumIndices != 3)
+			{
+				LOG("WARNING, geometry face with != 3 indices!");
+				LOG("WARNING, face normals couldn't be loaded");
+				mesh = nullptr;
+				break;
+			}
+			else
+			{
+				memcpy(&mesh->indices[j * 3], src_mesh->mFaces[j].mIndices, 3 * sizeof(unsigned));
+			}
+		}
+
 		mesh->boundingBox.SetNegativeInfinity();
 		mesh->boundingBox.Enclose((math::float3*)src_mesh->mVertices, mesh->num_vertices);
+		App->resources->meshes.push_back(go->mesh);
 
 		const aiMaterial* src_material = scene->mMaterials[src_mesh->mMaterialIndex];
 

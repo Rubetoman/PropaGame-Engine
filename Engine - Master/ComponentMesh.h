@@ -34,9 +34,15 @@ public:
 	unsigned vbo = 0u;
 	unsigned ibo = 0u;
 	unsigned vao = 0u;
+
 	unsigned num_vertices = 0u;
+	float* vertices = nullptr;
+
 	unsigned num_indices = 0u;
-	std::vector<float3> vertices;
+	unsigned* indices = nullptr;
+
+	unsigned num_normals = 0u;
+	float* normals = nullptr;
 
 	math::AABB boundingBox = math::AABB();
 };

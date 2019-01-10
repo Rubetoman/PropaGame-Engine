@@ -11,6 +11,7 @@
 
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "ComponentMesh.h"
 
 #include "Quadtree.h"
 #include "debugdraw.h"
@@ -225,8 +226,53 @@ GameObject* ModuleCamera::MousePick()
 
 	raycast = editor_camera_comp->frustum.UnProjectLineSegment(normalized_x, normalized_y);
 
-	
-	return nullptr;
+	hitGOs.clear();
+	App->scene->quadtree->Intersect(hitGOs, raycast);
+
+	for (auto mesh : App->resources->meshes)
+	{
+		if (!mesh->my_go->static_GO && mesh->num_vertices > 0 && raycast.Intersects(mesh->my_go->ComputeBBox()))
+		{
+			hitGOs.push_back(mesh->my_go);
+		}
+	}
+
+	float minDistance = -100.0f;
+	GameObject* nearest_hit_GO = nullptr;
+	if (hitGOs.size() > 0)
+	{
+		for (auto go : hitGOs)
+		{
+			ComponentMesh* mesh = go->mesh;
+			ComponentTransform* transform = go->transform;
+
+			if (mesh != nullptr && transform != nullptr)
+			{
+				math::LineSegment localTransformPikingLine(raycast);
+				localTransformPikingLine.Transform(transform->my_go->GetGlobalTransform().Inverted());
+
+				math::Triangle triangle;
+				for (unsigned i = 0; i < mesh->num_indices; i += 3)
+				{
+					triangle.a = { mesh->vertices[mesh->indices[i] * 3], mesh->vertices[mesh->indices[i] * 3 + 1], mesh->vertices[mesh->indices[i] * 3 + 2] };
+					triangle.b = { mesh->vertices[mesh->indices[i + 1] * 3],mesh->vertices[mesh->indices[i + 1] * 3 + 1], mesh->vertices[mesh->indices[i + 1] * 3 + 2] };
+					triangle.c = { mesh->vertices[mesh->indices[i + 2] * 3], mesh->vertices[mesh->indices[i + 2] * 3 + 1], mesh->vertices[mesh->indices[i + 2] * 3 + 2] };
+
+					float triangleDistance;
+					float3 hitPoint;
+					if (localTransformPikingLine.Intersects(triangle, &triangleDistance, &hitPoint))
+					{
+						if (minDistance == -100.0f || triangleDistance < minDistance)
+						{
+							minDistance = triangleDistance;
+							nearest_hit_GO = go;
+						}
+					}
+				}
+			}
+		}
+	}
+	return nearest_hit_GO;
 }
 
 void ModuleCamera::DrawRaycast() const

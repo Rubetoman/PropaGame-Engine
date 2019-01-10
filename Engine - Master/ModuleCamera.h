@@ -53,7 +53,7 @@ public:
 	float mouse_sensitivity = 0.6;
 
 	//Mouse Picking
-	//std::vector<GameObject*> hitGOs;
+	std::vector<GameObject*> hitGOs;
 	math::LineSegment raycast;
 
 	// Mesh
