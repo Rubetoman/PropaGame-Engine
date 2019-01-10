@@ -24,7 +24,7 @@ void WindowInspector::Draw()
 {
 	if (ImGui::Begin("Inspector", &active, ImGuiWindowFlags_NoFocusOnAppearing))
 	{
-		GameObject* go = App->editor->hierarchy->selected;
+		GameObject* go = App->editor->selectedGO;
 		if (go != nullptr)
 		{
 			ImGui::Checkbox("active", &go->active);

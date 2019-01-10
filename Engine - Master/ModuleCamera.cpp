@@ -8,7 +8,6 @@
 #include "ModuleTime.h"
 #include "ModuleResources.h"
 
-#include "WindowHierarchy.h"
 #include "WindowScene.h"
 
 #include "ComponentTransform.h"
@@ -133,7 +132,7 @@ void ModuleCamera::TranslateCameraInput()
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsOver() && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT)
 	{
-		App->editor->hierarchy->selected = MousePick();
+		App->editor->selectedGO = MousePick();
 	}
 }
 
@@ -149,8 +148,8 @@ void ModuleCamera::RotateCameraInput()
 		{
 			SDL_ShowCursor(SDL_DISABLE);
 			math::float3 center;
-			if (App->editor->hierarchy->selected != nullptr)
-				center = App->editor->hierarchy->selected->GetCenter();
+			if (App->editor->selectedGO != nullptr)
+				center = App->editor->selectedGO->GetCenter();
 			else
 				center = math::float3(0, 0, 0);
 
@@ -163,7 +162,7 @@ void ModuleCamera::RotateCameraInput()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F))
 	{
-		GameObject* selected = App->editor->hierarchy->selected;
+		GameObject* selected = App->editor->selectedGO;
 		if (selected != nullptr)
 			editor_camera_comp->LookAt(selected->GetCenter());
 		else

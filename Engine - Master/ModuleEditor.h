@@ -21,6 +21,7 @@ class WindowHierarchy;
 class WindowInspector;
 class WindowCamera;
 
+class GameObject;
 class ComponentCamera;
 
 
@@ -58,6 +59,10 @@ public:
 
 	update_status update = UPDATE_CONTINUE;
 
+	// Selected GO
+	GameObject* selectedGO = false;
+
+	// Debug draw
 	bool show_grid = true;
 	bool show_axis = true;
 	bool show_raycast = false;

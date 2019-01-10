@@ -15,8 +15,6 @@ public:
 	void DrawNode();
 	void DrawChildren(GameObject* node);
 	void SetDragAndDrop(GameObject* node);
-
-	GameObject* selected = false;
 };
 
 #endif /*__WINDOWHIERARCHY_H__*/

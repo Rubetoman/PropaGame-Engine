@@ -25,6 +25,8 @@ void WindowHierarchy::Draw()
 		if (App->scene->root != nullptr)
 			DrawNode();
 
+		GameObject* selected = App->editor->selectedGO;
+
 		// Popup
 		if (ImGui::IsMouseReleased(1) & ImGui::IsMouseHoveringWindow())
 		{
@@ -94,7 +96,7 @@ void WindowHierarchy::DrawNode()
 				ImGui::PushStyleColor(ImGuiCol_Text, { 0.1f,0.1f,0.1f,0.9f });
 
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-			flags |= go == selected ? ImGuiTreeNodeFlags_Selected : 0;
+			flags |= go == App->editor->selectedGO ? ImGuiTreeNodeFlags_Selected : 0;
 
 			//Check for children
 			if (go->children.empty())
@@ -106,7 +108,7 @@ void WindowHierarchy::DrawNode()
 
 			if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
 			{
-				selected = go;
+				App->editor->selectedGO = go;
 			}
 
 			if (node_open)
@@ -146,7 +148,7 @@ void WindowHierarchy::DrawChildren(GameObject* node)
 
 	// Flags
 	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick
-		| (node == selected ? ImGuiTreeNodeFlags_Selected : 0);
+		| (node == App->editor->selectedGO ? ImGuiTreeNodeFlags_Selected : 0);
 	if (node->children.empty())
 	{
 		flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
@@ -159,7 +161,7 @@ void WindowHierarchy::DrawChildren(GameObject* node)
 	// Select input
 	if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
 	{
-		selected = node;
+		App->editor->selectedGO = node;
 	}
 
 	// Draw children

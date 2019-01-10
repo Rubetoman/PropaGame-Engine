@@ -6,8 +6,6 @@
 #include "ModuleScene.h"
 #include "ModuleResources.h"
 
-#include "WindowHierarchy.h"
-
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
@@ -238,14 +236,14 @@ void GameObject::DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode) const
 	{
 	default:
 	case BBoxMode::Divide:
-		if (App->editor->hierarchy->selected == this)
+		if (App->editor->selectedGO == this)
 			DrawBBox(bbox);
 		break;
 	case BBoxMode::All_Divide:
 		DrawBBox(bbox);
 		break;
 	case BBoxMode::Enclose:
-		if (App->editor->hierarchy->selected == this)
+		if (App->editor->selectedGO == this)
 			DrawTotalBBox(bbox);
 		break;
 	case BBoxMode::All_Enclose:

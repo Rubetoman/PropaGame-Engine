@@ -6,7 +6,6 @@
 #include "ModuleCamera.h"
 #include "ModuleEditor.h"
 
-#include "WindowHierarchy.h"
 #include "WindowScene.h"
 
 #include "Quadtree.h"
@@ -115,7 +114,7 @@ void ModuleScene::DrawImGuizmo(ImGuizmo::OPERATION operation) const
 	ImGuizmo::SetRect(pos.x, pos.y, App->window->screen_width, App->window->screen_height);
 	ImGuizmo::SetDrawlist();
 
-	GameObject* selectedGO = App->editor->hierarchy->selected;
+	GameObject* selectedGO = App->editor->selectedGO;
 
 	if (selectedGO != nullptr)
 	{
@@ -330,7 +329,7 @@ void ModuleScene::NewScene()
 {
 	quadtree->Clear();
 
-	App->editor->hierarchy->selected = nullptr;
+	App->editor->selectedGO = nullptr;
 
 	// Delete root
 	root->DeleteGameObject();
@@ -389,7 +388,7 @@ bool ModuleScene::LoadScene(const char* scene_name)
 		return false;
 	}
 
-	App->editor->hierarchy->selected = nullptr;
+	App->editor->selectedGO = nullptr;
 
 	// Delete root
 	root->DeleteGameObject();
