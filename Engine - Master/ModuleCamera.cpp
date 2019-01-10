@@ -130,7 +130,7 @@ void ModuleCamera::TranslateCameraInput()
 		WheelInputTranslation(App->input->GetMouseWheel());
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsOver() && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && !App->editor->scene->gui_click && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT)
 	{
 		App->editor->selectedGO = MousePick();
 	}

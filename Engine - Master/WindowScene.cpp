@@ -36,7 +36,37 @@ void WindowScene::Draw()
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) != KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) != KEY_REPEAT)
 		focus = ImGui::IsMouseHoveringWindow();
 
-	App->scene->DrawImGuizmo(ImGuizmo::OPERATION::TRANSLATE);
+	// Avoid deselecting a GO when clicking on guizmos
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
+	{
+		gui_click = ImGuizmo::IsOver();
+	}
+
+	static ImGuizmo::OPERATION operation(ImGuizmo::TRANSLATE);
+
+	ImGui::SetCursorPos(ImGui::GetWindowContentRegionMin());
+
+	if (ImGui::Button("Translate"))
+	{
+		operation = ImGuizmo::TRANSLATE;
+	}
+	if (ImGui::IsItemHovered()) gui_click = true;
+	ImGui::SameLine();
+
+	if (ImGui::Button("Rotate"))
+	{
+		operation = ImGuizmo::ROTATE;
+	}
+	if (ImGui::IsItemHovered()) gui_click = true;
+	ImGui::SameLine();
+
+	if (ImGui::Button("Scale"))
+	{
+		operation = ImGuizmo::SCALE;
+	}
+	if(ImGui::IsItemHovered()) gui_click = true;
+
+	App->scene->DrawImGuizmo(operation);
 
 	ImGui::End();
 }

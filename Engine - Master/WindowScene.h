@@ -15,5 +15,6 @@ public:
 
 	bool focus = false;
 	math::float2 viewport = math::float2::zero;
+	bool gui_click = false;			// True if is hovering a GUI item of WindowScene
 };
 #endif /*__WINDOWSCENE_H__*/
