@@ -71,6 +71,10 @@ void WindowAbout::Draw()
 	if (ImGui::Selectable("mmgr 1.0", false, 0, { 130, 13 }))
 		App->editor->ShowInBrowser("http://www.flipcode.com/archives/Presenting_A_Memory_Manager.shtml");
 
+	ImGui::NewLine(); ImGui::SameLine(30);
+	if (ImGui::Selectable("ImGuizmo", false, 0, { 130, 13 }))
+		App->editor->ShowInBrowser("https://github.com/CedricGuillemet/ImGuizmo");
+
 	// License
 	ImGui::NewLine();
 	ImGui::Text("MIT License Copyright (c) [2018] [Ruben Crispin]");
