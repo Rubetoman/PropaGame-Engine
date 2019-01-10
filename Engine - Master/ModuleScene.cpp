@@ -115,8 +115,6 @@ void ModuleScene::DrawImGuizmo(ImGuizmo::OPERATION operation) const
 	ImGuizmo::SetRect(pos.x, pos.y, App->window->screen_width, App->window->screen_height);
 	ImGuizmo::SetDrawlist();
 
-	ImGui::SetCursorPos({ 20,30 });
-
 	GameObject* selectedGO = App->editor->hierarchy->selected;
 
 	if (selectedGO != nullptr)
@@ -126,7 +124,7 @@ void ModuleScene::DrawImGuizmo(ImGuizmo::OPERATION operation) const
 		ComponentTransform* transform = selectedGO->transform;
 		ComponentCamera* editor_camera = App->camera->editor_camera_comp;
 
-		math::float4x4 model = float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+		math::float4x4 model = selectedGO->GetGlobalTransform();
 		math::float4x4 proj = editor_camera->frustum.ProjectionMatrix();
 		math::float4x4 view = editor_camera->frustum.ViewMatrix();
 

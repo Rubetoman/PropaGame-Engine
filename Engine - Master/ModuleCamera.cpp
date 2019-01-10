@@ -17,6 +17,7 @@
 
 #include "Quadtree.h"
 #include "debugdraw.h"
+#include "ImGuizmo/ImGuizmo.h"
 
 ModuleCamera::ModuleCamera()
 {
@@ -130,7 +131,7 @@ void ModuleCamera::TranslateCameraInput()
 		WheelInputTranslation(App->input->GetMouseWheel());
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && !ImGuizmo::IsOver() && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT)
 	{
 		App->editor->hierarchy->selected = MousePick();
 	}
