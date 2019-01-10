@@ -85,7 +85,8 @@ void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj, C
 		if (use_quadtree && draw_quadtree)
 			quadtree->Draw();
 
-		App->camera->DrawRaycast();
+		if(App->editor->show_raycast)
+			App->camera->DrawRaycast();
 	}
 }
 

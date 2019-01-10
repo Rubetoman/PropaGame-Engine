@@ -277,5 +277,5 @@ GameObject* ModuleCamera::MousePick()
 
 void ModuleCamera::DrawRaycast() const
 {
-	dd::line(raycast.a, raycast.b, math::float3::zero);
+	dd::line(raycast.a, raycast.b, App->editor->raycast_color);
 }
