@@ -34,6 +34,7 @@ bool ModuleResources::CleanUp()
 {
 	textures.clear();
 	lights.clear();
+	meshes.clear();
 
 	return true;
 }
