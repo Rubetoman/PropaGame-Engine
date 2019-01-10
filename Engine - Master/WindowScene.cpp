@@ -42,30 +42,53 @@ void WindowScene::Draw()
 		gui_click = ImGuizmo::IsOver();
 	}
 
+	// Guizmo mode buttons
 	static ImGuizmo::OPERATION operation(ImGuizmo::TRANSLATE);
 
 	ImGui::SetCursorPos(ImGui::GetWindowContentRegionMin());
 
+	if(operation == ImGuizmo::TRANSLATE)
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
+	else		
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.3f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 1.0f));
 	if (ImGui::Button("Translate"))
 	{
 		operation = ImGuizmo::TRANSLATE;
 	}
 	if (ImGui::IsItemHovered()) gui_click = true;
+	ImGui::PopStyleColor(3);
 	ImGui::SameLine();
 
+	if (operation == ImGuizmo::ROTATE)
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
+	else
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.3f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 1.0f));
 	if (ImGui::Button("Rotate"))
 	{
 		operation = ImGuizmo::ROTATE;
 	}
 	if (ImGui::IsItemHovered()) gui_click = true;
+	ImGui::PopStyleColor(3);
 	ImGui::SameLine();
 
+	if (operation == ImGuizmo::SCALE)
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
+	else
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.3f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 1.0f));
 	if (ImGui::Button("Scale"))
 	{
 		operation = ImGuizmo::SCALE;
 	}
 	if(ImGui::IsItemHovered()) gui_click = true;
+	ImGui::PopStyleColor(3);
 
+	// Draw guizmo
 	App->scene->DrawImGuizmo(operation);
 
 	ImGui::End();
