@@ -37,7 +37,7 @@ void WindowScene::Draw()
 		focus = ImGui::IsMouseHoveringWindow();
 
 	// Avoid deselecting a GO when clicking on guizmos
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) && focus)
 	{
 		gui_click = ImGuizmo::IsOver();
 	}

@@ -123,7 +123,7 @@ void ModuleScene::DrawImGuizmo(ImGuizmo::OPERATION operation) const
 		ComponentTransform* transform = selectedGO->transform;
 		ComponentCamera* editor_camera = App->camera->editor_camera_comp;
 
-		math::float4x4 model = selectedGO->GetGlobalTransform();
+		math::float4x4 model = selectedGO->GetLocalTransform();
 		math::float4x4 proj = editor_camera->frustum.ProjectionMatrix();
 		math::float4x4 view = editor_camera->frustum.ViewMatrix();
 
@@ -132,12 +132,12 @@ void ModuleScene::DrawImGuizmo(ImGuizmo::OPERATION operation) const
 		model.Transpose();
 		view.Transpose();
 		proj.Transpose();
-		ImGuizmo::Manipulate((float*)&view, (float*)&proj, operation, ImGuizmo::WORLD, (float*)&model, NULL, NULL, NULL, NULL);
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj, operation, ImGuizmo::LOCAL, (float*)&model, NULL, NULL, NULL, NULL);
 
 		if (ImGuizmo::IsUsing())
 		{
 			model.Transpose();
-			transform->SetTransform(model);
+			transform->LocalToGlobal(model);
 		}
 	}
 }
