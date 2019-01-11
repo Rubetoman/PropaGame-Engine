@@ -1,5 +1,9 @@
 #include "ModuleTextures.h"
+
+#include "Application.h"
 #include "ModuleResources.h"
+
+#include <assert.h>
 
 using namespace std;
 

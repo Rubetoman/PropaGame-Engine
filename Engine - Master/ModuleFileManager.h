@@ -2,8 +2,7 @@
 #define __MODULEFILEMANAGEMENT_H__
 
 #include "Module.h"
-#include "Application.h"
-#include "ModuleModelLoader.h"
+
 #include <string>
 
 class ModuleFileManager: public Module

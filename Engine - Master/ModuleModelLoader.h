@@ -2,21 +2,17 @@
 #define __MODULEMODELLOADER_H__
 
 #include "Module.h"
-#include "Application.h"
-#include "ModuleTextures.h"
-#include "GameObject.h"
 
-#include "MathGeoLib.h"
-#include "GL/glew.h"
-#include "MathGeoLib.h"
-#include <assimp/cimport.h>
-#include <assimp/Importer.hpp>
-#include <assimp/postprocess.h>
-#include <assimp/scene.h>
-#include <assimp/material.h>
-#include <assimp/mesh.h>
+#include "Math/float3.h"
+#include "Math/float4.h"
+#include <assimp/matrix4x4.h>
 #include <vector>
 #include <iterator>
+
+class GameObject;
+class aiScene;
+class aiNode;
+class aiMesh;
 
 class ModuleModelLoader : public Module
 {

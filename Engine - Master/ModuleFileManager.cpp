@@ -1,6 +1,10 @@
 #include "ModuleFileManager.h"
 
+#include "Application.h"
+#include "ModuleModelLoader.h"
+#include "ModuleTextures.h"
 
+#include <assert.h>
 
 ModuleFileManager::ModuleFileManager()
 {

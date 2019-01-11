@@ -1,14 +1,17 @@
 #include "ModuleScene.h"
 
 #include "Globals.h"
+#include "Application.h"
 #include "ModuleModelLoader.h"
 #include "ModuleResources.h"
 #include "ModuleCamera.h"
 #include "ModuleEditor.h"
+#include "ModuleFileManager.h"
 
 #include "WindowScene.h"
 
 #include "Quadtree.h"
+#include "GameObject.h"
 
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"

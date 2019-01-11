@@ -1,3 +1,6 @@
+#include "Application.h"
+
+#include "ModuleTextures.h"
 #include "ModuleModelLoader.h"
 #include "ModuleCamera.h"
 #include "ModuleScene.h"
@@ -5,6 +8,17 @@
 
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+
+#include "GameObject.h"
+
+#include "GL/glew.h"
+#include "MathGeoLib.h"
+#include <assimp/cimport.h>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
+#include <assimp/material.h>
+#include <assimp/mesh.h>
 
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par_shapes.h"

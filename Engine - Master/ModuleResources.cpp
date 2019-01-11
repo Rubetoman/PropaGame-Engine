@@ -1,5 +1,6 @@
 #include "ModuleResources.h"
 
+#include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleEditor.h"
 

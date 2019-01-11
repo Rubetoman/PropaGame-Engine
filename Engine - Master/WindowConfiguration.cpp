@@ -10,6 +10,8 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 
+#include "GameObject.h"
+#include "Texture.h"
 #include "Quadtree.h"
 #include "mmgr/mmgr.h"
 

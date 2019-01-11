@@ -6,9 +6,12 @@
 #include "ComponentTransform.h"
 #include "ComponentLight.h"
 
+#include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleResources.h"
 #include "ModuleShader.h"
+
+#include "GameObject.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_type::Material)
 {

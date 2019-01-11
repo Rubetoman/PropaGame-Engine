@@ -14,6 +14,7 @@
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
 
+#include "GameObject.h"
 #include "Quadtree.h"
 #include "debugdraw.h"
 #include "ImGuizmo/ImGuizmo.h"

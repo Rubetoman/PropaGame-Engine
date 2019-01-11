@@ -6,6 +6,9 @@
 
 #include "ComponentCamera.h"
 
+#include "Texture.h"
+#include "GameObject.h"
+
 WindowCamera::WindowCamera(const char* name) : Window(name)
 {
 }
