@@ -68,6 +68,148 @@ bool ComponentMesh::DrawOnInspector()
 	return false;
 }
 
+void ComponentMesh::GenerateMesh(char* &mesh)
+{
+	assert(mesh != nullptr);
+	DeleteMesh();
+
+	unsigned int numIndices = *(int*)mesh;
+	mesh += sizeof(int);
+	unsigned int numVertices = *(int*)mesh;
+	mesh += sizeof(int);
+
+	float* vertices = (float*)mesh;
+	mesh += sizeof(float) * 3 * numVertices;
+
+	float* texCoords = (float*)mesh;
+	mesh += sizeof(float) * 2 * numVertices;
+
+	int* indices = (int*)mesh;
+	mesh += sizeof(int) * numIndices;
+
+
+
+	// vertex array objects (VAO)
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	// Divide Buffer for position and UVs
+	glBufferData(GL_ARRAY_BUFFER, numVertices * (sizeof(float) * 3 + sizeof(float) * 2), nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * numVertices, vertices);
+
+	// Texture coords (UVs)
+	// MapBufferRange because we only want UV data from UVW
+	float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, GL_MAP_WRITE_BIT);
+	memcpy(pbuffer, texCoords, sizeof(float) * 2 * numVertices);
+
+	/*math::float2* texCoords = (math::float2*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(float) * 3 * src_mesh->mNumVertices,
+		sizeof(float) * 2 * src_mesh->mNumVertices, GL_MAP_WRITE_BIT);
+
+	for (unsigned j = 0; j < src_mesh->mNumVertices; ++j)
+	{
+		texCoords[j] = math::float2(src_mesh->mTextureCoords[0][j].x, src_mesh->mTextureCoords[0][j].y);
+	}*/
+
+	glUnmapBuffer(GL_ARRAY_BUFFER);
+
+	// Indices (faces)
+	glGenBuffers(1, &ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * numIndices, nullptr, GL_STATIC_DRAW);
+
+	// Texture coords (UVs)
+	// MapBufferRange because we only want UV data from UVW
+
+	int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*numIndices, GL_MAP_WRITE_BIT);
+	memcpy(pbufferIndex, indices, sizeof(int) * numIndices);
+	/*
+	unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0,
+		sizeof(unsigned)*src_mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);
+
+	for (unsigned j = 0; j < src_mesh->mNumFaces; ++j)
+	{
+		assert(src_mesh->mFaces[j].mNumIndices == 3);
+
+		*(indices++) = src_mesh->mFaces[j].mIndices[0];
+		*(indices++) = src_mesh->mFaces[j].mIndices[1];
+		*(indices++) = src_mesh->mFaces[j].mIndices[2];
+	}
+	*/
+	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(
+		0,                  // attribute 0
+		3,                  // number of componentes (3 floats)
+		GL_FLOAT,           // data type
+		GL_FALSE,           // should be normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+	);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(
+		1,                  // attribute 0
+		2,                  // number of componentes (3 floats)
+		GL_FLOAT,           // data type
+		GL_FALSE,           // should be normalized?
+		0,                  // stride
+		(void*)(sizeof(float) * 3 * numVertices)       // array buffer offset
+	);
+
+	// Disable VAO
+	glBindVertexArray(0);
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+
+	// Disable VBO and EBO
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	//gen_mesh->material = src_mesh->mMaterialIndex;
+	num_vertices = numVertices;
+
+	//Copying Vertices array
+	this->vertices = new float[num_vertices * 3]; //It is checked below that at least has 1 face, so at least 3 vertices
+	memcpy(this->vertices, vertices, sizeof(float)*num_vertices * 3);
+
+	//Copying Face Normals
+	/*if (src_mesh->HasNormals())
+	{
+		mesh->num_normals = src_mesh->mNumVertices;
+		mesh->normals = new float[mesh->num_normals * 3];
+		memcpy(mesh->normals, src_mesh->mNormals, sizeof(float)*mesh->num_normals * 3);
+	}*/
+
+	//Copying indices
+	num_indices = numIndices;
+	this->indices = (unsigned*)indices;
+	/*
+	this->indices = new unsigned[num_indices]; // assume each face is a triangle
+
+	for (int j = 0; j < numFaces; ++j)
+	{
+		if (src_mesh->mFaces[j].mNumIndices != 3)
+		{
+			LOG("WARNING, geometry face with != 3 indices!");
+			LOG("WARNING, face normals couldn't be loaded");
+			mesh = nullptr;
+			break;
+		}
+		else
+		{
+			memcpy(&mesh->indices[j * 3], src_mesh->mFaces[j].mIndices, 3 * sizeof(unsigned));
+		}
+	}*/
+
+	boundingBox.SetNegativeInfinity();
+	boundingBox.Enclose((math::float3*)vertices, num_vertices);
+	App->resources->meshes.push_back(this);
+}
+
 // BUG: Draw meshes makes imgui flick
 void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4& proj)
 {

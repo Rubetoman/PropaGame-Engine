@@ -5,6 +5,7 @@
 #include "ModuleTextures.h"
 
 #include <assert.h>
+#include <fstream>
 
 ModuleFileManager::ModuleFileManager()
 {
@@ -15,7 +16,7 @@ ModuleFileManager::~ModuleFileManager()
 {
 }
 
-void ModuleFileManager::manageFile(const char* path)
+void ModuleFileManager::manageFile(char* path)
 {
 	assert(path != nullptr);
 
@@ -101,4 +102,28 @@ std::string ModuleFileManager::getFullPath(const char* path, const char* atDirec
 		full_path += withExtension;
 
 	return full_path.c_str();
+}
+
+bool ModuleFileManager::SaveMeshData(const char* data, unsigned int size, std::string& output_file)
+{
+	std::ofstream outfile;
+	outfile.open(output_file, std::ios::binary | std::ios::out);
+	outfile.write(data, size);
+	RELEASE_ARRAY(data);
+	outfile.close();
+	return true;
+}
+
+bool ModuleFileManager::LoadMeshData(std::string& myfile, char* &data)
+{
+	std::ifstream file(myfile, std::ios::binary | std::ios::ate);
+	std::streamsize size = file.tellg();
+	file.seekg(0, std::ios::beg);
+
+	data = new char[size];
+	if (file.read(data, size))
+	{
+		return true;
+	}
+	return false;
 }

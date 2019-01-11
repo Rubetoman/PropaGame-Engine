@@ -17,9 +17,13 @@ public:
 	~MeshImporter();
 
 	bool Import(const char* file, const char* path, std::string& output_file) override;
-	void SaveScene(const aiScene* scene);
-	void SaveNode(const aiScene& scene, const aiNode& node, const aiMatrix4x4& parent_transform, GameObject* parent);
-	void SaveMesh(const aiMesh& mesh);
+	bool SaveScene(const aiScene& scene, std::string& output_file);
+	void SaveNode(const aiNode& node, const aiScene& scene, char* &cursor, int node_id, int parent_node_id);
+	void SaveMesh(const aiMesh& mesh, char* &cursor);
+
+	unsigned int GetNodeSize(const aiNode& node, const aiScene& scene) const;
+
+	void ImportMat(const char* path);
 };
 
 #endif /*__MESHIMPORTER_H__*/

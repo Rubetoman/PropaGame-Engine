@@ -24,9 +24,8 @@ public:
 	update_status   Update();
 	bool            CleanUp();
 
-	bool			LoadMesh(const char* path);
-	//void			LoadMaterial(const char* path);
-	void			GenerateNodeMeshData(const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent);
+	bool			LoadMesh(char* data);
+	GameObject*			GenerateNodeMeshData(char* &cursor, const math::float4x4& parent_transform, GameObject* parent);
 
 	// Shape Creation
 	GameObject* CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,

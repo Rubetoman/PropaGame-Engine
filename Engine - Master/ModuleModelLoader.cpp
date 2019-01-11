@@ -10,6 +10,7 @@
 #include "ComponentMaterial.h"
 
 #include "GameObject.h"
+#include "MeshImporter.h"
 
 #include "GL/glew.h"
 #include "MathGeoLib.h"
@@ -37,7 +38,14 @@ bool ModuleModelLoader::Init()
 	//CreateSphere("sphere", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(1.0f, 1.0f, 1.0f), 20, 20, float4(0.f, 0.0f, 0.5f, 1.0f));
 	//CreateCylinder("cylinder0", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, 2.0f, 1.0f, 30, 30, float4(0.f, 0.5f, 0.5f, 1.0f));
 
-	return LoadMesh("Assets/Models/BakerHouse.fbx");
+	//return LoadMesh("Assets/Models/BakerHouse.fbx");
+
+	MeshImporter meshImporter;
+	std::string outputfile = "BakerHouse.proMesh";
+	meshImporter.Import("BakerHouse.fbx", "Assets/Models/BakerHouse.fbx", outputfile);
+	char* bakerhouse = nullptr;
+	App->file->LoadMeshData(outputfile, bakerhouse);
+	return LoadMesh(bakerhouse);
 }
 
 update_status ModuleModelLoader::Update()
@@ -61,48 +69,69 @@ bool ModuleModelLoader::CleanUp()
 	return true;
 }
 
-bool ModuleModelLoader::LoadMesh(const char* path)
+bool ModuleModelLoader::LoadMesh(char* data)
 {
-	assert(path != nullptr);
-	unsigned int postprocess_flags = aiProcessPreset_TargetRealtime_MaxQuality;
-	scene = aiImportFile(path, postprocess_flags);
-	if (scene == nullptr)
+	assert(data != nullptr);
+	if (data == nullptr)
 	{
-		LOG("Error, the file couldn't be loaded: %s \n", aiGetErrorString());
+		LOG("No content to load!!");
 		return false;
 	}
-	App->camera->BBtoLook = new AABB({ .0f, .0f, .0f }, { .0f, .0f, .0f });
+	char* cursor = data;
+	GenerateNodeMeshData(data, float4x4::identity, App->scene->root);
+	//delete[] data;
 
-	// Generate root node
-	aiMatrix4x4 root_transform = aiMatrix4x4() * scene->mRootNode->mTransformation;
-	GameObject* root_go = App->scene->CreateGameObject(scene->mRootNode->mName.C_Str(), (math::float4x4&)root_transform, App->scene->root);
-
-	// Generate meshes as root GOs
-	GenerateNodeMeshData(scene, scene->mRootNode, root_transform, root_go);
-
-	aiReleaseImport(scene);
 	return true;
 }
 
-/*void ModuleModelLoader::LoadMaterial(const char* path)
+GameObject* ModuleModelLoader::GenerateNodeMeshData(char* &cursor, const math::float4x4& parent_transform, GameObject* parent)
 {
-	assert(path != nullptr);
-	const aiMaterial* src_material = nullptr;
-	material gen_material;
+	assert(cursor != nullptr);
 
-	aiString file;
-	aiTextureMapping mapping;
-	unsigned uvindex = 0;
+	int id = *(int*)cursor;
+	cursor += sizeof(int);
 
-	if (src_material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, &uvindex) == AI_SUCCESS)
+	int parent_id = *(int*)cursor;
+	cursor += sizeof(int);
+
+	float4x4 mytransform;
+	mytransform.Set((float*)cursor);
+	cursor += sizeof(float) * 16;
+
+	float4x4 transform = parent_transform * mytransform;
+
+	std::string name(cursor);
+	cursor += (name.length()+1) * sizeof(char);
+	GameObject * gameobject = App->scene->CreateGameObject(name.c_str(), transform, parent); //TODO: refactor filepath variable
+
+	unsigned int numMeshes = *(int*)cursor;
+	cursor += sizeof(int);
+
+	for (unsigned int i = 0; i < numMeshes; i++)
 	{
-		gen_material.texture0 = App->textures->loadTexture(file.data);
+		// Add Mesh Component
+		ComponentMesh* mesh = (ComponentMesh*)gameobject->CreateComponent(component_type::Mesh);
+		mesh->GenerateMesh(cursor); //SetMesh moves the cursor at the end of the mesh
+
+		std::string materialFile(cursor);
+		cursor += sizeof(char)*(materialFile.length() + 1);
+		ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(component_type::Material);
+		//material->SetMaterial(cursor); //TODO: Generate material
 	}
 
-	materials.push_back(gen_material);
-}*/
+	unsigned int numChildren = *(int*)cursor;
+	cursor += sizeof(int);
 
-void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent)
+	for (unsigned int i = 0; i < numChildren; i++)
+	{
+		GameObject* child = GenerateNodeMeshData(cursor, transform, gameobject);
+
+	}
+
+	return gameobject;
+}
+
+/*void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent)
 {
 	assert(scene != nullptr); assert(node != nullptr);
 
@@ -275,7 +304,7 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 			GenerateNodeMeshData(scene, node->mChildren[i], parent_transform, parent);
 		}
 	}
-}
+}*/
 
 GameObject* ModuleModelLoader::CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
 	unsigned slices, unsigned stacks, const math::float4& color)
