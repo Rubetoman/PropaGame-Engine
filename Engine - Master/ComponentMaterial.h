@@ -20,6 +20,9 @@ public:
 	void DrawAmbientParameters();
 	void DrawEmissiveParameters();
 
+	//Fallback Texture
+	unsigned GenerateFallback(math::float3 color);
+
 	void RenderMaterial();
 	void Delete() override;
 
@@ -43,6 +46,9 @@ public:
 	// Emissive
 	Texture* emissive_map = nullptr;
 	math::float3 emissive_color = math::float3::zero;
+
+	// Fallback texture
+	unsigned fallback = 0u;
 
 private:
 	ImVec2 image_size = { 80.0f, 80.0f };			// Size of the texture icons for ImGui
