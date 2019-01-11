@@ -320,6 +320,16 @@ unsigned ComponentMaterial::GenerateFallback(math::float3 color)
 	return fallback;
 }
 
+void ComponentMaterial::GenerateMaterial(char* &material)
+{
+	if (material == nullptr) return;
+
+	diffuse_map = App->textures->loadTexture(material, false);
+
+	if (diffuse_map != nullptr)
+		diffuse_color = math::float4::one;
+}
+
 void ComponentMaterial::RenderMaterial()
 {
 	unsigned program = App->shader->programs[shader];

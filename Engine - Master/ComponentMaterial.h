@@ -23,6 +23,7 @@ public:
 	//Fallback Texture
 	unsigned GenerateFallback(math::float3 color);
 
+	void GenerateMaterial(char* &material);
 	void RenderMaterial();
 	void Delete() override;
 
