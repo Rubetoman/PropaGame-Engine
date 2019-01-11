@@ -17,9 +17,6 @@
 #include <assimp/scene.h>
 #include <assimp/mesh.h>
 
-#include "ModuleTextures.h"
-#include <fstream>
-
 MeshImporter::MeshImporter()
 {
 }
@@ -32,8 +29,7 @@ MeshImporter::~MeshImporter()
 bool MeshImporter::Import(const char* file, const char* path, std::string& output_file)
 {
 	assert(path != nullptr);
-	//If we already have models loaded, we erase them 
-	//Only one model at a time for the moment
+
 	const aiScene* scene = aiImportFile(path, aiProcess_Triangulate);
 	if (scene != nullptr)
 	{
@@ -56,7 +52,7 @@ bool MeshImporter::SaveScene(const aiScene& scene, std::string& output_file)
 	SaveNode(*scene.mRootNode, scene, cursor, 0, -1);
 	aiReleaseImport(&scene);
 	//Save to file
-	return App->file->SaveMeshData(data, size, output_file);
+	return App->file->SaveFileData(data, size, output_file);
 }
 
 void MeshImporter::SaveNode(const aiNode& node, const aiScene& scene, char* &cursor, int node_id, int parent_node_id)
@@ -155,39 +151,4 @@ unsigned int MeshImporter::GetNodeSize(const aiNode& node, const aiScene& scene)
 		size += GetNodeSize(*node.mChildren[i], scene);
 	}
 	return size;
-}
-
-void MeshImporter::ImportMat(const char* path)
-{
-	ILuint imageID;
-	ILboolean success;
-	ILenum error;
-
-	ilGenImages(1, &imageID); 		// Generate the image ID
-	ilBindImage(imageID); 			// Bind the image
-	success = ilLoadImage(path);
-	if (success)
-	{
-
-		ILinfo ImageInfo;
-		iluGetImageInfo(&ImageInfo);
-		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-		{
-			iluFlipImage();
-		}
-		ILuint size;
-		ILubyte* data = ilGetData();
-		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
-		size = ilSaveL(IL_DDS, NULL, 0);	// Get the size of the data buffer
-		data = new ILubyte[size];// allocate data buffer
-		if (ilSaveL(IL_DDS, data, size) > 0)
-		{
-			// Save to buffer with the ilSaveIL function
-			std::ofstream outfile;
-			outfile.open("test.dds", std::ios::binary | std::ios::out);
-			outfile.write((char*)data, size);
-			outfile.close();
-		}
-		RELEASE_ARRAY(data);
-	}
 }

@@ -44,7 +44,7 @@ bool ModuleModelLoader::Init()
 	std::string outputfile = "BakerHouse.proMesh";
 	meshImporter.Import("BakerHouse.fbx", "Assets/Models/BakerHouse.fbx", outputfile);
 	char* bakerhouse = nullptr;
-	App->file->LoadMeshData(outputfile, bakerhouse);
+	App->file->LoadFileData(outputfile, bakerhouse);
 	return LoadMesh(bakerhouse);
 }
 

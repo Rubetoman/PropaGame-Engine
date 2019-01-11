@@ -22,8 +22,6 @@ public:
 	void SaveMesh(const aiMesh& mesh, char* &cursor);
 
 	unsigned int GetNodeSize(const aiNode& node, const aiScene& scene) const;
-
-	void ImportMat(const char* path);
 };
 
 #endif /*__MESHIMPORTER_H__*/

@@ -18,8 +18,8 @@ public:
 	std::string getFullPath(const char* path, const char* atDirectory, const char* withExtension);
 
 	//Importer
-	bool SaveMeshData(const char* data, unsigned int size, std::string& output_file);
-	bool LoadMeshData(std::string& myfile, char* &data);
+	bool SaveFileData(const char* data, unsigned int size, std::string& output_file);
+	bool LoadFileData(std::string& myfile, char* &data);
 };
 
 #endif // __MODULEFILEMANAGEMENT_H__

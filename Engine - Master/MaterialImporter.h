@@ -11,6 +11,8 @@ public:
 	~MaterialImporter();
 
 	bool Import(const char* file, const char* path, std::string& output_file) override = 0;
+
+	void ImportMaterial(const char* path, std::string& output_file);
 };
 
 #endif /*__MATERIALIMPORTER_H__*/

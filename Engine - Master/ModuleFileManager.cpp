@@ -104,7 +104,7 @@ std::string ModuleFileManager::getFullPath(const char* path, const char* atDirec
 	return full_path.c_str();
 }
 
-bool ModuleFileManager::SaveMeshData(const char* data, unsigned int size, std::string& output_file)
+bool ModuleFileManager::SaveFileData(const char* data, unsigned int size, std::string& output_file)
 {
 	std::ofstream outfile;
 	outfile.open(output_file, std::ios::binary | std::ios::out);
@@ -114,7 +114,7 @@ bool ModuleFileManager::SaveMeshData(const char* data, unsigned int size, std::s
 	return true;
 }
 
-bool ModuleFileManager::LoadMeshData(std::string& myfile, char* &data)
+bool ModuleFileManager::LoadFileData(std::string& myfile, char* &data)
 {
 	std::ifstream file(myfile, std::ios::binary | std::ios::ate);
 	std::streamsize size = file.tellg();
