@@ -102,7 +102,7 @@ GameObject* ModuleModelLoader::GenerateNodeMeshData(char* &cursor, const math::f
 
 	std::string name(cursor);
 	cursor += (name.length()+1) * sizeof(char);
-	GameObject * gameobject = App->scene->CreateGameObject(name.c_str(), transform, parent); //TODO: refactor filepath variable
+	GameObject* go = App->scene->CreateGameObject(name.c_str(), transform, parent); //TODO: refactor filepath variable
 
 	unsigned int numMeshes = *(int*)cursor;
 	cursor += sizeof(int);
@@ -110,13 +110,13 @@ GameObject* ModuleModelLoader::GenerateNodeMeshData(char* &cursor, const math::f
 	for (unsigned int i = 0; i < numMeshes; i++)
 	{
 		// Add Mesh Component
-		ComponentMesh* mesh = (ComponentMesh*)gameobject->CreateComponent(component_type::Mesh);
+		ComponentMesh* mesh = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
 		mesh->GenerateMesh(cursor); //SetMesh moves the cursor at the end of the mesh
 
 		std::string materialFile(cursor);
 		cursor += sizeof(char)*(materialFile.length() + 1);
-		ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(component_type::Material);
-		//material->SetMaterial(cursor); //TODO: Generate material
+		ComponentMaterial* material = (ComponentMaterial*)go->CreateComponent(component_type::Material);
+		material->GenerateMaterial(cursor); //TODO: Generate material with all textures
 	}
 
 	unsigned int numChildren = *(int*)cursor;
@@ -124,11 +124,11 @@ GameObject* ModuleModelLoader::GenerateNodeMeshData(char* &cursor, const math::f
 
 	for (unsigned int i = 0; i < numChildren; i++)
 	{
-		GameObject* child = GenerateNodeMeshData(cursor, transform, gameobject);
+		GameObject* child = GenerateNodeMeshData(cursor, transform, go);
 
 	}
 
-	return gameobject;
+	return go;
 }
 
 /*void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent)

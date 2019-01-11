@@ -73,20 +73,20 @@ void ComponentMesh::GenerateMesh(char* &mesh)
 	assert(mesh != nullptr);
 	DeleteMesh();
 
-	unsigned int numIndices = *(int*)mesh;
-	mesh += sizeof(int);
-	unsigned int numVertices = *(int*)mesh;
+	num_indices = *(int*)mesh;
 	mesh += sizeof(int);
 
-	float* vertices = (float*)mesh;
-	mesh += sizeof(float) * 3 * numVertices;
+	num_vertices = *(int*)mesh;
+	mesh += sizeof(int);
 
-	float* texCoords = (float*)mesh;
-	mesh += sizeof(float) * 2 * numVertices;
+	vertices = (float*)mesh;
+	mesh += sizeof(float) * 3 * num_vertices;
 
-	int* indices = (int*)mesh;
-	mesh += sizeof(int) * numIndices;
+	uvs = (float*)mesh;
+	mesh += sizeof(float) * 2 * num_vertices;
 
+	indices = (unsigned*)mesh;
+	mesh += sizeof(int) * num_indices;
 
 
 	// vertex array objects (VAO)
@@ -97,21 +97,12 @@ void ComponentMesh::GenerateMesh(char* &mesh)
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	// Divide Buffer for position and UVs
-	glBufferData(GL_ARRAY_BUFFER, numVertices * (sizeof(float) * 3 + sizeof(float) * 2), nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * numVertices, vertices);
+	glBufferData(GL_ARRAY_BUFFER, num_vertices * (sizeof(float) * 3 + sizeof(float) * 2), nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * num_vertices, vertices);
 
 	// Texture coords (UVs)
 	// MapBufferRange because we only want UV data from UVW
-	float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, GL_MAP_WRITE_BIT);
-	memcpy(pbuffer, texCoords, sizeof(float) * 2 * numVertices);
-
-	/*math::float2* texCoords = (math::float2*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(float) * 3 * src_mesh->mNumVertices,
-		sizeof(float) * 2 * src_mesh->mNumVertices, GL_MAP_WRITE_BIT);
-
-	for (unsigned j = 0; j < src_mesh->mNumVertices; ++j)
-	{
-		texCoords[j] = math::float2(src_mesh->mTextureCoords[0][j].x, src_mesh->mTextureCoords[0][j].y);
-	}*/
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * num_vertices, sizeof(GLfloat) * 2 * num_vertices, uvs);
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 
@@ -119,26 +110,13 @@ void ComponentMesh::GenerateMesh(char* &mesh)
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * numIndices, nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * num_indices, nullptr, GL_STATIC_DRAW);
 
 	// Texture coords (UVs)
 	// MapBufferRange because we only want UV data from UVW
 
-	int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*numIndices, GL_MAP_WRITE_BIT);
-	memcpy(pbufferIndex, indices, sizeof(int) * numIndices);
-	/*
-	unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0,
-		sizeof(unsigned)*src_mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*num_indices, indices, GL_STATIC_DRAW);
 
-	for (unsigned j = 0; j < src_mesh->mNumFaces; ++j)
-	{
-		assert(src_mesh->mFaces[j].mNumIndices == 3);
-
-		*(indices++) = src_mesh->mFaces[j].mIndices[0];
-		*(indices++) = src_mesh->mFaces[j].mIndices[1];
-		*(indices++) = src_mesh->mFaces[j].mIndices[2];
-	}
-	*/
 	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
 	glEnableVertexAttribArray(0);
@@ -157,7 +135,7 @@ void ComponentMesh::GenerateMesh(char* &mesh)
 		GL_FLOAT,           // data type
 		GL_FALSE,           // should be normalized?
 		0,                  // stride
-		(void*)(sizeof(float) * 3 * numVertices)       // array buffer offset
+		(void*)(sizeof(float) * 3 * num_vertices)       // array buffer offset
 	);
 
 	// Disable VAO
@@ -169,40 +147,12 @@ void ComponentMesh::GenerateMesh(char* &mesh)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	//gen_mesh->material = src_mesh->mMaterialIndex;
-	num_vertices = numVertices;
-
-	//Copying Vertices array
-	this->vertices = new float[num_vertices * 3]; //It is checked below that at least has 1 face, so at least 3 vertices
-	memcpy(this->vertices, vertices, sizeof(float)*num_vertices * 3);
-
 	//Copying Face Normals
 	/*if (src_mesh->HasNormals())
 	{
-		mesh->num_normals = src_mesh->mNumVertices;
-		mesh->normals = new float[mesh->num_normals * 3];
+		num_normals = num_vertices;
+		normals = new float[num_normals * 3];
 		memcpy(mesh->normals, src_mesh->mNormals, sizeof(float)*mesh->num_normals * 3);
-	}*/
-
-	//Copying indices
-	num_indices = numIndices;
-	this->indices = (unsigned*)indices;
-	/*
-	this->indices = new unsigned[num_indices]; // assume each face is a triangle
-
-	for (int j = 0; j < numFaces; ++j)
-	{
-		if (src_mesh->mFaces[j].mNumIndices != 3)
-		{
-			LOG("WARNING, geometry face with != 3 indices!");
-			LOG("WARNING, face normals couldn't be loaded");
-			mesh = nullptr;
-			break;
-		}
-		else
-		{
-			memcpy(&mesh->indices[j * 3], src_mesh->mFaces[j].mIndices, 3 * sizeof(unsigned));
-		}
 	}*/
 
 	boundingBox.SetNegativeInfinity();

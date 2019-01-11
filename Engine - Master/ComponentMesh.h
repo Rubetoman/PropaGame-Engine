@@ -45,6 +45,8 @@ public:
 	unsigned num_normals = 0u;
 	float* normals = nullptr;
 
+	float* uvs = nullptr;
+
 	math::AABB boundingBox = math::AABB();
 };
 
