@@ -1,7 +1,11 @@
+#include "Application.h"
 #include "WindowAbout.h"
 #include "ModuleEditor.h"
-#include "GL/glew.h"
 
+#include "GL/glew.h"
+#include "Assimp/include/assimp/version.h"
+#include "IL/il.h"
+#include "SDL_version.h"
 
 WindowAbout::WindowAbout(const char* name) : Window(name)
 {
@@ -70,6 +74,10 @@ void WindowAbout::Draw()
 	ImGui::NewLine(); ImGui::SameLine(30);
 	if (ImGui::Selectable("mmgr 1.0", false, 0, { 130, 13 }))
 		App->editor->ShowInBrowser("http://www.flipcode.com/archives/Presenting_A_Memory_Manager.shtml");
+
+	ImGui::NewLine(); ImGui::SameLine(30);
+	if (ImGui::Selectable("ImGuizmo", false, 0, { 130, 13 }))
+		App->editor->ShowInBrowser("https://github.com/CedricGuillemet/ImGuizmo");
 
 	// License
 	ImGui::NewLine();

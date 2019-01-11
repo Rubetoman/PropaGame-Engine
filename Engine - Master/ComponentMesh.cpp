@@ -5,6 +5,7 @@
 
 #include "Application.h"
 #include "ModuleShader.h"
+#include "ModuleResources.h"
 
 #include "GameObject.h"
 #include "par_shapes.h"
@@ -21,10 +22,13 @@ ComponentMesh::ComponentMesh(const ComponentMesh& comp) : Component(comp)
 	ibo = comp.ibo;
 	vao = comp.vao;
 	num_vertices = comp.num_vertices;
-	num_indices = comp.num_indices;
-	vertices.reserve(comp.vertices.capacity());
 	vertices = comp.vertices;
+	num_indices = comp.num_indices;
+	indices = comp.indices;
+	num_normals = comp.num_normals;
+	normals = comp.normals;
 	boundingBox = comp.boundingBox;
+	App->resources->meshes.push_back(this);
 }
 
 ComponentMesh::~ComponentMesh()
@@ -127,6 +131,7 @@ void ComponentMesh::Delete()
 {
 	my_go->mesh = nullptr;
 	Component::Delete();
+	App->resources->DeleteMesh(this);
 }
 
 void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
@@ -174,7 +179,7 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned)*mesh->ntriangles * 3, nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_indices * sizeof(unsigned), indices , GL_STATIC_DRAW);
 
 	unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0,
 		sizeof(unsigned)*mesh->ntriangles * 3, GL_MAP_WRITE_BIT);
@@ -211,11 +216,11 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	vertices.reserve(mesh->npoints);
+	/*vertices.reserve(mesh->npoints);
 	for (unsigned int i = 0; i < mesh->npoints; i++)
 	{
 		vertices.push_back(float3((float *)&mesh->points[i]));
-	}
+	}*/
 
 	//materialIndex = 0;
 	num_indices = mesh->ntriangles * 3;
@@ -231,7 +236,7 @@ JSON_value* ComponentMesh::Save(JSON_value* component) const
 	mesh->AddUnsigned("VAO", vao);
 	mesh->AddUnsigned("Number Vertices", num_vertices);
 	mesh->AddUnsigned("Number Indices", num_indices);
-	//TODO: Add vertices
+	//TODO: Add vertices, indices and normals
 	mesh->AddVec3("boundingBox min", boundingBox.minPoint);
 	mesh->AddVec3("boundingBox max", boundingBox.maxPoint);
 
@@ -249,7 +254,7 @@ void ComponentMesh::Load(JSON_value* component)
 	vao = component->GetUnsigned("VAO");
 	num_vertices = component->GetUnsigned("Number Vertices");
 	num_indices = component->GetUnsigned("Number Indices");
-	//TODO: Add vertices
+	//TODO: Add vertices, indices and normals
 	boundingBox.minPoint = component->GetVec3("boundingBox min");
 	boundingBox.maxPoint = component->GetVec3("boundingBox max");
 }

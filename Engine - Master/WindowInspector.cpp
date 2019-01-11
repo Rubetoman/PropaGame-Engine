@@ -3,6 +3,9 @@
 #include "Application.h"
 #include "Component.h"
 #include "ModuleEditor.h"
+#include "ModuleScene.h"
+
+#include "WindowHierarchy.h"
 
 #include "GameObject.h"
 #include <vector>
@@ -21,17 +24,28 @@ void WindowInspector::Draw()
 {
 	if (ImGui::Begin("Inspector", &active, ImGuiWindowFlags_NoFocusOnAppearing))
 	{
-		GameObject* go = App->editor->hierarchy->selected;
+		GameObject* go = App->editor->selectedGO;
 		if (go != nullptr)
 		{
 			ImGui::Checkbox("active", &go->active);
-
+			ImGui::SameLine();
 			// Show name field
 			char *name = new char[GO_NAME_SIZE];
 			strcpy(name, go->name.c_str());
 			ImGui::InputText("Name", name, GO_NAME_SIZE);
 			go->name = name;
 			delete[] name;
+
+			if (ImGui::Checkbox("static", &go->static_GO))
+			{
+				if(go->children.size() > 0)
+					show_static_popup = true;
+				
+				App->scene->dirty = true;
+			}
+
+			if (show_static_popup)
+				StaticPopup(*go);
 
 			// Serialization information
 			ImGui::Separator();
@@ -74,11 +88,33 @@ void WindowInspector::Draw()
 	ImGui::End();
 }
 
-void WindowInspector::DrawComponents(GameObject* go)
+void WindowInspector::DrawComponents(GameObject* go) const
 {
 	for (auto &comp : go->components)
 	{
 		if(comp != nullptr && go != nullptr)
 			comp->DrawOnInspector();
+	}
+}
+
+void WindowInspector::StaticPopup(GameObject& go)
+{
+	ImGui::OpenPopup("Static");
+	if (ImGui::BeginPopupModal("Static", &show_static_popup))
+	{
+		ImGui::Text("Change static state of the children \nattached to this GameObject as well?");
+		ImGui::NewLine();
+		if (ImGui::Button("Yes", ImVec2(120, 0)))
+		{
+			go.SetChildrenStatic(go.static_GO);
+			show_static_popup = false;
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("No", ImVec2(120, 0)))
+			show_static_popup = false;
+
+		ImGui::EndPopup();
 	}
 }

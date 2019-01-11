@@ -2,29 +2,16 @@
 #define __MODULEEDITOR_H__
 
 #include "Module.h"
-#include "Window.h"
-#include "ModuleModelLoader.h"
-#include "ModuleTextures.h"
-#include "Texture.h"
 
-#include "Window.h"
-#include "WindowScene.h"
-#include "WindowAbout.h"
-#include "WindowConsole.h"
-#include "WindowHardware.h"
-#include "WindowConfiguration.h"
-#include "WindowHierarchy.h"
-#include "WindowInspector.h"
-#include "ModuleCamera.h"
+#include "SDL_events.h"
+#include "Math/float3.h"
 
-#include "SDL/include/SDL.h"
-#include "GL/glew.h"
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_sdl.h"
-#include "Assimp/include/assimp/version.h"
 #include <vector> 
+#include <list>
 
 class Application;
+
+class Window;
 class WindowScene;
 class WindowAbout;
 class WindowConsole;
@@ -34,7 +21,11 @@ class WindowHierarchy;
 class WindowInspector;
 class WindowCamera;
 
+class GameObject;
 class ComponentCamera;
+
+
+enum class BBoxMode {Divide, All_Divide, Enclose, All_Enclose};
 
 class ModuleEditor : public Module
 {
@@ -68,12 +59,19 @@ public:
 
 	update_status update = UPDATE_CONTINUE;
 
+	// Selected GO
+	GameObject* selectedGO = false;
+
+	// Debug draw
 	bool show_grid = true;
 	bool show_axis = true;
-	bool drawAllBBox = false;
+	bool show_raycast = false;
+	math::float3 raycast_color = math::float3(0.0f, 1.0f, 0.0f);
+
+	BBoxMode bbox_mode = BBoxMode::Divide;
 
 	//The window we'll be rendering to
-	SDL_Window * window = nullptr;
+	SDL_Window* window = nullptr;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = nullptr;

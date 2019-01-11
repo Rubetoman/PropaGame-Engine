@@ -1,24 +1,32 @@
 #include "ModuleEditor.h"
+
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleWindow.h"
+
 #include "ModuleRender.h"
-#include "ModuleTextures.h"
 #include "ModuleTime.h"
 #include "ModuleScene.h"
 #include "ModuleResources.h"
 
+
+#include "Window.h"
 #include "Window.h"
 #include "WindowScene.h"
 #include "WindowAbout.h"
 #include "WindowConsole.h"
 #include "WindowHardware.h"
 #include "WindowConfiguration.h"
+#include "WindowHierarchy.h"
+#include "WindowInspector.h"
 #include "WindowCamera.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
+
 #include "debugdraw.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_sdl.h"
+#include "ImGuizmo/ImGuizmo.h"
 
 
 ModuleEditor::ModuleEditor()
@@ -69,6 +77,7 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
 
 	CreateDockSpace();
 

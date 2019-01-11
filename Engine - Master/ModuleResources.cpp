@@ -11,7 +11,6 @@ ModuleResources::ModuleResources()
 {
 }
 
-
 ModuleResources::~ModuleResources()
 {
 	App->textures->unloadTexture(checkers_texture);
@@ -35,6 +34,7 @@ bool ModuleResources::CleanUp()
 {
 	textures.clear();
 	lights.clear();
+	meshes.clear();
 
 	return true;
 }
@@ -79,6 +79,34 @@ void ModuleResources::DeleteCamera(ComponentCamera* camera)
 			cameras.erase(cameras.begin() + position);
 			camera->CleanUp();
 			//RELEASE(camera);
+		}
+		else
+			LOG("Error deleting component.");
+	}
+	else
+		LOG("Warning: Component was nullptr.");
+}
+
+unsigned ModuleResources::GetMeshNumber(ComponentMesh& mesh) const
+{
+	auto pos = std::find(meshes.begin(), meshes.end(), &mesh) - meshes.begin();
+	if (pos >= meshes.size())
+	{
+		LOG("Warning: mesh not found as a resource of meshes.");
+		return -1;
+	}
+	return pos;
+}
+
+void ModuleResources::DeleteMesh(ComponentMesh* mesh)
+{
+	if (mesh != nullptr)
+	{
+		int position = GetMeshNumber(*mesh);
+		if (position > -1)
+		{
+			meshes.erase(meshes.begin() + position);
+			//RELEASE(mesh);
 		}
 		else
 			LOG("Error deleting component.");

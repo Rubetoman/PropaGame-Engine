@@ -17,6 +17,7 @@ class ComponentMaterial;
 class ComponentCamera;
 
 enum class component_type;
+enum class BBoxMode;
 
 #pragma region GOFlags
 enum GOFlags
@@ -65,13 +66,23 @@ public:
 
 	// Game Object
 	bool isActive() const;
+	void SetStatic(bool set);		// Sets the GO to static and sets the scene dirty
+	bool isPureStatic() const;		// Returns true if all his parents are static, if else returns false
+	void SetChildrenStatic(bool set) const;
+	void SetForeparentStatic(bool set) const;
 	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
+	void DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode) const;		// Draws editor debug shpaes (Spheres for lights, camera icons, frustrum lines, bboxes, etc.)
 	void DeleteGameObject();
 	math::float4x4 GetLocalTransform() const;
 	math::float4x4 GetGlobalTransform() const;
 	math::float3 GetCenter() const;
-	math::AABB ComputeBBox() const;
-	void DrawBBox(AABB bbox) const;
+
+	// BBox
+	math::AABB ComputeBBox() const;				// Computes a bbox for the GO mesh
+	math::AABB ComputeTotalBBox() const;		// Computes a bbox enclosing all children meshes
+	math::AABB ComputeStaticTotalBBox() const;	// Computes a bbox enclosing all static children meshes
+	void DrawBBox(AABB bbox) const;				// Draws one bbox for each mesh (self and children)
+	void DrawTotalBBox(AABB bbox) const;		// Draws one bbox
 
 	// Components
 	Component* CreateComponent(component_type type);
@@ -93,6 +104,7 @@ public:
 	std::string uuid = "";
 	std::string parentUID = "";
 	bool active = true;
+	bool static_GO = false;
 	std::string name = "GameObject";
 	GOFlags flags = GOFlags::None;
 	

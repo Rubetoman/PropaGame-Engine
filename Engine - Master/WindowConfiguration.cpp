@@ -10,6 +10,7 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 
+#include "Quadtree.h"
 #include "mmgr/mmgr.h"
 
 WindowConfiguration::WindowConfiguration(const char* name) : Window(name)
@@ -69,7 +70,35 @@ void WindowConfiguration::Draw()
 		ImGui::Separator();
 		ImGui::Checkbox("Show grid", &App->editor->show_grid); ImGui::SameLine();
 		ImGui::Checkbox("Show axis", &App->editor->show_axis);
-		ImGui::Checkbox("Draw all BBox", &App->editor->drawAllBBox);
+		ImGui::Separator();
+		ImGui::Checkbox("Show click raycast", &App->editor->show_raycast);
+		ImGui::ColorEdit3("Raycast color", (float*)&App->editor->raycast_color);
+		ImGui::Separator();
+		const char* modes[] = {"Selected mesh only", "BBox for each mesh on scene", "Selected GO enclosing children", "Enclose all"};
+		ImGui::Combo("BBox draw mode", (int*)&App->editor->bbox_mode, modes, IM_ARRAYSIZE(modes));
+	}
+	if (ImGui::CollapsingHeader("Quadtree"))
+	{
+		ImGui::Checkbox("Use Quadtree", &App->scene->use_quadtree);
+		ImGui::Checkbox("Draw Quadtree", &App->scene->draw_quadtree);
+		ImGui::Separator();
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.4f, 0.6f, 0.6f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.4f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.4f, 0.8f, 0.8f));
+		if (ImGui::Button("Generate Quadtree"))
+		{
+			App->scene->ComputeSceneQuadtree();
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.6f, 0.6f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(1.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(1.0f, 0.8f, 0.8f));
+		if (ImGui::Button("Delete Quadtree"))
+		{
+			App->scene->quadtree->Clear();
+		}
+		ImGui::PopStyleColor(3);
 	}
 	if (ImGui::CollapsingHeader("Editor Camera"))
 	{
@@ -180,7 +209,7 @@ void WindowConfiguration::Draw()
 	if (ImGui::CollapsingHeader("Input"))
 	{
 		ImGui::Text("Mouse Position:");
-		ImGui::Text("X: %d | Y: %d", App->input->GetMousePosition().x, App->input->GetMousePosition().y);
+		ImGui::Text("X: %d | Y: %d", (int)(App->input->GetMousePosition().x * App->window->screen_width), (int)(App->input->GetMousePosition().y * App->window->screen_height));
 	}
 	ImGui::End();
 }

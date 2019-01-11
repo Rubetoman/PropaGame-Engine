@@ -25,6 +25,8 @@ void WindowHierarchy::Draw()
 		if (App->scene->root != nullptr)
 			DrawNode();
 
+		GameObject* selected = App->editor->selectedGO;
+
 		// Popup
 		if (ImGui::IsMouseReleased(1) & ImGui::IsMouseHoveringWindow())
 		{
@@ -88,8 +90,13 @@ void WindowHierarchy::DrawNode()
 		for (auto &go : App->scene->scene_gos)
 		{
 			ImGui::PushID(go);
+
+			// Show with different color when it is a inactive GO
+			if (!go->active)
+				ImGui::PushStyleColor(ImGuiCol_Text, { 0.1f,0.1f,0.1f,0.9f });
+
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-			flags |= go == selected ? ImGuiTreeNodeFlags_Selected : 0;
+			flags |= go == App->editor->selectedGO ? ImGuiTreeNodeFlags_Selected : 0;
 
 			//Check for children
 			if (go->children.empty())
@@ -101,7 +108,7 @@ void WindowHierarchy::DrawNode()
 
 			if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
 			{
-				selected = go;
+				App->editor->selectedGO = go;
 			}
 
 			if (node_open)
@@ -116,6 +123,9 @@ void WindowHierarchy::DrawNode()
 					ImGui::TreePop();
 				}
 			}
+			if (!go->active)
+				ImGui::PopStyleColor();
+
 			ImGui::PopID();
 		}	
 	}
@@ -130,24 +140,33 @@ void WindowHierarchy::DrawNode()
 
 void WindowHierarchy::DrawChildren(GameObject* node)
 {
-	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick
-		| (node == selected ? ImGuiTreeNodeFlags_Selected : 0);
 	ImGui::PushID(node);
+
+	// Show with different color when it is a inactive GO
+	if (!node->active)
+		ImGui::PushStyleColor(ImGuiCol_Text, { 0.1f,0.1f,0.1f,0.9f });
+
+	// Flags
+	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick
+		| (node == App->editor->selectedGO ? ImGuiTreeNodeFlags_Selected : 0);
 	if (node->children.empty())
 	{
 		flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
 	bool node_open = ImGui::TreeNodeEx(node->name.c_str(), flags);
+
+	// Drag and drop
 	SetDragAndDrop(node);
 
+	// Select input
 	if (ImGui::IsItemClicked() || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1)))
 	{
-		selected = node;
+		App->editor->selectedGO = node;
 	}
 
+	// Draw children
 	if (node_open)
 	{
-		// Children
 		for (auto &child : node->children)
 		{
 			DrawChildren(child);
@@ -158,6 +177,10 @@ void WindowHierarchy::DrawChildren(GameObject* node)
 			ImGui::TreePop();
 		}
 	}
+
+	if (!node->active)
+		ImGui::PopStyleColor();
+
 	ImGui::PopID();
 }
 

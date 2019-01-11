@@ -27,6 +27,7 @@ GameObject::GameObject(const char* name, GameObject* parent) : name(name), paren
 	parentUID = parent->uuid;
 	CreateComponent(component_type::Transform);
 	parent->children.push_back(this);
+	if (parent->static_GO && parent != App->scene->root) SetStatic(true);
 }
 
 GameObject::GameObject(const char* name, const math::float4x4& new_transform) : name(name)
@@ -44,6 +45,7 @@ GameObject::GameObject(const char* name, const math::float4x4& new_transform, Ga
 	transform = (ComponentTransform*)CreateComponent(component_type::Transform);
 	transform->SetTransform(new_transform);
 	parent->children.push_back(this);
+	if (parent->static_GO && parent != App->scene->root) SetStatic(true);
 }
 
 GameObject::GameObject(const GameObject& go)
@@ -51,6 +53,7 @@ GameObject::GameObject(const GameObject& go)
 	uuid = App->resources->GenerateNewUID();
 	parentUID = go.parentUID;
 	name = go.name;
+	static_GO = go.static_GO;
 
 	for (const auto& component : go.components)
 	{
@@ -159,6 +162,40 @@ bool GameObject::isActive() const
 		return parent->isActive();
 }
 
+void GameObject::SetStatic(bool set)
+{
+	static_GO = set;
+	App->scene->dirty = true;
+}
+
+bool GameObject::isPureStatic() const
+{
+	if (parent == nullptr && static_GO)
+		return true;
+	else if (!static_GO || !parent->static_GO)
+		return false;
+	else
+		return parent->isPureStatic();
+}
+
+void GameObject::SetChildrenStatic(bool set) const
+{
+	for (auto child : children)
+	{
+		child->SetStatic(set);
+		child->SetChildrenStatic(set);
+	}
+}
+
+void GameObject::SetForeparentStatic(bool set) const
+{
+	if (parent != nullptr && parent != App->scene->root)
+	{
+		parent->SetStatic(set);
+		parent->SetForeparentStatic(set);
+	}
+}
+
 void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera)
 {
 	if (!active) return;
@@ -169,16 +206,49 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 		child->Draw(view, proj, camera);
 	}
 
-	// Compute and Draw BBox on Editor
-	AABB boundingBox = ComputeBBox();
-	if ((App->editor->hierarchy->selected == this) || (App->editor->drawAllBBox))
-		DrawBBox(boundingBox);
+	// Compute BBox
+	AABB boundingBox;
+	BBoxMode bbox_mode = App->editor->bbox_mode;
+
+	if(bbox_mode == BBoxMode::Divide || bbox_mode == BBoxMode::Divide)
+		boundingBox = ComputeBBox();
+	else
+		boundingBox = ComputeTotalBBox();
+
+	// Draw debug shapes on editor camera
+	if (&camera == App->camera->editor_camera_comp)
+		DrawDebugShapes(boundingBox, bbox_mode);
+
+	if (App->scene->use_quadtree && isPureStatic()) return;	// Static GOs meshes are drawn using quadtree
 
 	if (mesh != nullptr && mesh->active)
 	{
 		// Avoid drawing mesh if it is not inside frustum
 		if (!camera.frustum_culling || camera.ContainsAABB(boundingBox))
 			((ComponentMesh*)mesh)->RenderMesh(view, proj);
+	}
+}
+
+void GameObject::DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode) const
+{
+	// Draw bbox
+	switch (bbox_mode)
+	{
+	default:
+	case BBoxMode::Divide:
+		if (App->editor->selectedGO == this)
+			DrawBBox(bbox);
+		break;
+	case BBoxMode::All_Divide:
+		DrawBBox(bbox);
+		break;
+	case BBoxMode::Enclose:
+		if (App->editor->selectedGO == this)
+			DrawTotalBBox(bbox);
+		break;
+	case BBoxMode::All_Enclose:
+		DrawTotalBBox(bbox);
+		break;
 	}
 
 	// Draw a sphere on Editor
@@ -228,6 +298,9 @@ math::float3 GameObject::GetCenter() const
 	else
 		return transform->position;
 }
+#pragma endregion
+
+#pragma region BBox functions
 
 math::AABB GameObject::ComputeBBox() const 
 {
@@ -246,14 +319,82 @@ math::AABB GameObject::ComputeBBox() const
 	return bbox;
 }
 
+math::AABB GameObject::ComputeTotalBBox() const
+{
+	AABB bbox;
+
+	// TODO: Solve bugs and use pointers
+	bbox.SetNegativeInfinity();
+
+	// Enclose GO meshes if is not only small box 
+	if (mesh != nullptr)
+	{
+		bbox.Enclose(mesh->boundingBox);
+	}
+	else if (children.size() == 0)
+	{
+		bbox.maxPoint = math::float3(0.1f, 0.1f, 0.1f);
+		bbox.minPoint = math::float3(-0.1f, -0.1f, -0.1f);
+	}
+
+	// Apply transformation of our GO
+	bbox.TransformAsAABB(GetGlobalTransform());
+
+	for (const auto &child : children)
+	{
+		bbox.Enclose(child->ComputeTotalBBox());
+	}
+
+	return bbox;
+}
+
+math::AABB GameObject::ComputeStaticTotalBBox() const
+{
+	AABB bbox;
+
+	// TODO: Solve bugs and use pointers
+	bbox.SetNegativeInfinity();
+
+	// Enclose GO meshes if is not only small box 
+	if (static_GO)
+	{
+		if (mesh != nullptr)
+		{
+			bbox.Enclose(mesh->boundingBox);
+		}
+		else
+		{
+			bbox.maxPoint = math::float3(0.1f, 0.1f, 0.1f);
+			bbox.minPoint = math::float3(-0.1f, -0.1f, -0.1f);
+		}
+
+		// Apply transformation of our GO
+		bbox.TransformAsAABB(GetGlobalTransform());
+
+		for (const auto &child : children)
+		{
+			if(child->static_GO)
+				bbox.Enclose(child->ComputeStaticTotalBBox());
+		}
+	}
+
+	return bbox;
+}
+
 void GameObject::DrawBBox(AABB bbox) const 
 {
 	if(mesh != nullptr)
 		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
 
 	for (auto child : children)
-		child->DrawBBox(child->ComputeBBox());
+		child->DrawBBox(child->ComputeTotalBBox());
 }
+
+void GameObject::DrawTotalBBox(AABB bbox) const
+{
+	dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
+}
+
 #pragma endregion
 
 #pragma region Components Related Functions
@@ -440,6 +581,7 @@ void GameObject::Save(JSON_value* go)
 	gameObject->AddString("ParentUID", parentUID.c_str());
 	gameObject->AddString("Name", name.c_str());
 	gameObject->AddBool("Active", active);
+	gameObject->AddBool("Static", static_GO);
 
 	JSON_value* Components = go->createValue();
 	Components->convertToArray();
@@ -465,6 +607,7 @@ void GameObject::Load(JSON_value* go)
 	parentUID = go->GetString("ParentUID");
 	name = go->GetString("Name");
 	active = go->GetBool("Active");
+	static_GO = go->GetBool("Static");
 
 	JSON_value* Components = go->getValue("Components"); //It is an array of values
 	if (Components->getRapidJSONValue()->IsArray()) //Just make sure

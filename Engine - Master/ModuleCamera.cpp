@@ -7,10 +7,16 @@
 #include "ModuleWindow.h"
 #include "ModuleTime.h"
 #include "ModuleResources.h"
+
 #include "WindowScene.h"
 
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "ComponentMesh.h"
+
+#include "Quadtree.h"
+#include "debugdraw.h"
+#include "ImGuizmo/ImGuizmo.h"
 
 ModuleCamera::ModuleCamera()
 {
@@ -123,6 +129,11 @@ void ModuleCamera::TranslateCameraInput()
 	{
 		WheelInputTranslation(App->input->GetMouseWheel());
 	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && !App->editor->scene->gui_click && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT)
+	{
+		App->editor->selectedGO = MousePick();
+	}
 }
 
 void ModuleCamera::RotateCameraInput() 
@@ -137,8 +148,8 @@ void ModuleCamera::RotateCameraInput()
 		{
 			SDL_ShowCursor(SDL_DISABLE);
 			math::float3 center;
-			if (App->editor->hierarchy->selected != nullptr)
-				center = App->editor->hierarchy->selected->GetCenter();
+			if (App->editor->selectedGO != nullptr)
+				center = App->editor->selectedGO->GetCenter();
 			else
 				center = math::float3(0, 0, 0);
 
@@ -151,7 +162,7 @@ void ModuleCamera::RotateCameraInput()
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F))
 	{
-		GameObject* selected = App->editor->hierarchy->selected;
+		GameObject* selected = App->editor->selectedGO;
 		if (selected != nullptr)
 			editor_camera_comp->LookAt(selected->GetCenter());
 		else
@@ -204,4 +215,68 @@ void ModuleCamera::FitCamera(const AABB &boundingBox)
 	editor_camera_go->transform->position.y = center.y;
 	editor_camera_go->transform->position.x = center.x;
 	editor_camera_comp->LookAt(math::float3(center.x,center.y,center.z));
+}
+
+GameObject* ModuleCamera::MousePick()
+{
+	const fPoint mousePosition = App->input->GetMousePosition();
+
+	float normalized_x = mousePosition.x * App->window->screen_width - App->editor->scene->viewport.x;
+	float normalized_y = mousePosition.y * App->window->screen_height - App->editor->scene->viewport.y;
+	normalized_x = (normalized_x / (App->window->screen_width / 2)) - 1.0f;
+	normalized_y = 1.0f - (normalized_y / (App->window->screen_height / 2));
+
+	raycast = editor_camera_comp->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+
+	hitGOs.clear();
+	App->scene->quadtree->Intersect(hitGOs, raycast);
+
+	for (auto mesh : App->resources->meshes)
+	{
+		if (!mesh->my_go->static_GO && mesh->num_vertices > 0 && raycast.Intersects(mesh->my_go->ComputeBBox()))
+		{
+			hitGOs.push_back(mesh->my_go);
+		}
+	}
+
+	// Check which GO is nearest
+	float minDistance = raycast.Length();
+	GameObject* nearest_hit_GO = nullptr;
+	for (auto go : hitGOs)
+	{
+		ComponentMesh* mesh = go->mesh;
+		ComponentTransform* transform = go->transform;
+
+		if (mesh != nullptr && transform != nullptr)
+		{
+			math::LineSegment localTransformPikingLine(raycast);
+			localTransformPikingLine.Transform(transform->my_go->GetGlobalTransform().Inverted());
+
+			math::Triangle triangle;
+			for (unsigned i = 0; i < mesh->num_indices; i += 3)
+			{
+				triangle.a = { mesh->vertices[mesh->indices[i] * 3], mesh->vertices[mesh->indices[i] * 3 + 1], mesh->vertices[mesh->indices[i] * 3 + 2] };
+				triangle.b = { mesh->vertices[mesh->indices[i + 1] * 3],mesh->vertices[mesh->indices[i + 1] * 3 + 1], mesh->vertices[mesh->indices[i + 1] * 3 + 2] };
+				triangle.c = { mesh->vertices[mesh->indices[i + 2] * 3], mesh->vertices[mesh->indices[i + 2] * 3 + 1], mesh->vertices[mesh->indices[i + 2] * 3 + 2] };
+
+				float triangleDistance;
+				float3 hitPoint;
+				if (localTransformPikingLine.Intersects(triangle, &triangleDistance, &hitPoint))
+				{
+					if (triangleDistance < minDistance)
+					{
+						minDistance = triangleDistance;
+						nearest_hit_GO = go;
+					}
+				}
+			}
+		}
+	}
+
+	return nearest_hit_GO;
+}
+
+void ModuleCamera::DrawRaycast() const
+{
+	dd::line(raycast.a, raycast.b, App->editor->raycast_color);
 }

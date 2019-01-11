@@ -216,6 +216,12 @@
     <ClCompile Include="WindowCamera.cpp">
       <Filter>Modules\EditorWindow</Filter>
     </ClCompile>
+    <ClCompile Include="Quadtree.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
+      <Filter>Tools\imguizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -505,6 +511,12 @@
     <ClInclude Include="WindowCamera.h">
       <Filter>Modules\EditorWindow</Filter>
     </ClInclude>
+    <ClInclude Include="Quadtree.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImGuizmo.h">
+      <Filter>Tools\imguizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\Assets\Shaders\Default.fs">
@@ -574,6 +586,9 @@
     </Filter>
     <Filter Include="Tools\crossguid">
       <UniqueIdentifier>{280784fc-d904-42bb-a4dd-58c52640e793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\imguizmo">
+      <UniqueIdentifier>{0691d1b4-637d-4fcf-b48b-ba0e87e5ae70}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

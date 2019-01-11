@@ -6,9 +6,14 @@
 #include "ModuleCamera.h"
 #include "ModuleEditor.h"
 
+#include "WindowScene.h"
+
+#include "Quadtree.h"
+
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
+#include "ComponentMesh.h"
 
 ModuleScene::ModuleScene()
 {
@@ -42,6 +47,12 @@ bool ModuleScene::Start()
 
 update_status ModuleScene::Update()
 {
+	if (dirty)
+	{
+		ComputeSceneQuadtree();
+		dirty = false;
+	}
+
 	root->Update();
 	return UPDATE_CONTINUE;
 }
@@ -57,8 +68,78 @@ bool ModuleScene::CleanUp()
 
 void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera)
 {
-	if(root != nullptr)
+	if (root != nullptr)
+	{
+		if (use_quadtree)
+		{
+			// Draw static GOs
+			quadtree->Intersect(static_gos, camera.frustum);
+			DrawStaticGameObjects(view, proj, camera);
+			static_gos.clear();
+		}
+
+		// Draw non static GOs (If quadtree is not in use will draw also static GOs)
 		root->Draw(view, proj, camera);
+	}
+
+	if (&camera == App->camera->editor_camera_comp)
+	{
+		if (use_quadtree && draw_quadtree)
+			quadtree->Draw();
+
+		if(App->editor->show_raycast)
+			App->camera->DrawRaycast();
+	}
+}
+
+void ModuleScene::DrawStaticGameObjects(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera) const
+{
+	for (auto go : static_gos)
+	{
+		// Compute and Draw BBox on Editor
+		AABB boundingBox = go->ComputeBBox();
+
+		if (go->mesh != nullptr && go->mesh->active)
+		{
+			// Avoid drawing mesh if it is not inside frustum
+			if (!camera.frustum_culling || camera.ContainsAABB(boundingBox))
+				((ComponentMesh*)go->mesh)->RenderMesh(view, proj);
+		}
+	}
+}
+
+void ModuleScene::DrawImGuizmo(ImGuizmo::OPERATION operation) const
+{
+	math::float2 pos = App->editor->scene->viewport;
+	ImGuizmo::SetRect(pos.x, pos.y, App->window->screen_width, App->window->screen_height);
+	ImGuizmo::SetDrawlist();
+
+	GameObject* selectedGO = App->editor->selectedGO;
+
+	if (selectedGO != nullptr)
+	{
+		//ImGuizmo::Enable(!selectedGO->isPureStatic());
+
+		ComponentTransform* transform = selectedGO->transform;
+		ComponentCamera* editor_camera = App->camera->editor_camera_comp;
+
+		math::float4x4 model = selectedGO->GetLocalTransform();
+		math::float4x4 proj = editor_camera->frustum.ProjectionMatrix();
+		math::float4x4 view = editor_camera->frustum.ViewMatrix();
+
+		ImGuizmo::SetOrthographic(false);
+
+		model.Transpose();
+		view.Transpose();
+		proj.Transpose();
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj, operation, ImGuizmo::LOCAL, (float*)&model, NULL, NULL, NULL, NULL);
+
+		if (ImGuizmo::IsUsing())
+		{
+			model.Transpose();
+			transform->LocalToGlobal(model);
+		}
+	}
 }
 
 GameObject* ModuleScene::CreateGameObject(const char* name)
@@ -220,13 +301,17 @@ bool ModuleScene::Save(JSON_file* document)
 
 bool ModuleScene::InitScene()
 {
+	quadtree = new Quadtree();
+	
 	// Root
 	root = new GameObject("World");
+	root->static_GO = true;
 	scene_gos.push_back(root);
 
 	//TODO: Change it for an ambient light and added to scene_gos without parent
 	// Default Light
 	GameObject* default_light = CreateGameObject("Default Light", root);
+	default_light->static_GO = true;
 	default_light->transform->position = math::float3(-2.0f, 0.0f, 6.0f);
 	default_light->CreateComponent(component_type::Light);
 
@@ -235,12 +320,16 @@ bool ModuleScene::InitScene()
 	game_camera->transform->position = math::float3(0.0f, 0.0f, 3.0f);
 	game_camera->CreateComponent(component_type::Camera);
 
+	dirty = true;
+
 	return true;
 }
 
 void ModuleScene::NewScene()
 {
-	App->editor->hierarchy->selected = nullptr;
+	quadtree->Clear();
+
+	App->editor->selectedGO = nullptr;
 
 	// Delete root
 	root->DeleteGameObject();
@@ -299,7 +388,7 @@ bool ModuleScene::LoadScene(const char* scene_name)
 		return false;
 	}
 
-	App->editor->hierarchy->selected = nullptr;
+	App->editor->selectedGO = nullptr;
 
 	// Delete root
 	root->DeleteGameObject();
@@ -351,6 +440,8 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	//App->camera->FitCamera(*App->camera->BBtoLook);
 	App->json->closeFile(scene);
 
+	dirty = true;
+
 	LOG("Scene load successful.");
 	return true;
 }
@@ -366,6 +457,47 @@ bool ModuleScene::DeleteScene(const char* scene_name)
 	}
 	else
 		return true;
+}
+
+#pragma endregion
+
+#pragma region Quadtree functions
+
+void ModuleScene::FillQuadtree(GameObject* go)
+{
+	if (go != nullptr && go->static_GO)
+	{
+		quadtree->Insert(go);
+
+		for (auto child : go->children)
+		{
+			FillQuadtree(child);
+		}
+	}
+}
+
+void ModuleScene::ComputeSceneQuadtree()
+{
+	quadtree->Clear();
+
+	for (auto go : scene_gos)
+	{
+		ResizeQuadtree(go);
+		FillQuadtree(go);
+	}
+}
+
+void ModuleScene::ResizeQuadtree(GameObject* go)
+{
+	if (go != nullptr && go->static_GO)
+	{
+		quadtree->QuadTree_Box.Enclose(go->ComputeStaticTotalBBox());
+
+		for (auto child : go->children)
+		{
+			ResizeQuadtree(child);
+		}
+	}
 }
 
 #pragma endregion

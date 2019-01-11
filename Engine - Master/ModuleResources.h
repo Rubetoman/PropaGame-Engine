@@ -10,6 +10,7 @@
 class GameObject;
 class Texture;
 class ComponentCamera;
+class ComponentMesh;
 
 class ModuleResources : public Module
 {
@@ -27,16 +28,23 @@ public:
 	unsigned GetCameraNumber(ComponentCamera& camera) const;
 	void DeleteCamera(ComponentCamera* camera);
 
+	// Meshes
+	unsigned GetMeshNumber(ComponentMesh& mesh) const;
+	void DeleteMesh(ComponentMesh* mesh);
 public:
 	std::vector<GameObject*> lights;		// List of all the lights on the scene
 
 	// Textures
-	std::map<Texture*, int> textures;	// Map of all the textures and number of objects that use that texture
+	std::map<Texture*, int> textures;		// Map of all the textures and number of objects that use that texture
 	Texture* checkers_texture = nullptr;
 	Texture* no_camera_texture = nullptr;
 
 	// Scene Cameras
-	std::vector<ComponentCamera*> cameras;		// Vector with all the cameras on the scene
+	std::vector<ComponentCamera*> cameras;	// Vector with all the cameras on the scene
+
+	//TODO: use a Map to avoid deleting a duplicated mesh
+	// Meshes
+	std::vector<ComponentMesh*> meshes;		// Vector of all the meshes on the scene
 };
 
 #endif /*__MODULERESOURCES_H__*/
