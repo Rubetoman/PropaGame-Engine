@@ -222,6 +222,15 @@
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
       <Filter>Tools\imguizmo</Filter>
     </ClCompile>
+    <ClCompile Include="Importer.cpp">
+      <Filter>Other\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshImporter.cpp">
+      <Filter>Other\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialImporter.cpp">
+      <Filter>Other\Importer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -517,6 +526,15 @@
     <ClInclude Include="ImGuizmo\ImGuizmo.h">
       <Filter>Tools\imguizmo</Filter>
     </ClInclude>
+    <ClInclude Include="Importer.h">
+      <Filter>Other\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshImporter.h">
+      <Filter>Other\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialImporter.h">
+      <Filter>Other\Importer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\Assets\Shaders\Default.fs">
@@ -589,6 +607,9 @@
     </Filter>
     <Filter Include="Tools\imguizmo">
       <UniqueIdentifier>{0691d1b4-637d-4fcf-b48b-ba0e87e5ae70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other\Importer">
+      <UniqueIdentifier>{afafa026-3c4d-469c-b91a-d570a4abc32f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
