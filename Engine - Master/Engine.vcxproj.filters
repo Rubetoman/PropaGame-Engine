@@ -222,9 +222,6 @@
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
       <Filter>Tools\imguizmo</Filter>
     </ClCompile>
-    <ClCompile Include="Importer.cpp">
-      <Filter>Other\Importer</Filter>
-    </ClCompile>
     <ClCompile Include="MeshImporter.cpp">
       <Filter>Other\Importer</Filter>
     </ClCompile>
@@ -525,9 +522,6 @@
     </ClInclude>
     <ClInclude Include="ImGuizmo\ImGuizmo.h">
       <Filter>Tools\imguizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="Importer.h">
-      <Filter>Other\Importer</Filter>
     </ClInclude>
     <ClInclude Include="MeshImporter.h">
       <Filter>Other\Importer</Filter>

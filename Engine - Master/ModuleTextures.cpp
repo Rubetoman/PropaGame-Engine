@@ -60,7 +60,7 @@ Texture* ModuleTextures::loadTexture(const char* path, bool permanent)
 	std::string name = nTexture->name;
 	std::string extension = nTexture->extension;
 
-	App->file->splitPath(path, nullptr, &name, &extension);
+	App->file->SplitPath(path, nullptr, &name, &extension);
 
 	if(PATH_SIZE < sizeof(path))
 	{ 

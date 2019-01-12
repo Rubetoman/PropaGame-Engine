@@ -44,8 +44,11 @@ enum update_status
 #define TITLE "PropaGame Engine"
 
 // PATHS -----------------
+#define ASSETS_FOLDER "Assets"
 #define SCENES_FOLDER "Assets/Scenes/"
 #define TEXTURES_FOLDER "Assets/Textures/"
+#define MESHES_FOLDER "Assets/Meshes/"
+#define MATERIALS_FOLDER "Assets/Materials/"
 
 // TEXTURES --------------
 #define CHECKERS_TEXTURE "Assets/Textures/Checkers_Texture.jpg"

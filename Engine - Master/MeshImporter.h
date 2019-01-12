@@ -1,27 +1,24 @@
 #ifndef __MESHIMPORTER_H__
 #define __MESHIMPORTER_H__
 
-#include "Importer.h"
 #include <assimp/matrix4x4.h>
 
 class aiScene;
 class aiNode;
 class aiMesh;
 
-class GameObject;
+class ComponentMesh;
 
-class MeshImporter : public Importer
+class MeshImporter
 {
 public:
 	MeshImporter();
 	~MeshImporter();
 
-	bool Import(const char* file, const char* path, std::string& output_file) override;
-	bool SaveScene(const aiScene& scene, std::string& output_file);
-	void SaveNode(const aiNode& node, const aiScene& scene, char* &cursor, int node_id, int parent_node_id);
-	void SaveMesh(const aiMesh& mesh, char* &cursor);
-
-	unsigned int GetNodeSize(const aiNode& node, const aiScene& scene) const;
+	void ImportFBX(const char* filePath);
+	bool Import(const aiMesh* aiMesh, const char* meshName);
+	bool Save(const ComponentMesh& mesh, const char* meshName);
+	bool Load(ComponentMesh* mesh, const char* meshName);
 };
 
 #endif /*__MESHIMPORTER_H__*/

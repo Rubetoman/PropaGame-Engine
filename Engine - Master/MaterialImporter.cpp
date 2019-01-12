@@ -1,5 +1,6 @@
 #include "MaterialImporter.h"
 
+#include "Globals.h"
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleFileManager.h"
@@ -12,7 +13,7 @@ MaterialImporter::~MaterialImporter()
 {
 }
 
-void MaterialImporter::ImportMaterial(const char* path, std::string& output_file)
+void MaterialImporter::Import(const char* path)
 {
 	ILuint imageID;
 	ILboolean success;
@@ -38,7 +39,7 @@ void MaterialImporter::ImportMaterial(const char* path, std::string& output_file
 		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
 			// Save to buffer with the ilSaveIL function
-			App->file->SaveFileData((char*)data, size, output_file);
+			App->file->Save(MATERIALS_FOLDER, data, size, false);
 		}
 		RELEASE_ARRAY(data);
 	}

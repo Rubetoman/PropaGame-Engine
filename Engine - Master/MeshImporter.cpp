@@ -26,129 +26,232 @@ MeshImporter::~MeshImporter()
 {
 }
 
-bool MeshImporter::Import(const char* file, const char* path, std::string& output_file)
+void MeshImporter::ImportFBX(const char* filePath)
 {
-	assert(path != nullptr);
+	char* fileBuffer;
+	unsigned lenghBuffer = App->file->Load(filePath, &fileBuffer);
+	const aiScene* scene = aiImportFileFromMemory(fileBuffer, lenghBuffer, aiProcessPreset_TargetRealtime_MaxQuality, "");
 
-	const aiScene* scene = aiImportFile(path, aiProcess_Triangulate);
-	if (scene != nullptr)
+	std::string fileName;
+	App->file->SplitPath(filePath, nullptr, &fileName, nullptr);
+
+	if (scene->mMeshes != nullptr)
 	{
-		SaveScene(*scene, output_file);
-	}
-	else
-	{
-		LOG("Error, the file couldn't be loaded: %s \n", aiGetErrorString());
-		return false;
-	}
-
-	return true;
-}
-
-bool MeshImporter::SaveScene(const aiScene& scene, std::string& output_file)
-{
-	unsigned int size = GetNodeSize(*scene.mRootNode, scene);
-	char *data = new char[size];
-	char *cursor = data;
-	SaveNode(*scene.mRootNode, scene, cursor, 0, -1);
-	aiReleaseImport(&scene);
-	//Save to file
-	return App->file->SaveFileData(data, size, output_file);
-}
-
-void MeshImporter::SaveNode(const aiNode& node, const aiScene& scene, char* &cursor, int node_id, int parent_node_id)
-{
-	unsigned int id_bytes = sizeof(int);
-	memcpy(cursor, &node_id, id_bytes);
-	cursor += id_bytes;
-
-	memcpy(cursor, &parent_node_id, id_bytes);
-	cursor += id_bytes;
-
-	float* transform = (float*)&node.mTransformation;
-	unsigned int transformBytes = sizeof(float) * 16;
-	memcpy(cursor, transform, transformBytes);
-	cursor += transformBytes;
-
-	unsigned int nameBytes = sizeof(char) * (node.mName.length + 1);
-	memcpy(cursor, node.mName.C_Str(), nameBytes);
-	cursor += nameBytes;
-
-	memcpy(cursor, &node.mNumMeshes, sizeof(int));
-	cursor += sizeof(int);
-
-	for (unsigned int i = 0; i < node.mNumMeshes; i++)
-	{
-		SaveMesh(*scene.mMeshes[node.mMeshes[i]], cursor);
-		aiTextureMapping mapping = aiTextureMapping_UV; //we take filename of material mesh
-		aiString file;
-		scene.mMaterials[scene.mMeshes[node.mMeshes[i]]->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
-		unsigned int materialBytes = sizeof(char)*(file.length + 1);
-		memcpy(cursor, file.C_Str(), materialBytes);
-		cursor += materialBytes;
-	}
-
-	memcpy(cursor, &node.mNumChildren, sizeof(int));
-	cursor += sizeof(int);
-
-	unsigned int new_id = node_id; //parent
-	for (unsigned int i = 0; i < node.mNumChildren; i++)
-	{
-		SaveNode(*node.mChildren[i], scene, cursor, ++new_id, node_id);
+		for (int i = 0; i < scene->mNumMeshes; i++)
+		{
+			std::string meshName = fileName;
+			meshName.append("_" + std::to_string(i));
+			Import(scene->mMeshes[i], meshName.c_str());
+		}
 	}
 }
 
-void MeshImporter::SaveMesh(const aiMesh& mesh, char* &cursor)
+bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName) 
 {
-	unsigned int ranges[2] = { mesh.mNumFaces * 3, 	mesh.mNumVertices };
-	unsigned int rangeBytes = sizeof(ranges);
-	memcpy(cursor, ranges, rangeBytes);
-	cursor += rangeBytes;
+	bool result = false;
 
-	unsigned int verticesBytes = sizeof(float)*mesh.mNumVertices * 3;
-	memcpy(cursor, mesh.mVertices, verticesBytes);
-	cursor += verticesBytes;
-
-	for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+	if (aiMesh == nullptr) 
 	{
-		memcpy(cursor, &mesh.mTextureCoords[0][i].x, sizeof(float));
-		cursor += sizeof(float);
-		memcpy(cursor, &mesh.mTextureCoords[0][i].y, sizeof(float));
-		cursor += sizeof(float);
+		LOG("Error: failed to import FBX file.");
+		return result;
 	}
 
-	//unsigned int faceBytes = mesh.mNumFaces*3*(sizeof(int));
-	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+	GameObject* go = App->scene->CreateGameObject(meshName, App->scene->root);
+	// Add Mesh Component
+	ComponentMesh* mesh = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
+	mesh->ComputeMesh();
+
+	mesh->num_vertices = aiMesh->mNumVertices;
+	mesh->vertices = new float[mesh->num_vertices * 3];
+	memcpy(mesh->vertices, aiMesh->mVertices, sizeof(float) * mesh->num_vertices * 3);
+
+	if (aiMesh->HasFaces()) 
 	{
-		aiFace *face = &mesh.mFaces[i];
-		assert(face->mNumIndices == 3);
-		memcpy(cursor, face->mIndices, sizeof(int) * 3);
-		cursor += sizeof(int) * 3;
+		mesh->num_indices = aiMesh->mNumFaces * 3;
+		mesh->indices = new unsigned[mesh->num_indices];
+		for (unsigned i = 0u; i < aiMesh->mNumFaces; ++i) 
+		{
+			memcpy(&mesh->indices[i * 3], aiMesh->mFaces[i].mIndices, 3 * sizeof(unsigned));
+		}
 	}
+
+	if (aiMesh->HasTextureCoords(0)) 
+	{
+		mesh->uvs = new float[mesh->num_vertices * 2];
+		int uvsCount = 0;
+		for (unsigned i = 0u; i < mesh->num_vertices; i++)
+		{
+			mesh->uvs[uvsCount] = aiMesh->mTextureCoords[0][i].x;
+			uvsCount++;
+			mesh->uvs[uvsCount] = aiMesh->mTextureCoords[0][i].y;
+			uvsCount++;
+		}
+	}
+
+	if (aiMesh->HasNormals()) 
+	{
+		mesh->normals = new float[mesh->num_vertices * 3];
+		memcpy(mesh->normals, aiMesh->mNormals, sizeof(float) * mesh->num_vertices * 3);
+	}
+
+	if (aiMesh->HasVertexColors(0)) {
+		mesh->colors = new float[mesh->num_vertices * 3];
+		memcpy(mesh->colors, aiMesh->mColors, sizeof(float) * mesh->num_vertices * 3);
+	}
+
+	mesh->boundingBox.SetNegativeInfinity();
+	mesh->boundingBox.Enclose((math::float3*)aiMesh->mVertices, aiMesh->mNumVertices);
+
+	return Save(*mesh, meshName);
 }
 
-unsigned int MeshImporter::GetNodeSize(const aiNode& node, const aiScene& scene) const
+bool MeshImporter::Save(const ComponentMesh& mesh, const char* meshName)
 {
-	unsigned int size = sizeof(int) * 2 + sizeof(float) * 16 + sizeof(char)*(node.mName.length + 1); //ids + transform + name
+	bool result = false;
 
-	size += sizeof(int); //numMeshes
-	for (unsigned int i = 0; i < node.mNumMeshes; i++)
+	// indices / vertices / uvs / normals/ colors / 
+	unsigned ranges[5] =
 	{
-		aiMesh *mesh = scene.mMeshes[node.mMeshes[i]];
-		unsigned int ranges[2] = { mesh->mNumFaces * 3, mesh->mNumVertices };
-		size += sizeof(int); //mesh content size
-		size += sizeof(ranges);
-		size += mesh->mNumFaces * 3 * (sizeof(int)); //indices
-		size += sizeof(float)*mesh->mNumVertices * 5; //vertices + texCoords
-		aiTextureMapping mapping = aiTextureMapping_UV;
-		aiString file;
-		scene.mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
-		size += sizeof(char)*(file.length + 1);
+		mesh.num_indices,
+		mesh.num_vertices,
+		(mesh.uvs) ? mesh.num_vertices : 0u,
+		(mesh.normals) ? mesh.num_vertices : 0u,
+		(mesh.colors) ? mesh.num_vertices : 0u
+	};
+
+	unsigned size = sizeof(ranges);
+	size += sizeof(unsigned) * mesh.num_indices;
+	size += sizeof(float) * mesh.num_vertices * 3;
+	if (mesh.uvs)
+	{
+		size += sizeof(float) * mesh.num_vertices * 2;
+	}
+	if (mesh.normals)
+	{
+		size += sizeof(float) * mesh.num_vertices * 3;
+	}
+	if (mesh.colors)
+	{
+		size += sizeof(float) * mesh.num_vertices * 3;
 	}
 
-	size += sizeof(int); //numChildren
-	for (unsigned int i = 0; i < node.mNumChildren; i++)
+	char* data = new char[size];
+	char* cursor = data;
+
+	unsigned bytes = sizeof(ranges);
+	memcpy(cursor, ranges, bytes);
+	cursor += bytes;
+
+	bytes = sizeof(unsigned) * mesh.num_indices;
+	memcpy(cursor, mesh.indices, bytes);
+	cursor += bytes;
+
+	bytes = sizeof(float) * mesh.num_vertices * 3;
+	memcpy(cursor, mesh.vertices, bytes);
+	cursor += bytes;
+
+	if (mesh.uvs != nullptr)
 	{
-		size += GetNodeSize(*node.mChildren[i], scene);
+		bytes = sizeof(float)* mesh.num_vertices * 2;
+		memcpy(cursor, mesh.uvs, bytes);
+		cursor += bytes;
 	}
-	return size;
+
+	if (mesh.normals != nullptr)
+	{
+		bytes = sizeof(float)* mesh.num_vertices * 3;
+		memcpy(cursor, mesh.normals, bytes);
+		cursor += bytes;
+	}
+
+	if (mesh.colors != nullptr)
+	{
+		bytes = sizeof(float)* mesh.num_vertices * 3;
+		memcpy(cursor, mesh.colors, bytes);
+		cursor += bytes;
+	}
+
+	std::string fileToSave(MESHES_FOLDER);
+
+	fileToSave.append(meshName);
+	fileToSave.append(".proMesh");
+
+	result = App->file->Save(fileToSave.c_str(), data, size, false);
+
+	delete[] data;
+	data = nullptr;
+
+	return result;
+}
+
+bool MeshImporter::Load(ComponentMesh* mesh, const char* meshName)
+{
+	bool result = false;
+
+	if (mesh == nullptr) 
+	{
+		LOG("Error: failed to load FBX.");
+		return result;
+	}
+
+	char* buffer;
+	std::string meshPath(MESHES_FOLDER);
+	meshPath.append(meshName);
+	unsigned size = App->file->Load(meshPath.c_str(), &buffer);
+
+	if (buffer != nullptr && size > 0) {
+		char* cursor = buffer;
+
+		// indices / vertices / uvs / normals/ colors / 
+		unsigned ranges[5];
+		unsigned bytes = sizeof(ranges);
+		memcpy(ranges, cursor, bytes);
+		cursor += bytes;
+
+		mesh->num_indices = ranges[0];
+		mesh->num_vertices = ranges[1];
+
+		// indices
+		bytes = sizeof(unsigned) * mesh->num_indices;
+		mesh->indices = new unsigned[mesh->num_indices];
+		memcpy(mesh->indices, cursor, bytes);
+		cursor += bytes;
+
+		// vertices
+		bytes = sizeof(float) * mesh->num_vertices * 3;
+		mesh->vertices = new float[mesh->num_vertices * 3];
+		memcpy(mesh->vertices, cursor, bytes);
+		cursor += bytes;
+
+		if (ranges[2] > 0) 
+		{
+			bytes = sizeof(float)* mesh->num_vertices * 2;
+			mesh->uvs = new float[mesh->num_vertices * 2];
+			memcpy(mesh->uvs, cursor, bytes);
+			cursor += bytes;
+		}
+
+		if (ranges[3] > 0) 
+		{
+			bytes = sizeof(float)* mesh->num_vertices * 3;
+			mesh->normals = new float[mesh->num_vertices * 3];
+			memcpy(mesh->normals, cursor, bytes);
+			cursor += bytes;
+		}
+
+		if (ranges[4] > 0) 
+		{
+			bytes = sizeof(float)* mesh->num_vertices * 3;
+			mesh->colors = new float[mesh->num_vertices * 3];
+			memcpy(mesh->colors, cursor, bytes);
+			cursor += bytes;
+		}
+
+		delete[] buffer;
+		buffer = nullptr;
+
+		result = true;
+	}
+
+	return result;
 }

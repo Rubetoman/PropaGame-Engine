@@ -68,99 +68,81 @@ bool ComponentMesh::DrawOnInspector()
 	return false;
 }
 
-void ComponentMesh::GenerateMesh(char* &mesh)
+void ComponentMesh::ComputeMesh()
 {
-	assert(mesh != nullptr);
-	DeleteMesh();
-
-	num_indices = *(int*)mesh;
-	mesh += sizeof(int);
-
-	num_vertices = *(int*)mesh;
-	mesh += sizeof(int);
-
-	vertices = (float*)mesh;
-	mesh += sizeof(float) * 3 * num_vertices;
-
-	uvs = (float*)mesh;
-	mesh += sizeof(float) * 2 * num_vertices;
-
-	indices = (unsigned*)mesh;
-	mesh += sizeof(int) * num_indices;
-
-
-	// vertex array objects (VAO)
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	// Divide Buffer for position and UVs
-	glBufferData(GL_ARRAY_BUFFER, num_vertices * (sizeof(float) * 3 + sizeof(float) * 2), nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * num_vertices, vertices);
+	unsigned offset = sizeof(math::float3);
 
-	// Texture coords (UVs)
-	// MapBufferRange because we only want UV data from UVW
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * num_vertices, sizeof(GLfloat) * 2 * num_vertices, uvs);
+	if (normals != nullptr) 
+	{
+		normalsOffset = offset;
+		offset += sizeof(math::float3);
+	}
+
+	if (uvs != nullptr) 
+	{
+		texturesOffset = offset;
+		offset += sizeof(math::float2);
+	}
+
+	vertexSize = offset;
+
+	glBufferData(GL_ARRAY_BUFFER, vertexSize * num_vertices, nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 3 * num_vertices, vertices);
+
+	if (normals != nullptr)
+		glBufferSubData(GL_ARRAY_BUFFER, normalsOffset * num_vertices, sizeof(float) * 3 * num_vertices, normals);
+
+
+	if (uvs != nullptr)
+		glBufferSubData(GL_ARRAY_BUFFER, texturesOffset * num_vertices, sizeof(float2)*num_vertices, uvs);
+
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// Indices (faces)
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * num_indices, nullptr, GL_STATIC_DRAW);
-
-	// Texture coords (UVs)
-	// MapBufferRange because we only want UV data from UVW
-
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*num_indices, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_indices * sizeof(unsigned), indices, GL_STATIC_DRAW);
 
 	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(
-		0,                  // attribute 0
-		3,                  // number of componentes (3 floats)
-		GL_FLOAT,           // data type
-		GL_FALSE,           // should be normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-	);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(
-		1,                  // attribute 0
-		2,                  // number of componentes (3 floats)
-		GL_FLOAT,           // data type
-		GL_FALSE,           // should be normalized?
-		0,                  // stride
-		(void*)(sizeof(float) * 3 * num_vertices)       // array buffer offset
-	);
-
-	// Disable VAO
-	glBindVertexArray(0);
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-
-	// Disable VBO and EBO
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	//Copying Face Normals
-	/*if (src_mesh->HasNormals())
+	glGenVertexArrays(1, &vao);
+
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	if (normalsOffset != 0) 
 	{
-		num_normals = num_vertices;
-		normals = new float[num_normals * 3];
-		memcpy(mesh->normals, src_mesh->mNormals, sizeof(float)*mesh->num_normals * 3);
-	}*/
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)(normalsOffset * num_vertices));
+	}
+
+	if (texturesOffset != 0) {
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(texturesOffset * num_vertices));
+	}
+
+	glBindVertexArray(0);
 
 	boundingBox.SetNegativeInfinity();
-	boundingBox.Enclose((math::float3*)vertices, num_vertices);
+	boundingBox.Enclose((float3*)vertices, num_vertices);
 	App->resources->meshes.push_back(this);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-// BUG: Draw meshes makes imgui flick
 void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4& proj)
 {
 	Texture* texture = nullptr;

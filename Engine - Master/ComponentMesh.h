@@ -21,6 +21,8 @@ public:
 
 	bool DrawOnInspector() override;
 
+	void ComputeMesh();
+
 	void GenerateMesh(char* &mesh);
 	void GenerateMesh(par_shapes_mesh_s* mesh);
 	void RenderMesh(const math::float4x4& view, const math::float4x4& proj);
@@ -46,6 +48,11 @@ public:
 	float* normals = nullptr;
 
 	float* uvs = nullptr;
+	float* colors = nullptr;
+
+	unsigned normalsOffset = 0u;
+	unsigned texturesOffset = 0u;
+	unsigned vertexSize = 0u;
 
 	math::AABB boundingBox = math::AABB();
 };

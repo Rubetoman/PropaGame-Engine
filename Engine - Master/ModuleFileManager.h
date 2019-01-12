@@ -11,15 +11,27 @@ public:
 	ModuleFileManager();
 	~ModuleFileManager();
 
+	bool Init() override;
+	bool CleanUp() override;
+
+	bool Exists(const char* pathAndFileName) const;
+
+	bool MakeDirectory(const char* path);
+	bool AddPath(const char* path);
+	bool IsDirectory(const char* pathAndFileName) const;
+
 	void manageFile(char* path);
 	std::string getFileExtension(const char* path);
-	void splitPath(const char* full_path, std::string* path, std::string* filename, std::string* extension);
-	std::string normalizePath(const char * path);
+	void SplitPath(const char* full_path, std::string* path, std::string* filename, std::string* extension);
+	std::string NormalizePath(const char * path);
 	std::string getFullPath(const char* path, const char* atDirectory, const char* withExtension);
 
-	//Importer
-	bool SaveFileData(const char* data, unsigned int size, std::string& output_file);
-	bool LoadFileData(std::string& myfile, char* &data);
+	// Files
+	unsigned Save(const char* pathAndFileName, const void* buffer, unsigned size, bool append) const;
+	unsigned Load(const char* pathAndFileName, char** buffer) const;
+
+public:
+	char* basePath = nullptr;
 };
 
 #endif // __MODULEFILEMANAGEMENT_H__
