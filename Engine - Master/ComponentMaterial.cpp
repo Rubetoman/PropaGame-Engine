@@ -59,7 +59,7 @@ bool ComponentMaterial::DrawOnInspector()
 		}
 		ImGui::Separator();
 
-		/*if (ImGui::TreeNode("Specular"))
+		if (ImGui::TreeNode("Specular"))
 		{
 			DrawSpecularParameters();
 			ImGui::TreePop();
@@ -78,7 +78,7 @@ bool ComponentMaterial::DrawOnInspector()
 			DrawEmissiveParameters();
 			ImGui::TreePop();
 		}
-		ImGui::Separator();*/
+		ImGui::Separator();
 	}
 	ImGui::PopID();
 	return false;
@@ -86,30 +86,24 @@ bool ComponentMaterial::DrawOnInspector()
 
 void ComponentMaterial::DrawDiffuseParameters()
 {
-	ImGui::ColorEdit3("Diffuse color", (float*)&material.diffuse_color);
-	DrawComboBoxMaterials("DiffuseComboTextures", MaterialType::DIFFUSE_MAP, diffuseSelected);
-	ImGui::Text("Dimensions: %dx%d", material.diffuse_width, material.diffuse_height);
-	ImGui::Image((ImTextureID)material.diffuse_map, ImVec2(200, 200));
-	ImGui::SliderFloat("K diffuse", &material.k_diffuse, 0.0f, 1.0f);
 	// Texture
-	/*if (diffuse_map != nullptr)
+	if (material.diffuse_map != 0u)
 	{
-		ImGui::Columns(2, "diffuse_column", false);  // 2-ways, no border
+		ImGui::Columns(2, "diffuse_column", false);
 		// Texture image button
-		if (ImGui::ImageButton((ImTextureID)diffuse_map->id, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
+		if (ImGui::ImageButton((ImTextureID)material.diffuse_map, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
 			ImGui::OpenPopup("Textures");
 
 		// Show texture info
 		ImGui::NextColumn();
 		ImGui::Text("Texture:");
-		ImGui::TextColored(info_color, "%s", diffuse_map->name);
-		ImGui::TextColored(info_color, "(%d x %d) %s", diffuse_map->width, diffuse_map->height, diffuse_map->format);
-		ImGui::Checkbox("Mipmaps", &diffuse_map->use_mipmap);
+		ImGui::TextColored(info_color, "%s", diffuseSelected.c_str());
+		ImGui::TextColored(info_color, "(%d x %d)", material.diffuse_width, material.diffuse_height /*, diffuse_map->format*/);
+		//ImGui::Checkbox("Mipmaps", &diffuse_map->use_mipmap);
 		// Button to remove texture
 		if (ImGui::Button("Delete"))
 		{
-			App->textures->unloadTexture(diffuse_map);
-			diffuse_map = nullptr;
+			App->textures->Unload(material.diffuse_map);
 		}
 		ImGui::Columns(1);
 
@@ -123,49 +117,48 @@ void ComponentMaterial::DrawDiffuseParameters()
 		ImGui::Text("Texture:");
 		ImGui::Columns(1);
 	}
-	ImGui::ColorEdit4("diffuse color", (float*)&diffuse_color);
-	ImGui::SliderFloat("K diffuse", &k_diffuse, 0.0f, 1.0f);
+	ImGui::ColorEdit4("diffuse color", (float*)&material.diffuse_color);
+	ImGui::SliderFloat("K diffuse", &material.k_diffuse, 0.0f, 1.0f);
 
 	// Textures popup
 	if (ImGui::BeginPopup("Textures", NULL))
 	{
-		for (auto texture = App->resources->textures.begin(); texture != App->resources->textures.end(); texture++)
+		for (std::vector<std::string>::iterator texture = App->resources->file_textures->begin(); texture != App->resources->file_textures->end(); ++texture)
 		{
-			if (ImGui::ImageButton((ImTextureID)texture->first->id, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
+			bool isSelected = (diffuseSelected == (*texture).c_str());
+			if (ImGui::Selectable((*texture).c_str(), isSelected))
 			{
-				if (texture->first != diffuse_map)
-				{
-					App->textures->unloadTexture(diffuse_map);
-					diffuse_map = texture->first;
-					if (texture->second > 0)
-						++texture->second;
-				}
+				diffuseSelected = (*texture).c_str();
+				App->textures->LoadMaterial(diffuseSelected.c_str(), this, MaterialType::DIFFUSE_MAP);
+
+				if (isSelected)
+					ImGui::SetItemDefaultFocus();
 			}
 		}
+
 		ImGui::EndPopup();
-	}*/
+	}
 }
 
-/*void ComponentMaterial::DrawSpecularParameters()
+void ComponentMaterial::DrawSpecularParameters()
 {
 	// Texture
-	if (specular_map != nullptr)
+	if (material.specular_map != 0u)
 	{
 		ImGui::Columns(2, "specular_column", false);  // 2-ways, no border
 
-		if (ImGui::ImageButton((ImTextureID)specular_map->id, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
+		if (ImGui::ImageButton((ImTextureID)material.specular_map, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
 			ImGui::OpenPopup("Textures");
 		// Show texture info
 		ImGui::NextColumn();
 		ImGui::Text("Texture:");
-		ImGui::TextColored(info_color, "%s", specular_map->name);
-		ImGui::TextColored(info_color, "(%d x %d) %s", specular_map->width, specular_map->height, specular_map->format);
-		ImGui::Checkbox("Mipmaps", &specular_map->use_mipmap);
+		ImGui::TextColored(info_color, "%s", diffuseSelected.c_str());
+		ImGui::TextColored(info_color, "(%d x %d)", material.specular_width, material.specular_height /*, specular_map->format*/);
+		//ImGui::Checkbox("Mipmaps", &specular_map->use_mipmap);
 		// Button to remove texture
 		if (ImGui::Button("Delete"))
 		{
-			App->textures->unloadTexture(specular_map);
-			specular_map = nullptr;
+			App->textures->Unload(material.specular_map);
 		}
 		ImGui::Columns(1);
 	}
@@ -179,24 +172,23 @@ void ComponentMaterial::DrawDiffuseParameters()
 		ImGui::Columns(1);
 	}
 
-	ImGui::ColorEdit3("specular color", (float*)&specular_color);
-	ImGui::SliderFloat("K specular", &k_specular, 0.0f, 1.0f);
-	ImGui::SliderFloat("shininess", &shininess, 0, 128.0f);
+	ImGui::ColorEdit3("specular color", (float*)&material.specular_color);
+	ImGui::SliderFloat("K specular", &material.k_specular, 0.0f, 1.0f);
+	ImGui::SliderFloat("shininess", &material.shininess, 0, 128.0f);
 
 	// Textures popup
 	if (ImGui::BeginPopup("Textures", NULL))
 	{
-		for (auto texture = App->resources->textures.begin(); texture != App->resources->textures.end(); texture++)
+		for (std::vector<std::string>::iterator texture = App->resources->file_textures->begin(); texture != App->resources->file_textures->end(); ++texture)
 		{
-			if (ImGui::ImageButton((ImTextureID)texture->first->id, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
+			bool isSelected = (specularSelected == (*texture).c_str());
+			if (ImGui::Selectable((*texture).c_str(), isSelected))
 			{
-				if (texture->first != specular_map)
-				{
-					App->textures->unloadTexture(specular_map);
-					specular_map = texture->first;
-					if (texture->second > 0)
-						++texture->second;
-				}
+				specularSelected = (*texture).c_str();
+				App->textures->LoadMaterial(specularSelected.c_str(), this, MaterialType::SPECULAR_MAP);
+
+				if (isSelected)
+					ImGui::SetItemDefaultFocus();
 			}
 		}
 		ImGui::EndPopup();
@@ -206,22 +198,21 @@ void ComponentMaterial::DrawDiffuseParameters()
 void ComponentMaterial::DrawAmbientParameters()
 {
 		// Texture
-		if (occlusion_map != nullptr)
+		if (material.occlusion_map != 0u)
 		{
 			ImGui::Columns(2, "occlusion_column", false);  // 2-ways, no border
-			if (ImGui::ImageButton((ImTextureID)occlusion_map->id, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
+			if (ImGui::ImageButton((ImTextureID)material.occlusion_map, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
 				ImGui::OpenPopup("Textures");
 			// Show texture info
 			ImGui::NextColumn();
 			ImGui::Text("Texture:");
-			ImGui::TextColored(info_color, "%s", occlusion_map->name);
-			ImGui::TextColored(info_color, "(%d x %d) %s", occlusion_map->width, occlusion_map->height, occlusion_map->format);
-			ImGui::Checkbox("Mipmaps", &occlusion_map->use_mipmap);
+			ImGui::TextColored(info_color, "%s", occlusionSelected.c_str());
+			ImGui::TextColored(info_color, "(%d x %d)", material.occlusion_width, material.occlusion_height /*, occlusion_map->format*/);
+			//ImGui::Checkbox("Mipmaps", &occlusion_map->use_mipmap);
 			// Button to remove texture
 			if (ImGui::Button("Delete"))
 			{
-				App->textures->unloadTexture(occlusion_map);
-				occlusion_map = nullptr;
+				App->textures->Unload(material.occlusion_map);
 			}
 			ImGui::Columns(1);
 		}
@@ -235,22 +226,21 @@ void ComponentMaterial::DrawAmbientParameters()
 			ImGui::Columns(1);
 		}
 
-		ImGui::SliderFloat("K ambient", &k_ambient, 0.0f, 1.0f);
+		ImGui::SliderFloat("K ambient", &material.k_ambient, 0.0f, 1.0f);
 
 		// Textures popup
 		if (ImGui::BeginPopup("Textures", NULL))
 		{
-			for (auto texture = App->resources->textures.begin(); texture != App->resources->textures.end(); texture++)
+			for (std::vector<std::string>::iterator texture = App->resources->file_textures->begin(); texture != App->resources->file_textures->end(); ++texture)
 			{
-				if (ImGui::ImageButton((ImTextureID)texture->first->id, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
+				bool isSelected = (occlusionSelected == (*texture).c_str());
+				if (ImGui::Selectable((*texture).c_str(), isSelected))
 				{
-					if (texture->first != occlusion_map)
-					{
-						App->textures->unloadTexture(occlusion_map);
-						occlusion_map = texture->first;
-						if (texture->second > 0)
-							++texture->second;
-					}
+					occlusionSelected = (*texture).c_str();
+					App->textures->LoadMaterial(occlusionSelected.c_str(), this, MaterialType::OCCLUSION_MAP);
+
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
 				}
 			}
 			ImGui::EndPopup();
@@ -260,22 +250,21 @@ void ComponentMaterial::DrawAmbientParameters()
 void ComponentMaterial::DrawEmissiveParameters()
 {
 	// Texture
-	if (emissive_map != nullptr)
+	if (material.emissive_map != 0u)
 	{
 		ImGui::Columns(2, "emissive_column", false);  // 2-ways, no border
-		if (ImGui::ImageButton((ImTextureID)emissive_map->id, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
+		if (ImGui::ImageButton((ImTextureID)material.emissive_map, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
 			ImGui::OpenPopup("Textures");
 		// Show texture info
 		ImGui::NextColumn();
 		ImGui::Text("Texture:");
-		ImGui::TextColored(info_color, "%s", emissive_map->name);
-		ImGui::TextColored(info_color, "(%d x %d) %s", emissive_map->width, emissive_map->height, emissive_map->format);
-		ImGui::Checkbox("Mipmaps", &emissive_map->use_mipmap);
+		ImGui::TextColored(info_color, "%s", emissiveSelected.c_str());
+		ImGui::TextColored(info_color, "(%d x %d)", material.emissive_width, material.emissive_height /*, emissive_map->format*/);
+		//ImGui::Checkbox("Mipmaps", &emissive_map->use_mipmap);
 		// Button to remove texture
 		if (ImGui::Button("Delete"))
 		{
-			App->textures->unloadTexture(emissive_map);
-			emissive_map = nullptr;
+			App->textures->Unload(material.emissive_map);
 		}
 		ImGui::Columns(1);
 	}
@@ -288,51 +277,25 @@ void ComponentMaterial::DrawEmissiveParameters()
 		ImGui::Text("Texture:");
 		ImGui::Columns(1);
 	}
-	ImGui::ColorEdit3("emissive color", (float*)&emissive_color);
+	ImGui::ColorEdit3("emissive color", (float*)&material.emissive_color);
 
 	// Textures popup
 	if (ImGui::BeginPopup("Textures", NULL))
 	{
-		for (auto texture = App->resources->textures.begin(); texture != App->resources->textures.end(); texture++)
+		for (std::vector<std::string>::iterator texture = App->resources->file_textures->begin(); texture != App->resources->file_textures->end(); ++texture)
 		{
-			if (ImGui::ImageButton((ImTextureID)texture->first->id, image_size, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImColor(0, 0, 0, 255)))
+			bool isSelected = (emissiveSelected == (*texture).c_str());
+			if (ImGui::Selectable((*texture).c_str(), isSelected))
 			{
-				if (texture->first != emissive_map)
-				{
-					App->textures->unloadTexture(emissive_map);
-					emissive_map = texture->first;
-					if (texture->second > 0)
-						++texture->second;
-				}
-			}
-		}
-		ImGui::EndPopup();
-	}
-}*/
-
-void ComponentMaterial::DrawComboBoxMaterials(const char* id, MaterialType matType, static std::string& currentTexture) 
-{
-
-	ImGui::PushID(id);
-	if (ImGui::BeginCombo("##", currentTexture.c_str())) 
-	{
-		for (std::vector<std::string>::iterator iterator = App->resources->file_textures->begin(); iterator != App->resources->file_textures->end(); ++iterator) 
-		{
-			bool isSelected = (currentTexture == (*iterator).c_str());
-			if (ImGui::Selectable((*iterator).c_str(), isSelected)) 
-			{
-				currentTexture = (*iterator).c_str();
-				App->textures->LoadMaterial(currentTexture.c_str(), this, matType);
+				emissiveSelected = (*texture).c_str();
+				App->textures->LoadMaterial(emissiveSelected.c_str(), this, MaterialType::EMISSIVE_MAP);
 
 				if (isSelected)
 					ImGui::SetItemDefaultFocus();
 			}
 		}
-
-		ImGui::EndCombo();
+		ImGui::EndPopup();
 	}
-
-	ImGui::PopID();
 }
 
 unsigned ComponentMaterial::GenerateFallback(math::float3 color)

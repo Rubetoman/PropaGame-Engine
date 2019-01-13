@@ -34,8 +34,8 @@ struct Material
 	// Ambient
 	unsigned		occlusion_map = 0u;
 	float			k_ambient = 0.5f;
-	int				ambient_width = 0;
-	int				ambient_height = 0;
+	int				occlusion_width = 0;
+	int				occlusion_height = 0;
 
 	// Emissive
 	unsigned		emissive_map = 0u;
@@ -54,16 +54,15 @@ public:
 	Component* Duplicate() override;
 	bool DrawOnInspector() override;
 	void DrawDiffuseParameters();
-	//void DrawSpecularParameters();
-	//void DrawAmbientParameters();
-	//void DrawEmissiveParameters();
+	void DrawSpecularParameters();
+	void DrawAmbientParameters();
+	void DrawEmissiveParameters();
 
 	void DrawComboBoxMaterials(const char* id, MaterialType matType, static std::string& currentTexture);
 
 	//Fallback Texture
 	unsigned GenerateFallback(math::float3 color);
 
-	void GenerateMaterial(char* &material);
 	void RenderMaterial();
 	void Delete() override;
 
@@ -83,8 +82,8 @@ private:
 	ImVec4 info_color = { 1.0f, 1.0f, 0.0f, 1.0f };	// Color of the texture info for ImGui
 
 	std::string diffuseSelected;
-	std::string occlusionSelected;
 	std::string specularSelected;
+	std::string occlusionSelected;
 	std::string emissiveSelected;
 };
 

@@ -24,7 +24,9 @@ void WindowCamera::Draw()
 	ImVec2 size = ImGui::GetWindowSize();
 	ImGui::SetCursorPos({ -(App->window->screen_width - size.x) / 2,-(App->window->screen_height - size.y) / 2 });
 	
-	unsigned renderedTexture = App->resources->no_camera_texture->id;
+	//TODO: Update no_camera_texture
+	//unsigned renderedTexture = App->resources->no_camera_texture->id;
+	unsigned renderedTexture = 0;
 	if (camera != nullptr)
 	{
 		if (camera->my_go->isActive() && camera->active)

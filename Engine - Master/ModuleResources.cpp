@@ -28,7 +28,7 @@ bool ModuleResources::Init()
 	file_textures = new std::vector<std::string>();
 	MaterialImporter::Import("Assets/Models/textures/Baker_house.png");
 	//checkers_texture = App->textures->loadTexture(CHECKERS_TEXTURE, true);
-	no_camera_texture = App->textures->loadTexture(CAMERA_TEXTURE, true);
+	//no_camera_texture = App->textures->loadTexture(CAMERA_TEXTURE, true);
 
 	UpdateMeshesList();
 	UpdateTexturesList();

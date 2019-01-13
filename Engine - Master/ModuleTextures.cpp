@@ -34,17 +34,17 @@ bool ModuleTextures::Init()
 // Called before quitting
 bool ModuleTextures::CleanUp()
 {
-	for (auto it_m = App->resources->textures.begin(); it_m != App->resources->textures.end();)
+	/*for (auto it_m = App->resources->textures.begin(); it_m != App->resources->textures.end();)
 	{
 		glDeleteTextures(1, &it_m->first->id);
 		delete it_m->first;
 		App->resources->textures.erase(it_m++);
-	}
+	}*/
 	return true;
 }
 
 
-Texture* ModuleTextures::loadTexture(const char* path, bool permanent)
+/*Texture* ModuleTextures::loadTexture(const char* path, bool permanent)
 {
 	assert(path != nullptr);
 
@@ -241,7 +241,7 @@ Texture* ModuleTextures::loadTexture(const char* path, bool permanent)
 
 	LOG("Texture %s created successfully.", nTexture->name);
 	return nTexture;					// Return the GLuint to the texture so you can use it!
-}
+}*/
 
 /*bool ModuleTextures::unloadTexture(Texture* texture)
 {
@@ -348,7 +348,7 @@ void ModuleTextures::LoadMaterial(const char* path, ComponentMaterial* component
 		{
 			Unload(componentMaterial->material.occlusion_map);
 		}
-		LoadMaterial(path, componentMaterial->material.occlusion_map, componentMaterial->material.ambient_width, componentMaterial->material.ambient_height);
+		LoadMaterial(path, componentMaterial->material.occlusion_map, componentMaterial->material.occlusion_width, componentMaterial->material.occlusion_height);
 		break;
 	case MaterialType::DIFFUSE_MAP:
 		if (componentMaterial->material.diffuse_map != 0u) 
