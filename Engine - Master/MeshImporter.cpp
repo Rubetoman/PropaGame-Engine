@@ -59,7 +59,6 @@ bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName)
 	GameObject* go = App->scene->CreateGameObject(meshName, App->scene->root);
 	// Add Mesh Component
 	ComponentMesh* mesh = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
-	mesh->ComputeMesh();
 
 	mesh->num_vertices = aiMesh->mNumVertices;
 	mesh->vertices = new float[mesh->num_vertices * 3];
@@ -101,6 +100,8 @@ bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName)
 
 	mesh->boundingBox.SetNegativeInfinity();
 	mesh->boundingBox.Enclose((math::float3*)aiMesh->mVertices, aiMesh->mNumVertices);
+
+	mesh->ComputeMesh();
 
 	return Save(*mesh, meshName);
 }

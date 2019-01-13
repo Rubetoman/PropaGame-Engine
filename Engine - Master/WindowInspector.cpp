@@ -77,6 +77,11 @@ void WindowInspector::Draw()
 					go->CreateComponent(component_type::Mesh);
 				}
 				ImGui::Separator();
+				if (ImGui::Selectable("Material"))
+				{
+					go->CreateComponent(component_type::Material);
+				}
+				ImGui::Separator();
 				if (ImGui::Selectable("Camera")) 
 				{
 					go->CreateComponent(component_type::Camera);

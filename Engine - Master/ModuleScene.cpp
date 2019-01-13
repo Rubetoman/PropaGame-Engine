@@ -239,7 +239,7 @@ GameObject* ModuleScene::CreateSphere(unsigned size, unsigned slices, unsigned s
 	if (root == nullptr)
 		root = new GameObject("World");
 
-	go = App->model_loader->CreateSphere("sphere", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(size, size, size), slices, stacks, float4(0.f, 0.0f, 0.5f, 1.0f));
+	//go = App->model_loader->CreateSphere("sphere", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(size, size, size), slices, stacks, float4(0.f, 0.0f, 0.5f, 1.0f));
 	
 	// Set parent
 	go->Unchild();

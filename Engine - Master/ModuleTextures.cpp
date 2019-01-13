@@ -243,7 +243,7 @@ Texture* ModuleTextures::loadTexture(const char* path, bool permanent)
 	return nTexture;					// Return the GLuint to the texture so you can use it!
 }
 
-bool ModuleTextures::unloadTexture(Texture* texture)
+/*bool ModuleTextures::unloadTexture(Texture* texture)
 {
 	bool deleted = false;
 	if (texture != nullptr)
@@ -280,7 +280,7 @@ bool ModuleTextures::unloadTexture(Texture* texture)
 	return deleted;
 }
 
-/*void ModuleTextures::ReloadTexture(Texture& new_texture, Texture& texture) 
+void ModuleTextures::ReloadTexture(Texture& new_texture, Texture& texture) 
 {
 	glDeleteTextures(1, &texture.id);
 
@@ -293,3 +293,89 @@ bool ModuleTextures::unloadTexture(Texture* texture)
 
 }*/
 
+void ModuleTextures::LoadMaterial(std::string path, unsigned& textureID, int& width, int& height) 
+{
+	unsigned imageID;
+
+	ilGenImages(1, &imageID);
+
+	ilBindImage(imageID);
+
+	path.insert(0, TEXTURES_FOLDER);
+
+	LOG("Loading material %s", path.c_str());
+
+	char* fileBuffer;
+	unsigned lenghBuffer = App->file->Load(path.c_str(), &fileBuffer);
+
+	if (ilLoadL(IL_DDS, fileBuffer, lenghBuffer)) 
+	{
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+			iluFlipImage();
+
+		if (!ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE)) 
+		{
+			LOG("Error: Image conversion failed %s", iluErrorString(ilGetError()));
+			return;
+		}
+
+		glGenTextures(1, &textureID);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		width = ilGetInteger(IL_IMAGE_WIDTH);
+		height = ilGetInteger(IL_IMAGE_HEIGHT);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+	}
+
+	ilDeleteImages(1, &imageID);
+	LOG("Material creation successful.");
+}
+
+void ModuleTextures::LoadMaterial(const char* path, ComponentMaterial* componentMaterial, MaterialType materialTypeSelected) 
+{
+	switch (materialTypeSelected)
+	{
+	case MaterialType::OCCLUSION_MAP:
+		if (componentMaterial->material.occlusion_map != 0u) 
+		{
+			Unload(componentMaterial->material.occlusion_map);
+		}
+		LoadMaterial(path, componentMaterial->material.occlusion_map, componentMaterial->material.ambient_width, componentMaterial->material.ambient_height);
+		break;
+	case MaterialType::DIFFUSE_MAP:
+		if (componentMaterial->material.diffuse_map != 0u) 
+		{
+			Unload(componentMaterial->material.diffuse_map);
+		}
+		LoadMaterial(path, componentMaterial->material.diffuse_map, componentMaterial->material.diffuse_width, componentMaterial->material.diffuse_height);
+		break;
+	case MaterialType::SPECULAR_MAP:
+		if (componentMaterial->material.specular_map != 0u) 
+		{
+			Unload(componentMaterial->material.specular_map);
+		}
+		LoadMaterial(path, componentMaterial->material.specular_map, componentMaterial->material.specular_width, componentMaterial->material.specular_height);
+		break;
+	case MaterialType::EMISSIVE_MAP:
+		if (componentMaterial->material.emissive_map != 0u) 
+		{
+			Unload(componentMaterial->material.emissive_map);
+		}
+		LoadMaterial(path, componentMaterial->material.emissive_map, componentMaterial->material.emissive_width, componentMaterial->material.emissive_height);
+		break;
+	}
+}
+
+void ModuleTextures::Unload(unsigned id) 
+{
+	if (id != 0u) 
+		glDeleteTextures(1, &id);
+}

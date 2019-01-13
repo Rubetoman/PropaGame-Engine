@@ -26,10 +26,10 @@ public:
 	bool            CleanUp();
 
 	// Shape Creation
-	GameObject* CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
-		unsigned slices, unsigned stacks, const math::float4& color);
-	GameObject* CreateCylinder(const char* name, const math::float3& position, const math::Quat& rotation, float height,
-		float radius, unsigned slices, unsigned stacks, const math::float4& color);
+	//GameObject* CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
+	//	unsigned slices, unsigned stacks, const math::float4& color);
+	//GameObject* CreateCylinder(const char* name, const math::float3& position, const math::Quat& rotation, float height,
+	//	float radius, unsigned slices, unsigned stacks, const math::float4& color);
 
 public:
 

@@ -20,13 +20,13 @@ ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_t
 ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(comp)
 {
 	shader = comp.shader;
-	diffuse_map = comp.diffuse_map;
-	diffuse_color = comp.diffuse_color;
-	shininess = comp.shininess;
-	k_specular = comp.k_specular;
-	k_diffuse = comp.k_diffuse;
-	k_ambient = comp.k_ambient;
-	++App->resources->textures[diffuse_map];
+	material.diffuse_map = comp.material.diffuse_map;
+	material.diffuse_color = comp.material.diffuse_color;
+	material.shininess = comp.material.shininess;
+	material.k_specular = comp.material.k_specular;
+	material.k_diffuse = comp.material.k_diffuse;
+	material.k_ambient = comp.material.k_ambient;
+	//++App->resources->textures[diffuse_map];
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -59,7 +59,7 @@ bool ComponentMaterial::DrawOnInspector()
 		}
 		ImGui::Separator();
 
-		if (ImGui::TreeNode("Specular"))
+		/*if (ImGui::TreeNode("Specular"))
 		{
 			DrawSpecularParameters();
 			ImGui::TreePop();
@@ -78,7 +78,7 @@ bool ComponentMaterial::DrawOnInspector()
 			DrawEmissiveParameters();
 			ImGui::TreePop();
 		}
-		ImGui::Separator();
+		ImGui::Separator();*/
 	}
 	ImGui::PopID();
 	return false;
@@ -86,8 +86,13 @@ bool ComponentMaterial::DrawOnInspector()
 
 void ComponentMaterial::DrawDiffuseParameters()
 {
+	ImGui::ColorEdit3("Diffuse color", (float*)&material.diffuse_color);
+	DrawComboBoxMaterials("DiffuseComboTextures", MaterialType::DIFFUSE_MAP, diffuseSelected);
+	ImGui::Text("Dimensions: %dx%d", material.diffuse_width, material.diffuse_height);
+	ImGui::Image((ImTextureID)material.diffuse_map, ImVec2(200, 200));
+	ImGui::SliderFloat("K diffuse", &material.k_diffuse, 0.0f, 1.0f);
 	// Texture
-	if (diffuse_map != nullptr)
+	/*if (diffuse_map != nullptr)
 	{
 		ImGui::Columns(2, "diffuse_column", false);  // 2-ways, no border
 		// Texture image button
@@ -138,10 +143,10 @@ void ComponentMaterial::DrawDiffuseParameters()
 			}
 		}
 		ImGui::EndPopup();
-	}
+	}*/
 }
 
-void ComponentMaterial::DrawSpecularParameters()
+/*void ComponentMaterial::DrawSpecularParameters()
 {
 	// Texture
 	if (specular_map != nullptr)
@@ -303,6 +308,31 @@ void ComponentMaterial::DrawEmissiveParameters()
 		}
 		ImGui::EndPopup();
 	}
+}*/
+
+void ComponentMaterial::DrawComboBoxMaterials(const char* id, MaterialType matType, static std::string& currentTexture) 
+{
+
+	ImGui::PushID(id);
+	if (ImGui::BeginCombo("##", currentTexture.c_str())) 
+	{
+		for (std::vector<std::string>::iterator iterator = App->resources->file_textures->begin(); iterator != App->resources->file_textures->end(); ++iterator) 
+		{
+			bool isSelected = (currentTexture == (*iterator).c_str());
+			if (ImGui::Selectable((*iterator).c_str(), isSelected)) 
+			{
+				currentTexture = (*iterator).c_str();
+				App->textures->LoadMaterial(currentTexture.c_str(), this, matType);
+
+				if (isSelected)
+					ImGui::SetItemDefaultFocus();
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+
+	ImGui::PopID();
 }
 
 unsigned ComponentMaterial::GenerateFallback(math::float3 color)
@@ -320,7 +350,7 @@ unsigned ComponentMaterial::GenerateFallback(math::float3 color)
 	return fallback;
 }
 
-void ComponentMaterial::GenerateMaterial(char* &material)
+/*void ComponentMaterial::GenerateMaterial(char* &material)
 {
 	if (material == nullptr) return;
 
@@ -328,7 +358,7 @@ void ComponentMaterial::GenerateMaterial(char* &material)
 
 	if (diffuse_map != nullptr)
 		diffuse_color = math::float4::one;
-}
+}*/
 
 void ComponentMaterial::RenderMaterial()
 {
@@ -353,42 +383,43 @@ void ComponentMaterial::RenderMaterial()
 
 
 	// Diffuse
-	glUniform4fv(glGetUniformLocation(program, "material.diffuse_color"), 1, (GLfloat*)&diffuse_color);
+	glUniform4fv(glGetUniformLocation(program, "material.diffuse_color"), 1, (GLfloat*)&material.diffuse_color);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, diffuse_map != nullptr ? diffuse_map->id : GenerateFallback(diffuse_color.Float3Part()));
+	glBindTexture(GL_TEXTURE_2D, material.diffuse_map != 0u ? material.diffuse_map : GenerateFallback(material.diffuse_color.Float3Part()));
 	glUniform1i(glGetUniformLocation(program, "material.diffuse_map"), 0);
 	glDisable(GL_TEXTURE_2D);
 
 	// Specular
-	glUniform3fv(glGetUniformLocation(program, "material.specular_color"), 1, (GLfloat*)&specular_color);
-	glUniform1fv(glGetUniformLocation(program, "material.shininess"), 1, (GLfloat*)&shininess);
+	glUniform3fv(glGetUniformLocation(program, "material.specular_color"), 1, (GLfloat*)&material.specular_color);
+	glUniform1fv(glGetUniformLocation(program, "material.shininess"), 1, (GLfloat*)&material.shininess);
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, specular_map != nullptr ? specular_map->id : GenerateFallback(specular_color));
+	glBindTexture(GL_TEXTURE_2D, material.specular_map != 0u ? material.specular_map : GenerateFallback(material.specular_color));
 	glUniform1i(glGetUniformLocation(program, "material.specular_map"), 1);
 	glDisable(GL_TEXTURE_2D);
 
 	// Ambient
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, occlusion_map != nullptr ? occlusion_map->id : GenerateFallback(math::float3::one));
+	glBindTexture(GL_TEXTURE_2D, material.occlusion_map != 0u ? material.occlusion_map : GenerateFallback(math::float3::one));
 	glUniform1i(glGetUniformLocation(program, "material.occlusion_map"), 2);
 	glDisable(GL_TEXTURE_2D);
 
 	// Emissive
-	glUniform3fv(glGetUniformLocation(program, "material.emissive_color"), 1, (GLfloat*)&emissive_color);
+	glUniform3fv(glGetUniformLocation(program, "material.emissive_color"), 1, (GLfloat*)&material.emissive_color);
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, emissive_map != nullptr ? emissive_map->id : GenerateFallback(emissive_color));
+	glBindTexture(GL_TEXTURE_2D, material.emissive_map != 0u ? material.emissive_map : GenerateFallback(material.emissive_color));
 	glUniform1i(glGetUniformLocation(program, "material.emissive_map"), 3);
 	glDisable(GL_TEXTURE_2D);
 
-	glUniform1fv(glGetUniformLocation(program, "material.k_ambient"), 1, (GLfloat*)&k_ambient);
-	glUniform1fv(glGetUniformLocation(program, "material.k_diffuse"), 1, (GLfloat*)&k_diffuse);
-	glUniform1fv(glGetUniformLocation(program, "material.k_specular"), 1, (GLfloat*)&k_specular);
+	glUniform1fv(glGetUniformLocation(program, "material.k_ambient"), 1, (GLfloat*)&material.k_ambient);
+	glUniform1fv(glGetUniformLocation(program, "material.k_diffuse"), 1, (GLfloat*)&material.k_diffuse);
+	glUniform1fv(glGetUniformLocation(program, "material.k_specular"), 1, (GLfloat*)&material.k_specular);
 }
 
 void ComponentMaterial::Delete()
 {
-	App->textures->unloadTexture(diffuse_map);
+	//App->textures->unloadTexture(diffuse_map);
+	// Todo delete all textures
 	my_go->material = nullptr;
 	Component::Delete();
 }
@@ -398,9 +429,9 @@ JSON_value* ComponentMaterial::Save(JSON_value* component) const
 	JSON_value* material = Component::Save(component);
 
 	material->AddUnsigned("shader", shader);
-
+	// TODO: Update to new material system
 	// Save diffuse data
-	if(diffuse_map != nullptr)
+	/*if(diffuse_map != nullptr)
 		material->AddString("diffuse_map", diffuse_map->path);
 	material->AddVec4("diffuse_color", diffuse_color);
 	material->AddFloat("k_diffuse", k_diffuse);
@@ -420,7 +451,7 @@ JSON_value* ComponentMaterial::Save(JSON_value* component) const
 	// Save emissive data
 	if (emissive_map != nullptr)
 		material->AddString("emissive_map", emissive_map->path);
-	material->AddVec3("emissive_color", emissive_color);
+	material->AddVec3("emissive_color", emissive_color);*/
 
 
 
@@ -434,9 +465,9 @@ void ComponentMaterial::Load(JSON_value* component)
 	Component::Load(component);
 
 	shader = component->GetUnsigned("shader");
-	
+	// TODO: Update to new material system
 	// Get diffuse data
-	const char* tx = component->GetString("diffuse_map");
+	/*const char* tx = component->GetString("diffuse_map");
 	if(tx != nullptr)
 		diffuse_map = App->textures->loadTexture(tx, false);
 	diffuse_color = component->GetVec4("diffuse_color");
@@ -460,5 +491,5 @@ void ComponentMaterial::Load(JSON_value* component)
 	tx = component->GetString("emissive_map");
 	if (tx != nullptr)
 		emissive_map = App->textures->loadTexture(tx, false);
-	emissive_color = component->GetVec3("emissive_color");
+	emissive_color = component->GetVec3("emissive_color");*/
 }

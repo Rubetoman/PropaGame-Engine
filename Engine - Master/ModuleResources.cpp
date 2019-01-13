@@ -8,25 +8,32 @@
 #include "Texture.h"
 #include "ComponentCamera.h"
 
+#include "MaterialImporter.h"
+
 ModuleResources::ModuleResources()
 {
 }
 
 ModuleResources::~ModuleResources()
 {
-	App->textures->unloadTexture(checkers_texture);
+	//App->textures->unloadTexture(checkers_texture);
 	checkers_texture = nullptr;
-	App->textures->unloadTexture(no_camera_texture);
+	//App->textures->unloadTexture(no_camera_texture);
 	no_camera_texture = nullptr;
 }
 
 bool ModuleResources::Init()
 {
-	checkers_texture = App->textures->loadTexture(CHECKERS_TEXTURE, true);
+	file_meshes = new std::vector<std::string>();
+	file_textures = new std::vector<std::string>();
+	MaterialImporter::Import("Assets/Models/textures/Baker_house.png");
+	//checkers_texture = App->textures->loadTexture(CHECKERS_TEXTURE, true);
 	no_camera_texture = App->textures->loadTexture(CAMERA_TEXTURE, true);
 
-	if (checkers_texture == nullptr || no_camera_texture == nullptr)
-		return false;
+	UpdateMeshesList();
+	UpdateTexturesList();
+	/*if (checkers_texture == nullptr || no_camera_texture == nullptr)
+		return false;*/
 
 	return true;
 }
@@ -114,4 +121,16 @@ void ModuleResources::DeleteMesh(ComponentMesh* mesh)
 	}
 	else
 		LOG("Warning: Component was nullptr.");
+}
+
+void ModuleResources::UpdateMeshesList()
+{
+	file_meshes->clear();
+	App->file->GetFilesFromDirectory(MESHES_FOLDER, *file_meshes);
+}
+
+void ModuleResources::UpdateTexturesList()
+{
+	file_textures->clear();
+	App->file->GetFilesFromDirectory(TEXTURES_FOLDER, *file_textures);
 }

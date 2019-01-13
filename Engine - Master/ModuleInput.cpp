@@ -103,12 +103,12 @@ update_status ModuleInput::Update()
 			}
 			break;
 
-		case (SDL_DROPFILE): {      // In case if dropped file
+		case SDL_DROPFILE: 
+		      // In case if dropped file
 			dropped_filedir = event.drop.file;
 			App->file->manageFile(dropped_filedir);
 			SDL_free(dropped_filedir);    // Free dropped_filedir memory
 			break;
-		}
 
 		case SDL_MOUSEBUTTONDOWN:
 			mouse_buttons[event.button.button - 1] = KEY_DOWN;

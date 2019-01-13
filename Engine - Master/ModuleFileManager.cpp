@@ -5,6 +5,8 @@
 #include "ModuleModelLoader.h"
 #include "ModuleTextures.h"
 
+#include "MaterialImporter.h"
+
 #include "SDL.h"
 #include "physfs.h"
 #include <assert.h>
@@ -85,6 +87,22 @@ bool ModuleFileManager::IsDirectory(const char* pathAndFileName) const
 	return PHYSFS_isDirectory(pathAndFileName) != 0;
 }
 
+void ModuleFileManager::GetFilesFromDirectory(const char* directory, std::vector<std::string>& fileList) const
+{
+	char **enumeratedFIles = PHYSFS_enumerateFiles(directory);
+	char **iterator;
+
+	std::string dir(directory);
+
+	for (iterator = enumeratedFIles; *iterator != nullptr; iterator++) 
+	{
+		if (!PHYSFS_isDirectory((dir + *iterator).c_str()))
+			fileList.push_back(*iterator);
+	}
+
+	PHYSFS_freeList(enumeratedFIles);
+}
+
 void ModuleFileManager::manageFile(char* path)
 {
 	assert(path != nullptr);
@@ -97,7 +115,8 @@ void ModuleFileManager::manageFile(char* path)
 	}
 	else if (extension == "png" || extension == "dds" || extension == "jpg" || extension == "tif")
 	{
-		App->textures->loadTexture(path, true);
+		//App->textures->loadTexture(path, true);
+		MaterialImporter::Import(path);
 	}
 	else
 	{

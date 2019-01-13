@@ -21,9 +21,10 @@ public:
 
 	bool DrawOnInspector() override;
 
+	void LoadMesh(const char* name);
+
 	void ComputeMesh();
 
-	void GenerateMesh(char* &mesh);
 	void GenerateMesh(par_shapes_mesh_s* mesh);
 	void RenderMesh(const math::float4x4& view, const math::float4x4& proj);
 	void DeleteMesh();
@@ -55,6 +56,9 @@ public:
 	unsigned vertexSize = 0u;
 
 	math::AABB boundingBox = math::AABB();
+
+private:
+	std::string currentMesh;
 };
 
 #endif

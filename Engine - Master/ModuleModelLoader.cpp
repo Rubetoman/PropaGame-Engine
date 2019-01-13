@@ -38,8 +38,7 @@ bool ModuleModelLoader::Init()
 	//CreateSphere("sphere", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(1.0f, 1.0f, 1.0f), 20, 20, float4(0.f, 0.0f, 0.5f, 1.0f));
 	//CreateCylinder("cylinder0", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, 2.0f, 1.0f, 30, 30, float4(0.f, 0.5f, 0.5f, 1.0f));
 
-	MeshImporter meshImporter;
-	meshImporter.ImportFBX("Assets/Models/BakerHouse.fbx");
+	MeshImporter::ImportFBX("Assets/Models/BakerHouse.fbx");
 
 	return true;
 }
@@ -65,7 +64,7 @@ bool ModuleModelLoader::CleanUp()
 	return true;
 }
 
-GameObject* ModuleModelLoader::CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
+/*GameObject* ModuleModelLoader::CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
 	unsigned slices, unsigned stacks, const math::float4& color)
 {
 	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(int(slices), int(stacks));
@@ -127,4 +126,4 @@ GameObject* ModuleModelLoader::CreateCylinder(const char* name, const math::floa
 	cylinder_material->diffuse_map = App->textures->loadTexture("Checkers_Texture.jpg", false);
 
 	return cylinder;
-}
+}*/

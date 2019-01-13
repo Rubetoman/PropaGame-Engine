@@ -31,6 +31,10 @@ public:
 	// Meshes
 	unsigned GetMeshNumber(ComponentMesh& mesh) const;
 	void DeleteMesh(ComponentMesh* mesh);
+
+	void UpdateMeshesList();
+	void UpdateTexturesList();
+
 public:
 	std::vector<GameObject*> lights;		// List of all the lights on the scene
 
@@ -45,6 +49,10 @@ public:
 	//TODO: use a Map to avoid deleting a duplicated mesh
 	// Meshes
 	std::vector<ComponentMesh*> meshes;		// Vector of all the meshes on the scene
+
+	// Imported files
+	std::vector<std::string>* file_meshes = nullptr;
+	std::vector<std::string>* file_textures = nullptr;
 };
 
 #endif /*__MODULERESOURCES_H__*/

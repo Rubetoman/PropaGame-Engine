@@ -70,13 +70,13 @@ void WindowHierarchy::Draw()
 				else
 					selected = App->scene->CreateGameObject(GO_DEFAULT_NAME);
 			}
-			if (ImGui::Selectable("Create Sphere"))
+			/*if (ImGui::Selectable("Create Sphere"))
 			{
 				if (selected != nullptr)
 					selected = App->scene->CreateSphere(1u, 20u, 20u, selected);
 				else
 					App->model_loader->CreateSphere("sphere", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(1.0f, 1.0f, 1.0f), 20, 20, float4(0.f, 0.0f, 0.5f, 1.0f));
-			}
+			}*/
 			ImGui::EndPopup();
 		}
 	}

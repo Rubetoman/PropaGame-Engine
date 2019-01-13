@@ -15,32 +15,44 @@ MaterialImporter::~MaterialImporter()
 
 void MaterialImporter::Import(const char* path)
 {
-	ILuint imageID;
-	ILboolean success;
-	ILenum error;
+	bool result = false;
 
-	ilGenImages(1, &imageID); 		// Generate the image ID
-	ilBindImage(imageID); 			// Bind the image
-	success = ilLoadImage(path);
-	if (success)
-	{
+	char* fileBuffer = nullptr;
+	unsigned lenghBuffer = App->file->Load(path, &fileBuffer);
 
-		ILinfo ImageInfo;
-		iluGetImageInfo(&ImageInfo);
-		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+	if (fileBuffer) {
+		ILuint ImageName;
+		ilGenImages(1, &ImageName);
+		ilBindImage(ImageName);
+
+		if (ilLoadL(IL_TYPE_UNKNOWN, (const void*)fileBuffer, lenghBuffer)) 
 		{
-			iluFlipImage();
+
+			ilEnable(IL_FILE_OVERWRITE);
+			ILuint   size;
+			ILubyte *data;
+			ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+			size = ilSaveL(IL_DDS, NULL, 0);
+
+			if (size > 0) {
+				data = new ILubyte[size];
+				if (ilSaveL(IL_DDS, data, size) > 0) 
+				{
+					std::string fileName;
+					std::string fileExtension;
+					App->file->SplitPath(path, nullptr, &fileName, &fileExtension);
+
+					fileName.insert(0, TEXTURES_FOLDER);
+					fileName.append(".proDDS");
+
+					result = App->file->Save(fileName.c_str(), data, size, false);
+				}
+
+				delete[] data;
+				data = nullptr;
+			}
+
+			ilDeleteImages(1, &ImageName);
 		}
-		ILuint size;
-		ILubyte* data = ilGetData();
-		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
-		size = ilSaveL(IL_DDS, NULL, 0);	// Get the size of the data buffer
-		data = new ILubyte[size];// allocate data buffer
-		if (ilSaveL(IL_DDS, data, size) > 0)
-		{
-			// Save to buffer with the ilSaveIL function
-			App->file->Save(MATERIALS_FOLDER, data, size, false);
-		}
-		RELEASE_ARRAY(data);
 	}
 }

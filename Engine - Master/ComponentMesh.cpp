@@ -7,6 +7,8 @@
 #include "ModuleShader.h"
 #include "ModuleResources.h"
 
+#include "MeshImporter.h"
+
 #include "GameObject.h"
 #include "par_shapes.h"
 #include "GL/glew.h"
@@ -55,6 +57,24 @@ bool ComponentMesh::DrawOnInspector()
 		bool deleted = Component::DrawOnInspector();
 		if (!deleted)
 		{
+			if (ImGui::BeginCombo("##meshCombo", currentMesh.c_str())) {
+
+				for (std::vector<std::string>::iterator it = App->resources->file_meshes->begin(); it != App->resources->file_meshes->end(); ++it) 
+				{
+					bool isSelected = (currentMesh == (*it));
+					if (ImGui::Selectable((*it).c_str(), isSelected)) 
+					{
+						currentMesh = (*it);
+
+						LoadMesh(currentMesh.c_str());
+
+						if (isSelected)
+							ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+
 			ImGui::Text("Triangles Count: %d", num_indices / 3);
 			ImGui::Text("Vertices Count: %d", num_vertices);
 		}
@@ -66,6 +86,19 @@ bool ComponentMesh::DrawOnInspector()
 	}
 	ImGui::PopID();
 	return false;
+}
+
+void ComponentMesh::LoadMesh(const char* name) 
+{
+	if (vbo != 0)
+		glDeleteBuffers(1, &vbo);
+
+	if (ibo != 0) 
+		glDeleteBuffers(1, &ibo);
+
+	MeshImporter::Load(this, name);
+	ComputeMesh();
+	my_go->ComputeBBox();
 }
 
 void ComponentMesh::ComputeMesh()

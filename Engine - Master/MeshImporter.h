@@ -15,10 +15,10 @@ public:
 	MeshImporter();
 	~MeshImporter();
 
-	void ImportFBX(const char* filePath);
-	bool Import(const aiMesh* aiMesh, const char* meshName);
-	bool Save(const ComponentMesh& mesh, const char* meshName);
-	bool Load(ComponentMesh* mesh, const char* meshName);
+	static void ImportFBX(const char* filePath);
+	static bool Import(const aiMesh* aiMesh, const char* meshName);
+	static bool Save(const ComponentMesh& mesh, const char* meshName);
+	static bool Load(ComponentMesh* mesh, const char* meshName);
 };
 
 #endif /*__MESHIMPORTER_H__*/

@@ -4,6 +4,7 @@
 #include "Module.h"
 
 #include <string>
+#include <vector>
 
 class ModuleFileManager: public Module
 {
@@ -19,6 +20,7 @@ public:
 	bool MakeDirectory(const char* path);
 	bool AddPath(const char* path);
 	bool IsDirectory(const char* pathAndFileName) const;
+	void GetFilesFromDirectory(const char* directory, std::vector<std::string>& fileList) const;
 
 	void manageFile(char* path);
 	std::string getFileExtension(const char* path);
