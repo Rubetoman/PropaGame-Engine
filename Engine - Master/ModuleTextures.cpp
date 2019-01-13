@@ -293,7 +293,7 @@ void ModuleTextures::ReloadTexture(Texture& new_texture, Texture& texture)
 
 }*/
 
-void ModuleTextures::LoadMaterial(std::string path, unsigned& textureID, int& width, int& height) 
+void ModuleTextures::LoadTexture(std::string path, unsigned& textureID, int& width, int& height) 
 {
 	unsigned imageID;
 
@@ -337,41 +337,6 @@ void ModuleTextures::LoadMaterial(std::string path, unsigned& textureID, int& wi
 
 	ilDeleteImages(1, &imageID);
 	LOG("Material creation successful.");
-}
-
-void ModuleTextures::LoadMaterial(const char* path, ComponentMaterial* componentMaterial, MaterialType materialTypeSelected) 
-{
-	switch (materialTypeSelected)
-	{
-	case MaterialType::OCCLUSION_MAP:
-		if (componentMaterial->material.occlusion_map != 0u) 
-		{
-			Unload(componentMaterial->material.occlusion_map);
-		}
-		LoadMaterial(path, componentMaterial->material.occlusion_map, componentMaterial->material.occlusion_width, componentMaterial->material.occlusion_height);
-		break;
-	case MaterialType::DIFFUSE_MAP:
-		if (componentMaterial->material.diffuse_map != 0u) 
-		{
-			Unload(componentMaterial->material.diffuse_map);
-		}
-		LoadMaterial(path, componentMaterial->material.diffuse_map, componentMaterial->material.diffuse_width, componentMaterial->material.diffuse_height);
-		break;
-	case MaterialType::SPECULAR_MAP:
-		if (componentMaterial->material.specular_map != 0u) 
-		{
-			Unload(componentMaterial->material.specular_map);
-		}
-		LoadMaterial(path, componentMaterial->material.specular_map, componentMaterial->material.specular_width, componentMaterial->material.specular_height);
-		break;
-	case MaterialType::EMISSIVE_MAP:
-		if (componentMaterial->material.emissive_map != 0u) 
-		{
-			Unload(componentMaterial->material.emissive_map);
-		}
-		LoadMaterial(path, componentMaterial->material.emissive_map, componentMaterial->material.emissive_width, componentMaterial->material.emissive_height);
-		break;
-	}
 }
 
 void ModuleTextures::Unload(unsigned id) 

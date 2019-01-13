@@ -13,7 +13,6 @@
 #include <GL/glew.h>
 #include <IL/il.h>
 #include <IL/ilut.h>
-//#include <map>
 
 enum class MaterialType;
 
@@ -30,8 +29,7 @@ public:
 	//bool unloadTexture(Texture* texture);
 	//void ReloadTexture(Texture& new_texture, GLuint& texture);
 
-	void			LoadMaterial(std::string path, unsigned& textureID, int& width, int& height);
-	void			LoadMaterial(const char* path, ComponentMaterial* componentMaterial, MaterialType materialTypeSelected);
+	void			LoadTexture(std::string path, unsigned& textureID, int& width, int& height);
 	void			Unload(unsigned id);
 };
 
