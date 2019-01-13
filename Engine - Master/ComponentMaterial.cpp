@@ -31,6 +31,7 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(
 
 ComponentMaterial::~ComponentMaterial()
 {
+	Delete();
 }
 
 Component* ComponentMaterial::Duplicate()
@@ -397,8 +398,18 @@ void ComponentMaterial::RenderMaterial()
 
 void ComponentMaterial::Delete()
 {
-	//App->textures->unloadTexture(diffuse_map);
-	// Todo delete all textures
+	if(material.diffuse_map != 0)
+		App->textures->Unload(material.diffuse_map);
+
+	if (material.specular_map != 0)
+		App->textures->Unload(material.specular_map);
+
+	if (material.occlusion_map != 0)
+		App->textures->Unload(material.occlusion_map);
+
+	if (material.emissive_map != 0)
+		App->textures->Unload(material.emissive_map);
+
 	my_go->material_comp = nullptr;
 	Component::Delete();
 }

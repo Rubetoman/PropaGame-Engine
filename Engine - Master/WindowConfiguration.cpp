@@ -190,7 +190,7 @@ void WindowConfiguration::Draw()
 
 	if (ImGui::CollapsingHeader("Textures"))
 	{
-		ImGui::Text("Loaded textures:");
+		/*ImGui::Text("Loaded textures:");
 		for (std::map<Texture*,int>::iterator it_t = App->resources->textures.begin(); it_t != App->resources->textures.end(); ++it_t)
 		{
 			Texture* texture = (it_t->first);
@@ -205,7 +205,7 @@ void WindowConfiguration::Draw()
 				ImGui::Image((ImTextureID)texture->id, imageSize);
 			}
 			ImGui::NewLine();
-		}
+		}*/
 	}
 
 	if (ImGui::CollapsingHeader("Input"))

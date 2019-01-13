@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include "Util/crossguid/guid.hpp"
+#include "Math/float2.h"
 
 class GameObject;
 class Texture;
@@ -38,10 +39,12 @@ public:
 public:
 	std::vector<GameObject*> lights;		// List of all the lights on the scene
 
-	// Textures
-	std::map<Texture*, int> textures;		// Map of all the textures and number of objects that use that texture
-	Texture* checkers_texture = nullptr;
-	Texture* no_camera_texture = nullptr;
+	// Default textures
+	//std::map<Texture*, int> textures;		// Map of all the textures and number of objects that use that texture
+	unsigned checkers_texture = 0u;
+	math::float2 checkers_size = math::float2::zero;
+	unsigned no_camera_texture = 0u;
+	math::float2 no_camera_size = math::float2::zero;
 
 	// Scene Cameras
 	std::vector<ComponentCamera*> cameras;	// Vector with all the cameras on the scene

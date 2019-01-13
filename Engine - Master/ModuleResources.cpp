@@ -16,19 +16,25 @@ ModuleResources::ModuleResources()
 
 ModuleResources::~ModuleResources()
 {
-	//App->textures->unloadTexture(checkers_texture);
-	checkers_texture = nullptr;
-	//App->textures->unloadTexture(no_camera_texture);
-	no_camera_texture = nullptr;
+	if (checkers_texture != 0u)
+		App->textures->Unload(checkers_texture);
+
+	if (no_camera_texture != 0u)
+		App->textures->Unload(no_camera_texture);
 }
 
 bool ModuleResources::Init()
 {
 	file_meshes = new std::vector<std::string>();
 	file_textures = new std::vector<std::string>();
+
+	MaterialImporter::Import(CHECKERS_TEXTURE);
+	App->textures->LoadTexture("Checkers_Texture.proDDS", checkers_texture, (int&)checkers_size.x, (int&)checkers_size.y);
+
+	MaterialImporter::Import(CAMERA_TEXTURE);
+	App->textures->LoadTexture("No_Camera.proDDS", no_camera_texture, (int&)no_camera_size.x, (int&)no_camera_size.y);
+
 	MaterialImporter::Import("Assets/Models/textures/Baker_house.png");
-	//checkers_texture = App->textures->loadTexture(CHECKERS_TEXTURE, true);
-	//no_camera_texture = App->textures->loadTexture(CAMERA_TEXTURE, true);
 
 	UpdateMeshesList();
 	UpdateTexturesList();
@@ -40,7 +46,9 @@ bool ModuleResources::Init()
 
 bool ModuleResources::CleanUp()
 {
-	textures.clear();
+	//textures.clear();
+	file_meshes->clear();
+	file_textures->clear();
 	lights.clear();
 	meshes.clear();
 
