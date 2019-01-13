@@ -114,8 +114,8 @@ public:
 
 	// Components
 	ComponentTransform* transform = nullptr;
-	ComponentMesh* mesh = nullptr;
-	ComponentMaterial* material = nullptr;
+	ComponentMesh* mesh_comp = nullptr;
+	ComponentMaterial* material_comp = nullptr;
 	std::vector<Component*> components;
 };
 

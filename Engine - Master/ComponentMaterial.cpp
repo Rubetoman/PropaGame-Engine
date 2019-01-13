@@ -420,7 +420,7 @@ void ComponentMaterial::Delete()
 {
 	//App->textures->unloadTexture(diffuse_map);
 	// Todo delete all textures
-	my_go->material = nullptr;
+	my_go->material_comp = nullptr;
 	Component::Delete();
 }
 

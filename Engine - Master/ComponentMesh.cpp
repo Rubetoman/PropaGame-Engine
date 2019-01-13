@@ -20,16 +20,16 @@ ComponentMesh::ComponentMesh(GameObject* go) : Component(go, component_type::Mes
 ComponentMesh::ComponentMesh(const ComponentMesh& comp) : Component(comp)
 {
 	// TODO: Create new buffers or not delete when they are used by other comp
-	vbo = comp.vbo;
-	ibo = comp.ibo;
-	vao = comp.vao;
-	num_vertices = comp.num_vertices;
-	vertices = comp.vertices;
-	num_indices = comp.num_indices;
-	indices = comp.indices;
-	num_normals = comp.num_normals;
-	normals = comp.normals;
-	boundingBox = comp.boundingBox;
+	mesh.vbo = comp.mesh.vbo;
+	mesh.ibo = comp.mesh.ibo;
+	mesh.vao = comp.mesh.vao;
+	mesh.num_vertices = comp.mesh.num_vertices;
+	mesh.vertices = comp.mesh.vertices;
+	mesh.num_indices = comp.mesh.num_indices;
+	mesh.indices = comp.mesh.indices;
+//	mesh.num_normals = comp.mesh.num_normals;
+	mesh.normals = comp.mesh.normals;
+	mesh.boundingBox = comp.mesh.boundingBox;
 	App->resources->meshes.push_back(this);
 }
 
@@ -75,8 +75,8 @@ bool ComponentMesh::DrawOnInspector()
 				ImGui::EndCombo();
 			}
 
-			ImGui::Text("Triangles Count: %d", num_indices / 3);
-			ImGui::Text("Vertices Count: %d", num_vertices);
+			ImGui::Text("Triangles Count: %d", mesh.num_indices / 3);
+			ImGui::Text("Vertices Count: %d", mesh.num_vertices);
 		}
 		else
 		{
@@ -90,83 +90,84 @@ bool ComponentMesh::DrawOnInspector()
 
 void ComponentMesh::LoadMesh(const char* name) 
 {
-	if (vbo != 0)
-		glDeleteBuffers(1, &vbo);
+	if (mesh.vbo != 0)
+		glDeleteBuffers(1, &mesh.vbo);
 
-	if (ibo != 0) 
-		glDeleteBuffers(1, &ibo);
+	if (mesh.ibo != 0)
+		glDeleteBuffers(1, &mesh.ibo);
 
-	MeshImporter::Load(this, name);
+	MeshImporter::Load(&mesh, name);
 	ComputeMesh();
 	my_go->ComputeBBox();
 }
 
 void ComponentMesh::ComputeMesh()
 {
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glGenBuffers(1, &mesh.vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
 
 	unsigned offset = sizeof(math::float3);
 
-	if (normals != nullptr) 
+	if (mesh.normals != nullptr)
 	{
-		normalsOffset = offset;
+		mesh.normalsOffset = offset;
 		offset += sizeof(math::float3);
 	}
 
-	if (uvs != nullptr) 
+	if (mesh.uvs != nullptr)
 	{
-		texturesOffset = offset;
+		mesh.texturesOffset = offset;
 		offset += sizeof(math::float2);
 	}
 
-	vertexSize = offset;
+	mesh.vertexSize = offset;
 
-	glBufferData(GL_ARRAY_BUFFER, vertexSize * num_vertices, nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 3 * num_vertices, vertices);
+	glBufferData(GL_ARRAY_BUFFER, mesh.vertexSize * mesh.num_vertices, nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 3 * mesh.num_vertices, mesh.vertices);
 
-	if (normals != nullptr)
-		glBufferSubData(GL_ARRAY_BUFFER, normalsOffset * num_vertices, sizeof(float) * 3 * num_vertices, normals);
+	if (mesh.normals != nullptr)
+		glBufferSubData(GL_ARRAY_BUFFER, mesh.normalsOffset * mesh.num_vertices, sizeof(float) * 3 * mesh.num_vertices, mesh.normals);
 
 
-	if (uvs != nullptr)
-		glBufferSubData(GL_ARRAY_BUFFER, texturesOffset * num_vertices, sizeof(float2)*num_vertices, uvs);
+	if (mesh.uvs != nullptr)
+		glBufferSubData(GL_ARRAY_BUFFER, mesh.texturesOffset * mesh.num_vertices, sizeof(float2)*mesh.num_vertices, mesh.uvs);
 
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_indices * sizeof(unsigned), indices, GL_STATIC_DRAW);
+	glGenBuffers(1, &mesh.ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.num_indices * sizeof(unsigned), mesh.indices, GL_STATIC_DRAW);
 
 	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glGenVertexArrays(1, &vao);
+	glGenVertexArrays(1, &mesh.vao);
 
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBindVertexArray(mesh.vao);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ibo);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	if (normalsOffset != 0) 
+	if (mesh.normalsOffset != 0)
 	{
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)(normalsOffset * num_vertices));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.normalsOffset * mesh.num_vertices));
 	}
 
-	if (texturesOffset != 0) {
+	if (mesh.texturesOffset != 0) 
+	{
 		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(texturesOffset * num_vertices));
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.texturesOffset * mesh.num_vertices));
 	}
 
 	glBindVertexArray(0);
 
-	boundingBox.SetNegativeInfinity();
-	boundingBox.Enclose((float3*)vertices, num_vertices);
+	mesh.boundingBox.SetNegativeInfinity();
+	mesh.boundingBox.Enclose((float3*)mesh.vertices, mesh.num_vertices);
 	App->resources->meshes.push_back(this);
 
 	glDisableVertexAttribArray(0);
@@ -183,8 +184,8 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 	//Draw meshes
 	unsigned program = 0;
 
-	if (my_go->material != nullptr)
-		program = App->shader->programs[my_go->material->shader];
+	if (my_go->material_comp != nullptr)
+		program = App->shader->programs[my_go->material_comp->shader];
 	else
 		program = App->shader->programs[0];
 
@@ -201,13 +202,13 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
 
 	// Render Material
-	if (my_go->material != nullptr && my_go->material->active)
+	if (my_go->material_comp != nullptr && my_go->material_comp->active)
 	{
-		my_go->material->RenderMaterial();
+		my_go->material_comp->RenderMaterial();
 	}
 
-	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(mesh.vao);
+	glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, nullptr);
 
 	// Disable VAO
 	glBindVertexArray(0);
@@ -218,38 +219,38 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 
 void ComponentMesh::DeleteMesh()
 {
-	if (vbo != 0)
+	if (mesh.vbo != 0)
 	{
-		glDeleteBuffers(1, &vbo);
+		glDeleteBuffers(1, &mesh.vbo);
 	}
 
-	if (ibo != 0)
+	if (mesh.ibo != 0)
 	{
-		glDeleteBuffers(1, &ibo);
+		glDeleteBuffers(1, &mesh.ibo);
 	}
 
-	if (vao != 0)
+	if (mesh.vao != 0)
 	{
-		glDeleteBuffers(1, &vao);
+		glDeleteBuffers(1, &mesh.vao);
 	}
 }
 
 void ComponentMesh::Delete()
 {
-	my_go->mesh = nullptr;
+	my_go->mesh_comp = nullptr;
 	Component::Delete();
 	App->resources->DeleteMesh(this);
 }
 
-void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
+/*void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 {
 
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glGenBuffers(1, &mesh.vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
 
 	// Positions
 
-	/*for (unsigned i = 0; i< unsigned(mesh->npoints); ++i)
+	for (unsigned i = 0; i< unsigned(mesh->npoints); ++i)
 	{
 		math::float3 point(mesh->points[i * 3], mesh->points[i * 3 + 1], mesh->points[i * 3 + 2]);
 		// TODO: Set position
@@ -259,7 +260,7 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 			min_v[j] = min(min_v[j], point[i]);
 			max_v[j] = max(max_v[j], point[i]);
 		}
-	}*/
+	}
 
 	unsigned offset_acc = sizeof(math::float3);
 	unsigned normals_offset = 0;
@@ -323,29 +324,30 @@ void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	/*vertices.reserve(mesh->npoints);
+	vertices.reserve(mesh->npoints);
 	for (unsigned int i = 0; i < mesh->npoints; i++)
 	{
 		vertices.push_back(float3((float *)&mesh->points[i]));
-	}*/
+	}
 
 	//materialIndex = 0;
 	num_indices = mesh->ntriangles * 3;
 	num_vertices = mesh->npoints;
-}
+}*/
 
 JSON_value* ComponentMesh::Save(JSON_value* component) const
 {
 	JSON_value* mesh = Component::Save(component);
+	//TODO: update mesh save
 
-	mesh->AddUnsigned("VBO", vbo);
+	/*mesh->AddUnsigned("VBO", vbo);
 	mesh->AddUnsigned("IBO", ibo);
 	mesh->AddUnsigned("VAO", vao);
 	mesh->AddUnsigned("Number Vertices", num_vertices);
 	mesh->AddUnsigned("Number Indices", num_indices);
 	//TODO: Add vertices, indices and normals
 	mesh->AddVec3("boundingBox min", boundingBox.minPoint);
-	mesh->AddVec3("boundingBox max", boundingBox.maxPoint);
+	mesh->AddVec3("boundingBox max", boundingBox.maxPoint);*/
 
 	component->addValue("", mesh);
 
@@ -355,13 +357,14 @@ JSON_value* ComponentMesh::Save(JSON_value* component) const
 void ComponentMesh::Load(JSON_value* component)
 {
 	Component::Load(component);
+	//TODO: update mesh load
 
-	vbo = component->GetUnsigned("VBO");
+	/*vbo = component->GetUnsigned("VBO");
 	ibo = component->GetUnsigned("IBO");
 	vao = component->GetUnsigned("VAO");
 	num_vertices = component->GetUnsigned("Number Vertices");
 	num_indices = component->GetUnsigned("Number Indices");
 	//TODO: Add vertices, indices and normals
 	boundingBox.minPoint = component->GetVec3("boundingBox min");
-	boundingBox.maxPoint = component->GetVec3("boundingBox max");
+	boundingBox.maxPoint = component->GetVec3("boundingBox max");*/
 }

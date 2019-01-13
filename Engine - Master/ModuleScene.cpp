@@ -102,11 +102,11 @@ void ModuleScene::DrawStaticGameObjects(const math::float4x4& view, const math::
 		// Compute and Draw BBox on Editor
 		AABB boundingBox = go->ComputeBBox();
 
-		if (go->mesh != nullptr && go->mesh->active)
+		if (go->mesh_comp != nullptr && go->mesh_comp->active)
 		{
 			// Avoid drawing mesh if it is not inside frustum
 			if (!camera.frustum_culling || camera.ContainsAABB(boundingBox))
-				((ComponentMesh*)go->mesh)->RenderMesh(view, proj);
+				((ComponentMesh*)go->mesh_comp)->RenderMesh(view, proj);
 		}
 	}
 }

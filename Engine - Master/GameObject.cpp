@@ -67,11 +67,11 @@ GameObject::GameObject(const GameObject& go)
 		}
 		else if (new_comp->type == component_type::Mesh)
 		{
-			mesh = (ComponentMesh*)new_comp;
+			mesh_comp = (ComponentMesh*)new_comp;
 		}
 		else if (new_comp->type == component_type::Material)
 		{
-			material = (ComponentMaterial*)new_comp;
+			material_comp = (ComponentMaterial*)new_comp;
 		}
 		else if (new_comp->type == component_type::Camera)
 		{
@@ -100,8 +100,8 @@ GameObject::~GameObject()
 	}
 
 	transform = nullptr;
-	mesh = nullptr;
-	material = nullptr;
+	mesh_comp = nullptr;
+	material_comp = nullptr;
 	parent = nullptr;
 }
 
@@ -221,11 +221,11 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 
 	if (App->scene->use_quadtree && isPureStatic()) return;	// Static GOs meshes are drawn using quadtree
 
-	if (mesh != nullptr && mesh->active)
+	if (mesh_comp != nullptr && mesh_comp->active)
 	{
 		// Avoid drawing mesh if it is not inside frustum
 		if (!camera.frustum_culling || camera.ContainsAABB(boundingBox))
-			((ComponentMesh*)mesh)->RenderMesh(view, proj);
+			((ComponentMesh*)mesh_comp)->RenderMesh(view, proj);
 	}
 }
 
@@ -293,8 +293,8 @@ math::float4x4 GameObject::GetGlobalTransform() const
 
 math::float3 GameObject::GetCenter() const
 {
-	if (mesh != nullptr)
-		return mesh->boundingBox.CenterPoint();
+	if (mesh_comp != nullptr)
+		return mesh_comp->mesh.boundingBox.CenterPoint();
 	else
 		return transform->position;
 }
@@ -310,8 +310,8 @@ math::AABB GameObject::ComputeBBox() const
 	bbox.SetNegativeInfinity();
 
 	// Current GO meshes
-	if (mesh != nullptr)
-		bbox.Enclose(mesh->boundingBox);
+	if (mesh_comp != nullptr)
+		bbox.Enclose(mesh_comp->mesh.boundingBox);
 
 	// Apply transformation of our GO
 	bbox.TransformAsAABB(GetGlobalTransform());
@@ -327,9 +327,9 @@ math::AABB GameObject::ComputeTotalBBox() const
 	bbox.SetNegativeInfinity();
 
 	// Enclose GO meshes if is not only small box 
-	if (mesh != nullptr)
+	if (mesh_comp != nullptr)
 	{
-		bbox.Enclose(mesh->boundingBox);
+		bbox.Enclose(mesh_comp->mesh.boundingBox);
 	}
 	else if (children.size() == 0)
 	{
@@ -358,9 +358,9 @@ math::AABB GameObject::ComputeStaticTotalBBox() const
 	// Enclose GO meshes if is not only small box 
 	if (static_GO)
 	{
-		if (mesh != nullptr)
+		if (mesh_comp != nullptr)
 		{
-			bbox.Enclose(mesh->boundingBox);
+			bbox.Enclose(mesh_comp->mesh.boundingBox);
 		}
 		else
 		{
@@ -383,7 +383,7 @@ math::AABB GameObject::ComputeStaticTotalBBox() const
 
 void GameObject::DrawBBox(AABB bbox) const 
 {
-	if(mesh != nullptr)
+	if(mesh_comp != nullptr)
 		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(255, 255, 0), true);
 
 	for (auto child : children)
@@ -416,10 +416,10 @@ Component* GameObject::CreateComponent(component_type type)
 		}
 		break;
 	case component_type::Mesh:
-		if (mesh == nullptr)
+		if (mesh_comp == nullptr)
 		{
 			component = new ComponentMesh(this);
-			mesh = (ComponentMesh*)component;
+			mesh_comp = (ComponentMesh*)component;
 		}
 		else
 		{
@@ -427,10 +427,10 @@ Component* GameObject::CreateComponent(component_type type)
 		}
 		break;
 	case component_type::Material:
-		if (material == nullptr)
+		if (material_comp == nullptr)
 		{
 			component = new ComponentMaterial(this);
-			material = (ComponentMaterial*)component;
+			material_comp = (ComponentMaterial*)component;
 		}
 		else
 		{

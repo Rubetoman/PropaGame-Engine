@@ -9,6 +9,30 @@ class GameObject;
 
 struct par_shapes_mesh_s;
 
+struct Mesh 
+{
+	unsigned vbo = 0u;
+	unsigned ibo = 0u;
+	unsigned vao = 0u;
+
+	//unsigned		num_normals = 0u;
+	float*		normals = nullptr;
+	float*		colors = nullptr;
+	float*		uvs = nullptr;
+
+	unsigned	num_vertices = 0u;
+	float*		vertices = nullptr;
+
+	unsigned	num_indices = 0u;
+	unsigned*	indices = nullptr;
+
+	unsigned normalsOffset = 0u;
+	unsigned texturesOffset = 0u;
+	unsigned vertexSize = 0u;
+
+	math::AABB boundingBox = math::AABB();
+};
+
 class ComponentMesh : public Component
 {
 public:
@@ -34,28 +58,8 @@ public:
 	void Load(JSON_value* component) override;
 
 public:
-	// Mesh variables
-	unsigned vbo = 0u;
-	unsigned ibo = 0u;
-	unsigned vao = 0u;
 
-	unsigned num_vertices = 0u;
-	float* vertices = nullptr;
-
-	unsigned num_indices = 0u;
-	unsigned* indices = nullptr;
-
-	unsigned num_normals = 0u;
-	float* normals = nullptr;
-
-	float* uvs = nullptr;
-	float* colors = nullptr;
-
-	unsigned normalsOffset = 0u;
-	unsigned texturesOffset = 0u;
-	unsigned vertexSize = 0u;
-
-	math::AABB boundingBox = math::AABB();
+	Mesh mesh;
 
 private:
 	std::string currentMesh;

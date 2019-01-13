@@ -56,57 +56,58 @@ bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName)
 		return result;
 	}
 
-	GameObject* go = App->scene->CreateGameObject(meshName, App->scene->root);
+	//GameObject* go = App->scene->CreateGameObject(meshName, App->scene->root);
 	// Add Mesh Component
-	ComponentMesh* mesh = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
+	//ComponentMesh* mesh_comp = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
+	Mesh mesh;
 
-	mesh->num_vertices = aiMesh->mNumVertices;
-	mesh->vertices = new float[mesh->num_vertices * 3];
-	memcpy(mesh->vertices, aiMesh->mVertices, sizeof(float) * mesh->num_vertices * 3);
+	mesh.num_vertices = aiMesh->mNumVertices;
+	mesh.vertices = new float[mesh.num_vertices * 3];
+	memcpy(mesh.vertices, aiMesh->mVertices, sizeof(float) * mesh.num_vertices * 3);
 
 	if (aiMesh->HasFaces()) 
 	{
-		mesh->num_indices = aiMesh->mNumFaces * 3;
-		mesh->indices = new unsigned[mesh->num_indices];
+		mesh.num_indices = aiMesh->mNumFaces * 3;
+		mesh.indices = new unsigned[mesh.num_indices];
 		for (unsigned i = 0u; i < aiMesh->mNumFaces; ++i) 
 		{
-			memcpy(&mesh->indices[i * 3], aiMesh->mFaces[i].mIndices, 3 * sizeof(unsigned));
+			memcpy(&mesh.indices[i * 3], aiMesh->mFaces[i].mIndices, 3 * sizeof(unsigned));
 		}
 	}
 
 	if (aiMesh->HasTextureCoords(0)) 
 	{
-		mesh->uvs = new float[mesh->num_vertices * 2];
+		mesh.uvs = new float[mesh.num_vertices * 2];
 		int uvsCount = 0;
-		for (unsigned i = 0u; i < mesh->num_vertices; i++)
+		for (unsigned i = 0u; i < mesh.num_vertices; i++)
 		{
-			mesh->uvs[uvsCount] = aiMesh->mTextureCoords[0][i].x;
+			mesh.uvs[uvsCount] = aiMesh->mTextureCoords[0][i].x;
 			uvsCount++;
-			mesh->uvs[uvsCount] = aiMesh->mTextureCoords[0][i].y;
+			mesh.uvs[uvsCount] = aiMesh->mTextureCoords[0][i].y;
 			uvsCount++;
 		}
 	}
 
 	if (aiMesh->HasNormals()) 
 	{
-		mesh->normals = new float[mesh->num_vertices * 3];
-		memcpy(mesh->normals, aiMesh->mNormals, sizeof(float) * mesh->num_vertices * 3);
+		mesh.normals = new float[mesh.num_vertices * 3];
+		memcpy(mesh.normals, aiMesh->mNormals, sizeof(float) * mesh.num_vertices * 3);
 	}
 
 	if (aiMesh->HasVertexColors(0)) {
-		mesh->colors = new float[mesh->num_vertices * 3];
-		memcpy(mesh->colors, aiMesh->mColors, sizeof(float) * mesh->num_vertices * 3);
+		mesh.colors = new float[mesh.num_vertices * 3];
+		memcpy(mesh.colors, aiMesh->mColors, sizeof(float) * mesh.num_vertices * 3);
 	}
 
-	mesh->boundingBox.SetNegativeInfinity();
-	mesh->boundingBox.Enclose((math::float3*)aiMesh->mVertices, aiMesh->mNumVertices);
+	mesh.boundingBox.SetNegativeInfinity();
+	mesh.boundingBox.Enclose((math::float3*)aiMesh->mVertices, aiMesh->mNumVertices);
 
-	mesh->ComputeMesh();
+	//mesh_comp->ComputeMesh();
 
-	return Save(*mesh, meshName);
+	return Save(mesh, meshName);
 }
 
-bool MeshImporter::Save(const ComponentMesh& mesh, const char* meshName)
+bool MeshImporter::Save(const Mesh& mesh, const char* meshName)
 {
 	bool result = false;
 
@@ -185,7 +186,7 @@ bool MeshImporter::Save(const ComponentMesh& mesh, const char* meshName)
 	return result;
 }
 
-bool MeshImporter::Load(ComponentMesh* mesh, const char* meshName)
+bool MeshImporter::Load(Mesh* mesh, const char* meshName)
 {
 	bool result = false;
 

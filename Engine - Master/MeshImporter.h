@@ -7,7 +7,7 @@ class aiScene;
 class aiNode;
 class aiMesh;
 
-class ComponentMesh;
+struct Mesh;
 
 class MeshImporter
 {
@@ -17,8 +17,8 @@ public:
 
 	static void ImportFBX(const char* filePath);
 	static bool Import(const aiMesh* aiMesh, const char* meshName);
-	static bool Save(const ComponentMesh& mesh, const char* meshName);
-	static bool Load(ComponentMesh* mesh, const char* meshName);
+	static bool Save(const Mesh& mesh, const char* meshName);
+	static bool Load(Mesh* mesh, const char* meshName);
 };
 
 #endif /*__MESHIMPORTER_H__*/

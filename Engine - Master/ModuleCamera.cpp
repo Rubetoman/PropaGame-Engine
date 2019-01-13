@@ -234,7 +234,7 @@ GameObject* ModuleCamera::MousePick()
 
 	for (auto mesh : App->resources->meshes)
 	{
-		if (!mesh->my_go->static_GO && mesh->num_vertices > 0 && raycast.Intersects(mesh->my_go->ComputeBBox()))
+		if (!mesh->my_go->static_GO && mesh->mesh.num_vertices > 0 && raycast.Intersects(mesh->my_go->ComputeBBox()))
 		{
 			hitGOs.push_back(mesh->my_go);
 		}
@@ -245,7 +245,7 @@ GameObject* ModuleCamera::MousePick()
 	GameObject* nearest_hit_GO = nullptr;
 	for (auto go : hitGOs)
 	{
-		ComponentMesh* mesh = go->mesh;
+		Mesh* mesh = &go->mesh_comp->mesh;
 		ComponentTransform* transform = go->transform;
 
 		if (mesh != nullptr && transform != nullptr)
