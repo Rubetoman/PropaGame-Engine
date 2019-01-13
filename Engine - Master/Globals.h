@@ -45,10 +45,12 @@ enum update_status
 
 // PATHS -----------------
 #define ASSETS_FOLDER "Assets"
-#define SCENES_FOLDER "Assets/Scenes/"
-#define TEXTURES_FOLDER "Assets/Textures/"
-#define MESHES_FOLDER "Assets/Meshes/"
-#define MATERIALS_FOLDER "Assets/Materials/"
+
+#define LIBRARY_FOLDER "Library"
+#define SCENES_FOLDER "Library/Scenes/"
+#define TEXTURES_FOLDER "Library/Textures/"
+#define MESHES_FOLDER "Library/Meshes/"
+#define MATERIALS_FOLDER "Library/Materials/"
 
 // TEXTURES --------------
 #define CHECKERS_TEXTURE "Assets/Textures/Checkers_Texture.jpg"
