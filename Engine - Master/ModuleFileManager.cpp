@@ -150,18 +150,21 @@ void ModuleFileManager::LoadMeshFileToScene(const char& path)
 	std::string filename = &path;
 	std::string extension = &path;
 	SplitPath(&path, nullptr, &filename, &extension);
-	filename += "." + extension;
 
 	GameObject* go = App->scene->CreateGameObject(filename.c_str(), App->scene->root);
 	//Add Mesh Component
 	ComponentMesh* mesh_comp = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
 	go->CreateComponent(component_type::Material);
 
+	filename += "." + extension;
 
-	MeshImporter::Load(&mesh_comp->mesh, filename.c_str());
+	if (MeshImporter::Load(&mesh_comp->mesh, filename.c_str()))
+	{
+		mesh_comp->ComputeMesh();
+		go->ComputeBBox();
 
-	mesh_comp->ComputeMesh();
-	go->ComputeBBox();
+		mesh_comp->currentMesh = filename;
+	}
 }
 
 std::string ModuleFileManager::getFileExtension(const char* path)

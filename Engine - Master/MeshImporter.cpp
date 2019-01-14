@@ -110,7 +110,17 @@ bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName, GameObject
 	mesh_comp->mesh = mesh;
 	mesh_comp->ComputeMesh();
 
-	return Save(mesh, meshName);
+	result = Save(mesh, meshName);
+
+	if (result != false)
+	{
+		std::string meshFile(meshName);
+
+		meshFile.append(".proMesh");
+		mesh_comp->currentMesh = meshFile;
+	}
+
+	return result;
 }
 
 bool MeshImporter::Save(const Mesh& mesh, const char* meshName)

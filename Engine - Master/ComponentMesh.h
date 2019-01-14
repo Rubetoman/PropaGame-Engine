@@ -60,8 +60,6 @@ public:
 public:
 
 	Mesh mesh;
-
-private:
 	std::string currentMesh;
 };
 
