@@ -5,15 +5,15 @@
 #include "ModuleTextures.h"
 #include "ModuleFileManager.h"
 
-MaterialImporter::MaterialImporter()
+TextureImporter::TextureImporter()
 {
 }
 
-MaterialImporter::~MaterialImporter()
+TextureImporter::~TextureImporter()
 {
 }
 
-void MaterialImporter::Import(const char* path)
+void TextureImporter::Import(const char* path)
 {
 	bool result = false;
 

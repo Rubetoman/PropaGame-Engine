@@ -116,7 +116,7 @@ void ModuleFileManager::manageFile(char* path)
 	else if (extension == "png" || extension == "dds" || extension == "jpg" || extension == "tif")
 	{
 		//App->textures->loadTexture(path, true);
-		MaterialImporter::Import(path);
+		TextureImporter::Import(path);
 	}
 	else
 	{

@@ -3,11 +3,11 @@
 
 #include <string>
 
-class MaterialImporter
+class TextureImporter
 {
 public:
-	MaterialImporter();
-	~MaterialImporter();
+	TextureImporter();
+	~TextureImporter();
 
 	static void Import(const char* path);
 };
