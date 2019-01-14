@@ -18,7 +18,7 @@ struct Material
 {
 	// Diffuse
 	unsigned		diffuse_map = 0u;
-	math::float4	diffuse_color = math::float4::zero;
+	math::float4	diffuse_color = math::float4::one;
 	float			k_diffuse = 0.5f;
 	int				diffuse_width = 0;
 	int				diffuse_height = 0;
