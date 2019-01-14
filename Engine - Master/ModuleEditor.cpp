@@ -7,7 +7,7 @@
 #include "ModuleTime.h"
 #include "ModuleScene.h"
 #include "ModuleResources.h"
-
+#include "ModuleFileManager.h"
 
 #include "Window.h"
 #include "Window.h"
@@ -221,6 +221,7 @@ void ModuleEditor::ShowMainMenuBar()
 			if (ImGui::MenuItem("Load Scene"))
 			{
 				strcpy(temp_name, "");
+				App->resources->UpdateScenesList();
 				show_scene_load_popup = true;
 			}
 			ImGui::Separator();
@@ -357,8 +358,22 @@ void ModuleEditor::SceneLoadPopup()
 	ImGui::OpenPopup("Load Scene");
 	if (ImGui::BeginPopupModal("Load Scene", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		ImGui::Text("Scene name:\n");
+		// List of scenes on scenes folder
+		ImGui::Text("Scenes list:\n");
+		ImGui::BeginChild("ScenesList", ImVec2(ImGui::GetWindowContentRegionWidth(), 100), true, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoScrollWithMouse );
+		for (std::vector<std::string>::iterator scene = App->resources->file_scenes->begin(); scene != App->resources->file_scenes->end(); ++scene)
+		{
+			if (ImGui::Selectable((*scene).c_str(), false))
+			{
+				std::string name = (*scene).c_str();
+				App->file->SplitPath((*scene).c_str(), nullptr, &name, nullptr);
+				strcpy(temp_name, name.c_str());
+			}
+		}
+		ImGui::EndChild();
 
+		// Name can be introduces manually in this InputText
+		ImGui::Text("Scene name:\n");
 		ImGui::InputText(".proScene", temp_name, 64);
 		ImGui::Separator();
 

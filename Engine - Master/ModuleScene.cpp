@@ -403,6 +403,7 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	scene_gos.erase(scene_gos.begin() + GetSceneGONumber(*root));
 
 	App->resources->CleanUp();
+	App->resources->UpdateScenesList();
 
 	// Change window title
 	std::string windowTitle = scene_name;
