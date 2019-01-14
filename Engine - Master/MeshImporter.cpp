@@ -37,16 +37,19 @@ void MeshImporter::ImportFBX(const char* filePath)
 
 	if (scene->mMeshes != nullptr)
 	{
+		// Create root GO
+		GameObject* root_go = App->scene->CreateGameObject(scene->mRootNode->mName.C_Str(), App->scene->root);
+
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
 			std::string meshName = fileName;
 			meshName.append("_" + std::to_string(i));
-			Import(scene->mMeshes[i], meshName.c_str());
+			Import(scene->mMeshes[i], meshName.c_str(), root_go);
 		}
 	}
 }
 
-bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName) 
+bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName, GameObject* parent) 
 {
 	bool result = false;
 
@@ -56,10 +59,11 @@ bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName)
 		return result;
 	}
 
-	//GameObject* go = App->scene->CreateGameObject(meshName, App->scene->root);
-	// Add Mesh Component
-	//ComponentMesh* mesh_comp = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
+	GameObject* go = App->scene->CreateGameObject(aiMesh->mName.C_Str(), parent);
 	Mesh mesh;
+	//Add Mesh Component
+	ComponentMesh* mesh_comp = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
+	go->CreateComponent(component_type::Material);
 
 	mesh.num_vertices = aiMesh->mNumVertices;
 	mesh.vertices = new float[mesh.num_vertices * 3];
@@ -102,7 +106,8 @@ bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName)
 	mesh.boundingBox.SetNegativeInfinity();
 	mesh.boundingBox.Enclose((math::float3*)aiMesh->mVertices, aiMesh->mNumVertices);
 
-	//mesh_comp->ComputeMesh();
+	mesh_comp->mesh = mesh;
+	mesh_comp->ComputeMesh();
 
 	return Save(mesh, meshName);
 }
@@ -201,7 +206,8 @@ bool MeshImporter::Load(Mesh* mesh, const char* meshName)
 	meshPath.append(meshName);
 	unsigned size = App->file->Load(meshPath.c_str(), &buffer);
 
-	if (buffer != nullptr && size > 0) {
+	if (buffer != nullptr && size > 0) 
+	{
 		char* cursor = buffer;
 
 		// indices / vertices / uvs / normals/ colors / 

@@ -66,10 +66,10 @@ bool ComponentMesh::DrawOnInspector()
 					{
 						currentMesh = (*it);
 
-						LoadMesh(currentMesh.c_str());
-
 						if (isSelected)
 							ImGui::SetItemDefaultFocus();
+						else
+							LoadMesh(currentMesh.c_str());
 					}
 				}
 				ImGui::EndCombo();

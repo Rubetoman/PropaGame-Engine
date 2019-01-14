@@ -129,15 +129,17 @@ void ComponentMaterial::DrawDiffuseParameters()
 			bool isSelected = (diffuseSelected == (*texture).c_str());
 			if (ImGui::Selectable((*texture).c_str(), isSelected))
 			{
-				diffuseSelected = (*texture).c_str();
-				if (material.diffuse_map != 0u)
-				{
-					App->textures->Unload(material.diffuse_map);
-				}
-				App->textures->LoadTexture(diffuseSelected.c_str(), material.diffuse_map, material.diffuse_width, material.diffuse_height);
-
 				if (isSelected)
 					ImGui::SetItemDefaultFocus();
+				else
+				{
+					diffuseSelected = (*texture).c_str();
+					if (material.diffuse_map != 0u)
+					{
+						App->textures->Unload(material.diffuse_map);
+					}
+					App->textures->LoadTexture(diffuseSelected.c_str(), material.diffuse_map, material.diffuse_width, material.diffuse_height);
+				}
 			}
 		}
 
@@ -189,15 +191,17 @@ void ComponentMaterial::DrawSpecularParameters()
 			bool isSelected = (specularSelected == (*texture).c_str());
 			if (ImGui::Selectable((*texture).c_str(), isSelected))
 			{
-				specularSelected = (*texture).c_str();
-				if (material.emissive_map != 0u)
-				{
-					App->textures->Unload(material.specular_map);
-				}
-				App->textures->LoadTexture(specularSelected.c_str(), material.specular_map, material.specular_width, material.specular_height);
-
 				if (isSelected)
 					ImGui::SetItemDefaultFocus();
+				else
+				{
+					specularSelected = (*texture).c_str();
+					if (material.emissive_map != 0u)
+					{
+						App->textures->Unload(material.specular_map);
+					}
+					App->textures->LoadTexture(specularSelected.c_str(), material.specular_map, material.specular_width, material.specular_height);
+				}
 			}
 		}
 		ImGui::EndPopup();
@@ -245,15 +249,17 @@ void ComponentMaterial::DrawAmbientParameters()
 				bool isSelected = (occlusionSelected == (*texture).c_str());
 				if (ImGui::Selectable((*texture).c_str(), isSelected))
 				{
-					occlusionSelected = (*texture).c_str();
-					if (material.occlusion_map != 0u)
-					{
-						App->textures->Unload(material.occlusion_map);
-					}
-					App->textures->LoadTexture(occlusionSelected.c_str(), material.occlusion_map, material.occlusion_height, material.occlusion_height);
-
 					if (isSelected)
 						ImGui::SetItemDefaultFocus();
+					else
+					{
+						occlusionSelected = (*texture).c_str();
+						if (material.occlusion_map != 0u)
+						{
+							App->textures->Unload(material.occlusion_map);
+						}
+						App->textures->LoadTexture(occlusionSelected.c_str(), material.occlusion_map, material.occlusion_height, material.occlusion_height);
+					}
 				}
 			}
 			ImGui::EndPopup();
@@ -300,15 +306,17 @@ void ComponentMaterial::DrawEmissiveParameters()
 			bool isSelected = (emissiveSelected == (*texture).c_str());
 			if (ImGui::Selectable((*texture).c_str(), isSelected))
 			{
-				emissiveSelected = (*texture).c_str();
-				if (material.emissive_map != 0u)
-				{
-					App->textures->Unload(material.diffuse_map);
-				}
-				App->textures->LoadTexture(emissiveSelected.c_str(), material.diffuse_map, material.diffuse_width, material.diffuse_height);
-
 				if (isSelected)
 					ImGui::SetItemDefaultFocus();
+				else
+				{
+					emissiveSelected = (*texture).c_str();
+					if (material.emissive_map != 0u)
+					{
+						App->textures->Unload(material.diffuse_map);
+					}
+					App->textures->LoadTexture(emissiveSelected.c_str(), material.diffuse_map, material.diffuse_width, material.diffuse_height);
+				}
 			}
 		}
 		ImGui::EndPopup();
