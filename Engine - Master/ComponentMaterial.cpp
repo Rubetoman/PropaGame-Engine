@@ -124,6 +124,9 @@ void ComponentMaterial::DrawDiffuseParameters()
 	// Textures popup
 	if (ImGui::BeginPopup("Textures", NULL))
 	{
+		if (App->resources->file_textures->size() < 1)
+			ImGui::Text("No textures loaded.");
+
 		for (std::vector<std::string>::iterator texture = App->resources->file_textures->begin(); texture != App->resources->file_textures->end(); ++texture)
 		{
 			bool isSelected = (diffuseSelected == (*texture).c_str());
@@ -142,7 +145,6 @@ void ComponentMaterial::DrawDiffuseParameters()
 				}
 			}
 		}
-
 		ImGui::EndPopup();
 	}
 }
@@ -186,6 +188,9 @@ void ComponentMaterial::DrawSpecularParameters()
 	// Textures popup
 	if (ImGui::BeginPopup("Textures", NULL))
 	{
+		if (App->resources->file_textures->size() < 1)
+			ImGui::Text("No textures loaded.");
+
 		for (std::vector<std::string>::iterator texture = App->resources->file_textures->begin(); texture != App->resources->file_textures->end(); ++texture)
 		{
 			bool isSelected = (specularSelected == (*texture).c_str());
@@ -244,6 +249,9 @@ void ComponentMaterial::DrawAmbientParameters()
 		// Textures popup
 		if (ImGui::BeginPopup("Textures", NULL))
 		{
+			if (App->resources->file_textures->size() < 1)
+				ImGui::Text("No textures loaded.");
+
 			for (std::vector<std::string>::iterator texture = App->resources->file_textures->begin(); texture != App->resources->file_textures->end(); ++texture)
 			{
 				bool isSelected = (occlusionSelected == (*texture).c_str());
@@ -301,6 +309,9 @@ void ComponentMaterial::DrawEmissiveParameters()
 	// Textures popup
 	if (ImGui::BeginPopup("Textures", NULL))
 	{
+		if (App->resources->file_textures->size() < 1)
+			ImGui::Text("No textures loaded.");
+
 		for (std::vector<std::string>::iterator texture = App->resources->file_textures->begin(); texture != App->resources->file_textures->end(); ++texture)
 		{
 			bool isSelected = (emissiveSelected == (*texture).c_str());
