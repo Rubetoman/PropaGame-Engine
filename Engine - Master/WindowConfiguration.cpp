@@ -70,6 +70,11 @@ void WindowConfiguration::Draw()
 	{
 		ImGui::Checkbox("Show hided GOs", &App->scene->show_scene_gos);
 		ImGui::Separator();
+		if (ImGui::InputFloat("Scale", &App->editor->scale, 1.0f))
+		{
+			if (App->editor->scale < 0.001f)	// Avoid reaching 0 (It would crash)
+				App->editor->scale = 0.001f;
+		}
 		ImGui::Checkbox("Show grid", &App->editor->show_grid); ImGui::SameLine();
 		ImGui::Checkbox("Show axis", &App->editor->show_axis);
 		ImGui::Separator();

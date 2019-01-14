@@ -247,8 +247,8 @@ const void ComponentCamera::InitFrustum()
 	frustum.pos = my_go->transform->position;
 	frustum.front = -math::float3::unitZ;
 	frustum.up = math::float3::unitY;
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 1000.0f;
+	frustum.nearPlaneDistance = 0.1f * App->editor->scale;
+	frustum.farPlaneDistance = 1000.0f * App->editor->scale;
 	frustum.verticalFov = math::pi / 4.0f;
 	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov * 0.5f)) *(App->window->screen_width / App->window->screen_height);
 	// Calculate horizontal first

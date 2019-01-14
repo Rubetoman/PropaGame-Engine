@@ -30,7 +30,7 @@ ModuleCamera::~ModuleCamera()
 bool ModuleCamera::Init()
 {
 	editor_camera_go = new GameObject("Editor Camera");
-	editor_camera_go->transform->position = math::float3(0.0f, 0.0f, 3.0f);
+	editor_camera_go->transform->position = math::float3(0.0f, 0.0f, 3.0f * App->editor->scale);
 	editor_camera_comp = (ComponentCamera*)editor_camera_go->CreateComponent(component_type::Editor_Camera);
 	App->window->SetWindowSize(App->window->screen_width, App->window->screen_height, true);
 	App->scene->scene_gos.push_back(editor_camera_go);
@@ -93,34 +93,35 @@ void ModuleCamera::TranslateCameraInput()
 	if (editor_camera_comp == nullptr)
 		return;
 
-	float3 movement = float3::zero;
+	math::float3 movement = math::float3::zero;
+	float magnitude = editor_camera_comp->speed * App->editor->scale * App->time->real_delta_time;
 
 	// Right click + WASD/QE translates the camera
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_Q))
 		{
-			movement += math::float3::unitY * editor_camera_comp->speed * App->time->real_delta_time;
+			movement += math::float3::unitY * magnitude;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_E))
 		{
-			movement -= math::float3::unitY * editor_camera_comp->speed * App->time->real_delta_time;
+			movement -= math::float3::unitY * magnitude;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_A))
 		{
-			movement -= editor_camera_comp->frustum.WorldRight() * editor_camera_comp->speed * App->time->real_delta_time;
+			movement -= editor_camera_comp->frustum.WorldRight() * magnitude;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_D))
 		{
-			movement += editor_camera_comp->frustum.WorldRight() * editor_camera_comp->speed * App->time->real_delta_time;
+			movement += editor_camera_comp->frustum.WorldRight() * magnitude;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_W))
 		{
-			movement += editor_camera_comp->frustum.front * editor_camera_comp->speed * App->time->real_delta_time;
+			movement += editor_camera_comp->frustum.front * magnitude;
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_S))
 		{
-			movement -= editor_camera_comp->frustum.front * editor_camera_comp->speed * App->time->real_delta_time;
+			movement -= editor_camera_comp->frustum.front * magnitude;
 		}
 		editor_camera_go->transform->position += movement;
 	}
@@ -142,6 +143,8 @@ void ModuleCamera::RotateCameraInput()
 	if (editor_camera_comp == nullptr)
 		return;
 
+	float magnitude = editor_camera_comp->rotation_speed;
+
 	// ALT + mouse left click + mouse move orbit around the loaded mesh
 	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) 
 	{
@@ -154,7 +157,7 @@ void ModuleCamera::RotateCameraInput()
 			else
 				center = math::float3(0, 0, 0);
 
-			editor_camera_comp->Orbit(center, editor_camera_comp->rotation_speed * App->input->GetMouseMotion().x, editor_camera_comp->rotation_speed * App->input->GetMouseMotion().y);
+			editor_camera_comp->Orbit(center, App->input->GetMouseMotion().x * magnitude, App->input->GetMouseMotion().y * magnitude);
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) 
 		{
@@ -172,7 +175,7 @@ void ModuleCamera::RotateCameraInput()
 	if(App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
 		SDL_ShowCursor(SDL_DISABLE);
-		editor_camera_comp->Rotate(editor_camera_comp->rotation_speed * App->input->GetMouseMotion().x, editor_camera_comp->rotation_speed * App->input->GetMouseMotion().y);
+		editor_camera_comp->Rotate(App->input->GetMouseMotion().x * magnitude, App->input->GetMouseMotion().y * magnitude);
 	}
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP)
 	{
@@ -201,8 +204,9 @@ void ModuleCamera::WheelInputTranslation(const fPoint& wheel_motion)
 {
 	if (editor_camera_go == nullptr)
 		return;
-	
-	editor_camera_go->transform->position += editor_camera_comp->frustum.front.Mul(wheel_motion.y) * 10 * editor_camera_comp->speed * App->time->real_delta_time;
+
+	float magnitude = editor_camera_comp->speed * App->editor->scale * App->time->real_delta_time;
+	editor_camera_go->transform->position += editor_camera_comp->frustum.front.Mul(wheel_motion.y) * 10 * magnitude;
 }
 
 void ModuleCamera::FitCamera(const AABB &boundingBox)

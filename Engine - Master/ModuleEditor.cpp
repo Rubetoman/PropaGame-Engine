@@ -151,12 +151,12 @@ void ModuleEditor::DrawDebugReferences()
 {
 	if (show_grid)
 	{
-		dd::xzSquareGrid(-500.0f, 500.0f, 0.0f, 1.0f, math::float3(0.65f, 0.65f, 0.65f));
+		dd::xzSquareGrid(-500.0f * scale, 500.0f * scale, 0.0f, 1.0f * scale, math::float3(0.65f, 0.65f, 0.65f));
 	}
 
 	if (show_axis)
 	{
-		float axis_size = 5.0f;
+		float axis_size = scale * 5.0f;
 		dd::axisTriad(math::float4x4::identity, axis_size*0.125f, axis_size*1.25f, 0, true);
 	}
 }

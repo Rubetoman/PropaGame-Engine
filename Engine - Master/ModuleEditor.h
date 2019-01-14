@@ -63,6 +63,9 @@ public:
 	// Selected GO
 	GameObject* selectedGO = false;
 
+	// Scale of the meshes
+	float scale = 100.0f;
+
 	// Debug draw
 	bool show_grid = true;
 	bool show_axis = true;
