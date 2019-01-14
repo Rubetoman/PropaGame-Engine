@@ -65,6 +65,10 @@ bool ModuleRender::Init()
 	glViewport(0, 0, width, height);
 
 	LOG("Renderer context creation successful.");
+
+	// Create fallback texture
+	GenerateFallback();
+
 	return true;
 }
 
@@ -143,4 +147,18 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
     glViewport(0, 0, width, height); 
 	App->window->SetWindowSize(width, height, false);
 	App->camera->editor_camera_comp->CreateFrameBuffer();
+}
+
+void ModuleRender::GenerateFallback()
+{
+	char fallbackImage[3] = { GLubyte(255), GLubyte(255), GLubyte(255) };
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &fallback);
+	glBindTexture(GL_TEXTURE_2D, fallback);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, fallbackImage);
 }

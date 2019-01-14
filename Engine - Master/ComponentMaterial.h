@@ -5,15 +5,6 @@
 
 class GameObject;
 
-enum class MaterialType 
-{
-	NO_TYPE_SELECTED = 0,
-	OCCLUSION_MAP,
-	DIFFUSE_MAP,
-	SPECULAR_MAP,
-	EMISSIVE_MAP
-};
-
 struct Material 
 {
 	// Diffuse
@@ -58,11 +49,6 @@ public:
 	void DrawAmbientParameters();
 	void DrawEmissiveParameters();
 
-	void DrawComboBoxMaterials(const char* id, MaterialType matType, static std::string& currentTexture);
-
-	//Fallback Texture
-	unsigned GenerateFallback(math::float3 color);
-
 	void RenderMaterial();
 	void Delete() override;
 
@@ -73,9 +59,6 @@ public:
 	unsigned shader = 0;
 
 	Material material;
-
-	// Fallback texture
-	unsigned fallback = 0u;
 
 private:
 	ImVec2 image_size = { 80.0f, 80.0f };			// Size of the texture icons for ImGui

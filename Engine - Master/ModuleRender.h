@@ -32,12 +32,13 @@ public:
 
 	void WindowResized(unsigned width, unsigned height);
 
-	void SetViewMatrix(ComponentCamera* camera) const;
-	void SetProjectionMatrix(ComponentCamera* camera) const;
-	void GenerateBlockUniforms();
+	void GenerateFallback();
+
+public:
 
 	void* context = nullptr;
 	unsigned ubo = 0u;
+	unsigned fallback = 0u; // Fallback texture (if any texture of material doesn't have texture use this)
 };
 
 #endif

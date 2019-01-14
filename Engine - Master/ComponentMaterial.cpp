@@ -10,6 +10,7 @@
 #include "ModuleTextures.h"
 #include "ModuleResources.h"
 #include "ModuleShader.h"
+#include "ModuleRender.h"
 
 #include "GameObject.h"
 
@@ -334,21 +335,6 @@ void ComponentMaterial::DrawEmissiveParameters()
 	}
 }
 
-unsigned ComponentMaterial::GenerateFallback(math::float3 color)
-{
-	char fallbackImage[3] = { GLubyte(255 * color.x), GLubyte(255 * color.y), GLubyte(255 * color.z) };
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &fallback);
-	glBindTexture(GL_TEXTURE_2D, fallback);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, fallbackImage);
-	return fallback;
-}
-
 /*void ComponentMaterial::GenerateMaterial(char* &material)
 {
 	if (material == nullptr) return;
@@ -385,7 +371,7 @@ void ComponentMaterial::RenderMaterial()
 	glUniform4fv(glGetUniformLocation(program, "material.diffuse_color"), 1, (GLfloat*)&material.diffuse_color);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, material.diffuse_map != 0u ? material.diffuse_map : GenerateFallback(material.diffuse_color.Float3Part()));
+	glBindTexture(GL_TEXTURE_2D, material.diffuse_map != 0u ? material.diffuse_map : App->renderer->fallback);
 	glUniform1i(glGetUniformLocation(program, "material.diffuse_map"), 0);
 	glDisable(GL_TEXTURE_2D);
 
@@ -393,20 +379,20 @@ void ComponentMaterial::RenderMaterial()
 	glUniform3fv(glGetUniformLocation(program, "material.specular_color"), 1, (GLfloat*)&material.specular_color);
 	glUniform1fv(glGetUniformLocation(program, "material.shininess"), 1, (GLfloat*)&material.shininess);
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, material.specular_map != 0u ? material.specular_map : GenerateFallback(material.specular_color));
+	glBindTexture(GL_TEXTURE_2D, material.specular_map != 0u ? material.specular_map : App->renderer->fallback);
 	glUniform1i(glGetUniformLocation(program, "material.specular_map"), 1);
 	glDisable(GL_TEXTURE_2D);
 
 	// Ambient
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, material.occlusion_map != 0u ? material.occlusion_map : GenerateFallback(math::float3::one));
+	glBindTexture(GL_TEXTURE_2D, material.occlusion_map != 0u ? material.occlusion_map : App->renderer->fallback);
 	glUniform1i(glGetUniformLocation(program, "material.occlusion_map"), 2);
 	glDisable(GL_TEXTURE_2D);
 
 	// Emissive
 	glUniform3fv(glGetUniformLocation(program, "material.emissive_color"), 1, (GLfloat*)&material.emissive_color);
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, material.emissive_map != 0u ? material.emissive_map : GenerateFallback(material.emissive_color));
+	glBindTexture(GL_TEXTURE_2D, material.emissive_map != 0u ? material.emissive_map : App->renderer->fallback);
 	glUniform1i(glGetUniformLocation(program, "material.emissive_map"), 3);
 	glDisable(GL_TEXTURE_2D);
 
