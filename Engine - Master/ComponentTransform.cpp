@@ -28,14 +28,8 @@ Component* ComponentTransform::Duplicate()
 
 void ComponentTransform::SetTransform(const math::float4x4& transform)
 {
-	math::float3 new_position;
-	math::float3 new_scale;
-	math::Quat new_rotation;
-	transform.Decompose(new_position, new_rotation, new_scale);
+	transform.Decompose(position, rotation, scale);
 
-	position = { new_position.x, new_position.y, new_position.z };
-	scale = { new_scale.x, new_scale.y, new_scale.z };
-	rotation = new_rotation;
 	euler_rotation = rotation.ToEulerXYZ();
 	euler_rotation.x = math::RadToDeg(euler_rotation.x);
 	euler_rotation.y = math::RadToDeg(euler_rotation.y);
@@ -53,6 +47,18 @@ void ComponentTransform::SetTransform(const math::float3& pos, const math::Quat&
 	euler_rotation.z = math::RadToDeg(euler_rotation.z);
 }
 
+void ComponentTransform::SetGlobalTransform(const math::float4x4& global_transform)
+{
+	LocalToGlobal(global_transform);
+	math::float4x4 parent_global = math::float4x4::identity;
+
+	if (my_go->parent != nullptr && my_go->parent->transform != nullptr)
+	{
+		parent_global = my_go->parent->GetGlobalTransform();
+	}
+	GlobalToLocal(parent_global);
+}
+
 void ComponentTransform::SetRotation(const math::Quat& rot)
 {
 	rotation = rot;
@@ -68,16 +74,16 @@ void ComponentTransform::SetRotation(const math::float3& rot)
 	rotation.FromEulerXYZ(euler_rotation.x, euler_rotation.y, euler_rotation.z);
 }
 
-void ComponentTransform::LocalToGlobal(const float4x4& global_transform)
+void ComponentTransform::LocalToGlobal(const math::float4x4& local_transform)
 {
-	float4x4 global = global_transform;
+	math::float4x4 global = local_transform;
 	SetTransform(global);
 }
 
-void ComponentTransform::GlobalToLocal(const float4x4& local_transform)
+void ComponentTransform::GlobalToLocal(const math::float4x4& global_transform)
 {
-	float4x4 global = float4x4::FromTRS(position, rotation, scale);
-	float4x4 local = local_transform.Inverted() * global;
+	math::float4x4 global = math::float4x4::FromTRS(position, rotation, scale);
+	math::float4x4 local = global_transform.Inverted() * global;
 	SetTransform(local);
 }
 

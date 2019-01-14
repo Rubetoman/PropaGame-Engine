@@ -14,11 +14,12 @@ public:
 	Component* Duplicate() override;
 	void SetTransform(const math::float4x4& transform);
 	void SetTransform(const math::float3& pos, const math::Quat& rot, const math::float3& sca);
+	void SetGlobalTransform(const math::float4x4& global_transform);
 	void SetRotation(const math::Quat& rot);
 	void SetRotation(const math::float3& rot);
 
-	void LocalToGlobal(const math::float4x4& global_transform);
-	void GlobalToLocal(const math::float4x4& local_transform);
+	void LocalToGlobal(const math::float4x4& local_transform);
+	void GlobalToLocal(const math::float4x4& global_transform);
 
 	bool DrawOnInspector() override;
 
