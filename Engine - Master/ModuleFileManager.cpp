@@ -4,8 +4,14 @@
 #include "Application.h"
 #include "ModuleModelLoader.h"
 #include "ModuleTextures.h"
+#include "ModuleScene.h"
 
-#include "MaterialImporter.h"
+#include "GameObject.h"
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
+
+#include "MeshImporter.h"
+#include "TextureImporter.h"
 
 #include "SDL.h"
 #include "physfs.h"
@@ -111,17 +117,51 @@ void ModuleFileManager::manageFile(char* path)
 
 	if (extension == "fbx" || extension == "FBX")
 	{
-		//App->model_loader->LoadMesh(path);
+		//TODO: Improve Load() to open files from anywhere
+		std::string nPath = MODELS_ASSETS_FOLDER;
+		std::string filename = path;
+		std::string extension = path;
+		SplitPath(path, nullptr, &filename, &extension);
+		nPath += filename + "." + extension;
+		MeshImporter::ImportFBX(nPath.c_str());
 	}
 	else if (extension == "png" || extension == "dds" || extension == "jpg" || extension == "tif")
 	{
-		//App->textures->loadTexture(path, true);
-		TextureImporter::Import(path);
+		//TODO: Improve Load() to open files from anywhere
+		std::string nPath = TEXTURES_ASSETS_FOLDER;
+		std::string filename = path;
+		std::string extension = path;
+		SplitPath(path, nullptr, &filename, &extension);
+		nPath += filename + "." + extension;
+		TextureImporter::Import(nPath.c_str());
+	}
+	else if (extension == "proMesh")
+	{
+		LoadMeshFileToScene(*path);
 	}
 	else
 	{
 		LOG("File format not supported");
 	}
+}
+
+void ModuleFileManager::LoadMeshFileToScene(const char& path)
+{
+	std::string filename = &path;
+	std::string extension = &path;
+	SplitPath(&path, nullptr, &filename, &extension);
+	filename += "." + extension;
+
+	GameObject* go = App->scene->CreateGameObject(filename.c_str(), App->scene->root);
+	//Add Mesh Component
+	ComponentMesh* mesh_comp = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
+	go->CreateComponent(component_type::Material);
+
+
+	MeshImporter::Load(&mesh_comp->mesh, filename.c_str());
+
+	mesh_comp->ComputeMesh();
+	go->ComputeBBox();
 }
 
 std::string ModuleFileManager::getFileExtension(const char* path)

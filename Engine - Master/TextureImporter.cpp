@@ -1,9 +1,10 @@
-#include "MaterialImporter.h"
+#include "TextureImporter.h"
 
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleFileManager.h"
+#include "ModuleResources.h"
 
 TextureImporter::TextureImporter()
 {
@@ -55,4 +56,5 @@ void TextureImporter::Import(const char* path)
 			ilDeleteImages(1, &ImageName);
 		}
 	}
+	App->resources->UpdateTexturesList();
 }

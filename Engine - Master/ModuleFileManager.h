@@ -23,6 +23,9 @@ public:
 	void GetFilesFromDirectory(const char* directory, std::vector<std::string>& fileList) const;
 
 	void manageFile(char* path);
+
+	void LoadMeshFileToScene(const char& path);
+
 	std::string getFileExtension(const char* path);
 	void SplitPath(const char* full_path, std::string* path, std::string* filename, std::string* extension);
 	std::string NormalizePath(const char * path);

@@ -313,9 +313,9 @@ void ComponentMaterial::DrawEmissiveParameters()
 					emissiveSelected = (*texture).c_str();
 					if (material.emissive_map != 0u)
 					{
-						App->textures->Unload(material.diffuse_map);
+						App->textures->Unload(material.emissive_map);
 					}
-					App->textures->LoadTexture(emissiveSelected.c_str(), material.diffuse_map, material.diffuse_width, material.diffuse_height);
+					App->textures->LoadTexture(emissiveSelected.c_str(), material.emissive_map, material.emissive_width, material.emissive_height);
 				}
 			}
 		}

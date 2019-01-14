@@ -8,7 +8,7 @@
 #include "Texture.h"
 #include "ComponentCamera.h"
 
-#include "MaterialImporter.h"
+#include "TextureImporter.h"
 
 ModuleResources::ModuleResources()
 {
@@ -133,12 +133,18 @@ void ModuleResources::DeleteMesh(ComponentMesh* mesh)
 
 void ModuleResources::UpdateMeshesList()
 {
-	file_meshes->clear();
-	App->file->GetFilesFromDirectory(MESHES_FOLDER, *file_meshes);
+	if (file_meshes != nullptr)
+	{
+		file_meshes->clear();
+		App->file->GetFilesFromDirectory(MESHES_FOLDER, *file_meshes);
+	}
 }
 
 void ModuleResources::UpdateTexturesList()
 {
-	file_textures->clear();
-	App->file->GetFilesFromDirectory(TEXTURES_FOLDER, *file_textures);
+	if (file_textures != nullptr)
+	{
+		file_textures->clear();
+		App->file->GetFilesFromDirectory(TEXTURES_FOLDER, *file_textures);
+	}
 }

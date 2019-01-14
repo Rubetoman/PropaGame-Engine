@@ -95,7 +95,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="JSON.h" />
-    <ClInclude Include="MaterialImporter.h" />
+    <ClInclude Include="TextureImporter.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h" />
     <ClInclude Include="MathGeoLib\include\Geometry\AABB.h" />
     <ClInclude Include="MathGeoLib\include\Geometry\AABB2D.h" />
@@ -204,7 +204,7 @@
     <ClCompile Include="JSON.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MaterialImporter.cpp" />
+    <ClCompile Include="TextureImporter.cpp" />
     <ClCompile Include="MathGeoLib\include\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="MathGeoLib\include\Geometry\AABB.cpp" />
     <ClCompile Include="MathGeoLib\include\Geometry\Capsule.cpp" />

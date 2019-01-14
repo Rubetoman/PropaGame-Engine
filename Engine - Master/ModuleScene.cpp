@@ -154,7 +154,7 @@ GameObject* ModuleScene::CreateGameObject(const char* name)
 		root = new GameObject("World");
 
 	// Check the pointer isn't null
-	if (name != nullptr)
+	if (name != nullptr && name != "")
 	{
 		go = new GameObject(name, root);
 	}	
@@ -176,7 +176,7 @@ GameObject* ModuleScene::CreateGameObject(const char* name, GameObject* parent)
 	// Check the pointers aren't null
 	if (parent != nullptr)
 	{
-		if (name != nullptr)
+		if (name != nullptr && name != "")
 			go = new GameObject(name, parent);
 		else
 			go = new GameObject(GO_DEFAULT_NAME, parent);
@@ -199,7 +199,7 @@ GameObject* ModuleScene::CreateGameObject(const char* name, math::float4x4& tran
 		root = new GameObject("World");
 
 	// Check the pointers aren't null
-	if (name != nullptr)
+	if (name != nullptr && name != "")
 		go = new GameObject(name, transform, root);
 	else
 		go = new GameObject(GO_DEFAULT_NAME, transform, root);
@@ -218,7 +218,7 @@ GameObject* ModuleScene::CreateGameObject(const char* name, math::float4x4& tran
 	// Check the pointers aren't null
 	if (parent != nullptr)
 	{
-		if (name != nullptr)
+		if (name != nullptr && name != "")
 			go = new GameObject(name, transform, parent);
 		else
 			go = new GameObject(GO_DEFAULT_NAME, transform, parent);

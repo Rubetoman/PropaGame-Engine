@@ -35,7 +35,7 @@ void MeshImporter::ImportFBX(const char* filePath)
 	std::string fileName;
 	App->file->SplitPath(filePath, nullptr, &fileName, nullptr);
 
-	if (scene->mMeshes != nullptr)
+	if (scene!= nullptr && scene->mMeshes != nullptr)
 	{
 		// Create root GO
 		GameObject* root_go = App->scene->CreateGameObject(scene->mRootNode->mName.C_Str(), App->scene->root);
@@ -47,6 +47,7 @@ void MeshImporter::ImportFBX(const char* filePath)
 			Import(scene->mMeshes[i], meshName.c_str(), root_go);
 		}
 	}
+	App->resources->UpdateMeshesList();
 }
 
 bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName, GameObject* parent) 
