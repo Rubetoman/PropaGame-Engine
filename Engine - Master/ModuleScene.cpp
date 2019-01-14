@@ -348,6 +348,7 @@ void ModuleScene::NewScene()
 	App->resources->CleanUp();
 	App->resources->UpdateMeshesList();
 	App->resources->UpdateTexturesList();
+	App->resources->UpdateScenesList();
 
 	InitScene();
 }
@@ -375,6 +376,8 @@ bool ModuleScene::SaveScene(const char* scene_name)
 	scene->addValue("Root", gameObjects);
 	scene->Write();
 	App->json->closeFile(scene);
+
+	App->resources->UpdateScenesList();
 
 	LOG("Scene saved successfully.");
 	return true;

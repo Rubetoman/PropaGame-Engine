@@ -72,10 +72,10 @@ void WindowExplorer::DrawTreeNode(const char* name, bool isLeaf) {
 		else if (name == "Scenes") 
 		{
 
-			/*for (std::vector<std::string>::iterator iterator = App->library->fileScenesList->begin(); iterator != App->library->fileScenesList->end(); ++iterator) 
+			for (std::vector<std::string>::iterator iterator = App->resources->file_scenes->begin(); iterator != App->resources->file_scenes->end(); ++iterator)
 			{
 				DrawTreeNode((*iterator).c_str(), true);
-			}*/
+			}
 		}
 
 		ImGui::TreePop();

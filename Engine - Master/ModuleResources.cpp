@@ -27,6 +27,7 @@ bool ModuleResources::Init()
 {
 	file_meshes = new std::vector<std::string>();
 	file_textures = new std::vector<std::string>();
+	file_scenes = new std::vector<std::string>();
 
 	TextureImporter::Import(CHECKERS_TEXTURE);
 	App->textures->LoadTexture("Checkers_Texture.proDDS", checkers_texture, (int&)checkers_size.x, (int&)checkers_size.y);
@@ -38,17 +39,16 @@ bool ModuleResources::Init()
 
 	UpdateMeshesList();
 	UpdateTexturesList();
-	/*if (checkers_texture == nullptr || no_camera_texture == nullptr)
-		return false;*/
+	UpdateScenesList();
 
 	return true;
 }
 
 bool ModuleResources::CleanUp()
 {
-	//textures.clear();
 	file_meshes->clear();
 	file_textures->clear();
+	file_scenes->clear();
 	lights.clear();
 	meshes.clear();
 
@@ -146,5 +146,14 @@ void ModuleResources::UpdateTexturesList()
 	{
 		file_textures->clear();
 		App->file->GetFilesFromDirectory(TEXTURES_FOLDER, *file_textures);
+	}
+}
+
+void ModuleResources::UpdateScenesList()
+{
+	if (file_scenes != nullptr)
+	{
+		file_scenes->clear();
+		App->file->GetFilesFromDirectory(SCENES_FOLDER, *file_scenes);
 	}
 }

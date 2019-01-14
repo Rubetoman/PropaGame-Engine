@@ -35,6 +35,7 @@ public:
 
 	void UpdateMeshesList();
 	void UpdateTexturesList();
+	void UpdateScenesList();
 
 public:
 	std::vector<GameObject*> lights;		// List of all the lights on the scene
@@ -53,9 +54,10 @@ public:
 	// Meshes
 	std::vector<ComponentMesh*> meshes;		// Vector of all the meshes on the scene
 
-	// Imported files
+	// Own files
 	std::vector<std::string>* file_meshes = nullptr;
 	std::vector<std::string>* file_textures = nullptr;
+	std::vector<std::string>* file_scenes = nullptr;
 };
 
 #endif /*__MODULERESOURCES_H__*/
