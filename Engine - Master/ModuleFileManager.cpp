@@ -109,7 +109,21 @@ void ModuleFileManager::GetFilesFromDirectory(const char* directory, std::vector
 	PHYSFS_freeList(enumeratedFIles);
 }
 
-void ModuleFileManager::manageFile(char* path)
+bool ModuleFileManager::Remove(const char* pathAndFileName)
+{
+	bool result = false;
+
+	if (pathAndFileName != nullptr) 
+	{
+		PHYSFS_delete(pathAndFileName);
+		LOG("File deleted: [%s]", pathAndFileName);
+		result = true;
+	}
+
+	return result;
+}
+
+void ModuleFileManager::ManageFile(char* path)
 {
 	assert(path != nullptr);
 

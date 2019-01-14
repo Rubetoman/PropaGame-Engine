@@ -44,6 +44,19 @@ bool ModuleResources::Init()
 	return true;
 }
 
+update_status ModuleResources::Update()
+{
+	if (itemToDelete)
+	{
+		itemToDelete = false;
+		if (removeMesh)
+			UpdateMeshesList();
+		else
+			UpdateTexturesList();
+	}
+	return UPDATE_CONTINUE;
+}
+
 bool ModuleResources::CleanUp()
 {
 	file_meshes->clear();

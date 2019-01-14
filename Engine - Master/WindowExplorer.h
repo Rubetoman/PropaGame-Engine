@@ -9,6 +9,7 @@ public:
 	void Draw() override;
 	bool IsFocused() const;
 	void DrawTreeNode(const char* name, bool isLeaf);
+	void ClickBehaviour(const char* name);
 
 public:
 	bool		focus = false;

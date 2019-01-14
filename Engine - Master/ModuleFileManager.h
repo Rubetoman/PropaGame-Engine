@@ -21,8 +21,9 @@ public:
 	bool AddPath(const char* path);
 	bool IsDirectory(const char* pathAndFileName) const;
 	void GetFilesFromDirectory(const char* directory, std::vector<std::string>& fileList) const;
+	bool Remove(const char* pathAndFileName);
 
-	void manageFile(char* path);
+	void ManageFile(char* path);
 
 	void LoadMeshFileToScene(const char& path);
 

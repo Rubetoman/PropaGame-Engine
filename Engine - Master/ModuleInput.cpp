@@ -106,7 +106,7 @@ update_status ModuleInput::Update()
 		case SDL_DROPFILE: 
 		      // In case if dropped file
 			dropped_filedir = event.drop.file;
-			App->file->manageFile(dropped_filedir);
+			App->file->ManageFile(dropped_filedir);
 			SDL_free(dropped_filedir);    // Free dropped_filedir memory
 			break;
 

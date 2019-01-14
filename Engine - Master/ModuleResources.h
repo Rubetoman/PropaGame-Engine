@@ -20,6 +20,7 @@ public:
 	~ModuleResources();
 
 	bool Init() override;
+	update_status Update() override;
 	bool CleanUp() override;
 
 	std::string GenerateNewUID();
@@ -58,6 +59,9 @@ public:
 	std::vector<std::string>* file_meshes = nullptr;
 	std::vector<std::string>* file_textures = nullptr;
 	std::vector<std::string>* file_scenes = nullptr;
+
+	bool itemToDelete = false;
+	bool removeMesh = false;
 };
 
 #endif /*__MODULERESOURCES_H__*/

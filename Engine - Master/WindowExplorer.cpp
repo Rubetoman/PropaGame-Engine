@@ -51,7 +51,7 @@ void WindowExplorer::DrawTreeNode(const char* name, bool isLeaf) {
 
 	bool resourceOpen = ImGui::TreeNodeEx(name, nodeFlags, name);
 
-	//ClickBehaviour(name);
+	ClickBehaviour(name);
 
 	if (resourceOpen) 
 	{
@@ -79,6 +79,46 @@ void WindowExplorer::DrawTreeNode(const char* name, bool isLeaf) {
 		}
 
 		ImGui::TreePop();
+	}
+}
+
+void WindowExplorer::ClickBehaviour(const char* name) 
+{
+	if (ImGui::IsItemClicked(0))
+		itemSelected = name;
+
+	if (ImGui::IsItemClicked(1)) 
+	{
+		itemSelected = name;
+		ImGui::OpenPopup("ContextMenu");
+	}
+
+	if (itemSelected == name) {
+		if (ImGui::BeginPopup("ContextMenu")) 
+		{
+
+			if (ImGui::MenuItem("Delete")) 
+			{
+				std::string ext;
+				App->file->SplitPath(name, nullptr, nullptr, &ext);
+				std::string nameToRemove = name;
+
+				if (ext == "proMesh") 
+				{
+					nameToRemove.insert(0, "/Library/Meshes/");
+					App->resources->removeMesh = true;
+					App->resources->itemToDelete = true;
+				}
+				else if (ext == "proDDS") 
+				{
+					nameToRemove.insert(0, "/Library/Textures/");
+					App->resources->removeMesh = false;
+					App->resources->itemToDelete = true;
+				}
+				App->file->Remove(nameToRemove.c_str());
+			}
+			ImGui::EndPopup();
+		}
 	}
 }
 
