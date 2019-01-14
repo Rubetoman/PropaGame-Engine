@@ -10,7 +10,7 @@ public:
 	WindowConfiguration(const char* name);
 	~WindowConfiguration();
 
-	void Draw();
+	void Draw() override;
 
 	// Game performance
 	std::vector<float> fps_game_log;

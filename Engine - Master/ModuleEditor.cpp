@@ -19,6 +19,7 @@
 #include "WindowHierarchy.h"
 #include "WindowInspector.h"
 #include "WindowCamera.h"
+#include "WindowExplorer.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -59,6 +60,7 @@ bool ModuleEditor::Init()
 	editorWindows.push_back(configuration = new WindowConfiguration("configuration"));
 	editorWindows.push_back(hierarchy = new WindowHierarchy("hierarchy"));
 	editorWindows.push_back(inspector = new WindowInspector("inspector"));
+	editorWindows.push_back(explorer = new WindowExplorer("explorer"));
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init(glsl_version);
@@ -264,6 +266,7 @@ void ModuleEditor::ShowMainMenuBar()
 				ImGui::EndMenu();
 			}
 			ImGui::Separator();
+			if (ImGui::MenuItem("Explorer", NULL, explorer->isActive())) { explorer->toggleActive(); }
 			if (ImGui::MenuItem("Configuration", NULL, configuration->isActive())) { configuration->toggleActive(); }
 			if (ImGui::MenuItem("Hardware Info", NULL, hardware->isActive())) { hardware->toggleActive(); }
 			if (ImGui::MenuItem("Console", NULL, console->isActive())) { console->toggleActive(); }

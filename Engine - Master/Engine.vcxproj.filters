@@ -228,6 +228,7 @@
     <ClCompile Include="TextureImporter.cpp">
       <Filter>Other\Importer</Filter>
     </ClCompile>
+    <ClCompile Include="WindowExplorer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -529,6 +530,7 @@
     <ClInclude Include="TextureImporter.h">
       <Filter>Other\Importer</Filter>
     </ClInclude>
+    <ClInclude Include="WindowExplorer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\Assets\Shaders\Default.fs">

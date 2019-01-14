@@ -180,6 +180,7 @@
     <ClInclude Include="WindowCamera.h" />
     <ClInclude Include="WindowConfiguration.h" />
     <ClInclude Include="WindowConsole.h" />
+    <ClInclude Include="WindowExplorer.h" />
     <ClInclude Include="WindowHardware.h" />
     <ClInclude Include="WindowHierarchy.h" />
     <ClInclude Include="WindowInspector.h" />
@@ -259,6 +260,7 @@
     <ClCompile Include="WindowCamera.cpp" />
     <ClCompile Include="WindowConfiguration.cpp" />
     <ClCompile Include="WindowConsole.cpp" />
+    <ClCompile Include="WindowExplorer.cpp" />
     <ClCompile Include="WindowHardware.cpp" />
     <ClCompile Include="WindowHierarchy.cpp" />
     <ClCompile Include="WindowInspector.cpp" />

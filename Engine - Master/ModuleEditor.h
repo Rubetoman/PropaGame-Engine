@@ -20,6 +20,7 @@ class WindowConfiguration;
 class WindowHierarchy;
 class WindowInspector;
 class WindowCamera;
+class WindowExplorer;
 
 class GameObject;
 class ComponentCamera;
@@ -84,6 +85,7 @@ public:
 	WindowConfiguration* configuration = nullptr;
 	WindowHierarchy* hierarchy = nullptr;
 	WindowInspector* inspector = nullptr;
+	WindowExplorer* explorer = nullptr;
 
 	//Pop ups
 	bool show_scene_save_popup = false;
