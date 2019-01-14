@@ -21,7 +21,8 @@ void TextureImporter::Import(const char* path)
 	char* fileBuffer = nullptr;
 	unsigned lenghBuffer = App->file->Load(path, &fileBuffer);
 
-	if (fileBuffer) {
+	if (fileBuffer) 
+	{
 		ILuint ImageName;
 		ilGenImages(1, &ImageName);
 		ilBindImage(ImageName);

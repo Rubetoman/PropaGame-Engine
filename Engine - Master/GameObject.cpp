@@ -77,6 +77,10 @@ GameObject::GameObject(const GameObject& go)
 		{
 			App->resources->cameras.push_back((ComponentCamera*)new_comp);
 		}
+		else if (new_comp->type == component_type::Light)
+		{
+			App->resources->lights.push_back(this);
+		}
 	}
 	for (const auto& child : go.children)
 	{
@@ -200,11 +204,6 @@ void GameObject::Draw(const math::float4x4& view, const math::float4x4& proj, Co
 {
 	if (!active) return;
 	if (transform == nullptr) return;
-
-	for (const auto &child : children)
-	{
-		child->Draw(view, proj, camera);
-	}
 
 	// Compute BBox
 	AABB boundingBox;

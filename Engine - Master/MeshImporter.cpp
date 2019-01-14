@@ -35,7 +35,7 @@ void MeshImporter::ImportFBX(const char* filePath)
 	std::string fileName;
 	App->file->SplitPath(filePath, nullptr, &fileName, nullptr);
 
-	if (scene!= nullptr && scene->mMeshes != nullptr)
+	if (scene != nullptr && scene->mMeshes != nullptr)
 	{
 		// Create root GO
 		GameObject* root_go = App->scene->CreateGameObject(scene->mRootNode->mName.C_Str(), App->scene->root);
@@ -48,13 +48,15 @@ void MeshImporter::ImportFBX(const char* filePath)
 		}
 	}
 	App->resources->UpdateMeshesList();
+	delete[] fileBuffer;
+	fileBuffer = nullptr;
 }
 
 bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName, GameObject* parent) 
 {
 	bool result = false;
 
-	if (aiMesh == nullptr) 
+	if (aiMesh == nullptr)
 	{
 		LOG("Error: failed to import FBX file.");
 		return result;
@@ -65,7 +67,7 @@ bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName, GameObject
 	//Add Mesh Component
 	ComponentMesh* mesh_comp = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
 	go->CreateComponent(component_type::Material);
-
+	
 	mesh.num_vertices = aiMesh->mNumVertices;
 	mesh.vertices = new float[mesh.num_vertices * 3];
 	memcpy(mesh.vertices, aiMesh->mVertices, sizeof(float) * mesh.num_vertices * 3);

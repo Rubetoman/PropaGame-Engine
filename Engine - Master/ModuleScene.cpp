@@ -15,7 +15,6 @@
 
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
-#include "ComponentLight.h"
 #include "ComponentMesh.h"
 
 ModuleScene::ModuleScene()
@@ -82,11 +81,27 @@ void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj, C
 		}
 
 		// Draw non static GOs (If quadtree is not in use will draw also static GOs)
-		root->Draw(view, proj, camera);
+		//root->Draw(view, proj, camera);
+		for (auto go : App->resources->meshes)
+		{
+			go->my_go->Draw(view, proj, camera);
+		}
 	}
 
 	if (&camera == App->camera->editor_camera_comp)
 	{
+		// Draw cameras
+		for (auto cam : App->resources->cameras)
+		{
+			cam->my_go->Draw(view, proj, camera);
+		}
+
+		// Draw lights
+		for (auto light : App->resources->lights)
+		{
+			light->Draw(view, proj, camera);
+		}
+
 		if (use_quadtree && draw_quadtree)
 			quadtree->Draw();
 

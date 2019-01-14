@@ -38,7 +38,7 @@ bool ModuleModelLoader::Init()
 	//CreateSphere("sphere", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(1.0f, 1.0f, 1.0f), 20, 20, float4(0.f, 0.0f, 0.5f, 1.0f));
 	//CreateCylinder("cylinder0", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, 2.0f, 1.0f, 30, 30, float4(0.f, 0.5f, 0.5f, 1.0f));
 
-	MeshImporter::ImportFBX("Assets/Models/BakerHouse.fbx");
+	//MeshImporter::ImportFBX("Assets/Models/BakerHouse.fbx");
 
 	return true;
 }

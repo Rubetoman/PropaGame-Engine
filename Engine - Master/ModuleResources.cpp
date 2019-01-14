@@ -29,13 +29,13 @@ bool ModuleResources::Init()
 	file_textures = new std::vector<std::string>();
 	file_scenes = new std::vector<std::string>();
 
-	TextureImporter::Import(CHECKERS_TEXTURE);
-	App->textures->LoadTexture("Checkers_Texture.proDDS", checkers_texture, (int&)checkers_size.x, (int&)checkers_size.y);
+//	TextureImporter::Import(CHECKERS_TEXTURE);
+//	App->textures->LoadTexture("Checkers_Texture.proDDS", checkers_texture, (int&)checkers_size.x, (int&)checkers_size.y);
 
-	TextureImporter::Import(CAMERA_TEXTURE);
-	App->textures->LoadTexture("No_Camera.proDDS", no_camera_texture, (int&)no_camera_size.x, (int&)no_camera_size.y);
+//	TextureImporter::Import(CAMERA_TEXTURE);
+//	App->textures->LoadTexture("No_Camera.proDDS", no_camera_texture, (int&)no_camera_size.x, (int&)no_camera_size.y);
 
-	TextureImporter::Import("Assets/Models/textures/Baker_house.png");
+//	TextureImporter::Import("Assets/Models/textures/Baker_house.png");
 
 	UpdateMeshesList();
 	UpdateTexturesList();

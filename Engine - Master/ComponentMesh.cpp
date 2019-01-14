@@ -212,7 +212,7 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 
 	// Disable VAO
 	glBindVertexArray(0);
-	//glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 }

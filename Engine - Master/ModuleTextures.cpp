@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "ModuleResources.h"
+#include "TextureImporter.h"
 
 #include <assert.h>
 
@@ -336,6 +337,9 @@ void ModuleTextures::LoadTexture(std::string path, unsigned& textureID, int& wid
 	}
 
 	ilDeleteImages(1, &imageID);
+	delete[] fileBuffer;
+	fileBuffer = nullptr;
+
 	LOG("Material creation successful.");
 }
 

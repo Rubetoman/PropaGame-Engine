@@ -51,7 +51,6 @@ public:
 	// Scene Cameras
 	std::vector<ComponentCamera*> cameras;	// Vector with all the cameras on the scene
 
-	//TODO: use a Map to avoid deleting a duplicated mesh
 	// Meshes
 	std::vector<ComponentMesh*> meshes;		// Vector of all the meshes on the scene
 
