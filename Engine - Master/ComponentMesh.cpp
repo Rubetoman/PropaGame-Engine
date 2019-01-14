@@ -19,7 +19,6 @@ ComponentMesh::ComponentMesh(GameObject* go) : Component(go, component_type::Mes
 
 ComponentMesh::ComponentMesh(const ComponentMesh& comp) : Component(comp)
 {
-	// TODO: Create new buffers or not delete when they are used by other comp
 	mesh.vbo = comp.mesh.vbo;
 	mesh.ibo = comp.mesh.ibo;
 	mesh.vao = comp.mesh.vao;
@@ -30,6 +29,7 @@ ComponentMesh::ComponentMesh(const ComponentMesh& comp) : Component(comp)
 //	mesh.num_normals = comp.mesh.num_normals;
 	mesh.normals = comp.mesh.normals;
 	mesh.boundingBox = comp.mesh.boundingBox;
+	currentMesh = comp.currentMesh;
 	App->resources->meshes.push_back(this);
 }
 
@@ -338,17 +338,8 @@ void ComponentMesh::Delete()
 JSON_value* ComponentMesh::Save(JSON_value* component) const
 {
 	JSON_value* mesh = Component::Save(component);
-	//TODO: update mesh save
 
-	/*mesh->AddUnsigned("VBO", vbo);
-	mesh->AddUnsigned("IBO", ibo);
-	mesh->AddUnsigned("VAO", vao);
-	mesh->AddUnsigned("Number Vertices", num_vertices);
-	mesh->AddUnsigned("Number Indices", num_indices);
-	//TODO: Add vertices, indices and normals
-	mesh->AddVec3("boundingBox min", boundingBox.minPoint);
-	mesh->AddVec3("boundingBox max", boundingBox.maxPoint);*/
-
+	mesh->AddString("currentMesh", currentMesh.c_str());
 	component->addValue("", mesh);
 
 	return mesh;
@@ -357,14 +348,7 @@ JSON_value* ComponentMesh::Save(JSON_value* component) const
 void ComponentMesh::Load(JSON_value* component)
 {
 	Component::Load(component);
-	//TODO: update mesh load
 
-	/*vbo = component->GetUnsigned("VBO");
-	ibo = component->GetUnsigned("IBO");
-	vao = component->GetUnsigned("VAO");
-	num_vertices = component->GetUnsigned("Number Vertices");
-	num_indices = component->GetUnsigned("Number Indices");
-	//TODO: Add vertices, indices and normals
-	boundingBox.minPoint = component->GetVec3("boundingBox min");
-	boundingBox.maxPoint = component->GetVec3("boundingBox max");*/
+	currentMesh = component->GetString("currentMesh");
+	LoadMesh(currentMesh.c_str());
 }

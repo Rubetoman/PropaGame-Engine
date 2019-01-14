@@ -20,12 +20,12 @@ ComponentMaterial::ComponentMaterial(GameObject* go) : Component(go, component_t
 ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(comp)
 {
 	shader = comp.shader;
-	material.diffuse_map = comp.material.diffuse_map;
-	material.diffuse_color = comp.material.diffuse_color;
-	material.shininess = comp.material.shininess;
-	material.k_specular = comp.material.k_specular;
-	material.k_diffuse = comp.material.k_diffuse;
-	material.k_ambient = comp.material.k_ambient;
+	material = comp.material;
+	diffuseSelected = comp.diffuseSelected;
+	specularSelected = comp.specularSelected;
+	occlusionSelected = comp.occlusionSelected;
+	emissiveSelected = comp.emissiveSelected;
+
 	//++App->resources->textures[diffuse_map];
 }
 
@@ -258,7 +258,7 @@ void ComponentMaterial::DrawAmbientParameters()
 						{
 							App->textures->Unload(material.occlusion_map);
 						}
-						App->textures->LoadTexture(occlusionSelected.c_str(), material.occlusion_map, material.occlusion_height, material.occlusion_height);
+						App->textures->LoadTexture(occlusionSelected.c_str(), material.occlusion_map, material.occlusion_width, material.occlusion_height);
 					}
 				}
 			}
@@ -418,44 +418,44 @@ void ComponentMaterial::Delete()
 	if (material.emissive_map != 0)
 		App->textures->Unload(material.emissive_map);
 
+	Material emptyMaterial;
+	material = emptyMaterial;
+
 	my_go->material_comp = nullptr;
-	Component::Delete();
 }
 
 JSON_value* ComponentMaterial::Save(JSON_value* component) const
 {
-	JSON_value* material = Component::Save(component);
+	JSON_value* mat = Component::Save(component);
 
-	material->AddUnsigned("shader", shader);
-	// TODO: Update to new material system
+	mat->AddUnsigned("shader", shader);
+
 	// Save diffuse data
-	/*if(diffuse_map != nullptr)
-		material->AddString("diffuse_map", diffuse_map->path);
-	material->AddVec4("diffuse_color", diffuse_color);
-	material->AddFloat("k_diffuse", k_diffuse);
+	mat->AddString("diffuseSelected", diffuseSelected.c_str());
+	mat->AddUnsigned("diffuse_map", material.diffuse_map);
+	mat->AddVec4("diffuse_color", material.diffuse_color);
+	mat->AddFloat("k_diffuse", material.k_diffuse);
 
 	// Save specular data
-	if (specular_map != nullptr)
-		material->AddString("specular_map", specular_map->path);
-	material->AddVec3("specular_color", specular_color);
-	material->AddFloat("shininess", shininess);
-	material->AddFloat("k_specular", k_specular);
+	mat->AddString("specularSelected", specularSelected.c_str());
+	mat->AddUnsigned("specular_map", material.specular_map);
+	mat->AddVec3("specular_color", material.specular_color);
+	mat->AddFloat("shininess", material.shininess);
+	mat->AddFloat("k_specular", material.k_specular);
 
 	// Save ambient data
-	if (occlusion_map != nullptr)
-		material->AddString("occlusion_map", occlusion_map->path);
-	material->AddFloat("k_ambient", k_ambient);
+	mat->AddString("occlusionSelected", occlusionSelected.c_str());
+	mat->AddUnsigned("occlusion_map", material.occlusion_map);
+	mat->AddFloat("k_ambient", material.k_ambient);
 
 	// Save emissive data
-	if (emissive_map != nullptr)
-		material->AddString("emissive_map", emissive_map->path);
-	material->AddVec3("emissive_color", emissive_color);*/
+	mat->AddString("emissiveSelected", emissiveSelected.c_str());
+	mat->AddUnsigned("emissive_map", material.emissive_map);
+	mat->AddVec3("emissive_color", material.emissive_color);
 
+	component->addValue("", mat);
 
-
-	component->addValue("", material);
-
-	return material;
+	return mat;
 }
 
 void ComponentMaterial::Load(JSON_value* component)
@@ -463,31 +463,31 @@ void ComponentMaterial::Load(JSON_value* component)
 	Component::Load(component);
 
 	shader = component->GetUnsigned("shader");
-	// TODO: Update to new material system
+
 	// Get diffuse data
-	/*const char* tx = component->GetString("diffuse_map");
-	if(tx != nullptr)
-		diffuse_map = App->textures->loadTexture(tx, false);
-	diffuse_color = component->GetVec4("diffuse_color");
-	k_diffuse = component->GetFloat("k_diffuse");
+	diffuseSelected = component->GetString("diffuseSelected");
+	material.diffuse_map = component->GetUnsigned("diffuse_map");
+	material.diffuse_color = component->GetVec4("diffuse_color");
+	material.k_diffuse = component->GetFloat("k_diffuse");
+	App->textures->LoadTexture(diffuseSelected.c_str(), material.diffuse_map, material.diffuse_width, material.diffuse_height);
 
 	// Get specular data
-	tx = component->GetString("specular_map");
-	if (tx != nullptr)
-		specular_map = App->textures->loadTexture(tx, false);
-	specular_color = component->GetVec3("specular_color");
-	shininess = component->GetFloat("shininess");
-	k_specular = component->GetFloat("k_specular");
+	specularSelected = component->GetString("specularSelected");
+	material.specular_map = component->GetUnsigned("specular_map");
+	material.specular_color = component->GetVec3("specular_color");
+	material.shininess = component->GetFloat("shininess");
+	material.k_specular = component->GetFloat("k_specular");
+	App->textures->LoadTexture(specularSelected.c_str(), material.specular_map, material.specular_width, material.specular_height);
 
 	// Get ambient data
-	tx = component->GetString("occlusion_map");
-	if (tx != nullptr)
-		occlusion_map = App->textures->loadTexture(tx, false);
-	k_ambient = component->GetFloat("k_ambient");
+	occlusionSelected = component->GetString("occlusionSelected");
+	material.occlusion_map = component->GetUnsigned("occlusion_map");
+	material.k_ambient = component->GetFloat("k_ambient");
+	App->textures->LoadTexture(occlusionSelected.c_str(), material.occlusion_map, material.occlusion_width, material.occlusion_height);
 
 	// Get emissive data
-	tx = component->GetString("emissive_map");
-	if (tx != nullptr)
-		emissive_map = App->textures->loadTexture(tx, false);
-	emissive_color = component->GetVec3("emissive_color");*/
+	emissiveSelected = component->GetString("emissiveSelected");
+	material.emissive_map = component->GetUnsigned("emissive_map");
+	material.emissive_color = component->GetVec3("emissive_color");
+	App->textures->LoadTexture(emissiveSelected.c_str(), material.emissive_map, material.emissive_width, material.emissive_height);
 }
