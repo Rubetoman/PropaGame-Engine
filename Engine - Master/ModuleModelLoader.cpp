@@ -180,6 +180,22 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+		mesh->mesh.indices = new unsigned[mesh->mesh.num_indices]; // assume each face is a triangle
+		for (int j = 0; j < src_mesh->mNumFaces; ++j)
+		{
+			if (src_mesh->mFaces[j].mNumIndices != 3)
+			{
+				LOG("WARNING, geometry face with != 3 indices!");
+				LOG("WARNING, face normals couldn't be loaded");
+				mesh = nullptr;
+				break;
+			}
+			else
+			{
+				memcpy(&mesh->mesh.indices[j * 3], src_mesh->mFaces[j].mIndices, 3 * sizeof(unsigned));
+			}
+		}
+
 		mesh->mesh.boundingBox.SetNegativeInfinity();
 		mesh->mesh.boundingBox.Enclose((math::float3*)src_mesh->mVertices, mesh->mesh.num_vertices);
 		App->resources->meshes.push_back(mesh);
