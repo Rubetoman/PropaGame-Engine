@@ -3,7 +3,9 @@
 #include "Application.h"
 #include "ModuleResources.h"
 #include "ModuleFileManager.h"
+#include "ModuleModelLoader.h"
 
+#include "MeshImporter.h"
 #include <vector>
 
 WindowExplorer::WindowExplorer(const char* name) : Window(name)
@@ -118,14 +120,28 @@ void WindowExplorer::ClickBehaviour(const char* name)
 		ImGui::OpenPopup("ContextMenu");
 	}
 
-	if (itemSelected == name) {
+	if (itemSelected == name) 
+	{
 		if (ImGui::BeginPopup("ContextMenu")) 
 		{
+			std::string ext;
+			App->file->SplitPath(name, nullptr, nullptr, &ext);
 
-			if (ImGui::MenuItem("Delete")) 
+			if (ext == "fbx" || ext == "FBX")
 			{
-				std::string ext;
-				App->file->SplitPath(name, nullptr, nullptr, &ext);
+				std::string path = MODELS_ASSETS_FOLDER;
+				path += name;
+				if (ImGui::MenuItem("Import"))
+				{
+					MeshImporter::ImportFBX(path.c_str());
+				}
+				if (ImGui::MenuItem("Load Mesh"))
+				{
+					App->model_loader->LoadMesh(path.c_str());
+				}
+			}
+			else if (ImGui::MenuItem("Delete")) 
+			{
 				std::string nameToRemove = name;
 
 				if (ext == "proMesh") 

@@ -46,10 +46,11 @@ void MeshImporter::ImportFBX(const char* filePath)
 			meshName.append("_" + std::to_string(i));
 			Import(scene->mMeshes[i], meshName.c_str(), root_go);
 		}
+		delete[] fileBuffer;
+		fileBuffer = nullptr;
 	}
 	App->resources->UpdateMeshesList();
-	delete[] fileBuffer;
-	fileBuffer = nullptr;
+
 }
 
 bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName, GameObject* parent) 

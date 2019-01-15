@@ -81,8 +81,8 @@ bool ModuleModelLoader::LoadMesh(const char* path)
 	GameObject* root_go = App->scene->CreateGameObject(scene->mRootNode->mName.C_Str(), (math::float4x4&)root_transform, App->scene->root);
 
 	// Generate meshes as root GOs
-	GenerateNodeMeshData(scene, scene->mRootNode, root_transform, root_go);
-
+	//GenerateNodeMeshData(scene, scene->mRootNode, root_transform, root_go);
+	
 	aiReleaseImport(scene);
 	return true;
 }
