@@ -19,16 +19,7 @@ ComponentMesh::ComponentMesh(GameObject* go) : Component(go, component_type::Mes
 
 ComponentMesh::ComponentMesh(const ComponentMesh& comp) : Component(comp)
 {
-	mesh.vbo = comp.mesh.vbo;
-	mesh.ibo = comp.mesh.ibo;
-	mesh.vao = comp.mesh.vao;
-	mesh.num_vertices = comp.mesh.num_vertices;
-	mesh.vertices = comp.mesh.vertices;
-	mesh.num_indices = comp.mesh.num_indices;
-	mesh.indices = comp.mesh.indices;
-//	mesh.num_normals = comp.mesh.num_normals;
-	mesh.normals = comp.mesh.normals;
-	mesh.boundingBox = comp.mesh.boundingBox;
+	mesh = comp.mesh;
 	currentMesh = comp.currentMesh;
 	App->resources->meshes.push_back(this);
 }
@@ -130,7 +121,7 @@ void ComponentMesh::ComputeMesh()
 
 
 	if (mesh.uvs != nullptr)
-		glBufferSubData(GL_ARRAY_BUFFER, mesh.texturesOffset * mesh.num_vertices, sizeof(float2)*mesh.num_vertices, mesh.uvs);
+		glBufferSubData(GL_ARRAY_BUFFER, mesh.texturesOffset * mesh.num_vertices, sizeof(float2) * mesh.num_vertices, mesh.uvs);
 
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -179,8 +170,6 @@ void ComponentMesh::ComputeMesh()
 
 void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4& proj)
 {
-	Texture* texture = nullptr;
-
 	//Draw meshes
 	unsigned program = 0;
 

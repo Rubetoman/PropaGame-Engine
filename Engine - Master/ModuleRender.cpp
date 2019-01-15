@@ -82,7 +82,6 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->editor_camera_comp->fbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
@@ -102,7 +101,6 @@ update_status ModuleRender::Update()
 		{
 			if (camera != nullptr && camera->active)
 			{
-				glBindFramebuffer(GL_FRAMEBUFFER, 0);
 				glBindFramebuffer(GL_FRAMEBUFFER, camera->fbo);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -111,11 +109,10 @@ update_status ModuleRender::Update()
 				//view = camera->LookAt(cameraGO->transform->position + camera->front);
 				math::float4x4 view = camera->frustum.ViewMatrix();
 				App->scene->Draw(view, proj, *camera);
-
-				glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			}
 		}
 	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	// Draw debug draw
 	App->debug_draw->Draw(editor_camera, editor_camera->fbo, App->window->screen_height, App->window->screen_width);
