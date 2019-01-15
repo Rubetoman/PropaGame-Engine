@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "ModuleShader.h"
 #include "ModuleResources.h"
+#include "ModuleModelLoader.h"
 
 #include "MeshImporter.h"
 
@@ -48,22 +49,27 @@ bool ComponentMesh::DrawOnInspector()
 		bool deleted = Component::DrawOnInspector();
 		if (!deleted)
 		{
-			if (ImGui::BeginCombo("##meshCombo", currentMesh.c_str())) {
-
-				for (std::vector<std::string>::iterator it = App->resources->file_meshes->begin(); it != App->resources->file_meshes->end(); ++it) 
+			ImGui::Text("Mesh type: %s", (mesh_type == Mesh_type::proMesh) ? "proMesh" : "FBX");
+			
+			if (mesh_type == Mesh_type::proMesh)
+			{
+				if (ImGui::BeginCombo("##meshCombo", currentMesh.c_str()))
 				{
-					bool isSelected = (currentMesh == (*it));
-					if (ImGui::Selectable((*it).c_str(), isSelected)) 
+					for (std::vector<std::string>::iterator it = App->resources->file_meshes->begin(); it != App->resources->file_meshes->end(); ++it)
 					{
-						currentMesh = (*it);
+						bool isSelected = (currentMesh == (*it));
+						if (ImGui::Selectable((*it).c_str(), isSelected))
+						{
+							currentMesh = (*it);
 
-						if (isSelected)
-							ImGui::SetItemDefaultFocus();
-						else
-							LoadMesh(currentMesh.c_str());
+							if (isSelected)
+								ImGui::SetItemDefaultFocus();
+							else
+								LoadMesh(currentMesh.c_str());
+						}
 					}
+					ImGui::EndCombo();
 				}
-				ImGui::EndCombo();
 			}
 
 			ImGui::Text("Triangles Count: %d", mesh.num_indices / 3);
@@ -328,7 +334,9 @@ JSON_value* ComponentMesh::Save(JSON_value* component) const
 {
 	JSON_value* mesh = Component::Save(component);
 
+	mesh->AddInt("meshType", (int)mesh_type);
 	mesh->AddString("currentMesh", currentMesh.c_str());
+
 	component->addValue("", mesh);
 
 	return mesh;
@@ -338,6 +346,9 @@ void ComponentMesh::Load(JSON_value* component)
 {
 	Component::Load(component);
 
+	mesh_type = (Mesh_type)component->GetInt("meshType");
 	currentMesh = component->GetString("currentMesh");
-	LoadMesh(currentMesh.c_str());
+
+	if (mesh_type == Mesh_type::proMesh)
+		LoadMesh(currentMesh.c_str());
 }

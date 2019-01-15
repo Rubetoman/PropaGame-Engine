@@ -81,13 +81,13 @@ bool ModuleModelLoader::LoadMesh(const char* path)
 	GameObject* root_go = App->scene->CreateGameObject(scene->mRootNode->mName.C_Str(), (math::float4x4&)root_transform, App->scene->root);
 
 	// Generate meshes as root GOs
-	GenerateNodeMeshData(scene, scene->mRootNode, root_transform, root_go);
+	GenerateNodeMeshData(path, scene, scene->mRootNode, root_transform, root_go);
 	
 	aiReleaseImport(scene);
 	return true;
 }
 
-void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent)
+void ModuleModelLoader::GenerateNodeMeshData(const char* path, const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent)
 {
 	assert(scene != nullptr); assert(node != nullptr);
 
@@ -102,6 +102,8 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 
 		// Add Mesh Component
 		ComponentMesh* mesh = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
+		mesh->mesh_type = Mesh_type::fbx;
+		mesh->currentMesh = path;
 
 		const aiMesh* src_mesh = scene->mMeshes[node->mMeshes[i]];
 
@@ -205,7 +207,7 @@ void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode*
 	{
 		for (unsigned int i = 0; i < node->mNumChildren; i++)
 		{
-			GenerateNodeMeshData(scene, node->mChildren[i], parent_transform, parent);
+			GenerateNodeMeshData(path, scene, node->mChildren[i], parent_transform, parent);
 		}
 	}
 }

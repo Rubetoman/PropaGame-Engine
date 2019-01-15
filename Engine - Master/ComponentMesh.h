@@ -9,6 +9,8 @@ class GameObject;
 
 struct par_shapes_mesh_s;
 
+enum class Mesh_type {proMesh, fbx};
+
 struct Mesh 
 {
 	unsigned vbo = 0u;
@@ -60,6 +62,7 @@ public:
 public:
 
 	Mesh mesh;
+	Mesh_type mesh_type = Mesh_type::proMesh;
 	std::string currentMesh;
 };
 
