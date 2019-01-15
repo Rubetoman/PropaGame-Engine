@@ -34,9 +34,13 @@ public:
 	unsigned GetMeshNumber(ComponentMesh& mesh) const;
 	void DeleteMesh(ComponentMesh* mesh);
 
+	// Own created files
 	void UpdateMeshesList();
 	void UpdateTexturesList();
 	void UpdateScenesList();
+
+	// FBX files
+	void UpdateFBXMeshesList();
 
 public:
 	std::vector<GameObject*> lights;		// List of all the lights on the scene
@@ -53,6 +57,9 @@ public:
 
 	// Meshes
 	std::vector<ComponentMesh*> meshes;		// Vector of all the meshes on the scene
+
+	//FBX files
+	std::vector<std::string>* fbx_meshes = nullptr;
 
 	// Own files
 	std::vector<std::string>* file_meshes = nullptr;

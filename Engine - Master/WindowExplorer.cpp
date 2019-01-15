@@ -37,10 +37,21 @@ void WindowExplorer::Draw() {
 		ImGui::TreePop();
 	}
 
+	bool assetsOpen = ImGui::TreeNodeEx("Assets", node_flags, "Assets");
+
+	if (assetsOpen)
+	{
+		DrawTreeNode("Assets/Meshes", false);
+		DrawTreeNode("Assets/Textures", false);
+
+		ImGui::TreePop();
+	}
+
 	ImGui::End();
 }
 
-void WindowExplorer::DrawTreeNode(const char* name, bool isLeaf) {
+void WindowExplorer::DrawTreeNode(const char* name, bool isLeaf) 
+{
 	ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
 	if (isLeaf)
@@ -77,6 +88,20 @@ void WindowExplorer::DrawTreeNode(const char* name, bool isLeaf) {
 				DrawTreeNode((*iterator).c_str(), true);
 			}
 		}
+		else if (name == "Assets/Meshes")
+		{
+			for (std::vector<std::string>::iterator iterator = App->resources->fbx_meshes->begin(); iterator != App->resources->fbx_meshes->end(); ++iterator)
+			{
+				DrawTreeNode((*iterator).c_str(), true);
+			}
+		}
+		/*else if (name == "Assets/Textures")
+		{
+			for (std::vector<std::string>::iterator iterator = App->resources->fbx_meshes->begin(); iterator != App->resources->fbx_meshes->end(); ++iterator)
+			{
+				DrawTreeNode((*iterator).c_str(), true);
+			}
+		}*/
 
 		ImGui::TreePop();
 	}

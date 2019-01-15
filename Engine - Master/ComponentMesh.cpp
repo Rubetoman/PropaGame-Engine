@@ -121,7 +121,7 @@ void ComponentMesh::ComputeMesh()
 
 
 	if (mesh.uvs != nullptr)
-		glBufferSubData(GL_ARRAY_BUFFER, mesh.texturesOffset * mesh.num_vertices, sizeof(float2) * mesh.num_vertices, mesh.uvs);
+		glBufferSubData(GL_ARRAY_BUFFER, mesh.texturesOffset * mesh.num_vertices, sizeof(float) * 2 * mesh.num_vertices, mesh.uvs);
 
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);

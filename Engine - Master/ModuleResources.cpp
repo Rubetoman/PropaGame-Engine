@@ -28,6 +28,7 @@ bool ModuleResources::Init()
 	file_meshes = new std::vector<std::string>();
 	file_textures = new std::vector<std::string>();
 	file_scenes = new std::vector<std::string>();
+	fbx_meshes = new std::vector<std::string>();
 
 //	TextureImporter::Import(CHECKERS_TEXTURE);
 //	App->textures->LoadTexture("Checkers_Texture.proDDS", checkers_texture, (int&)checkers_size.x, (int&)checkers_size.y);
@@ -40,6 +41,7 @@ bool ModuleResources::Init()
 	UpdateMeshesList();
 	UpdateTexturesList();
 	UpdateScenesList();
+	UpdateFBXMeshesList();
 
 	return true;
 }
@@ -168,5 +170,14 @@ void ModuleResources::UpdateScenesList()
 	{
 		file_scenes->clear();
 		App->file->GetFilesFromDirectory(SCENES_FOLDER, *file_scenes);
+	}
+}
+
+void ModuleResources::UpdateFBXMeshesList()
+{
+	if (fbx_meshes != nullptr)
+	{
+		fbx_meshes->clear();
+		App->file->GetFilesFromDirectory(MODELS_ASSETS_FOLDER, *fbx_meshes);
 	}
 }

@@ -37,7 +37,7 @@ bool ModuleModelLoader::Init()
 {
 	//CreateSphere("sphere", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(1.0f, 1.0f, 1.0f), 20, 20, float4(0.f, 0.0f, 0.5f, 1.0f));
 	//CreateCylinder("cylinder0", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, 2.0f, 1.0f, 30, 30, float4(0.f, 0.5f, 0.5f, 1.0f));
-
+	//LoadMesh("Assets/Models/BakerHouse.fbx");
 	//MeshImporter::ImportFBX("Assets/Models/BakerHouse.fbx");
 
 	return true;
@@ -62,6 +62,170 @@ bool ModuleModelLoader::CleanUp()
 		DeleteMaterial(i);
 	}*/
 	return true;
+}
+
+bool ModuleModelLoader::LoadMesh(const char* path)
+{
+	assert(path != nullptr);
+	unsigned int postprocess_flags = aiProcessPreset_TargetRealtime_MaxQuality;
+	scene = aiImportFile(path, postprocess_flags);
+	if (scene == nullptr)
+	{
+		LOG("Error, the file couldn't be loaded: %s \n", aiGetErrorString());
+		return false;
+	}
+	App->camera->BBtoLook = new AABB({ .0f, .0f, .0f }, { .0f, .0f, .0f });
+
+	// Generate root node
+	aiMatrix4x4 root_transform = aiMatrix4x4() * scene->mRootNode->mTransformation;
+	GameObject* root_go = App->scene->CreateGameObject(scene->mRootNode->mName.C_Str(), (math::float4x4&)root_transform, App->scene->root);
+
+	// Generate meshes as root GOs
+	GenerateNodeMeshData(scene, scene->mRootNode, root_transform, root_go);
+
+	aiReleaseImport(scene);
+	return true;
+}
+
+void ModuleModelLoader::GenerateNodeMeshData(const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent)
+{
+	assert(scene != nullptr); assert(node != nullptr);
+
+	for (unsigned i = 0; i < node->mNumMeshes; ++i)
+	{
+		aiMatrix4x4 transform = parent_transform * node->mTransformation;
+		GameObject* go = App->scene->CreateGameObject(node->mName.C_Str(), (math::float4x4&)transform, parent);
+
+		// Avoid creating GO without name or too long
+		if (go->name.size() < 1 || node->mName.length > GO_NAME_SIZE)
+			go->name = GO_DEFAULT_NAME;
+
+		// Add Mesh Component
+		ComponentMesh* mesh = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
+
+		const aiMesh* src_mesh = scene->mMeshes[node->mMeshes[i]];
+
+		// vertex array objects (VAO)
+		glGenVertexArrays(1, &mesh->mesh.vao);
+		glBindVertexArray(mesh->mesh.vao);
+
+		glGenBuffers(1, &mesh->mesh.vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->mesh.vbo);
+
+		// Divide Buffer for position and UVs
+		glBufferData(GL_ARRAY_BUFFER, src_mesh->mNumVertices * (sizeof(float) * 3 + sizeof(float) * 2), nullptr, GL_STATIC_DRAW);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 3 * src_mesh->mNumVertices, src_mesh->mVertices);
+
+		// Texture coords (UVs)
+		// MapBufferRange because we only want UV data from UVW
+		math::float2* texCoords = (math::float2*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(float) * 3 * src_mesh->mNumVertices,
+			sizeof(float) * 2 * src_mesh->mNumVertices, GL_MAP_WRITE_BIT);
+
+		for (unsigned j = 0; j < src_mesh->mNumVertices; ++j)
+		{
+			texCoords[j] = math::float2(src_mesh->mTextureCoords[0][j].x, src_mesh->mTextureCoords[0][j].y);
+		}
+
+		glUnmapBuffer(GL_ARRAY_BUFFER);
+
+		// Indices (faces)
+		glGenBuffers(1, &mesh->mesh.ibo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->mesh.ibo);
+
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, src_mesh->mNumFaces * (sizeof(unsigned) * 3), nullptr, GL_STATIC_DRAW);
+
+		// Texture coords (UVs)
+		// MapBufferRange because we only want UV data from UVW
+		unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0,
+			sizeof(unsigned)*src_mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);
+
+		for (unsigned j = 0; j < src_mesh->mNumFaces; ++j)
+		{
+			assert(src_mesh->mFaces[j].mNumIndices == 3);
+
+			*(indices++) = src_mesh->mFaces[j].mIndices[0];
+			*(indices++) = src_mesh->mFaces[j].mIndices[1];
+			*(indices++) = src_mesh->mFaces[j].mIndices[2];
+		}
+
+		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(
+			0,                  // attribute 0
+			3,                  // number of componentes (3 floats)
+			GL_FLOAT,           // data type
+			GL_FALSE,           // should be normalized?
+			0,                  // stride
+			(void*)0            // array buffer offset
+		);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(
+			1,                  // attribute 0
+			2,                  // number of componentes (3 floats)
+			GL_FLOAT,           // data type
+			GL_FALSE,           // should be normalized?
+			0,                  // stride
+			(void*)(sizeof(float) * 3 * src_mesh->mNumVertices)       // array buffer offset
+		);
+
+		// Disable VAO
+		glBindVertexArray(0);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+
+		// Disable VBO and EBO
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		//gen_mesh->material = src_mesh->mMaterialIndex;
+		mesh->mesh.num_vertices = src_mesh->mNumVertices;
+		mesh->mesh.num_indices = src_mesh->mNumFaces * 3;
+
+		//Copying Vertices array
+		mesh->mesh.vertices = new float[mesh->mesh.num_vertices * 3]; //It is checked below that at least has 1 face, so at least 3 vertices
+		memcpy(mesh->mesh.vertices, src_mesh->mVertices, sizeof(float)*mesh->mesh.num_vertices * 3);
+
+		//Copying Face Normals
+		if (src_mesh->HasNormals())
+		{
+			mesh->mesh.normals = new float[mesh->mesh.num_vertices * 3];
+			memcpy(mesh->mesh.normals, src_mesh->mNormals, sizeof(float)*mesh->mesh.num_vertices * 3);
+		}
+
+		//Copying indices
+		mesh->mesh.num_indices = src_mesh->mNumFaces * 3;
+		mesh->mesh.indices = new unsigned[mesh->mesh.num_indices]; // assume each face is a triangle
+
+		for (int j = 0; j < src_mesh->mNumFaces; ++j)
+		{
+			if (src_mesh->mFaces[j].mNumIndices != 3)
+			{
+				LOG("WARNING, geometry face with != 3 indices!");
+				LOG("WARNING, face normals couldn't be loaded");
+				mesh = nullptr;
+				break;
+			}
+			else
+			{
+				memcpy(&mesh->mesh.indices[j * 3], src_mesh->mFaces[j].mIndices, 3 * sizeof(unsigned));
+			}
+		}
+
+		mesh->mesh.boundingBox.SetNegativeInfinity();
+		mesh->mesh.boundingBox.Enclose((math::float3*)src_mesh->mVertices, mesh->mesh.num_vertices);
+		App->resources->meshes.push_back(mesh);
+
+		const aiMaterial* src_material = scene->mMaterials[src_mesh->mMaterialIndex];
+	}
+
+	if (node->mNumMeshes == 0)
+	{
+		for (unsigned int i = 0; i < node->mNumChildren; i++)
+		{
+			GenerateNodeMeshData(scene, node->mChildren[i], parent_transform, parent);
+		}
+	}
 }
 
 /*GameObject* ModuleModelLoader::CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,

@@ -364,6 +364,7 @@ void ModuleScene::NewScene()
 	App->resources->UpdateMeshesList();
 	App->resources->UpdateTexturesList();
 	App->resources->UpdateScenesList();
+	App->resources->UpdateFBXMeshesList();
 
 	InitScene();
 }
