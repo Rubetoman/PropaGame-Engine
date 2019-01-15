@@ -133,7 +133,7 @@ void GameObject::Update()
 		{
 			(*it_child)->flags = (*it_child)->flags & ~GOFlags::Delete;
 			(*it_child)->CleanUp();
-			//delete *it_child;
+			delete *it_child;
 			children.erase(it_child++);
 		}
 		else

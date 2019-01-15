@@ -47,7 +47,7 @@ bool ModuleScene::Start()
 	return true;
 }
 
-update_status ModuleScene::Update()
+update_status ModuleScene::PreUpdate()
 {
 	if (dirty)
 	{

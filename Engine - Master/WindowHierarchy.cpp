@@ -44,7 +44,7 @@ void WindowHierarchy::Draw()
 				}
 				if (ImGui::Selectable("Duplicate"))
 				{
-					selected = App->scene->DuplicateGameObject(selected);
+					App->editor->selectedGO = App->scene->DuplicateGameObject(selected);
 				}
 				if ((selected->parent != App->scene->root) && (selected != App->scene->root))
 				{
@@ -54,7 +54,7 @@ void WindowHierarchy::Draw()
 				if (ImGui::Selectable("Delete"))
 				{
 					selected->flags |= GOFlags::Delete;
-					selected = nullptr;
+					App->editor->selectedGO = nullptr;
 				}
 			}
 			if (ImGui::Selectable("Paste"))

@@ -19,7 +19,7 @@ public:
 
 	bool Init() override;
 	bool Start() override;
-	update_status Update() override;
+	update_status PreUpdate() override;
 	bool CleanUp() override;
 
 	void Draw(const math::float4x4& view, const math::float4x4& proj, ComponentCamera& camera);
