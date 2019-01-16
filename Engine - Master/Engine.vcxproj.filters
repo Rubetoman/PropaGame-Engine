@@ -225,7 +225,9 @@
     <ClCompile Include="TextureImporter.cpp">
       <Filter>Other\Importer</Filter>
     </ClCompile>
-    <ClCompile Include="WindowExplorer.cpp" />
+    <ClCompile Include="WindowExplorer.cpp">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -524,7 +526,9 @@
     <ClInclude Include="TextureImporter.h">
       <Filter>Other\Importer</Filter>
     </ClInclude>
-    <ClInclude Include="WindowExplorer.h" />
+    <ClInclude Include="WindowExplorer.h">
+      <Filter>Modules\EditorWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\Assets\Shaders\Default.fs">

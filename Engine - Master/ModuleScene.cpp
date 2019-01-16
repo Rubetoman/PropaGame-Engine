@@ -44,6 +44,7 @@ bool ModuleScene::Init()
 bool ModuleScene::Start()
 {
 	root->Init();
+	LoadScene("test_scene.proScene");
 	return true;
 }
 
