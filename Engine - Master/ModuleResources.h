@@ -49,7 +49,6 @@ public:
 	std::vector<GameObject*> lights;		// List of all the lights on the scene
 
 	// Default textures
-	//std::map<Texture*, int> textures;		// Map of all the textures and number of objects that use that texture
 	unsigned checkers_texture = 0u;
 	math::float2 checkers_size = math::float2::zero;
 	unsigned no_camera_texture = 0u;
@@ -70,8 +69,9 @@ public:
 	std::vector<std::string>* file_textures = nullptr;
 	std::vector<std::string>* file_scenes = nullptr;
 
-	bool itemToDelete = false;
-	bool removeMesh = false;
+	bool meshes_dirty = false;
+	bool textures_dirty = false;
+	bool scenes_dirty = false;
 };
 
 #endif /*__MODULERESOURCES_H__*/

@@ -448,7 +448,10 @@ bool ModuleScene::DeleteScene(const char* scene_name)
 		return false;
 	}
 	else
+	{
+		LOG("Scene deleted: [%s]", scene_name);
 		return true;
+	}
 }
 
 #pragma endregion

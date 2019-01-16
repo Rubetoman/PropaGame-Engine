@@ -42,13 +42,21 @@ bool ModuleResources::Init()
 
 update_status ModuleResources::Update()
 {
-	if (itemToDelete)
+	// Check if lists need to update
+	if (meshes_dirty)
 	{
-		itemToDelete = false;
-		if (removeMesh)
-			UpdateMeshesList();
-		else
-			UpdateTexturesList();
+		App->resources->UpdateMeshesList();
+		meshes_dirty = false;
+	}
+	if (textures_dirty)
+	{
+		App->resources->UpdateTexturesList();
+		textures_dirty = false;
+	}
+	if (scenes_dirty)
+	{
+		App->resources->UpdateScenesList();
+		scenes_dirty = false;
 	}
 	return UPDATE_CONTINUE;
 }

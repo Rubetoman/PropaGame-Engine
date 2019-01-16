@@ -4,6 +4,7 @@
 #include "ModuleResources.h"
 #include "ModuleFileManager.h"
 #include "ModuleModelLoader.h"
+#include "ModuleScene.h"
 
 #include "MeshImporter.h"
 #include "TextureImporter.h"
@@ -95,7 +96,6 @@ void WindowExplorer::DrawTreeNode(const char* name, bool isLeaf)
 		}
 		else if (name == "Scenes") 
 		{
-
 			for (std::vector<std::string>::iterator iterator = App->resources->file_scenes->begin(); iterator != App->resources->file_scenes->end(); ++iterator)
 			{
 				DrawTreeNode((*iterator).c_str(), true);
@@ -166,8 +166,7 @@ void WindowExplorer::ClickBehaviour(const char* name)
 				{
 					std::string nameToRemove = name;
 					nameToRemove.insert(0, MESHES_FOLDER);
-					App->resources->removeMesh = true;
-					App->resources->itemToDelete = true;
+					App->resources->meshes_dirty = true;
 					App->file->Remove(nameToRemove.c_str());
 				}
 			}
@@ -177,9 +176,16 @@ void WindowExplorer::ClickBehaviour(const char* name)
 				{
 					std::string nameToRemove = name;
 					nameToRemove.insert(0, TEXTURES_FOLDER);
-					App->resources->removeMesh = false;
-					App->resources->itemToDelete = true;
+					App->resources->textures_dirty = true;
 					App->file->Remove(nameToRemove.c_str());
+				}
+			}
+			else if (ext == "proScene")
+			{
+				if (ImGui::MenuItem("Delete"))
+				{
+					App->scene->DeleteScene(name);
+					App->resources->scenes_dirty = true;
 				}
 			}
 			ImGui::EndPopup();
