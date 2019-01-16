@@ -22,11 +22,20 @@ WindowExplorer::~WindowExplorer()
 
 void WindowExplorer::Draw() {
 
-	if (!ImGui::Begin("Explorer", &active)) 
+	if (!ImGui::Begin("Explorer", &active, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_MenuBar))
 	{
 		ImGui::End();
 		return;
 	}
+
+	ImGui::BeginMenuBar();
+	ImGui::PushStyleColor(ImGuiCol_Button, { 0.9f,0.45f,0.0f,0.7f });
+	if (ImGui::Button("Refresh"))
+	{
+		App->resources->UpdateFilesList();
+	}
+	ImGui::PopStyleColor();
+	ImGui::EndMenuBar();
 
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
