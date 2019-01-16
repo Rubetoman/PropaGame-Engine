@@ -20,6 +20,7 @@ public:
 	static bool Import(const aiMesh* aiMesh, const char* meshName, GameObject* parent);
 	static bool Save(const Mesh& mesh, const char* meshName);
 	static bool Load(Mesh* mesh, const char* meshName);
+	static void CleanUpMesh(Mesh* mesh);
 };
 
 #endif /*__MESHIMPORTER_H__*/

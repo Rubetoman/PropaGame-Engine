@@ -281,3 +281,52 @@ bool MeshImporter::Load(Mesh* mesh, const char* meshName)
 
 	return result;
 }
+
+void MeshImporter::CleanUpMesh(Mesh* mesh) 
+{
+	if (mesh != nullptr) 
+	{
+		if (mesh->indices != nullptr) 
+		{
+			delete[] mesh->indices;
+			mesh->indices = nullptr;
+		}
+
+		if (mesh->vertices != nullptr) 
+		{
+			delete[] mesh->vertices;
+			mesh->vertices = nullptr;
+		}
+
+		if (mesh->uvs != nullptr) 
+		{
+			delete[] mesh->uvs;
+			mesh->uvs = nullptr;
+		}
+
+		if (mesh->normals != nullptr) 
+		{
+			delete[] mesh->normals;
+			mesh->normals = nullptr;
+		}
+
+		if (mesh->colors != nullptr) 
+		{
+			delete[] mesh->colors;
+			mesh->colors = nullptr;
+		}
+
+		mesh->vao = 0u;
+		mesh->vbo = 0u;
+		mesh->ibo = 0u;
+		mesh->num_vertices = 0u;
+		mesh->num_indices = 0u;
+		mesh->normalsOffset = 0u;
+		mesh->texturesOffset = 0u;
+		mesh->vertexSize = 0u;
+		mesh->boundingBox = math::AABB();
+
+		delete mesh;
+		mesh = nullptr;
+	}
+}

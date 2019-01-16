@@ -94,6 +94,8 @@ void ComponentMesh::LoadMesh(const char* name)
 	if (mesh.ibo != 0)
 		glDeleteBuffers(1, &mesh.ibo);
 
+	App->resources->DeleteMesh(this);
+	//MeshImporter::CleanUpMesh(&mesh);
 	MeshImporter::Load(&mesh, name);
 	ComputeMesh();
 	my_go->ComputeBBox();
@@ -316,12 +318,8 @@ void ComponentMesh::DeleteMesh()
 		glDeleteBuffers(1, &mesh.vao);
 	}
 	
-	Mesh new_mesh;
-	mesh = new_mesh;
-
-	int pos = App->resources->GetMeshNumber(*this);
-	if(pos >= 0)
-		App->resources->meshes.erase(App->resources->meshes.begin() + pos);
+	//MeshImporter::CleanUpMesh(&mesh);
+	App->resources->DeleteMesh(this);
 }
 
 void ComponentMesh::Delete()
