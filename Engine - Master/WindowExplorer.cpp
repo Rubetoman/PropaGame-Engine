@@ -147,7 +147,7 @@ void WindowExplorer::ClickBehaviour(const char* name)
 					MeshImporter::ImportFBX(path.c_str());
 				}
 			}
-			else if (ext == "png" || ext == "dds" || ext == "jpg" || ext == "tif")
+			else if (ext == "png" || ext == "dds" || ext == "jpg" || ext == "tif" || ext == "tga")
 			{
 				std::string path = TEXTURES_ASSETS_FOLDER;
 				path += name;

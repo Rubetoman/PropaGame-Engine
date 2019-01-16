@@ -139,7 +139,7 @@ void ModuleFileManager::ManageFile(char* path)
 		nPath += filename + "." + extension;
 		MeshImporter::ImportFBX(nPath.c_str());
 	}
-	else if (extension == "png" || extension == "dds" || extension == "jpg" || extension == "tif")
+	else if (extension == "png" || extension == "dds" || extension == "jpg" || extension == "tif" || extension == "tga")
 	{
 		//TODO: Improve Load() to open files from anywhere
 		std::string nPath = TEXTURES_ASSETS_FOLDER;
