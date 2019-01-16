@@ -121,6 +121,7 @@ bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName, GameObject
 
 		meshFile.append(".proMesh");
 		mesh_comp->currentMesh = meshFile;
+		App->resources->meshes.push_back(mesh_comp);
 	}
 
 	return result;

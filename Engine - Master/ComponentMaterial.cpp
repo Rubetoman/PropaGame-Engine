@@ -26,8 +26,6 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(
 	specularSelected = comp.specularSelected;
 	occlusionSelected = comp.occlusionSelected;
 	emissiveSelected = comp.emissiveSelected;
-
-	//++App->resources->textures[diffuse_map];
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -355,16 +353,13 @@ void ComponentMaterial::RenderMaterial()
 	{
 		glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&light->transform->position);
 		
-		/*ComponentLight* comp_light = (ComponentLight*)light->GetComponent(component_type::Light);
-		if (comp_light != nullptr && comp_light->active)
-			glUniform1f(glGetUniformLocation(program, "ambient"), comp_light->intensity);
-		else
-			glUniform1f(glGetUniformLocation(program, "ambient"), 0.0f);*/
+		ComponentLight* comp_light = (ComponentLight*)light->GetComponent(component_type::Light);
+		glUniform1f(glGetUniformLocation(program, "ambient"), comp_light->intensity);
 	}
-	/*else
+	else
 	{
 		glUniform1f(glGetUniformLocation(program, "ambient"), 0.0f);
-	}*/
+	}
 
 
 	// Diffuse

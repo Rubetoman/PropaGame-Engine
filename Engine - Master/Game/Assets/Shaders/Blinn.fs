@@ -27,6 +27,7 @@ out vec4 color;
 uniform mat4 view;
 
 uniform	vec3 light_pos;
+uniform float ambient;
 uniform	Material material;
 
 vec4 get_diffuse_color()
@@ -80,7 +81,7 @@ void main()
 	vec4 diffuse_color = get_diffuse_color();
     
 	vec3 color_aux = emissive_color + //emissive
-				 diffuse_color.rgb * occlusion_color * material.k_ambient + //ambient
+				 diffuse_color.rgb * occlusion_color * ambient * material.k_ambient + //ambient
 				 diffuse_color.rgb * diffuse * material.k_diffuse +			//diffuse
 				 specular_color.rgb * specular * material.k_specular;		//specular
 
