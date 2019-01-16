@@ -2,9 +2,11 @@
 
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleTextures.h"
 #include "ModuleFileManager.h"
 #include "ModuleResources.h"
+
+#include <IL/il.h>
+#include <IL/ilut.h>
 
 TextureImporter::TextureImporter()
 {

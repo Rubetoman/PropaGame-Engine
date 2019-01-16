@@ -3,16 +3,7 @@
 
 #include "Module.h"
 
-#include "Math/float3.h"
-#include "Math/float4.h"
-#include <assimp/matrix4x4.h>
-#include <vector>
-#include <iterator>
-
 class GameObject;
-class aiScene;
-class aiNode;
-class aiMesh;
 
 enum class Geometry_type {SPHERE, TORUS, PLANE, CUBE};
 

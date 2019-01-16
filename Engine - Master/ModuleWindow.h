@@ -2,9 +2,8 @@
 #define __MODULEWINDOW_H__
 
 #include "Module.h"
-#include "SDL/include/SDL.h"
-#include "GL/glew.h"
-#include "ModuleCamera.h"
+
+#include "SDL.h"
 
 class Application;
 

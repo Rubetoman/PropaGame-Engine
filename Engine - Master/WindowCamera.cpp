@@ -1,13 +1,15 @@
 #include "WindowCamera.h"
 
+#include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
 #include "ModuleResources.h"
+#include "ModuleWindow.h"
 
 #include "ComponentCamera.h"
 
-#include "Texture.h"
 #include "GameObject.h"
+#include "SDL.h"
 
 WindowCamera::WindowCamera(const char* name) : Window(name)
 {

@@ -2,8 +2,7 @@
 #define __COMPONENT_H__
 
 #include "JSON.h"
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_sdl.h"
+
 #include <string>
 
 class GameObject;

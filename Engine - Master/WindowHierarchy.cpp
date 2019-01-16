@@ -3,10 +3,10 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
+#include "ModuleModelLoader.h"
+#include "ModuleEditor.h"
 
 #include "GameObject.h"
-#include <vector>
-#include <string>
 
 WindowHierarchy::WindowHierarchy(const char* name) : Window(name)
 {

@@ -3,16 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include "Application.h"
-#include "ModuleEditor.h"
-#include "ModuleWindow.h"
-#include "ModuleRender.h"
-#include "ModuleCamera.h"
-#include "ModuleFileManager.h"
-#include "SDL/include/SDL.h"
-#include "SDL_scancode.h"
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_sdl.h"
+
 #include "Point.h"
 
 #define NUM_MOUSE_BUTTONS 5

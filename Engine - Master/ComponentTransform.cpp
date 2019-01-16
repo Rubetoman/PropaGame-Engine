@@ -6,6 +6,8 @@
 
 #include "GameObject.h"
 
+#include "imgui/imgui.h"
+
 ComponentTransform::ComponentTransform(GameObject* go) : Component(go, component_type::Transform)
 {
 }

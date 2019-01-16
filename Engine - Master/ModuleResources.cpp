@@ -3,9 +3,9 @@
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleEditor.h"
+#include "ModuleFileManager.h"
 
 #include "GameObject.h"
-#include "Texture.h"
 #include "ComponentCamera.h"
 
 #include "TextureImporter.h"

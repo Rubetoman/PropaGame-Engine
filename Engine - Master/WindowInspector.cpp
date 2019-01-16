@@ -5,10 +5,7 @@
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 
-#include "WindowHierarchy.h"
-
 #include "GameObject.h"
-#include <vector>
 
 WindowInspector::WindowInspector(const char* name) : Window(name)
 {

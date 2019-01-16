@@ -1,15 +1,19 @@
 #include "WindowScene.h"
 
+#include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleResources.h"
 #include "ModuleScene.h"
+#include "ModuleCamera.h"
 
 #include "WindowHierarchy.h"
 
 #include "ComponentCamera.h"
 
 #include "ImGuizmo/ImGuizmo.h"
+
+#include "SDL.h"
 
 WindowScene::WindowScene(const char* name) : Window(name)
 {

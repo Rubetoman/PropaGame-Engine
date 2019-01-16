@@ -1,5 +1,15 @@
 #include "ModuleInput.h"
 
+#include "Application.h"
+#include "ModuleEditor.h"
+#include "ModuleWindow.h"
+#include "ModuleRender.h"
+#include "ModuleCamera.h"
+#include "ModuleFileManager.h"
+
+#include "SDL.h"
+
+
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput() : Module(), mouse({ 0, 0 }), mouse_motion({ 0,0 })

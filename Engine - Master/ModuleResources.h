@@ -4,7 +4,6 @@
 #include "Module.h"
 
 #include <vector>
-#include <map>
 #include "Util/crossguid/guid.hpp"
 #include "Math/float2.h"
 

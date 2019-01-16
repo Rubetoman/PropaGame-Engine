@@ -1,12 +1,19 @@
 #include "ModuleRender.h"
 
+#include "Globals.h"
+#include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleResources.h"
+
+#include "ModuleWindow.h"
+#include "ModuleEditor.h"
 #include "ModuleCamera.h"
 
-#include "ComponentTransform.h"
 #include "ComponentCamera.h"
+
+#include "SDL/include/SDL.h"
+#include "GL/glew.h"
 
 ModuleRender::ModuleRender()
 {

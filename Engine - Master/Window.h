@@ -1,7 +1,6 @@
 #ifndef __WINDOW_H__
 #define __WINDOW_H__
 
-#include "Globals.h"
 #include "Module.h"
 #include "ImGui/imgui.h"
 #include <string>

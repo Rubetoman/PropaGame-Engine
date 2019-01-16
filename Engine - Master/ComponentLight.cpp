@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "ModuleResources.h"
 
+#include "imgui/imgui.h"
+
 ComponentLight::ComponentLight(GameObject* go) : Component(go, component_type::Light)
 {
 }

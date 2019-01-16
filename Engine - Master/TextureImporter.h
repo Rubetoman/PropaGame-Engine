@@ -1,8 +1,6 @@
 #ifndef __MATERIALIMPORTER_H__
 #define __MATERIALIMPORTER_H__
 
-#include <string>
-
 class TextureImporter
 {
 public:

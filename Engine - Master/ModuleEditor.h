@@ -6,7 +6,6 @@
 #include "SDL_events.h"
 #include "Math/float3.h"
 
-#include <vector> 
 #include <list>
 
 class Application;

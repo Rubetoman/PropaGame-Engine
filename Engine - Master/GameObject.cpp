@@ -1,10 +1,12 @@
 #include "GameObject.h"
 #include "Globals.h"
 
+#include "Application.h"
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
 #include "ModuleResources.h"
+#include "ModuleEditor.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"

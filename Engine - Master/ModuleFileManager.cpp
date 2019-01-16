@@ -2,21 +2,16 @@
 
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleModelLoader.h"
-#include "ModuleTextures.h"
 #include "ModuleScene.h"
 
 #include "GameObject.h"
 #include "ComponentMesh.h"
-#include "ComponentMaterial.h"
 
 #include "MeshImporter.h"
 #include "TextureImporter.h"
 
 #include "SDL.h"
 #include "physfs.h"
-#include <assert.h>
-#include <fstream>
 
 ModuleFileManager::ModuleFileManager()
 {

@@ -1,18 +1,18 @@
 #include "ComponentMesh.h"
 
-#include "ComponentTransform.h"
-#include "ComponentMaterial.h"
-
 #include "Application.h"
 #include "ModuleShader.h"
 #include "ModuleResources.h"
-#include "ModuleModelLoader.h"
+
 
 #include "MeshImporter.h"
 
+#include "ComponentTransform.h"
+#include "ComponentMaterial.h"
+
 #include "GameObject.h"
+
 #include "par_shapes.h"
-#include "GL/glew.h"
 
 ComponentMesh::ComponentMesh(GameObject* go) : Component(go, component_type::Mesh)
 {

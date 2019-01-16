@@ -2,7 +2,7 @@
 #define __MODULESHADER_H__
 
 #include "Module.h"
-#include "Globals.h"
+
 #include "GL/glew.h"
 
 struct SDL_Texture;

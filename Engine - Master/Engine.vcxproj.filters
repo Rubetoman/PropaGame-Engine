@@ -135,9 +135,6 @@
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Tools\mmgr</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -384,9 +381,6 @@
       <Filter>Tools\mmgr</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">

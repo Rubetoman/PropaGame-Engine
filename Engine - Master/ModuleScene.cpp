@@ -2,11 +2,12 @@
 
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleModelLoader.h"
+
 #include "ModuleResources.h"
-#include "ModuleCamera.h"
 #include "ModuleEditor.h"
 #include "ModuleFileManager.h"
+#include "ModuleWindow.h"
+#include "ModuleCamera.h"
 
 #include "WindowScene.h"
 
@@ -16,6 +17,8 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
+
+#include <map>
 
 ModuleScene::ModuleScene()
 {

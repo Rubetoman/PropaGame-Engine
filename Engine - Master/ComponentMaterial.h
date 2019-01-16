@@ -3,6 +3,8 @@
 
 #include "Component.h"
 
+#include "imgui/imgui.h"
+
 class GameObject;
 
 struct Material 

@@ -1,14 +1,18 @@
 #include "ComponentCamera.h"
 
+#include "Application.h"
 #include "ModuleCamera.h"
 #include "ModuleTime.h"
 #include "ModuleEditor.h"
 #include "ModuleResources.h"
+#include "ModuleWindow.h"
 
 #include "ComponentTransform.h"
 
-#include "Application.h"
 #include "GameObject.h"
+
+#include "GL/glew.h"
+#include "imgui/imgui.h"
 
 ComponentCamera::ComponentCamera(GameObject* go) : Component(go, component_type::Camera)
 {

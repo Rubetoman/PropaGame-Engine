@@ -8,6 +8,8 @@
 #include "ModuleScene.h"
 #include "ModuleResources.h"
 #include "ModuleFileManager.h"
+#include "ModuleWindow.h"
+#include "ModuleModelLoader.h"
 
 #include "Window.h"
 #include "Window.h"
@@ -27,6 +29,7 @@
 #include "debugdraw.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
+#include "imgui/imgui_impl_opengl3.h"
 #include "ImGuizmo/ImGuizmo.h"
 
 

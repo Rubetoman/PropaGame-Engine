@@ -1,8 +1,12 @@
-#include "Globals.h"
-#include "Application.h"
 #include "ModuleWindow.h"
 
+#include "Globals.h"
+#include "Application.h"
+#include "ModuleCamera.h"
+
 #include "ComponentCamera.h"
+
+#include "GL/glew.h"
 
 ModuleWindow::ModuleWindow()
 {

@@ -2,7 +2,6 @@
 #define __MODULECAMERA_H__
 
 #include "Module.h"
-#include "ModuleWindow.h"
 
 #include "Point.h"
 #include "Geometry/AABB.h"

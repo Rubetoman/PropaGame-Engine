@@ -1,23 +1,26 @@
 #include "WindowConfiguration.h"
 
+#include "Application.h"
 #include "ModuleEditor.h"
 #include "ModuleTime.h"
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "ModuleResources.h"
 #include "ModuleInput.h"
+#include "ModuleCamera.h"
 
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 
 #include "GameObject.h"
-#include "Texture.h"
 #include "Quadtree.h"
 #include "mmgr/mmgr.h"
 
 WindowConfiguration::WindowConfiguration(const char* name) : Window(name)
 {
 	active = true;
+
+	// Set histograms size
 	fps_game_log.resize(50);
 	ms_game_log.resize(100);
 
@@ -28,6 +31,7 @@ WindowConfiguration::WindowConfiguration(const char* name) : Window(name)
 
 WindowConfiguration::~WindowConfiguration()
 {
+	// Clear histograms buffers
 	fps_game_log.clear();
 	ms_game_log.clear();
 
@@ -76,6 +80,7 @@ void WindowConfiguration::Draw()
 	{
 		ImGui::Checkbox("Show hided GOs", &App->scene->show_scene_gos);
 		ImGui::Separator();
+		// Scale to use (default: meters)
 		if (ImGui::InputFloat("Scale", &App->editor->scale, 1.0f))
 		{
 			if (App->editor->scale < 0.001f)	// Avoid reaching 0 (It would crash)
@@ -201,26 +206,6 @@ void WindowConfiguration::Draw()
 			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Frames since Game start: %u", App->time->total_frame_count);
 		}
 
-	}
-
-	if (ImGui::CollapsingHeader("Textures"))
-	{
-		/*ImGui::Text("Loaded textures:");
-		for (std::map<Texture*,int>::iterator it_t = App->resources->textures.begin(); it_t != App->resources->textures.end(); ++it_t)
-		{
-			Texture* texture = (it_t->first);
-			if (ImGui::CollapsingHeader(texture->name))
-			{
-				ImGui::Text("Texture name: %s", texture->name);
-				ImGui::Text("Texture path: %s", texture->path);
-				ImGui::Text("Texture Size:\n Width: %d | Height: %d", texture->width, texture->height);
-				float panelWidth = ImGui::GetWindowContentRegionWidth();
-				float conversionFactor = panelWidth / texture->width;
-				ImVec2 imageSize = { texture->height *conversionFactor, panelWidth };
-				ImGui::Image((ImTextureID)texture->id, imageSize);
-			}
-			ImGui::NewLine();
-		}*/
 	}
 
 	if (ImGui::CollapsingHeader("Input"))

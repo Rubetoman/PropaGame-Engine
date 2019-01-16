@@ -2,7 +2,6 @@
 #define __WINDOWHARDWARE_H__
 
 #include "Window.h"
-#include <vector>
 
 class WindowHardware : public Window
 {

@@ -1,5 +1,7 @@
 #include "ModuleShader.h"
+
 #include "Application.h"
+#include "Globals.h"
 
 ModuleShader::ModuleShader()
 {

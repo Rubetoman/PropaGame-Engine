@@ -1,9 +1,12 @@
 #include "Component.h"
-#include "GameObject.h"
-#include "Globals.h"
 
 #include "Application.h"
+#include "Globals.h"
 #include "ModuleResources.h"
+
+#include "GameObject.h"
+
+#include "imgui/imgui.h"
 
 Component::Component(GameObject* go, component_type type) : my_go(go), type(type)
 {
