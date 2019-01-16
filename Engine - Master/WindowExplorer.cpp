@@ -76,7 +76,8 @@ void WindowExplorer::DrawTreeNode(const char* name, bool isLeaf)
 
 	bool resourceOpen = ImGui::TreeNodeEx(name, nodeFlags, name);
 
-	ClickBehaviour(name);
+	if(isLeaf)
+		ClickBehaviour(name);
 
 	if (resourceOpen) 
 	{
@@ -115,7 +116,6 @@ void WindowExplorer::DrawTreeNode(const char* name, bool isLeaf)
 				DrawTreeNode((*iterator).c_str(), true);
 			}
 		}
-
 		ImGui::TreePop();
 	}
 }
