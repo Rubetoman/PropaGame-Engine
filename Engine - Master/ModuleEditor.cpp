@@ -245,11 +245,30 @@ void ModuleEditor::ShowMainMenuBar()
 			{ 
 				App->scene->CreateGameObject("GameObject"); 
 			}
+			ImGui::Separator();
 			if (ImGui::MenuItem("Create Sphere"))
 			{
 				GameObject* sphere = App->scene->CreateGameObject("Sphere", selectedGO);
 				App->model_loader->LoadGeometry(sphere, Geometry_type::SPHERE);
 				selectedGO = sphere;
+			}
+			if (ImGui::MenuItem("Create Cube"))
+			{
+				GameObject* cube = App->scene->CreateGameObject("Cube", selectedGO);
+				App->model_loader->LoadGeometry(cube, Geometry_type::CUBE);
+				selectedGO = cube;
+			}
+			if (ImGui::MenuItem("Create Plane"))
+			{
+				GameObject* plane = App->scene->CreateGameObject("Plane", selectedGO);
+				App->model_loader->LoadGeometry(plane, Geometry_type::PLANE);
+				selectedGO = plane;
+			}
+			if (ImGui::MenuItem("Create Torus"))
+			{
+				GameObject* torus = App->scene->CreateGameObject("Torus", selectedGO);
+				App->model_loader->LoadGeometry(torus, Geometry_type::TORUS);
+				selectedGO = torus;
 			}
 			ImGui::EndMenu();
 		}

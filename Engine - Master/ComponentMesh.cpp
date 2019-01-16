@@ -196,14 +196,17 @@ void ComponentMesh::ComputeMesh(par_shapes_mesh_s* parMesh)
 
 	mesh.vertexSize = offset;
 
-	glBufferData(GL_ARRAY_BUFFER, mesh.vertexSize * parMesh->npoints, nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(math::float3) * parMesh->npoints, parMesh->points);
+	mesh.num_vertices = parMesh->npoints;
+	mesh.num_indices = parMesh->ntriangles * 3;
+
+	glBufferData(GL_ARRAY_BUFFER, mesh.vertexSize * mesh.num_vertices, nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 3 * mesh.num_vertices, parMesh->points);
 
 	if (parMesh->tcoords)
-		glBufferSubData(GL_ARRAY_BUFFER, mesh.texturesOffset * parMesh->npoints, sizeof(float) * 2 * parMesh->npoints, parMesh->tcoords);
+		glBufferSubData(GL_ARRAY_BUFFER, mesh.texturesOffset * mesh.num_vertices, sizeof(float) * 2 * mesh.num_vertices, parMesh->tcoords);
 
 	if (parMesh->normals)
-		glBufferSubData(GL_ARRAY_BUFFER, mesh.normalsOffset * parMesh->npoints, sizeof(float) * 3 * parMesh->npoints, parMesh->normals);
+		glBufferSubData(GL_ARRAY_BUFFER, mesh.normalsOffset * mesh.num_vertices, sizeof(float) * 3 * mesh.num_vertices, parMesh->normals);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -212,18 +215,15 @@ void ComponentMesh::ComputeMesh(par_shapes_mesh_s* parMesh)
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * parMesh->ntriangles * 3, nullptr, GL_STATIC_DRAW);
 
-	unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned) * parMesh->ntriangles * 3, GL_MAP_WRITE_BIT);
+	mesh.indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned) * parMesh->ntriangles * 3, GL_MAP_WRITE_BIT);
 
 	for (unsigned i = 0; i< unsigned(parMesh->ntriangles * 3); ++i) 
 	{
-		*(indices++) = parMesh->triangles[i];
+		*(mesh.indices++) = parMesh->triangles[i];
 	}
 
 	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	mesh.num_vertices = parMesh->npoints;
-	mesh.num_indices = parMesh->ntriangles * 3;
 
 	glGenVertexArrays(1, &mesh.vao);
 
@@ -249,7 +249,7 @@ void ComponentMesh::ComputeMesh(par_shapes_mesh_s* parMesh)
 	glBindVertexArray(0);
 
 	mesh.boundingBox.SetNegativeInfinity();
-	mesh.boundingBox.Enclose((math::float3*)parMesh->points, parMesh->npoints);
+	mesh.boundingBox.Enclose((math::float3*)parMesh->points, mesh.num_vertices);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

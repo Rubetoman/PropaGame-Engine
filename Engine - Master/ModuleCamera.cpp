@@ -252,6 +252,8 @@ GameObject* ModuleCamera::MousePick()
 
 		if (mesh != nullptr && transform != nullptr)
 		{
+			if (mesh->vertices == nullptr || mesh->indices == nullptr) continue;
+
 			math::LineSegment localTransformPikingLine(raycast);
 			localTransformPikingLine.Transform(transform->my_go->GetGlobalTransform().Inverted());
 

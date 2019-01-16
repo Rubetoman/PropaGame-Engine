@@ -65,16 +65,36 @@ void WindowHierarchy::Draw()
 			ImGui::Separator();
 			if (ImGui::Selectable("Create Empty"))
 			{
-				if (selected != nullptr)
-					selected = App->scene->CreateGameObject(GO_DEFAULT_NAME, selected);
-				else
-					selected = App->scene->CreateGameObject(GO_DEFAULT_NAME);
+				selected = App->scene->CreateGameObject(GO_DEFAULT_NAME, selected);
 			}
-			if (ImGui::Selectable("Create Sphere"))
+			ImGui::Separator();
+			if (ImGui::BeginMenu("Create"))
 			{
-				GameObject* sphere = App->scene->CreateGameObject("Sphere", selected);
-				App->model_loader->LoadGeometry(sphere, Geometry_type::SPHERE);
-				App->editor->selectedGO = sphere;
+				if (ImGui::Selectable("Create Sphere"))
+				{
+					GameObject* sphere = App->scene->CreateGameObject("Sphere", selected);
+					App->model_loader->LoadGeometry(sphere, Geometry_type::SPHERE);
+					App->editor->selectedGO = sphere;
+				}
+				if (ImGui::MenuItem("Create Cube"))
+				{
+					GameObject* cube = App->scene->CreateGameObject("Cube", selected);
+					App->model_loader->LoadGeometry(cube, Geometry_type::CUBE);
+					App->editor->selectedGO = cube;
+				}
+				if (ImGui::MenuItem("Create Plane"))
+				{
+					GameObject* plane = App->scene->CreateGameObject("Plane", selected);
+					App->model_loader->LoadGeometry(plane, Geometry_type::PLANE);
+					App->editor->selectedGO = plane;
+				}
+				if (ImGui::MenuItem("Create Torus"))
+				{
+					GameObject* torus = App->scene->CreateGameObject("Torus", selected);
+					App->model_loader->LoadGeometry(torus, Geometry_type::TORUS);
+					App->editor->selectedGO = torus;
+				}
+				ImGui::EndMenu();
 			}
 			ImGui::EndPopup();
 		}
