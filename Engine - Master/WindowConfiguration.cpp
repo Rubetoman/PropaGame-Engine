@@ -28,6 +28,12 @@ WindowConfiguration::WindowConfiguration(const char* name) : Window(name)
 
 WindowConfiguration::~WindowConfiguration()
 {
+	fps_game_log.clear();
+	ms_game_log.clear();
+
+	fps_log.clear();
+	ms_log.clear();
+	mem_log.clear();
 }
 
 void WindowConfiguration::Draw()
@@ -149,20 +155,24 @@ void WindowConfiguration::Draw()
 		ImGui::PlotLines("##framerate", &ms_log[0], ms_log.size(), 0, title, 0.0f, 40.0f, ImVec2(300, 50));
 
 		// Memory stats
-		sMStats stats = m_getMemoryStatistics();
-		mem_log.erase(mem_log.begin());
-		mem_log.push_back((float)stats.totalReportedMemory);
-		sprintf_s(title, 35, "Memory Consumption (Bytes) %0.1f", mem_log[mem_log.size() - 1]);
-		ImGui::PlotLines("##memory", &mem_log[0], mem_log.size(), 0, title, 0.0f, (float)stats.peakReportedMemory * 1.2f, ImVec2(300, 50));
-		ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
-		ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
-		ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
-		ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
-		ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
-		ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
-		ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
-		ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
-		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+		if (ImGui::TreeNode("Memory Stats"))
+		{
+			sMStats stats = m_getMemoryStatistics();
+			mem_log.erase(mem_log.begin());
+			mem_log.push_back((float)stats.totalReportedMemory);
+			sprintf_s(title, 35, "Memory Consumption (Bytes) %0.1f", mem_log[mem_log.size() - 1]);
+			ImGui::PlotLines("##memory", &mem_log[0], mem_log.size(), 0, title, 0.0f, (float)stats.peakReportedMemory * 1.2f, ImVec2(300, 50));
+			ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
+			ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
+			ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
+			ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
+			ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
+			ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
+			ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
+			ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
+			ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+			ImGui::TreePop();
+		}	
 	}
 
 	if (ImGui::CollapsingHeader("Time"))
