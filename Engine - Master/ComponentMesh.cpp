@@ -16,6 +16,7 @@
 
 ComponentMesh::ComponentMesh(GameObject* go) : Component(go, component_type::Mesh)
 {
+	App->resources->meshes.push_back(this);
 }
 
 ComponentMesh::ComponentMesh(const ComponentMesh& comp) : Component(comp)
@@ -122,12 +123,11 @@ void ComponentMesh::ComputeMesh()
 	glBufferData(GL_ARRAY_BUFFER, mesh.vertexSize * mesh.num_vertices, nullptr, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 3 * mesh.num_vertices, mesh.vertices);
 
-	if (mesh.normals != nullptr)
-		glBufferSubData(GL_ARRAY_BUFFER, mesh.normalsOffset * mesh.num_vertices, sizeof(float) * 3 * mesh.num_vertices, mesh.normals);
-
-
 	if (mesh.uvs != nullptr)
 		glBufferSubData(GL_ARRAY_BUFFER, mesh.texturesOffset * mesh.num_vertices, sizeof(float) * 2 * mesh.num_vertices, mesh.uvs);
+
+	if (mesh.normals != nullptr)
+		glBufferSubData(GL_ARRAY_BUFFER, mesh.normalsOffset * mesh.num_vertices, sizeof(float) * 3 * mesh.num_vertices, mesh.normals);
 
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -149,23 +149,22 @@ void ComponentMesh::ComputeMesh()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
+	if (mesh.texturesOffset != 0)
+	{
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.texturesOffset * mesh.num_vertices));
+	}
+
 	if (mesh.normalsOffset != 0)
 	{
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.normalsOffset * mesh.num_vertices));
-	}
-
-	if (mesh.texturesOffset != 0) 
-	{
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.texturesOffset * mesh.num_vertices));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.normalsOffset * mesh.num_vertices));
 	}
 
 	glBindVertexArray(0);
 
 	mesh.boundingBox.SetNegativeInfinity();
-	mesh.boundingBox.Enclose((float3*)mesh.vertices, mesh.num_vertices);
-	App->resources->meshes.push_back(this);
+	mesh.boundingBox.Enclose((math::float3*)mesh.vertices, mesh.num_vertices);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
