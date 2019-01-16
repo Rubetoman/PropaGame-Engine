@@ -79,6 +79,26 @@ void WindowAbout::Draw()
 	if (ImGui::Selectable("ImGuizmo", false, 0, { 130, 13 }))
 		App->editor->ShowInBrowser("https://github.com/CedricGuillemet/ImGuizmo");
 
+	ImGui::NewLine(); ImGui::SameLine(30);
+	if (ImGui::Selectable("CrossGuid 0.2", false, 0, { 130, 13 }))
+		App->editor->ShowInBrowser("https://github.com/graeme-hill/crossguid");
+
+	ImGui::NewLine(); ImGui::SameLine(30);
+	if (ImGui::Selectable("Debug Draw v2", false, 0, { 130, 13 }))
+		App->editor->ShowInBrowser("https://github.com/glampert/debug-draw");
+
+	ImGui::NewLine(); ImGui::SameLine(30);
+	if (ImGui::Selectable("PhysFS 3.0.1", false, 0, { 130, 13 }))
+		App->editor->ShowInBrowser("http://icculus.org/physfs/docs/html/");
+
+	ImGui::NewLine(); ImGui::SameLine(30);
+	if (ImGui::Selectable("Rapidjson 1.1.0", false, 0, { 130, 13 }))
+		App->editor->ShowInBrowser("https://github.com/Tencent/rapidjson");
+
+	ImGui::NewLine(); ImGui::SameLine(30);
+	if (ImGui::Selectable("Par/par_shapes.h", false, 0, { 130, 13 }))
+		App->editor->ShowInBrowser("https://github.com/prideout/par/blob/master/par_shapes.h");
+
 	// License
 	ImGui::NewLine();
 	ImGui::Text("MIT License Copyright (c) [2018] [Ruben Crispin]");
