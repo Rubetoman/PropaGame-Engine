@@ -160,23 +160,31 @@ void WindowExplorer::ClickBehaviour(const char* name)
 					TextureImporter::Import(path.c_str());
 				}
 			}
-			else if (ImGui::MenuItem("Delete")) 
+			else if (ext == "proMesh")
 			{
-				std::string nameToRemove = name;
-
-				if (ext == "proMesh") 
+				if (ImGui::MenuItem("Load Mesh"))
 				{
-					nameToRemove.insert(0, "/Library/Meshes/");
+					App->model_loader->CreateGameObjectFromFile(*name);
+				}
+				if (ImGui::MenuItem("Delete"))
+				{
+					std::string nameToRemove = name;
+					nameToRemove.insert(0, MESHES_FOLDER);
 					App->resources->removeMesh = true;
 					App->resources->itemToDelete = true;
+					App->file->Remove(nameToRemove.c_str());
 				}
-				else if (ext == "proDDS") 
+			}
+			else if (ext == "proDDS")
+			{
+				if (ImGui::MenuItem("Delete"))
 				{
-					nameToRemove.insert(0, "/Library/Textures/");
+					std::string nameToRemove = name;
+					nameToRemove.insert(0, TEXTURES_FOLDER);
 					App->resources->removeMesh = false;
 					App->resources->itemToDelete = true;
+					App->file->Remove(nameToRemove.c_str());
 				}
-				App->file->Remove(nameToRemove.c_str());
 			}
 			ImGui::EndPopup();
 		}
