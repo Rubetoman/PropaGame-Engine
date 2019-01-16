@@ -151,11 +151,9 @@ void ModuleCamera::RotateCameraInput()
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 		{
 			SDL_ShowCursor(SDL_DISABLE);
-			math::float3 center;
+			math::float3 center = math::float3::zero;
 			if (App->editor->selectedGO != nullptr)
 				center = App->editor->selectedGO->GetCenter();
-			else
-				center = math::float3(0, 0, 0);
 
 			editor_camera_comp->Orbit(center, App->input->GetMouseMotion().x * magnitude, App->input->GetMouseMotion().y * magnitude);
 		}
@@ -170,7 +168,7 @@ void ModuleCamera::RotateCameraInput()
 		if (selected != nullptr)
 			editor_camera_comp->LookAt(selected->GetCenter());
 		else
-			editor_camera_comp->LookAt(math::float3(0, 0, 0));
+			editor_camera_comp->LookAt(math::float3(0.0f, 0.0f, 0.0f));
 	}
 	if(App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT))
 	{

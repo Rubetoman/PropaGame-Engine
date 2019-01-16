@@ -293,7 +293,7 @@ math::float4x4 GameObject::GetGlobalTransform() const
 math::float3 GameObject::GetCenter() const
 {
 	if (mesh_comp != nullptr)
-		return mesh_comp->mesh.boundingBox.CenterPoint();
+		return ComputeBBox().CenterPoint();
 	else
 		return transform->position;
 }

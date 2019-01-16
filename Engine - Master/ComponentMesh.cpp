@@ -229,7 +229,9 @@ void ComponentMesh::DeleteMesh()
 		glDeleteBuffers(1, &mesh.vao);
 	}
 
-	App->resources->meshes.erase(App->resources->meshes.begin() + App->resources->GetMeshNumber(*this));
+	int pos = App->resources->GetMeshNumber(*this);
+	if(pos >= 0)
+		App->resources->meshes.erase(App->resources->meshes.begin() + pos);
 }
 
 void ComponentMesh::Delete()

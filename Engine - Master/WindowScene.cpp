@@ -85,8 +85,10 @@ void WindowScene::Draw()
 	{
 		operation = ImGuizmo::SCALE;
 	}
-	if(ImGui::IsItemHovered()) gui_click = true;
 	ImGui::PopStyleColor(3);
+
+	ImGui::SetCursorPos({ -(App->window->screen_width - size.x) / 2,-(App->window->screen_height - size.y) / 2 });
+	if (ImGui::IsItemHovered()) gui_click = true;
 
 	// Draw guizmo
 	App->scene->DrawImGuizmo(operation);
