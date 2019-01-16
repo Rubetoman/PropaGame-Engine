@@ -62,12 +62,10 @@ bool ComponentMesh::DrawOnInspector()
 					bool isSelected = (currentMesh == (*it));
 					if (ImGui::Selectable((*it).c_str(), isSelected))
 					{
-						currentMesh = (*it);
-
 						if (isSelected)
 							ImGui::SetItemDefaultFocus();
 						else
-							LoadMesh(currentMesh.c_str());
+							LoadMesh((*it).c_str());
 					}
 				}
 				ImGui::EndCombo();
@@ -99,6 +97,7 @@ void ComponentMesh::LoadMesh(const char* name)
 	MeshImporter::Load(&mesh, name);
 	ComputeMesh();
 	my_go->ComputeBBox();
+	currentMesh = name;
 
 	App->resources->meshes.push_back(this);
 }

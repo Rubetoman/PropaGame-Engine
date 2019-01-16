@@ -334,11 +334,12 @@ void ModuleTextures::LoadTexture(std::string path, unsigned& textureID, int& wid
 		height = ilGetInteger(IL_IMAGE_HEIGHT);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
+		delete[] fileBuffer;
+		fileBuffer = nullptr;
 	}
 
 	ilDeleteImages(1, &imageID);
-	delete[] fileBuffer;
-	fileBuffer = nullptr;
 
 	LOG("Material creation successful.");
 }
