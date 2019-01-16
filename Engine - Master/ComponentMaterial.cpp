@@ -116,6 +116,10 @@ void ComponentMaterial::DrawDiffuseParameters()
 		if (ImGui::Button("Delete"))
 		{
 			App->textures->Unload(material.diffuse_map);
+			material.diffuse_map = 0u;
+			material.diffuse_width = 0;
+			material.diffuse_height = 0;
+			diffuseSelected = "";
 		}
 		ImGui::Columns(1);
 	}
@@ -178,6 +182,10 @@ void ComponentMaterial::DrawSpecularParameters()
 		if (ImGui::Button("Delete"))
 		{
 			App->textures->Unload(material.specular_map);
+			specularSelected = "";
+			unsigned		specular_map = 0u;
+			int				specular_width = 0;
+			int				specular_height = 0;
 		}
 		ImGui::Columns(1);
 	}
@@ -241,6 +249,10 @@ void ComponentMaterial::DrawAmbientParameters()
 			if (ImGui::Button("Delete"))
 			{
 				App->textures->Unload(material.occlusion_map);
+				material.occlusion_map = 0u;
+				material.occlusion_width = 0;
+				material.occlusion_height = 0;
+				occlusionSelected = "";
 			}
 			ImGui::Columns(1);
 		}
@@ -302,6 +314,10 @@ void ComponentMaterial::DrawEmissiveParameters()
 		if (ImGui::Button("Delete"))
 		{
 			App->textures->Unload(material.emissive_map);
+			material.emissive_map = 0u;
+			material.emissive_width = 0;
+			material.emissive_height = 0;
+			emissiveSelected = "";
 		}
 		ImGui::Columns(1);
 	}
