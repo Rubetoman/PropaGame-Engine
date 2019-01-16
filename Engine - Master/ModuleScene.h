@@ -39,7 +39,7 @@ public:
 
 	bool Save(JSON_file* document);
 
-	bool InitScene();						// Creates a scene with root, editor camera, default light and game camera
+	bool InitScene();						// Creates a scene with root, default light and game camera
 	void NewScene(bool init);				// True to Init scene after deleting scene
 	bool SaveScene(const char* scene_name);
 	bool LoadScene(const char* scene_name);

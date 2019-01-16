@@ -31,9 +31,6 @@ ModuleScene::~ModuleScene()
 		scene_gos.erase(it_go++);
 	}
 	scene_gos.clear();
-
-	//DeleteGameObject(root);
-	//delete root;
 }
 
 bool ModuleScene::Init()
@@ -317,7 +314,7 @@ bool ModuleScene::InitScene()
 
 	// Game Main Camera
 	GameObject* game_camera = CreateGameObject("Game Camera", root);
-	game_camera->transform->position = math::float3(0.0f, 0.0f, 3.0f);
+	game_camera->transform->position = math::float3(0.0f, 2.0f * App->editor->scale, 10.0f * App->editor->scale);
 	game_camera->CreateComponent(component_type::Camera);
 
 	dirty = true;

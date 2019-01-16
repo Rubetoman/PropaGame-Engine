@@ -30,7 +30,7 @@ ModuleCamera::~ModuleCamera()
 bool ModuleCamera::Init()
 {
 	editor_camera_go = new GameObject("Editor Camera");
-	editor_camera_go->transform->position = math::float3(0.0f, 0.0f, 3.0f * App->editor->scale);
+	editor_camera_go->transform->position = math::float3(0.0f, 5.0f * App->editor->scale, 30.0f * App->editor->scale);
 	editor_camera_comp = (ComponentCamera*)editor_camera_go->CreateComponent(component_type::Editor_Camera);
 	App->window->SetWindowSize(App->window->screen_width, App->window->screen_height, true);
 	App->scene->scene_gos.push_back(editor_camera_go);
