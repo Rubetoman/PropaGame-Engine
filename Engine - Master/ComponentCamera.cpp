@@ -258,6 +258,7 @@ const void ComponentCamera::InitFrustum()
 
 void ComponentCamera::SetFrustum(unsigned& w, unsigned& h)
 {
+	frustum.verticalFov = math::pi / 4.0f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)w / (float)h));
 }
 

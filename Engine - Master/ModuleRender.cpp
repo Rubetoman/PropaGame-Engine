@@ -143,7 +143,14 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
     glViewport(0, 0, width, height); 
 	App->window->SetWindowSize(width, height, false);
+	App->camera->editor_camera_comp->SetFrustum(width, height);
 	App->camera->editor_camera_comp->CreateFrameBuffer();
+
+	for (auto camera : App->resources->cameras)
+	{
+		camera->SetFrustum(width, height);
+		camera->CreateFrameBuffer();
+	}
 }
 
 void ModuleRender::GenerateFallback()

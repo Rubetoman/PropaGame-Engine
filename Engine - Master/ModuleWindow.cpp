@@ -124,7 +124,6 @@ void ModuleWindow::SetWindowSize(unsigned& w, unsigned& h, const bool useSDL)
 {
 	App->window->screen_width = w;
 	App->window->screen_height = h;
-	App->camera->editor_camera_comp->SetFrustum(w,h);
 	if (useSDL)
 		SDL_SetWindowSize(window, screen_width, screen_height);
 }
