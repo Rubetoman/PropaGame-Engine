@@ -24,8 +24,9 @@ public:
 	bool            Init();
 	update_status   Update();
 	bool            CleanUp();
-	bool ModuleModelLoader::LoadMesh(const char* path);
-	void ModuleModelLoader::GenerateNodeMeshData(const char* path, const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent);
+	bool LoadMesh(const char* path);
+	void GenerateNodeMeshData(const char* path, const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent);
+	void CreateGameObjectFromFile(const char& name);
 	// Shape Creation
 	//GameObject* CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
 	//	unsigned slices, unsigned stacks, const math::float4& color);
