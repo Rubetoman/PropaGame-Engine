@@ -316,19 +316,8 @@ void ComponentMesh::DeleteMesh()
 		glDeleteBuffers(1, &mesh.vao);
 	}
 	
-	mesh.normals = nullptr;
-	mesh.colors = nullptr;
-	mesh.uvs = nullptr;
-
-	mesh.num_vertices = 0u;
-	mesh.vertices = nullptr;
-
-	mesh.num_indices = 0u;
-	mesh.indices = nullptr;
-
-	mesh.normalsOffset = 0u;
-	mesh.texturesOffset = 0u;
-	mesh.vertexSize = 0u;
+	Mesh new_mesh;
+	mesh = new_mesh;
 
 	int pos = App->resources->GetMeshNumber(*this);
 	if(pos >= 0)

@@ -43,6 +43,8 @@ public:
 	~ComponentMaterial();
 
 	Component* Duplicate() override;
+	void CleanUp() override;
+
 	bool DrawOnInspector() override;
 	void DrawDiffuseParameters();
 	void DrawSpecularParameters();

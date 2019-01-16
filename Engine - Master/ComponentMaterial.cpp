@@ -30,12 +30,17 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(
 
 ComponentMaterial::~ComponentMaterial()
 {
-	Delete();
 }
 
 Component* ComponentMaterial::Duplicate()
 {
 	return new ComponentMaterial(*this);
+}
+
+void ComponentMaterial::CleanUp()
+{
+	Component::CleanUp();
+	Delete();
 }
 
 bool ComponentMaterial::DrawOnInspector()
@@ -45,40 +50,47 @@ bool ComponentMaterial::DrawOnInspector()
 	if (ImGui::CollapsingHeader("Material Component"))
 	{
 		bool deleted = Component::DrawOnInspector();
+		if (!deleted)
+		{
+			// Shader
+			char* program_names[ModuleShader::PROGRAM_COUNT] = { "Default", "Flat", "Gouraud", "Phong", "Blinn" };
+			ImGui::Combo("shader", (int*)&shader, program_names, ModuleShader::PROGRAM_COUNT);
 
-		// Shader
-		char* program_names[ModuleShader::PROGRAM_COUNT] = { "Default", "Flat", "Gouraud", "Phong", "Blinn"};
-		ImGui::Combo("shader", (int*)&shader, program_names, ModuleShader::PROGRAM_COUNT);
+			ImGui::Separator();
+			if (ImGui::TreeNode("Diffuse"))
+			{
+				DrawDiffuseParameters();
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
 
+			if (ImGui::TreeNode("Specular"))
+			{
+				DrawSpecularParameters();
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
+
+			if (ImGui::TreeNode("Ambient"))
+			{
+				DrawAmbientParameters();
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
+
+			if (ImGui::TreeNode("Emissive"))
+			{
+				DrawEmissiveParameters();
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
+		}
+		else
+		{
+			ImGui::PopID();
+			return deleted;
+		}
 		
-		ImGui::Separator();
-		if (ImGui::TreeNode("Diffuse"))
-		{
-			DrawDiffuseParameters();
-			ImGui::TreePop();
-		}
-		ImGui::Separator();
-
-		if (ImGui::TreeNode("Specular"))
-		{
-			DrawSpecularParameters();
-			ImGui::TreePop();
-		}
-		ImGui::Separator();
-
-		if (ImGui::TreeNode("Ambient"))
-		{
-			DrawAmbientParameters();
-			ImGui::TreePop();
-		}
-		ImGui::Separator();
-
-		if (ImGui::TreeNode("Emissive"))
-		{
-			DrawEmissiveParameters();
-			ImGui::TreePop();
-		}
-		ImGui::Separator();
 	}
 	ImGui::PopID();
 	return false;
@@ -106,7 +118,6 @@ void ComponentMaterial::DrawDiffuseParameters()
 			App->textures->Unload(material.diffuse_map);
 		}
 		ImGui::Columns(1);
-
 	}
 	else
 	{
@@ -333,16 +344,6 @@ void ComponentMaterial::DrawEmissiveParameters()
 	}
 }
 
-/*void ComponentMaterial::GenerateMaterial(char* &material)
-{
-	if (material == nullptr) return;
-
-	diffuse_map = App->textures->loadTexture(material, false);
-
-	if (diffuse_map != nullptr)
-		diffuse_color = math::float4::one;
-}*/
-
 void ComponentMaterial::RenderMaterial()
 {
 	unsigned program = App->shader->programs[shader];
@@ -414,6 +415,7 @@ void ComponentMaterial::Delete()
 	material = emptyMaterial;
 
 	my_go->material_comp = nullptr;
+	Component::Delete();
 }
 
 JSON_value* ComponentMaterial::Save(JSON_value* component) const
