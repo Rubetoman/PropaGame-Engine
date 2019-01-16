@@ -361,10 +361,7 @@ void ModuleScene::NewScene()
 	SDL_SetWindowTitle(App->window->window, windowTitle.c_str());
 
 	App->resources->CleanUp();
-	App->resources->UpdateMeshesList();
-	App->resources->UpdateTexturesList();
-	App->resources->UpdateScenesList();
-	App->resources->UpdateFBXMeshesList();
+	App->resources->UpdateFilesList();
 
 	InitScene();
 }

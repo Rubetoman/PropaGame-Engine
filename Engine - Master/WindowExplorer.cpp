@@ -6,6 +6,8 @@
 #include "ModuleModelLoader.h"
 
 #include "MeshImporter.h"
+#include "TextureImporter.h"
+
 #include <vector>
 
 WindowExplorer::WindowExplorer(const char* name) : Window(name)
@@ -97,13 +99,13 @@ void WindowExplorer::DrawTreeNode(const char* name, bool isLeaf)
 				DrawTreeNode((*iterator).c_str(), true);
 			}
 		}
-		/*else if (name == "Assets/Textures")
+		else if (name == "Assets/Textures")
 		{
-			for (std::vector<std::string>::iterator iterator = App->resources->fbx_meshes->begin(); iterator != App->resources->fbx_meshes->end(); ++iterator)
+			for (std::vector<std::string>::iterator iterator = App->resources->external_textures->begin(); iterator != App->resources->external_textures->end(); ++iterator)
 			{
 				DrawTreeNode((*iterator).c_str(), true);
 			}
-		}*/
+		}
 
 		ImGui::TreePop();
 	}
@@ -138,6 +140,15 @@ void WindowExplorer::ClickBehaviour(const char* name)
 				if (ImGui::MenuItem("Load Mesh"))
 				{
 					App->model_loader->LoadMesh(path.c_str());
+				}
+			}
+			else if (ext == "png" || ext == "dds" || ext == "jpg" || ext == "tif")
+			{
+				std::string path = TEXTURES_ASSETS_FOLDER;
+				path += name;
+				if (ImGui::MenuItem("Import"))
+				{
+					TextureImporter::Import(path.c_str());
 				}
 			}
 			else if (ImGui::MenuItem("Delete")) 
