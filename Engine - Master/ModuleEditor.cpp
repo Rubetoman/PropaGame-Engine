@@ -193,7 +193,7 @@ void ModuleEditor::ShowMainMenuBar()
 			if (ImGui::MenuItem("New Scene"))
 			{
 				strcpy(temp_name, "Untitled");
-				App->scene->NewScene();
+				App->scene->NewScene(true);
 			}
 			if (ImGui::MenuItem("Save Scene")) 
 			{ 

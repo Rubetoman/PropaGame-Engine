@@ -38,8 +38,9 @@ public:
 	unsigned GetSceneGONumber(GameObject& go) const;
 
 	bool Save(JSON_file* document);
-	bool InitScene();
-	void NewScene();
+
+	bool InitScene();						// Creates a scene with root, editor camera, default light and game camera
+	void NewScene(bool init);				// True to Init scene after deleting scene
 	bool SaveScene(const char* scene_name);
 	bool LoadScene(const char* scene_name);
 	bool DeleteScene(const char* scene_name);

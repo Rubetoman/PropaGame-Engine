@@ -325,7 +325,7 @@ bool ModuleScene::InitScene()
 	return true;
 }
 
-void ModuleScene::NewScene()
+void ModuleScene::NewScene(bool init)
 {
 	quadtree->Clear();
 
@@ -345,7 +345,7 @@ void ModuleScene::NewScene()
 	App->resources->CleanUp();
 	App->resources->UpdateFilesList();
 
-	InitScene();
+	if(init) InitScene();
 }
 
 bool ModuleScene::SaveScene(const char* scene_name)
@@ -391,14 +391,7 @@ bool ModuleScene::LoadScene(const char* scene_name)
 		return false;
 	}
 
-	App->editor->selectedGO = nullptr;
-
-	// Delete root
-	root->DeleteGameObject();
-	scene_gos.erase(scene_gos.begin() + GetSceneGONumber(*root));
-
-	App->resources->CleanUp();
-	App->resources->UpdateScenesList();
+	NewScene(false);
 
 	// Change window title
 	std::string windowTitle = scene_name;
@@ -409,9 +402,7 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	// Change scene name
 	name = scene_name;
 
-	// Look at origin
-	App->camera->editor_camera_comp->LookAt(math::float3(0.0f, 0.0f, 0.0f));
-
+	// Load JSON
 	JSON_value* go_root = scene->getValue("Root"); //It is an array of values
 	if (go_root->getRapidJSONValue()->IsArray()) //Just make sure
 	{
@@ -421,7 +412,6 @@ bool ModuleScene::LoadScene(const char* scene_name)
 			GameObject* go = new GameObject("");
 			go->Load(go_root->getValueFromArray(i));
 			gameobjects.insert(std::pair<std::string, GameObject*>(go->uuid, go));
-			//App->camera->BBtoLook->Enclose(go->);
 		}
 
 		for (std::map<std::string, GameObject*>::iterator it_go = gameobjects.begin(); it_go != gameobjects.end(); it_go++)
@@ -437,11 +427,9 @@ bool ModuleScene::LoadScene(const char* scene_name)
 				GameObject* parent = gameobjects[(*it_go).second->parentUID];
 				(*it_go).second->parent = parent;
 				parent->children.push_back((*it_go).second);
-				//parent->boundingBox.Enclose((*it_go).second->boundingBox);
 			}
 		}
 	}
-	//App->camera->FitCamera(*App->camera->BBtoLook);
 	App->json->closeFile(scene);
 
 	dirty = true;
