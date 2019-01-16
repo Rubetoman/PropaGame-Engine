@@ -41,7 +41,6 @@ Component* ComponentMaterial::Duplicate()
 void ComponentMaterial::CleanUp()
 {
 	Component::CleanUp();
-	Delete();
 }
 
 bool ComponentMaterial::DrawOnInspector()
