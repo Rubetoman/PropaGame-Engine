@@ -16,14 +16,14 @@
 
 ComponentMesh::ComponentMesh(GameObject* go) : Component(go, component_type::Mesh)
 {
-	App->resources->meshes.push_back(this);
 }
 
 ComponentMesh::ComponentMesh(const ComponentMesh& comp) : Component(comp)
 {
 	mesh = comp.mesh;
 	currentMesh = comp.currentMesh;
-	App->resources->meshes.push_back(this);
+	if(currentMesh.size() > 0)
+		App->resources->meshes.push_back(this);
 }
 
 ComponentMesh::~ComponentMesh()
@@ -56,6 +56,11 @@ bool ComponentMesh::DrawOnInspector()
 			{
 				if (ImGui::BeginCombo("##meshCombo", currentMesh.c_str()))
 				{
+					if (ImGui::Selectable("", (currentMesh.size() < 1)))
+					{
+						currentMesh = "";
+						DeleteMesh();
+					}
 					for (std::vector<std::string>::iterator it = App->resources->file_meshes->begin(); it != App->resources->file_meshes->end(); ++it)
 					{
 						bool isSelected = (currentMesh == (*it));
@@ -97,6 +102,8 @@ void ComponentMesh::LoadMesh(const char* name)
 	MeshImporter::Load(&mesh, name);
 	ComputeMesh();
 	my_go->ComputeBBox();
+
+	App->resources->meshes.push_back(this);
 }
 
 void ComponentMesh::ComputeMesh()
@@ -250,6 +257,7 @@ void ComponentMesh::ComputeMesh(par_shapes_mesh_s* parMesh)
 
 	mesh.boundingBox.SetNegativeInfinity();
 	mesh.boundingBox.Enclose((math::float3*)parMesh->points, mesh.num_vertices);
+	App->resources->meshes.push_back(this);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -312,6 +320,20 @@ void ComponentMesh::DeleteMesh()
 	{
 		glDeleteBuffers(1, &mesh.vao);
 	}
+	
+	mesh.normals = nullptr;
+	mesh.colors = nullptr;
+	mesh.uvs = nullptr;
+
+	mesh.num_vertices = 0u;
+	mesh.vertices = nullptr;
+
+	mesh.num_indices = 0u;
+	mesh.indices = nullptr;
+
+	mesh.normalsOffset = 0u;
+	mesh.texturesOffset = 0u;
+	mesh.vertexSize = 0u;
 
 	int pos = App->resources->GetMeshNumber(*this);
 	if(pos >= 0)
@@ -324,99 +346,6 @@ void ComponentMesh::Delete()
 	Component::Delete();
 	App->resources->DeleteMesh(this);
 }
-
-/*void ComponentMesh::GenerateMesh(par_shapes_mesh_s* mesh)
-{
-
-	glGenBuffers(1, &mesh.vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
-
-	// Positions
-
-	for (unsigned i = 0; i< unsigned(mesh->npoints); ++i)
-	{
-		math::float3 point(mesh->points[i * 3], mesh->points[i * 3 + 1], mesh->points[i * 3 + 2]);
-		// TODO: Set position
-		//point = my_go->transform.TransformPos(point);
-		for (unsigned j = 0; j<3; ++j)
-		{
-			min_v[j] = min(min_v[j], point[i]);
-			max_v[j] = max(max_v[j], point[i]);
-		}
-	}
-
-	unsigned offset_acc = sizeof(math::float3);
-	unsigned normals_offset = 0;
-
-	if (mesh->normals)
-	{
-		normals_offset = offset_acc;
-		offset_acc += sizeof(math::float3);
-	}
-
-	glBufferData(GL_ARRAY_BUFFER, offset_acc*mesh->npoints, nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float3)*mesh->npoints, mesh->points);
-
-	// normals
-	if (mesh->normals)
-	{
-		glBufferSubData(GL_ARRAY_BUFFER, normals_offset*mesh->npoints, sizeof(math::float3)*mesh->npoints, mesh->normals);
-	}
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// indices
-
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_indices * sizeof(unsigned), indices , GL_STATIC_DRAW);
-
-	unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0,
-		sizeof(unsigned)*mesh->ntriangles * 3, GL_MAP_WRITE_BIT);
-
-	for (unsigned i = 0; i< unsigned(mesh->ntriangles * 3); ++i)
-	{
-		*(indices++) = mesh->triangles[i];
-	}
-
-	// generate VAO
-	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	if (normals_offset != 0)
-	{
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)(normals_offset*mesh->npoints));
-	}
-
-	glBindVertexArray(0);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	vertices.reserve(mesh->npoints);
-	for (unsigned int i = 0; i < mesh->npoints; i++)
-	{
-		vertices.push_back(float3((float *)&mesh->points[i]));
-	}
-
-	//materialIndex = 0;
-	num_indices = mesh->ntriangles * 3;
-	num_vertices = mesh->npoints;
-}*/
 
 JSON_value* ComponentMesh::Save(JSON_value* component) const
 {
