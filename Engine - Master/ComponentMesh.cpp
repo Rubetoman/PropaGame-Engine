@@ -50,32 +50,27 @@ bool ComponentMesh::DrawOnInspector()
 		bool deleted = Component::DrawOnInspector();
 		if (!deleted)
 		{
-			ImGui::Text("Mesh type: %s", (mesh_type == Mesh_type::proMesh) ? "proMesh" : "FBX");
-			
-			if (mesh_type == Mesh_type::proMesh)
+			if (ImGui::BeginCombo("##meshCombo", currentMesh.c_str()))
 			{
-				if (ImGui::BeginCombo("##meshCombo", currentMesh.c_str()))
+				if (ImGui::Selectable("", (currentMesh.size() < 1)))
 				{
-					if (ImGui::Selectable("", (currentMesh.size() < 1)))
-					{
-						currentMesh = "";
-						DeleteMesh();
-					}
-					for (std::vector<std::string>::iterator it = App->resources->file_meshes->begin(); it != App->resources->file_meshes->end(); ++it)
-					{
-						bool isSelected = (currentMesh == (*it));
-						if (ImGui::Selectable((*it).c_str(), isSelected))
-						{
-							currentMesh = (*it);
-
-							if (isSelected)
-								ImGui::SetItemDefaultFocus();
-							else
-								LoadMesh(currentMesh.c_str());
-						}
-					}
-					ImGui::EndCombo();
+					currentMesh = "";
+					DeleteMesh();
 				}
+				for (std::vector<std::string>::iterator it = App->resources->file_meshes->begin(); it != App->resources->file_meshes->end(); ++it)
+				{
+					bool isSelected = (currentMesh == (*it));
+					if (ImGui::Selectable((*it).c_str(), isSelected))
+					{
+						currentMesh = (*it);
+
+						if (isSelected)
+							ImGui::SetItemDefaultFocus();
+						else
+							LoadMesh(currentMesh.c_str());
+					}
+				}
+				ImGui::EndCombo();
 			}
 
 			ImGui::Text("Triangles Count: %d", mesh.num_indices / 3);
@@ -351,7 +346,6 @@ JSON_value* ComponentMesh::Save(JSON_value* component) const
 {
 	JSON_value* mesh = Component::Save(component);
 
-	mesh->AddInt("meshType", (int)mesh_type);
 	mesh->AddString("currentMesh", currentMesh.c_str());
 
 	component->addValue("", mesh);
@@ -363,9 +357,7 @@ void ComponentMesh::Load(JSON_value* component)
 {
 	Component::Load(component);
 
-	mesh_type = (Mesh_type)component->GetInt("meshType");
 	currentMesh = component->GetString("currentMesh");
 
-	if (mesh_type == Mesh_type::proMesh)
-		LoadMesh(currentMesh.c_str());
+	LoadMesh(currentMesh.c_str());
 }

@@ -146,10 +146,6 @@ void WindowExplorer::ClickBehaviour(const char* name)
 				{
 					MeshImporter::ImportFBX(path.c_str());
 				}
-				if (ImGui::MenuItem("Load Mesh"))
-				{
-					App->model_loader->LoadMesh(path.c_str());
-				}
 			}
 			else if (ext == "png" || ext == "dds" || ext == "jpg" || ext == "tif")
 			{

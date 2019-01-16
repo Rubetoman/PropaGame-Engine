@@ -9,8 +9,6 @@ class GameObject;
 
 struct par_shapes_mesh_s;
 
-enum class Mesh_type {proMesh, fbx};
-
 struct Mesh 
 {
 	unsigned vbo = 0u;
@@ -52,7 +50,6 @@ public:
 	void ComputeMesh();
 	void ComputeMesh(par_shapes_mesh_s* parMesh);
 
-	void GenerateMesh(par_shapes_mesh_s* mesh);
 	void RenderMesh(const math::float4x4& view, const math::float4x4& proj);
 	void DeleteMesh();
 	void Delete() override;
@@ -63,7 +60,6 @@ public:
 public:
 
 	Mesh mesh;
-	Mesh_type mesh_type = Mesh_type::proMesh;
 	std::string currentMesh;
 };
 
