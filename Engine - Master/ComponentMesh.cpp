@@ -173,6 +173,91 @@ void ComponentMesh::ComputeMesh()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+void ComponentMesh::ComputeMesh(par_shapes_mesh_s* parMesh) 
+{
+	assert(parMesh != nullptr);
+
+	glGenBuffers(1, &mesh.vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
+
+	unsigned offset = sizeof(math::float3);
+
+	if (parMesh->normals) 
+	{
+		mesh.normalsOffset = offset;
+		offset += sizeof(math::float3);
+	}
+
+	if (parMesh->tcoords)
+	{
+		mesh.texturesOffset = offset;
+		offset += sizeof(math::float2);
+	}
+
+	mesh.vertexSize = offset;
+
+	glBufferData(GL_ARRAY_BUFFER, mesh.vertexSize * parMesh->npoints, nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(math::float3) * parMesh->npoints, parMesh->points);
+
+	if (parMesh->tcoords)
+		glBufferSubData(GL_ARRAY_BUFFER, mesh.texturesOffset * parMesh->npoints, sizeof(float) * 2 * parMesh->npoints, parMesh->tcoords);
+
+	if (parMesh->normals)
+		glBufferSubData(GL_ARRAY_BUFFER, mesh.normalsOffset * parMesh->npoints, sizeof(float) * 3 * parMesh->npoints, parMesh->normals);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glGenBuffers(1, &mesh.ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ibo);
+
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * parMesh->ntriangles * 3, nullptr, GL_STATIC_DRAW);
+
+	unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned) * parMesh->ntriangles * 3, GL_MAP_WRITE_BIT);
+
+	for (unsigned i = 0; i< unsigned(parMesh->ntriangles * 3); ++i) 
+	{
+		*(indices++) = parMesh->triangles[i];
+	}
+
+	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	mesh.num_vertices = parMesh->npoints;
+	mesh.num_indices = parMesh->ntriangles * 3;
+
+	glGenVertexArrays(1, &mesh.vao);
+
+	glBindVertexArray(mesh.vao);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ibo);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	if (mesh.normalsOffset != 0)
+	{
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.normalsOffset * mesh.num_vertices));
+	}
+
+	if (mesh.texturesOffset != 0) 
+	{
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.texturesOffset * mesh.num_vertices));
+	}
+
+	glBindVertexArray(0);
+
+	mesh.boundingBox.SetNegativeInfinity();
+	mesh.boundingBox.Enclose((math::float3*)parMesh->points, parMesh->npoints);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4& proj)
 {
 	//Draw meshes

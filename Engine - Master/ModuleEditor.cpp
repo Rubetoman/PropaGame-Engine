@@ -247,7 +247,9 @@ void ModuleEditor::ShowMainMenuBar()
 			}
 			if (ImGui::MenuItem("Create Sphere"))
 			{
-				//App->model_loader->CreateSphere("sphere", math::float3(0.0f, 0.0f, 0.0f), Quat::identity, math::float3(1.0f, 1.0f, 1.0f), 20, 20, float4(0.f, 0.0f, 0.5f, 1.0f));
+				GameObject* sphere = App->scene->CreateGameObject("Sphere", selectedGO);
+				App->model_loader->LoadGeometry(sphere, Geometry_type::SPHERE);
+				selectedGO = sphere;
 			}
 			ImGui::EndMenu();
 		}

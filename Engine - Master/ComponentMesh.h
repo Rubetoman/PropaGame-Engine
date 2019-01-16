@@ -50,6 +50,7 @@ public:
 	void LoadMesh(const char* name);
 
 	void ComputeMesh();
+	void ComputeMesh(par_shapes_mesh_s* parMesh);
 
 	void GenerateMesh(par_shapes_mesh_s* mesh);
 	void RenderMesh(const math::float4x4& view, const math::float4x4& proj);

@@ -14,6 +14,8 @@ class aiScene;
 class aiNode;
 class aiMesh;
 
+enum class Geometry_type {SPHERE, TORUS, PLANE, CUBE};
+
 class ModuleModelLoader : public Module
 {
 public:
@@ -27,6 +29,9 @@ public:
 	bool LoadMesh(const char* path);
 	void GenerateNodeMeshData(const char* path, const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent_transform, GameObject* parent);
 	void CreateGameObjectFromFile(const char& name);
+
+	// Parshapes functions
+	void LoadGeometry(GameObject* parent, Geometry_type geometryType);
 	// Shape Creation
 	//GameObject* CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
 	//	unsigned slices, unsigned stacks, const math::float4& color);
