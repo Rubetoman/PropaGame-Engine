@@ -234,18 +234,19 @@ bool MeshImporter::Load(Mesh* mesh, const char* meshName)
 		mesh->num_indices = ranges[0];
 		mesh->num_vertices = ranges[1];
 
-		// indices
+		// Indices
 		bytes = sizeof(unsigned) * mesh->num_indices;
 		mesh->indices = new unsigned[mesh->num_indices];
 		memcpy(mesh->indices, cursor, bytes);
 		cursor += bytes;
 
-		// vertices
+		// Vertices
 		bytes = sizeof(float) * mesh->num_vertices * 3;
 		mesh->vertices = new float[mesh->num_vertices * 3];
 		memcpy(mesh->vertices, cursor, bytes);
 		cursor += bytes;
 
+		// Texture Coords
 		if (ranges[2] > 0) 
 		{
 			bytes = sizeof(float)* mesh->num_vertices * 2;
@@ -254,6 +255,7 @@ bool MeshImporter::Load(Mesh* mesh, const char* meshName)
 			cursor += bytes;
 		}
 
+		// Normlas
 		if (ranges[3] > 0) 
 		{
 			bytes = sizeof(float)* mesh->num_vertices * 3;
@@ -262,6 +264,7 @@ bool MeshImporter::Load(Mesh* mesh, const char* meshName)
 			cursor += bytes;
 		}
 
+		// Colors
 		if (ranges[4] > 0) 
 		{
 			bytes = sizeof(float)* mesh->num_vertices * 3;

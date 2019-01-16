@@ -250,18 +250,20 @@ void GameObject::DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode) const
 		break;
 	}
 
+	float scale = App->editor->scale;
+
 	// Draw a sphere on Editor
 	if (GetComponent(component_type::Light) != nullptr)
 	{
-		dd::sphere(transform->position, math::float3(1.0f, 1.0f, 1.0f), 0.2f);
+		dd::sphere(transform->position, math::float3(1.0f, 1.0f, 1.0f), scale * 0.2f);
 	}
 
 	// Draw a camera icon and Frustum on Editor
 	ComponentCamera* camera_component = (ComponentCamera*)GetComponent(component_type::Camera);
 	if (camera_component != nullptr)
 	{
-		dd::cone(transform->position + (camera_component->frustum.front * 0.3f), 0.5f * camera_component->frustum.front, math::float3(1.0f, 1.0f, 1.0f), 0.2f, 0.01f);
-		dd::box(transform->position, math::float3(1.0f, 1.0f, 1.0f), 0.4f, 0.4f, 0.4f);
+		dd::cone(transform->position + (camera_component->frustum.front * scale * 0.3f), scale * 0.5f * camera_component->frustum.front, math::float3(1.0f, 1.0f, 1.0f), scale * 0.2f, scale * 0.01f);
+		dd::box(transform->position, math::float3(1.0f, 1.0f, 1.0f), scale * 0.4f, scale * 0.4f, scale * 0.4f);
 
 		dd::frustum((camera_component->frustum.ProjectionMatrix() * camera_component->frustum.ViewMatrix()).Inverted(), dd::colors::Purple);
 	}

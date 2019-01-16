@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 
 #include "GameObject.h"
 
@@ -112,8 +113,12 @@ bool ComponentTransform::DrawOnInspector()
 				App->scene->dirty = true;
 		}
 
-		if(ImGui::DragFloat3("Position", (float*)&position, 0.1f))
+		// Show scaled position
+		math::float3 scaled_position = position / App->editor->scale;
+
+		if(ImGui::DragFloat3("Position", (float*)&scaled_position))
 		{
+			position = scaled_position * App->editor->scale;
 			if(my_go->static_GO)
 				App->scene->dirty = true;
 		}
