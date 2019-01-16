@@ -66,6 +66,8 @@ void main()
 {
     vec3 normal      = normalize(normal);
     vec3 light_dir   = normalize(light_pos-position);
+	float distance = length(light_dir);
+	light_dir = light_dir/distance;
 
 	float diffuse = lambert(light_dir, normal);
 	float specular = 0.0;
