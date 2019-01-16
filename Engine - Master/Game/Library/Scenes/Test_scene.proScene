@@ -1,0 +1,1575 @@
+{
+    "Root": [
+        {
+            "UID": "ffc96766-1af9-4075-8adb-cd6052005e77",
+            "ParentUID": "",
+            "Name": "World",
+            "Active": true,
+            "Static": true,
+            "Components": [
+                {
+                    "UID": "8019f66b-442d-42df-9e6d-41fb3599c76b",
+                    "GOUID": "ffc96766-1af9-4075-8adb-cd6052005e77",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "08f8e9cb-757c-43a5-93f6-8f999da21ff6",
+            "ParentUID": "ffc96766-1af9-4075-8adb-cd6052005e77",
+            "Name": "Enemies",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "09fe4db6-c4a4-4e5e-a746-83e7f74e71b9",
+                    "GOUID": "08f8e9cb-757c-43a5-93f6-8f999da21ff6",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        529.593994140625,
+                        21.049381256103517,
+                        -3094.606201171875
+                    ],
+                    "Rotation": [
+                        0.0,
+                        -0.6958244442939758,
+                        0.0,
+                        0.7182119488716126
+                    ],
+                    "Scale": [
+                        1.0000015497207642,
+                        1.0,
+                        1.0000015497207642
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "3a2952c5-abde-4f4b-811e-5f8311b2b135",
+            "ParentUID": "08f8e9cb-757c-43a5-93f6-8f999da21ff6",
+            "Name": "Zombunny",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "c2ae9770-4c7e-4c91-b3cc-73a6391e73a9",
+                    "GOUID": "3a2952c5-abde-4f4b-811e-5f8311b2b135",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        -2513.41357421875,
+                        0.0000209808349609375,
+                        -184.60662841796876
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.6764410138130188,
+                        0.0,
+                        0.7364968657493591
+                    ],
+                    "Scale": [
+                        0.9999975562095642,
+                        1.0,
+                        0.9999975562095642
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "10b10832-17d0-4345-ac48-01307906fbd5",
+            "ParentUID": "3a2952c5-abde-4f4b-811e-5f8311b2b135",
+            "Name": "Zombunny_1",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "d6006987-bf94-4856-ac1e-a9be667e0a90",
+                    "GOUID": "10b10832-17d0-4345-ac48-01307906fbd5",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "f2b13cd5-4e76-4e47-8714-adedfa50032d",
+                    "GOUID": "10b10832-17d0-4345-ac48-01307906fbd5",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Zombunny_1.proMesh"
+                },
+                {
+                    "UID": "4c747f7d-352a-4b76-80da-efb46258755c",
+                    "GOUID": "10b10832-17d0-4345-ac48-01307906fbd5",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "",
+                    "diffuse_map": 0,
+                    "diffuse_color": [
+                        0.9019607901573181,
+                        0.5085667371749878,
+                        0.45540180802345278,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5180000066757202,
+                    "specularSelected": "",
+                    "specular_map": 0,
+                    "specular_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "occlusionSelected": "",
+                    "occlusion_map": 0,
+                    "k_ambient": 0.5,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "36a55ffb-8ceb-4f2c-94ea-c939a83f6b6d",
+            "ParentUID": "3a2952c5-abde-4f4b-811e-5f8311b2b135",
+            "Name": "Zombunny_0",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "7a59d874-287d-448e-86cd-b5425d866e6d",
+                    "GOUID": "36a55ffb-8ceb-4f2c-94ea-c939a83f6b6d",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "2a5dbaed-5a1b-41dd-8546-316918f2969f",
+                    "GOUID": "36a55ffb-8ceb-4f2c-94ea-c939a83f6b6d",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Zombunny_0.proMesh"
+                },
+                {
+                    "UID": "7c75c416-d641-4082-8427-845dc4242f33",
+                    "GOUID": "36a55ffb-8ceb-4f2c-94ea-c939a83f6b6d",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "ZomBunnyDiffuse.proDDS",
+                    "diffuse_map": 46,
+                    "diffuse_color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5,
+                    "specularSelected": "ZomBunnySpecular.proDDS",
+                    "specular_map": 47,
+                    "specular_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "occlusionSelected": "ZomBunnyOcclusion.proDDS",
+                    "occlusion_map": 48,
+                    "k_ambient": 0.5,
+                    "emissiveSelected": "ZomBunnyEmissive.proDDS",
+                    "emissive_map": 49,
+                    "emissive_color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "c35cd631-dd79-40d2-b371-cb375d5136a4",
+            "ParentUID": "08f8e9cb-757c-43a5-93f6-8f999da21ff6",
+            "Name": "Zombunny",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "57ffb367-51c3-49c3-8bbf-c0f958e8ee77",
+                    "GOUID": "c35cd631-dd79-40d2-b371-cb375d5136a4",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.03662109375,
+                        0.0,
+                        0.00640869140625
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.976493775844574,
+                        0.0,
+                        0.21554559469223023
+                    ],
+                    "Scale": [
+                        1.000000238418579,
+                        1.0,
+                        1.000000238418579
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "3b40e843-449b-4dc7-9d1f-f9aa441065a5",
+            "ParentUID": "c35cd631-dd79-40d2-b371-cb375d5136a4",
+            "Name": "Zombunny_1",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "f1d91784-0a22-4162-9cfb-0120bca33a98",
+                    "GOUID": "3b40e843-449b-4dc7-9d1f-f9aa441065a5",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "dc4393e5-333d-486a-accf-cf0122d499ba",
+                    "GOUID": "3b40e843-449b-4dc7-9d1f-f9aa441065a5",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Zombunny_1.proMesh"
+                },
+                {
+                    "UID": "6df60ebd-fb81-4a67-8922-4941705139ef",
+                    "GOUID": "3b40e843-449b-4dc7-9d1f-f9aa441065a5",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "",
+                    "diffuse_map": 0,
+                    "diffuse_color": [
+                        0.9019607901573181,
+                        0.5085667371749878,
+                        0.45540180802345278,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5180000066757202,
+                    "specularSelected": "",
+                    "specular_map": 0,
+                    "specular_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "occlusionSelected": "",
+                    "occlusion_map": 0,
+                    "k_ambient": 0.5,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "bed2f42d-2ad1-4ab3-b61e-d7241cfc3ae5",
+            "ParentUID": "c35cd631-dd79-40d2-b371-cb375d5136a4",
+            "Name": "Zombunny_0",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "7671b187-d0a8-41a8-b3a9-c932de2a04aa",
+                    "GOUID": "bed2f42d-2ad1-4ab3-b61e-d7241cfc3ae5",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.00146484375,
+                        -0.000011444091796875,
+                        0.000244140625
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        0.9999996423721314,
+                        1.0,
+                        0.9999996423721314
+                    ]
+                },
+                {
+                    "UID": "639897dd-e2e6-4f50-98eb-5be2330ed3ba",
+                    "GOUID": "bed2f42d-2ad1-4ab3-b61e-d7241cfc3ae5",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Zombunny_0.proMesh"
+                },
+                {
+                    "UID": "e31c9917-5280-4aec-bcfa-134c0c592573",
+                    "GOUID": "bed2f42d-2ad1-4ab3-b61e-d7241cfc3ae5",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "ZomBunnyDiffuse.proDDS",
+                    "diffuse_map": 50,
+                    "diffuse_color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5,
+                    "specularSelected": "ZomBunnySpecular.proDDS",
+                    "specular_map": 51,
+                    "specular_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "occlusionSelected": "ZomBunnyOcclusion.proDDS",
+                    "occlusion_map": 52,
+                    "k_ambient": 0.5,
+                    "emissiveSelected": "ZomBunnyEmissive.proDDS",
+                    "emissive_map": 53,
+                    "emissive_color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "15b8e8ac-a10c-40a5-84d1-6d5605fb1b9a",
+            "ParentUID": "ffc96766-1af9-4075-8adb-cd6052005e77",
+            "Name": "Player",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "c635710e-8ff0-41ed-b463-a73302680f62",
+                    "GOUID": "15b8e8ac-a10c-40a5-84d1-6d5605fb1b9a",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        1495.930419921875,
+                        21.0499267578125,
+                        -2604.654296875
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.8803002834320068,
+                        0.0,
+                        -0.47441697120666506
+                    ],
+                    "Scale": [
+                        1.0000040531158448,
+                        1.0,
+                        1.0000040531158448
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "28309042-a716-4f14-b7b4-868fecabff1f",
+            "ParentUID": "15b8e8ac-a10c-40a5-84d1-6d5605fb1b9a",
+            "Name": "Player",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "5f707d1c-83f8-45db-bdf2-7d5b861adbec",
+                    "GOUID": "28309042-a716-4f14-b7b4-868fecabff1f",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "9945a6da-5d9c-4c57-857d-1f8846e08849",
+                    "GOUID": "28309042-a716-4f14-b7b4-868fecabff1f",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Player_1.proMesh"
+                },
+                {
+                    "UID": "a3fc5db3-9d48-4e6c-bcfe-ea67648bc2e5",
+                    "GOUID": "28309042-a716-4f14-b7b4-868fecabff1f",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "PlayerDiffuse.proDDS",
+                    "diffuse_map": 40,
+                    "diffuse_color": [
+                        0.9999899864196777,
+                        0.9999974370002747,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.8429999947547913,
+                    "specularSelected": "PlanksSpecular.proDDS",
+                    "specular_map": 41,
+                    "specular_color": [
+                        9.999999974752428e-7,
+                        9.999899930335233e-7,
+                        9.999899930335233e-7
+                    ],
+                    "shininess": 61.090999603271487,
+                    "k_specular": 0.9850000143051148,
+                    "occlusionSelected": "PlayerOcclusion.proDDS",
+                    "occlusion_map": 42,
+                    "k_ambient": 0.699999988079071,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "78f19391-af55-4d60-9058-833eb39c6f3e",
+            "ParentUID": "15b8e8ac-a10c-40a5-84d1-6d5605fb1b9a",
+            "Name": "Gun",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "03baf26b-0e22-416a-963e-d5cbb6b31089",
+                    "GOUID": "78f19391-af55-4d60-9058-833eb39c6f3e",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "5d022f9b-b1fc-4ecc-ad79-1849367214f7",
+                    "GOUID": "78f19391-af55-4d60-9058-833eb39c6f3e",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Player_0.proMesh"
+                },
+                {
+                    "UID": "1366198b-710d-4841-a837-ee56b97ee017",
+                    "GOUID": "78f19391-af55-4d60-9058-833eb39c6f3e",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "GunDiffuse.proDDS",
+                    "diffuse_map": 43,
+                    "diffuse_color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5,
+                    "specularSelected": "GunSpecular.proDDS",
+                    "specular_map": 44,
+                    "specular_color": [
+                        9.999999974752428e-7,
+                        9.999899930335233e-7,
+                        9.999899930335233e-7
+                    ],
+                    "shininess": 41.68600082397461,
+                    "k_specular": 0.5019999742507935,
+                    "occlusionSelected": "GunOcclusion.proDDS",
+                    "occlusion_map": 45,
+                    "k_ambient": 1.0,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "5553a69c-f5b4-4f36-919c-08548d50785a",
+            "ParentUID": "ffc96766-1af9-4075-8adb-cd6052005e77",
+            "Name": "Game Camera",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "13563047-64a4-4925-88a9-c6d6e63e869a",
+                    "GOUID": "5553a69c-f5b4-4f36-919c-08548d50785a",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        3368.288330078125,
+                        1198.2000732421876,
+                        -535.7999877929688
+                    ],
+                    "Rotation": [
+                        -0.12494828552007675,
+                        0.47569286823272707,
+                        0.06847625970840454,
+                        0.8679949641227722
+                    ],
+                    "Scale": [
+                        1.0000001192092896,
+                        0.9999929666519165,
+                        1.0000001192092896
+                    ]
+                },
+                {
+                    "UID": "1b227a5f-2a11-4500-827d-c4d33fb3c3a1",
+                    "GOUID": "5553a69c-f5b4-4f36-919c-08548d50785a",
+                    "Type": 4,
+                    "Active": true,
+                    "speed": 10.0,
+                    "rotation_speed": 65.0,
+                    "nearPlaneDistance": 10.0,
+                    "farPlaneDistance": 100000.0,
+                    "horizontalFov": 1.4320000410079957,
+                    "type": 2,
+                    "frustum_culling": true
+                }
+            ]
+        },
+        {
+            "UID": "73e0014e-611b-425a-b6d5-2bee3dd57cb2",
+            "ParentUID": "ffc96766-1af9-4075-8adb-cd6052005e77",
+            "Name": "Scenario",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "a600d163-0eca-4048-a82d-6abcebe15a1d",
+                    "GOUID": "73e0014e-611b-425a-b6d5-2bee3dd57cb2",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        -2352.62841796875,
+                        21.0498046875,
+                        -5405.54345703125
+                    ],
+                    "Rotation": [
+                        0.0,
+                        -0.6958244442939758,
+                        0.0,
+                        0.7182119488716126
+                    ],
+                    "Scale": [
+                        1.0000015497207642,
+                        1.0,
+                        1.0000015497207642
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "06b96d6f-681a-41f3-a4b7-801585ce0b08",
+            "ParentUID": "73e0014e-611b-425a-b6d5-2bee3dd57cb2",
+            "Name": "Clock",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "d05e06c5-e5b8-4c43-8139-ab266251c356",
+                    "GOUID": "06b96d6f-681a-41f3-a4b7-801585ce0b08",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        -679.4713134765625,
+                        0.0,
+                        268.4800720214844
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "b8b7722a-389f-4972-858b-3272dbc02e96",
+                    "GOUID": "06b96d6f-681a-41f3-a4b7-801585ce0b08",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Clock_0.proMesh"
+                },
+                {
+                    "UID": "aa643930-da85-4113-8b5c-1d6d4b3d4723",
+                    "GOUID": "06b96d6f-681a-41f3-a4b7-801585ce0b08",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "ClockDiffuse.proDDS",
+                    "diffuse_map": 8,
+                    "diffuse_color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5,
+                    "specularSelected": "ClockSpecular.proDDS",
+                    "specular_map": 9,
+                    "specular_color": [
+                        9.999999974752428e-7,
+                        9.999899930335233e-7,
+                        9.999899930335233e-7
+                    ],
+                    "shininess": 58.18199920654297,
+                    "k_specular": 0.5770000219345093,
+                    "occlusionSelected": "ClockOcclusion.proDDS",
+                    "occlusion_map": 10,
+                    "k_ambient": 0.5,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "112142a1-0056-4b4e-a797-26ac806510b6",
+            "ParentUID": "73e0014e-611b-425a-b6d5-2bee3dd57cb2",
+            "Name": "SpinningTop",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "2e087c72-0923-41ae-b3d2-fd5c731b8040",
+                    "GOUID": "112142a1-0056-4b4e-a797-26ac806510b6",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        3716.342041015625,
+                        0.0,
+                        -2642.992919921875
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "d94ead63-d151-4fd7-b3ff-cf30c14c3855",
+                    "GOUID": "112142a1-0056-4b4e-a797-26ac806510b6",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "SpinningTop_0.proMesh"
+                },
+                {
+                    "UID": "0931738b-53ed-4c1a-9575-f709c64b79d6",
+                    "GOUID": "112142a1-0056-4b4e-a797-26ac806510b6",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "SpinningTopDiffuse.proDDS",
+                    "diffuse_map": 11,
+                    "diffuse_color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5230000019073486,
+                    "specularSelected": "",
+                    "specular_map": 0,
+                    "specular_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "occlusionSelected": "SpinningTopOcclusion.proDDS",
+                    "occlusion_map": 12,
+                    "k_ambient": 0.5139999985694885,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "25c45602-748f-4c27-b61e-4974ea873731",
+            "ParentUID": "73e0014e-611b-425a-b6d5-2bee3dd57cb2",
+            "Name": "Firetruck",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "f692eed6-4d20-44d2-a3ae-df84b65e319a",
+                    "GOUID": "25c45602-748f-4c27-b61e-4974ea873731",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        1011.167724609375,
+                        0.0,
+                        -1581.9947509765626
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "5de562be-435e-4d00-b520-3d189fd503cb",
+                    "GOUID": "25c45602-748f-4c27-b61e-4974ea873731",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Firetruck_0.proMesh"
+                },
+                {
+                    "UID": "ffadb8a6-a656-4443-bb1b-b803fca3bb26",
+                    "GOUID": "25c45602-748f-4c27-b61e-4974ea873731",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "FiretruckDiffuse.proDDS",
+                    "diffuse_map": 13,
+                    "diffuse_color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5,
+                    "specularSelected": "FiretruckSpecular.proDDS",
+                    "specular_map": 14,
+                    "specular_color": [
+                        9.999999974752428e-7,
+                        9.999899930335233e-7,
+                        9.999899930335233e-7
+                    ],
+                    "shininess": 45.11899948120117,
+                    "k_specular": 0.5789999961853027,
+                    "occlusionSelected": "FiretruckOcclusion.proDDS",
+                    "occlusion_map": 15,
+                    "k_ambient": 0.5,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "40731813-afd0-4293-95b1-55e3ba5198b1",
+            "ParentUID": "73e0014e-611b-425a-b6d5-2bee3dd57cb2",
+            "Name": "Wall",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "1387da49-55bc-4e2f-9533-fab245a1e00e",
+                    "GOUID": "40731813-afd0-4293-95b1-55e3ba5198b1",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "00f345ba-2f19-4b4d-a8e3-4cfed0cad220",
+            "ParentUID": "40731813-afd0-4293-95b1-55e3ba5198b1",
+            "Name": "Wall_1",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "8aa93f80-deb0-4e8b-85a0-2c6ccb817a3b",
+                    "GOUID": "00f345ba-2f19-4b4d-a8e3-4cfed0cad220",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "6b0cebff-d65f-46f3-a850-c655e4b943f7",
+                    "GOUID": "00f345ba-2f19-4b4d-a8e3-4cfed0cad220",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Wall_1.proMesh"
+                },
+                {
+                    "UID": "ae08a478-ff82-4388-913b-e85fef82959c",
+                    "GOUID": "00f345ba-2f19-4b4d-a8e3-4cfed0cad220",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "WallDiffuse.proDDS",
+                    "diffuse_map": 16,
+                    "diffuse_color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5,
+                    "specularSelected": "WallSpecular.proDDS",
+                    "specular_map": 17,
+                    "specular_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 23.540000915527345,
+                    "k_specular": 0.5860000252723694,
+                    "occlusionSelected": "WallOcclusion.proDDS",
+                    "occlusion_map": 18,
+                    "k_ambient": 0.5,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "3608dc60-cab9-4a9a-a16d-e0d662b746d8",
+            "ParentUID": "40731813-afd0-4293-95b1-55e3ba5198b1",
+            "Name": "Wall_0",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "db614b79-df40-40ac-b424-5c0b65565a2d",
+                    "GOUID": "3608dc60-cab9-4a9a-a16d-e0d662b746d8",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "c92b145a-18df-4dfa-bcc9-cf3a4258bffc",
+                    "GOUID": "3608dc60-cab9-4a9a-a16d-e0d662b746d8",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Wall_0.proMesh"
+                },
+                {
+                    "UID": "276bcf19-d467-475c-8d67-17538cb3e864",
+                    "GOUID": "3608dc60-cab9-4a9a-a16d-e0d662b746d8",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "WallDiffuse.proDDS",
+                    "diffuse_map": 19,
+                    "diffuse_color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5,
+                    "specularSelected": "WallSpecular.proDDS",
+                    "specular_map": 20,
+                    "specular_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "shininess": 22.069000244140626,
+                    "k_specular": 0.6129999756813049,
+                    "occlusionSelected": "WallOcclusion.proDDS",
+                    "occlusion_map": 21,
+                    "k_ambient": 0.5,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "9648e8e0-346c-47bc-b08e-5cf78c156ca3",
+            "ParentUID": "73e0014e-611b-425a-b6d5-2bee3dd57cb2",
+            "Name": "Hearsess",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "3407ed97-8049-40dc-a148-aed901c1495f",
+                    "GOUID": "9648e8e0-346c-47bc-b08e-5cf78c156ca3",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        1513.34130859375,
+                        -0.000005208196853345726,
+                        -3138.515380859375
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "9d6680a1-992d-4420-a9f8-3cd9cf361050",
+                    "GOUID": "9648e8e0-346c-47bc-b08e-5cf78c156ca3",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Hearse_0.proMesh"
+                },
+                {
+                    "UID": "b24918b8-5ed9-4640-942c-bad27ea1b0ab",
+                    "GOUID": "9648e8e0-346c-47bc-b08e-5cf78c156ca3",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "HearseDiffuse.proDDS",
+                    "diffuse_map": 22,
+                    "diffuse_color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5,
+                    "specularSelected": "HearseSpecular.proDDS",
+                    "specular_map": 23,
+                    "specular_color": [
+                        9.999999974752428e-7,
+                        9.999899930335233e-7,
+                        9.999899930335233e-7
+                    ],
+                    "shininess": 11.770000457763672,
+                    "k_specular": 0.42100000381469729,
+                    "occlusionSelected": "HearseOcclusion.proDDS",
+                    "occlusion_map": 24,
+                    "k_ambient": 0.5049999952316284,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "9c0d675e-2754-42dd-9522-18734981fc93",
+            "ParentUID": "73e0014e-611b-425a-b6d5-2bee3dd57cb2",
+            "Name": "Robot",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "69f0ed4d-6ddf-431f-b162-b601467885ec",
+                    "GOUID": "9c0d675e-2754-42dd-9522-18734981fc93",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        581.1480712890625,
+                        0.0,
+                        -4006.607421875
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "6763c89f-dd5d-4e91-9fe0-163b01a171f0",
+                    "GOUID": "9c0d675e-2754-42dd-9522-18734981fc93",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Robot_0.proMesh"
+                },
+                {
+                    "UID": "dbcb7c79-6a53-42c1-a4a7-b6ca07f87938",
+                    "GOUID": "9c0d675e-2754-42dd-9522-18734981fc93",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "RobotDiffuse.proDDS",
+                    "diffuse_map": 25,
+                    "diffuse_color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5,
+                    "specularSelected": "RobotSpecular.proDDS",
+                    "specular_map": 26,
+                    "specular_color": [
+                        9.999999974752428e-7,
+                        9.999899930335233e-7,
+                        9.999899930335233e-7
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 1.0,
+                    "occlusionSelected": "RobotOcclusion.proDDS",
+                    "occlusion_map": 27,
+                    "k_ambient": 0.6499999761581421,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "af627565-a2f4-454e-97b6-04ef97dd1788",
+            "ParentUID": "73e0014e-611b-425a-b6d5-2bee3dd57cb2",
+            "Name": "Dollhouse",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "da8ac3c6-0a7e-4ca5-9857-907da352413f",
+                    "GOUID": "af627565-a2f4-454e-97b6-04ef97dd1788",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        311.0982666015625,
+                        0.0007781982421875,
+                        -1505.582763671875
+                    ],
+                    "Rotation": [
+                        0.0,
+                        -0.7071068286895752,
+                        0.0,
+                        0.7071067094802856
+                    ],
+                    "Scale": [
+                        0.9999787211418152,
+                        1.0,
+                        0.9999787211418152
+                    ]
+                },
+                {
+                    "UID": "29adee16-032f-4c14-b796-cb1ae6bbad2e",
+                    "GOUID": "af627565-a2f4-454e-97b6-04ef97dd1788",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Dollhouse_0.proMesh"
+                },
+                {
+                    "UID": "ef06b252-56f2-45fe-bfcb-56d9a31d283b",
+                    "GOUID": "af627565-a2f4-454e-97b6-04ef97dd1788",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "DollhouseDiffuse.proDDS",
+                    "diffuse_map": 28,
+                    "diffuse_color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.8889999985694885,
+                    "specularSelected": "DollhouseSpecular.proDDS",
+                    "specular_map": 29,
+                    "specular_color": [
+                        9.999999974752428e-7,
+                        9.999899930335233e-7,
+                        9.999899930335233e-7
+                    ],
+                    "shininess": 116.94499969482422,
+                    "k_specular": 0.5270000100135803,
+                    "occlusionSelected": "DollhouseOcclusion.proDDS",
+                    "occlusion_map": 30,
+                    "k_ambient": 0.5,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "bf128548-c93b-42ef-a8fd-a7267b00d018",
+            "ParentUID": "73e0014e-611b-425a-b6d5-2bee3dd57cb2",
+            "Name": "Floor",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "78c2181f-8ad6-41fb-9836-d4dc721ddba0",
+                    "GOUID": "bf128548-c93b-42ef-a8fd-a7267b00d018",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "18bc41fa-af30-4c5e-928e-cb974eb0593b",
+            "ParentUID": "bf128548-c93b-42ef-a8fd-a7267b00d018",
+            "Name": "Floor_1",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "1ecbe93e-52a0-4a02-a9ed-7ec724ddedcb",
+                    "GOUID": "18bc41fa-af30-4c5e-928e-cb974eb0593b",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "ea1fa12b-be3d-452f-a0a1-582fdbaab098",
+                    "GOUID": "18bc41fa-af30-4c5e-928e-cb974eb0593b",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Floor_0.proMesh"
+                },
+                {
+                    "UID": "24b6ac91-1a69-4585-9828-2eb10d6dc86c",
+                    "GOUID": "18bc41fa-af30-4c5e-928e-cb974eb0593b",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 3,
+                    "diffuseSelected": "PlanksDiffuse.proDDS",
+                    "diffuse_map": 31,
+                    "diffuse_color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "k_diffuse": 0.5,
+                    "specularSelected": "PlanksSpecular.proDDS",
+                    "specular_map": 32,
+                    "specular_color": [
+                        9.999999974752428e-7,
+                        9.999899930335233e-7,
+                        9.999899930335233e-7
+                    ],
+                    "shininess": 64.0,
+                    "k_specular": 0.39100000262260439,
+                    "occlusionSelected": "PlanksOcclusion.proDDS",
+                    "occlusion_map": 33,
+                    "k_ambient": 0.5,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "e37e2344-6722-40ba-939c-e3f326cd8858",
+            "ParentUID": "bf128548-c93b-42ef-a8fd-a7267b00d018",
+            "Name": "Floor_2",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "b2261dfd-3f47-468c-b15c-c77e5099c9ed",
+                    "GOUID": "e37e2344-6722-40ba-939c-e3f326cd8858",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "e3517b54-7c29-4ad7-8e09-8e6956069a03",
+                    "GOUID": "e37e2344-6722-40ba-939c-e3f326cd8858",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Floor_2.proMesh"
+                },
+                {
+                    "UID": "84a480c6-801a-4df6-a1d5-eff0cac0ccb3",
+                    "GOUID": "e37e2344-6722-40ba-939c-e3f326cd8858",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "PlanksDiffuse.proDDS",
+                    "diffuse_map": 34,
+                    "diffuse_color": [
+                        0.4779737889766693,
+                        0.42536526918411257,
+                        0.5196078419685364,
+                        1.0
+                    ],
+                    "k_diffuse": 0.7360000014305115,
+                    "specularSelected": "PlanksSpecular.proDDS",
+                    "specular_map": 35,
+                    "specular_color": [
+                        9.999999974752428e-7,
+                        9.999899930335233e-7,
+                        9.999899930335233e-7
+                    ],
+                    "shininess": 15.692999839782715,
+                    "k_specular": 0.39800000190734866,
+                    "occlusionSelected": "PlanksOcclusion.proDDS",
+                    "occlusion_map": 36,
+                    "k_ambient": 0.5090000033378601,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "c90f8c51-aeab-4fe9-9d2e-c8ae62dbaa5b",
+            "ParentUID": "73e0014e-611b-425a-b6d5-2bee3dd57cb2",
+            "Name": "Drawers",
+            "Active": true,
+            "Static": false,
+            "Components": [
+                {
+                    "UID": "4f02dc39-f3cc-49d0-80f0-490a33efbbdf",
+                    "GOUID": "c90f8c51-aeab-4fe9-9d2e-c8ae62dbaa5b",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        3280.96533203125,
+                        0.0,
+                        -463.54254150390627
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "b8813ef0-46f3-4822-9445-ef0f11cd4b52",
+                    "GOUID": "c90f8c51-aeab-4fe9-9d2e-c8ae62dbaa5b",
+                    "Type": 1,
+                    "Active": true,
+                    "currentMesh": "Drawers_0.proMesh"
+                },
+                {
+                    "UID": "cbf1bbee-330c-47f5-83e0-64eb9e108c95",
+                    "GOUID": "c90f8c51-aeab-4fe9-9d2e-c8ae62dbaa5b",
+                    "Type": 2,
+                    "Active": true,
+                    "shader": 0,
+                    "diffuseSelected": "DrawersDiffuse.proDDS",
+                    "diffuse_map": 37,
+                    "diffuse_color": [
+                        0.9999899864196777,
+                        0.9999939799308777,
+                        1.0,
+                        1.0
+                    ],
+                    "k_diffuse": 0.42500001192092898,
+                    "specularSelected": "DrawersSpecular.proDDS",
+                    "specular_map": 38,
+                    "specular_color": [
+                        9.999999974752428e-7,
+                        9.999899930335233e-7,
+                        9.999899930335233e-7
+                    ],
+                    "shininess": 57.599998474121097,
+                    "k_specular": 0.2770000100135803,
+                    "occlusionSelected": "DrawersOcclusion.proDDS",
+                    "occlusion_map": 39,
+                    "k_ambient": 0.5,
+                    "emissiveSelected": "",
+                    "emissive_map": 0,
+                    "emissive_color": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": "d5f9503c-6a31-46c5-af26-1c7255469101",
+            "ParentUID": "ffc96766-1af9-4075-8adb-cd6052005e77",
+            "Name": "Default Light",
+            "Active": true,
+            "Static": true,
+            "Components": [
+                {
+                    "UID": "4c0d739c-e73a-4dc0-b1a1-5179f4b08de4",
+                    "GOUID": "d5f9503c-6a31-46c5-af26-1c7255469101",
+                    "Type": 0,
+                    "Active": true,
+                    "Position": [
+                        -873.5343017578125,
+                        1991.5499267578126,
+                        578.9200439453125
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "UID": "f5750823-6b73-4fa2-b660-74cdf865c220",
+                    "GOUID": "d5f9503c-6a31-46c5-af26-1c7255469101",
+                    "Type": 3,
+                    "Active": true,
+                    "intensity": 0.1340000033378601
+                }
+            ]
+        }
+    ]
+}
