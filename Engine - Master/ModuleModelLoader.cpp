@@ -212,6 +212,14 @@ void ModuleModelLoader::GenerateNodeMeshData(const char* path, const aiScene* sc
 	}
 }
 
+void ModuleModelLoader::CreateGameObjectFromFile(const char& name)
+{
+	GameObject* go = App->scene->CreateGameObject(&name);
+	//Add Mesh Component
+	ComponentMesh* mesh_comp = (ComponentMesh*)go->CreateComponent(component_type::Mesh);
+	mesh_comp->LoadMesh(&name);
+}
+
 /*GameObject* ModuleModelLoader::CreateSphere(const char* name, const math::float3& position, const math::Quat& rotation, const math::float3& scale,
 	unsigned slices, unsigned stacks, const math::float4& color)
 {
