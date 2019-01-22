@@ -134,7 +134,6 @@ bool ModuleEditor::CleanUp()
 
 void ModuleEditor::Draw()
 {
-
 	for (std::list<Window*>::iterator it = editorWindows.begin(); it != editorWindows.end(); ++it)
 	{
 		if ((*it)->isActive())

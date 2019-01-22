@@ -13,7 +13,7 @@ public:
 
 	bool IsFocused() const;
 
-	void Draw();
+	void Draw() override;
 
 public:
 	bool focus = false;

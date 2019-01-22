@@ -88,14 +88,15 @@ bool ComponentMesh::DrawOnInspector()
 
 void ComponentMesh::LoadMesh(const char* name) 
 {
+	App->resources->DeleteMesh(this);
 	if (mesh.vbo != 0)
 		glDeleteBuffers(1, &mesh.vbo);
 
 	if (mesh.ibo != 0)
 		glDeleteBuffers(1, &mesh.ibo);
 
-	App->resources->DeleteMesh(this);
-	//MeshImporter::CleanUpMesh(&mesh);
+	MeshImporter::CleanUpMesh(&mesh);
+	currentMesh.clear();
 	MeshImporter::Load(&mesh, name);
 	ComputeMesh();
 	my_go->ComputeBBox();
@@ -318,8 +319,8 @@ void ComponentMesh::DeleteMesh()
 	{
 		glDeleteBuffers(1, &mesh.vao);
 	}
-	
-	//MeshImporter::CleanUpMesh(&mesh);
+	MeshImporter::CleanUpMesh(&mesh);
+	currentMesh.clear();
 	App->resources->DeleteMesh(this);
 }
 

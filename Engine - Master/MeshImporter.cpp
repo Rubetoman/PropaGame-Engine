@@ -326,7 +326,7 @@ void MeshImporter::CleanUpMesh(Mesh* mesh)
 		mesh->vertexSize = 0u;
 		mesh->boundingBox = math::AABB();
 
-		delete mesh;
+		//delete mesh;
 		mesh = nullptr;
 	}
 }
