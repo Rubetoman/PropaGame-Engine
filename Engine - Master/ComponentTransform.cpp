@@ -22,6 +22,7 @@ ComponentTransform::ComponentTransform(const ComponentTransform& comp) : Compone
 
 ComponentTransform::~ComponentTransform()
 {
+	my_go->transform = nullptr;
 }
 
 Component* ComponentTransform::Duplicate()

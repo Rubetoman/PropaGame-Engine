@@ -41,7 +41,7 @@ public:
 	~ComponentMesh();
 
 	virtual Component* Duplicate() override;
-	void CleanUp() override;
+	void Delete() override;
 
 	bool DrawOnInspector() override;
 
@@ -52,7 +52,6 @@ public:
 
 	void RenderMesh(const math::float4x4& view, const math::float4x4& proj);
 	void DeleteMesh();
-	void Delete() override;
 
 	JSON_value* Save(JSON_value* component) const override;
 	void Load(JSON_value* component) override;

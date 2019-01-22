@@ -38,9 +38,25 @@ Component* ComponentMaterial::Duplicate()
 	return new ComponentMaterial(*this);
 }
 
-void ComponentMaterial::CleanUp()
+void ComponentMaterial::Delete()
 {
-	Component::CleanUp();
+	if (material.diffuse_map != 0)
+		App->textures->Unload(material.diffuse_map);
+
+	if (material.specular_map != 0)
+		App->textures->Unload(material.specular_map);
+
+	if (material.occlusion_map != 0)
+		App->textures->Unload(material.occlusion_map);
+
+	if (material.emissive_map != 0)
+		App->textures->Unload(material.emissive_map);
+
+	Material emptyMaterial;
+	material = emptyMaterial;
+
+	my_go->material_comp = nullptr;
+	Component::Delete();
 }
 
 bool ComponentMaterial::DrawOnInspector()
@@ -411,27 +427,6 @@ void ComponentMaterial::RenderMaterial()
 	glUniform1fv(glGetUniformLocation(program, "material.k_ambient"), 1, (GLfloat*)&material.k_ambient);
 	glUniform1fv(glGetUniformLocation(program, "material.k_diffuse"), 1, (GLfloat*)&material.k_diffuse);
 	glUniform1fv(glGetUniformLocation(program, "material.k_specular"), 1, (GLfloat*)&material.k_specular);
-}
-
-void ComponentMaterial::Delete()
-{
-	if(material.diffuse_map != 0)
-		App->textures->Unload(material.diffuse_map);
-
-	if (material.specular_map != 0)
-		App->textures->Unload(material.specular_map);
-
-	if (material.occlusion_map != 0)
-		App->textures->Unload(material.occlusion_map);
-
-	if (material.emissive_map != 0)
-		App->textures->Unload(material.emissive_map);
-
-	Material emptyMaterial;
-	material = emptyMaterial;
-
-	my_go->material_comp = nullptr;
-	Component::Delete();
 }
 
 JSON_value* ComponentMaterial::Save(JSON_value* component) const

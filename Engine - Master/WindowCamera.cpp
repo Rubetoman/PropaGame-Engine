@@ -17,6 +17,7 @@ WindowCamera::WindowCamera(const char* name) : Window(name)
 
 WindowCamera::~WindowCamera()
 {
+	camera = nullptr;
 }
 
 void WindowCamera::Draw()

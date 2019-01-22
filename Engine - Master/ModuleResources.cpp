@@ -7,6 +7,7 @@
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
+#include "ComponentMesh.h"
 
 #include "TextureImporter.h"
 
@@ -110,7 +111,6 @@ void ModuleResources::DeleteCamera(ComponentCamera* camera)
 		if (position > -1)
 		{
 			cameras.erase(cameras.begin() + position);
-			camera->CleanUp();
 			//RELEASE(camera);
 		}
 		else
@@ -142,7 +142,13 @@ void ModuleResources::DeleteMesh(ComponentMesh* mesh)
 			//RELEASE(mesh);
 		}
 		else
-			LOG("Error deleting component.");
+		{
+			if (mesh->currentMesh.size() < 1)	
+				{LOG("No mesh was selected on mesh component.");}
+			else								
+				{LOG("Mesh wasn't stored on resources mesh list.");}
+		}
+			
 	}
 	else
 		LOG("Warning: Component was nullptr.");

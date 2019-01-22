@@ -35,10 +35,12 @@ Component* ComponentMesh::Duplicate()
 	return new ComponentMesh(*this);
 }
 
-void ComponentMesh::CleanUp()
+void ComponentMesh::Delete()
 {
-	Component::CleanUp();
+	my_go->mesh_comp = nullptr;
 	DeleteMesh();
+	Component::Delete();
+
 }
 
 bool ComponentMesh::DrawOnInspector()
@@ -318,13 +320,6 @@ void ComponentMesh::DeleteMesh()
 	}
 	
 	//MeshImporter::CleanUpMesh(&mesh);
-	App->resources->DeleteMesh(this);
-}
-
-void ComponentMesh::Delete()
-{
-	my_go->mesh_comp = nullptr;
-	Component::Delete();
 	App->resources->DeleteMesh(this);
 }
 

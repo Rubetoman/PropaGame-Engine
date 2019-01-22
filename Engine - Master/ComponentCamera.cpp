@@ -44,11 +44,6 @@ ComponentCamera::ComponentCamera(const ComponentCamera& comp) : Component(comp)
 
 ComponentCamera::~ComponentCamera()
 {
-	glDeleteFramebuffers(1, &fbo);
-	glDeleteRenderbuffers(1, &rbo);
-	glDeleteTextures(1, &renderedTexture);
-	if(type != component_type::Editor_Camera)
-		App->resources->DeleteCamera(this);
 }
 
 void ComponentCamera::Update()
@@ -66,6 +61,8 @@ void ComponentCamera::Update()
 		frustum.front = -transform.RotatePart().Mul(math::float3::unitZ).Normalized();
 		frustum.up = transform.RotatePart().Mul(math::float3::unitY).Normalized();
 	}
+
+	Component::Update();
 }
 
 Component* ComponentCamera::Duplicate()
@@ -75,8 +72,13 @@ Component* ComponentCamera::Duplicate()
 
 void ComponentCamera::Delete()
 {
-	App->resources->DeleteCamera(this);
+	if (type != component_type::Editor_Camera)
+		App->resources->DeleteCamera(this);
 	Component::Delete();
+	glDeleteFramebuffers(1, &fbo);
+	glDeleteRenderbuffers(1, &rbo);
+	glDeleteTextures(1, &renderedTexture);
+	//RELEASE(window);
 }
 
 bool ComponentCamera::DrawOnInspector()

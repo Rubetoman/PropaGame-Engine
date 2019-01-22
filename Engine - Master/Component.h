@@ -22,8 +22,6 @@ public:
 	virtual void Init() {}
 	virtual void Update();
 	virtual void Disable() { active = false; };
-
-	virtual void CleanUp();
 	virtual void Delete();
 
 	unsigned GetComponentNumber() const;
@@ -37,6 +35,8 @@ public:
 	component_type type;
 	bool active = true;
 	GameObject* my_go = nullptr;
+
+	bool remove = false;
 };
 
 #endif /*__COMPONENT_H__*/

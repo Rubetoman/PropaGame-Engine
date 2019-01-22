@@ -97,7 +97,7 @@ GameObject::~GameObject()
 {
 	for (auto &component : components)
 	{
-		RELEASE(component);
+		component->Delete();
 	}
 
 	for (auto &child : children)
@@ -143,15 +143,13 @@ void GameObject::Update()
 			++it_child;
 		}
 	}
+
+	for (auto component : components)
+		component->Update();
 }
 
 void GameObject::CleanUp()
 {
-	for (auto &component : components)
-	{
-		component->CleanUp();
-	}
-
 	for (auto &child : children)
 	{
 		child->CleanUp();
@@ -521,7 +519,6 @@ void GameObject::DeleteComponent(Component* component)
 		if (position > -1)
 		{
 			components.erase(components.begin() + position);
-			component->CleanUp();
 			RELEASE(component);
 		}
 		else

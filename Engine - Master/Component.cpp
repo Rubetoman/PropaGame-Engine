@@ -25,12 +25,12 @@ Component::Component(const Component& comp)
 
 Component::~Component()
 {
-	CleanUp();
 }
 
 void Component::Update()
 {
-
+	if (remove)
+		Delete();
 }
 
 bool Component::DrawOnInspector()
@@ -40,34 +40,26 @@ bool Component::DrawOnInspector()
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.7f, 0.7f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.8f, 0.8f));
 
-	bool removed = ImGui::SmallButton("Delete Component");
-	if (removed)
-	{
-		Delete();
-	}
-	else
-	{
-		// Serialization information
-		ImGui::Separator();
-		ImGui::Text("UUID: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), uuid.c_str());
-		ImGui::Text("GOUID: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), my_go_uid.c_str());
-		ImGui::Separator();
-	}
+	if (ImGui::SmallButton("Delete Component"))
+		remove = true;
+
+	// Serialization information
+	ImGui::Separator();
+	ImGui::Text("UUID: "); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), uuid.c_str());
+	ImGui::Text("GOUID: "); ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), my_go_uid.c_str());
+	ImGui::Separator();
+
 
 	ImGui::PopStyleColor(3);
-	return removed;
-}
-
-void Component::CleanUp()
-{
-
+	return remove;
 }
 
 void Component::Delete()
 {
 	my_go->DeleteComponent(this);
+	my_go = nullptr;
 }
 
 unsigned Component::GetComponentNumber() const
@@ -80,7 +72,7 @@ unsigned Component::GetComponentNumber() const
 	auto pos = std::find(my_go->components.begin(), my_go->components.end(), this) - my_go->components.begin();
 	if (pos >= my_go->components.size())
 	{
-		LOG("Warning: component not found as a component of %s.", my_go->name);
+		//LOG("Warning: component not found as a component of %s.", my_go->name);
 		return -1;
 	}
 	return pos;

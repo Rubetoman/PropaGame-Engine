@@ -45,7 +45,7 @@ public:
 	~ComponentMaterial();
 
 	Component* Duplicate() override;
-	void CleanUp() override;
+	void Delete() override;
 
 	bool DrawOnInspector() override;
 	void DrawDiffuseParameters();
@@ -54,7 +54,6 @@ public:
 	void DrawEmissiveParameters();
 
 	void RenderMaterial();
-	void Delete() override;
 
 	JSON_value* Save(JSON_value* component) const override;
 	void Load(JSON_value* component) override;
