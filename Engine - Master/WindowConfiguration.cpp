@@ -8,6 +8,7 @@
 #include "ModuleResources.h"
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
+#include "ModuleRender.h"
 
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
@@ -79,6 +80,7 @@ void WindowConfiguration::Draw()
 	if (ImGui::CollapsingHeader("Editor"))
 	{
 		ImGui::Checkbox("Show hided GOs", &App->scene->show_scene_gos);
+		ImGui::Checkbox("Wireframe", &App->renderer->wireframe);
 		ImGui::Separator();
 		// Scale to use (default: meters)
 		if (ImGui::InputFloat("Scale", &App->editor->scale, 1.0f))

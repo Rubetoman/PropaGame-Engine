@@ -91,6 +91,10 @@ update_status ModuleRender::Update()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->editor_camera_comp->fbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	if (wireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	
 	// Draw References
 	App->editor->DrawDebugReferences();

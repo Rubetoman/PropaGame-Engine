@@ -28,6 +28,8 @@ public:
 	void* context = nullptr;
 	unsigned ubo = 0u;
 	unsigned fallback = 0u; // Fallback texture (if any texture of material doesn't have texture use this)
+
+	bool wireframe = false; // If true the scene will be drawn on wireframe mode.
 };
 
 #endif
