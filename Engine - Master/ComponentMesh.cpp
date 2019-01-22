@@ -96,10 +96,10 @@ void ComponentMesh::LoadMesh(const char* name)
 		glDeleteBuffers(1, &mesh.ibo);
 
 	MeshImporter::CleanUpMesh(&mesh);
-	currentMesh.clear();
 	MeshImporter::Load(&mesh, name);
 	ComputeMesh();
 	my_go->ComputeBBox();
+	currentMesh.clear();
 	currentMesh = name;
 
 	App->resources->meshes.push_back(this);
