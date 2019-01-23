@@ -3,6 +3,8 @@ This is a C/C++ game engine created by Rubén Crispín for the "Universidad Poli
 
 https://github.com/Rubetoman/PropaGame-Engine
 
+![alt text](https://pbs.twimg.com/media/DxcWmwKX4AENdpp.jpg:large)
+
 ## Executing Instructions
 -------------
 Inside the folder Game there is a file called "PropaGame Engine.exe"; just execute it.
@@ -21,6 +23,8 @@ a. Game Objects with mesh component can be selected by clicking at them.
 b. When a Game Object is selected a Guizmos will appear, it can be used to translate, rotate or scale the selected Game Object.
 c. The buttons on the upper-left corner of the Editor Window can be used to change between Guizmos type (translation, rotation, scale).
 
+![alt text](https://s2.gifyu.com/images/Guizmo.gif)
+
 #### Hierarchy Window
 On this window all the Game Objects are listed, by using the right click over the name of any Game Object they can be deleted, duplicated or moved up on the hierarchy.
 Also by right click, new empty Game Objects or basic geometrical shapes can be created.
@@ -38,8 +42,11 @@ This component will contain a mesh, that can be selected on the dropdown menu sh
 ### Material
 This component can add used textures or colors for the mesh rendering, also some parameters can be modified. At the moment Blinn-Phong Shading is used by default with diffuse, specular, ambient and emissive variables. A dropdown to select the shader to be used is shown on the Inspector Window currently only Phong and Blinn are available.
 
+![alt text](https://s2.gifyu.com/images/material.gif)
+
 ### Camera
 The camera component includes a frustum that can be rendered to a texture and displayed on an editor window. By default, one Game Camera is loaded but more can be added. To open a window rendering the camera it can be selected on the Main Menu Bar.
+
 -	Frustum culling is used by default on every camera, this option can be disabled on the inspector.
 
 ### Light
@@ -57,6 +64,7 @@ Paths to import files:
 For FBX files (Assets/Models)
 For DDS textures (Assets/Textures)
 
+![alt text](https://s2.gifyu.com/images/Import.gif)
 
 ## Scene Loading
 ---------
@@ -64,9 +72,13 @@ Scenes can be saved and loaded by using the Main Menu Bar buttons for scenes.
 -On saving it will ask the user for a name, if the scene is already saved you can use the “Save” button to save it with the same name. 
 - On load a pop up will appear, there the name of the scene can be inserted manually or selected from the list.
 
+![alt text](https://s2.gifyu.com/images/SceneLoad.gif)
+
 ## Play/Pause/Stop/Skip buttons
 ------
 On the middle of the Main Menu bar this buttons can be seen, they are for future use. By clicking on Play the scene will be saved and loaded again on Stop, so any changes done while in play mode will be discarded.
+
+![alt text](https://s2.gifyu.com/images/Play.gif)
 
 ## Quadtree
 ------
