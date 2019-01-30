@@ -18,10 +18,10 @@ public:
 
 	virtual Component* Duplicate() = 0;
 	virtual bool DrawOnInspector();
-	virtual void Enable() {active = true;};
 	virtual void Init() {}
 	virtual void Update();
-	virtual void Disable() { active = false; };
+	virtual void Enable();
+	virtual void Disable();
 	virtual void Delete();
 
 	unsigned GetComponentNumber() const;

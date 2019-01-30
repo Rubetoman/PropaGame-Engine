@@ -23,7 +23,6 @@ public:
 
 	void CreateFrameBuffer();
 
-	void			TranslateCamera(math::float3 direction);
 	void			Rotate(float dx, float dy);
 	void			Orbit(math::float3 center, float dx, float dy);
 	void			LookAt(math::float3& target);

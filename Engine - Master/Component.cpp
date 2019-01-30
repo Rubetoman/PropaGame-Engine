@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "ModuleResources.h"
+#include "ModuleScene.h"
 
 #include "GameObject.h"
 
@@ -33,9 +34,23 @@ void Component::Update()
 		Delete();
 }
 
+void Component::Enable() 
+{
+	active = true; 	
+	App->scene->SetSceneDirty(true); 
+}
+
+void Component::Disable() 
+{ 
+	active = false; 
+	App->scene->SetSceneDirty(true);
+}
+
 bool Component::DrawOnInspector()
 {
-	ImGui::Checkbox("Active", &active);	ImGui::SameLine();
+	if(ImGui::Checkbox("Active", &active))
+		App->scene->SetSceneDirty(true); 
+	ImGui::SameLine();
 	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.7f, 0.7f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.8f, 0.8f));
@@ -60,6 +75,7 @@ void Component::Delete()
 {
 	my_go->DeleteComponent(this);
 	my_go = nullptr;
+	App->scene->SetSceneDirty(true);
 }
 
 unsigned Component::GetComponentNumber() const

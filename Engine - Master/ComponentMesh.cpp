@@ -3,7 +3,7 @@
 #include "Application.h"
 #include "ModuleShader.h"
 #include "ModuleResources.h"
-
+#include "ModuleScene.h"
 
 #include "MeshImporter.h"
 
@@ -32,6 +32,7 @@ ComponentMesh::~ComponentMesh()
 
 Component* ComponentMesh::Duplicate()
 {
+	App->scene->SetSceneDirty(true);
 	return new ComponentMesh(*this);
 }
 
@@ -58,6 +59,7 @@ bool ComponentMesh::DrawOnInspector()
 				{
 					currentMesh = "";
 					DeleteMesh();
+					App->scene->SetSceneDirty(true);
 				}
 				for (std::vector<std::string>::iterator it = App->resources->file_meshes->begin(); it != App->resources->file_meshes->end(); ++it)
 				{
@@ -67,7 +69,10 @@ bool ComponentMesh::DrawOnInspector()
 						if (isSelected)
 							ImGui::SetItemDefaultFocus();
 						else
+						{
 							LoadMesh((*it).c_str());
+							App->scene->SetSceneDirty(true);
+						}
 					}
 				}
 				ImGui::EndCombo();

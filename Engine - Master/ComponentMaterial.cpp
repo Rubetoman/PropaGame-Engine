@@ -6,6 +6,7 @@
 #include "ModuleResources.h"
 #include "ModuleShader.h"
 #include "ModuleRender.h"
+#include "ModuleScene.h"
 
 #include "ComponentTransform.h"
 #include "ComponentLight.h"
@@ -35,6 +36,7 @@ ComponentMaterial::~ComponentMaterial()
 
 Component* ComponentMaterial::Duplicate()
 {
+	App->scene->SetSceneDirty(true);
 	return new ComponentMaterial(*this);
 }
 
@@ -70,7 +72,8 @@ bool ComponentMaterial::DrawOnInspector()
 		{
 			// Shader
 			char* program_names[ModuleShader::PROGRAM_COUNT] = { "Default", "Flat", "Gouraud", "Phong", "Blinn" };
-			ImGui::Combo("shader", (int*)&shader, program_names, ModuleShader::PROGRAM_COUNT);
+			if(ImGui::Combo("shader", (int*)&shader, program_names, ModuleShader::PROGRAM_COUNT))
+				App->scene->SetSceneDirty(true);
 
 			ImGui::Separator();
 			if (ImGui::TreeNode("Diffuse"))
@@ -136,6 +139,7 @@ void ComponentMaterial::DrawDiffuseParameters()
 			material.diffuse_width = 0;
 			material.diffuse_height = 0;
 			diffuseSelected = "";
+			App->scene->SetSceneDirty(true);
 		}
 		ImGui::Columns(1);
 	}
@@ -148,8 +152,11 @@ void ComponentMaterial::DrawDiffuseParameters()
 		ImGui::Text("Texture:");
 		ImGui::Columns(1);
 	}
-	ImGui::ColorEdit4("diffuse color", (float*)&material.diffuse_color);
-	ImGui::SliderFloat("K diffuse", &material.k_diffuse, 0.0f, 1.0f);
+	if(ImGui::ColorEdit4("diffuse color", (float*)&material.diffuse_color))
+		App->scene->SetSceneDirty(true);
+
+	if(ImGui::SliderFloat("K diffuse", &material.k_diffuse, 0.0f, 1.0f))
+		App->scene->SetSceneDirty(true);
 
 	// Textures popup
 	if (ImGui::BeginPopup("Textures", NULL))
@@ -172,6 +179,7 @@ void ComponentMaterial::DrawDiffuseParameters()
 						App->textures->Unload(material.diffuse_map);
 					}
 					App->textures->LoadTexture(diffuseSelected.c_str(), material.diffuse_map, material.diffuse_width, material.diffuse_height);
+					App->scene->SetSceneDirty(true);
 				}
 			}
 		}
@@ -199,9 +207,10 @@ void ComponentMaterial::DrawSpecularParameters()
 		{
 			App->textures->Unload(material.specular_map);
 			specularSelected = "";
-			unsigned		specular_map = 0u;
-			int				specular_width = 0;
-			int				specular_height = 0;
+			material.specular_map = 0u;
+			material.specular_width = 0;
+			material.specular_height = 0;
+			App->scene->SetSceneDirty(true);
 		}
 		ImGui::Columns(1);
 	}
@@ -215,9 +224,14 @@ void ComponentMaterial::DrawSpecularParameters()
 		ImGui::Columns(1);
 	}
 
-	ImGui::ColorEdit3("specular color", (float*)&material.specular_color);
-	ImGui::SliderFloat("K specular", &material.k_specular, 0.0f, 1.0f);
-	ImGui::SliderFloat("shininess", &material.shininess, 0, 128.0f);
+	if(ImGui::ColorEdit3("specular color", (float*)&material.specular_color))
+		App->scene->SetSceneDirty(true);
+
+	if(ImGui::SliderFloat("K specular", &material.k_specular, 0.0f, 1.0f))
+		App->scene->SetSceneDirty(true);
+
+	if(ImGui::SliderFloat("shininess", &material.shininess, 0, 128.0f))
+		App->scene->SetSceneDirty(true);
 
 	// Textures popup
 	if (ImGui::BeginPopup("Textures", NULL))
@@ -240,6 +254,7 @@ void ComponentMaterial::DrawSpecularParameters()
 						App->textures->Unload(material.specular_map);
 					}
 					App->textures->LoadTexture(specularSelected.c_str(), material.specular_map, material.specular_width, material.specular_height);
+					App->scene->SetSceneDirty(true);
 				}
 			}
 		}
@@ -269,6 +284,7 @@ void ComponentMaterial::DrawAmbientParameters()
 				material.occlusion_width = 0;
 				material.occlusion_height = 0;
 				occlusionSelected = "";
+				App->scene->SetSceneDirty(true);
 			}
 			ImGui::Columns(1);
 		}
@@ -282,7 +298,8 @@ void ComponentMaterial::DrawAmbientParameters()
 			ImGui::Columns(1);
 		}
 
-		ImGui::SliderFloat("K ambient", &material.k_ambient, 0.0f, 1.0f);
+		if(ImGui::SliderFloat("K ambient", &material.k_ambient, 0.0f, 1.0f))
+			App->scene->SetSceneDirty(true);
 
 		// Textures popup
 		if (ImGui::BeginPopup("Textures", NULL))
@@ -305,6 +322,7 @@ void ComponentMaterial::DrawAmbientParameters()
 							App->textures->Unload(material.occlusion_map);
 						}
 						App->textures->LoadTexture(occlusionSelected.c_str(), material.occlusion_map, material.occlusion_width, material.occlusion_height);
+						App->scene->SetSceneDirty(true);
 					}
 				}
 			}
@@ -334,6 +352,7 @@ void ComponentMaterial::DrawEmissiveParameters()
 			material.emissive_width = 0;
 			material.emissive_height = 0;
 			emissiveSelected = "";
+			App->scene->SetSceneDirty(true);
 		}
 		ImGui::Columns(1);
 	}
@@ -346,7 +365,8 @@ void ComponentMaterial::DrawEmissiveParameters()
 		ImGui::Text("Texture:");
 		ImGui::Columns(1);
 	}
-	ImGui::ColorEdit3("emissive color", (float*)&material.emissive_color);
+	if(ImGui::ColorEdit3("emissive color", (float*)&material.emissive_color))
+		App->scene->SetSceneDirty(true);
 
 	// Textures popup
 	if (ImGui::BeginPopup("Textures", NULL))
@@ -369,6 +389,7 @@ void ComponentMaterial::DrawEmissiveParameters()
 						App->textures->Unload(material.emissive_map);
 					}
 					App->textures->LoadTexture(emissiveSelected.c_str(), material.emissive_map, material.emissive_width, material.emissive_height);
+					App->scene->SetSceneDirty(true);
 				}
 			}
 		}
