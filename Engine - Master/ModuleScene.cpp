@@ -8,6 +8,7 @@
 #include "ModuleFileManager.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "ModuleInput.h"
 
 #include "WindowScene.h"
 
@@ -44,19 +45,30 @@ bool ModuleScene::Init()
 bool ModuleScene::Start()
 {
 	root->Init();
-	LoadScene("test_scene.proScene");
+	//LoadScene("test_scene.proScene");
 	return true;
 }
 
 update_status ModuleScene::PreUpdate()
 {
-	if (dirty)
+	if (quadtree_dirty)
 	{
 		ComputeSceneQuadtree();
-		dirty = false;
+		quadtree_dirty = false;
 	}
 
 	root->Update();
+
+	if (dirty)
+	{
+		// CTRL + S: save scene
+		if (App->input->GetKey(SDL_SCANCODE_LCTRL) && App->input->GetKey(SDL_SCANCODE_S))
+			if (name.empty())
+				App->editor->show_scene_save_popup = true;
+			else
+				SaveScene(name.c_str());
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -178,6 +190,7 @@ GameObject* ModuleScene::CreateGameObject(const char* name)
 	{
 		go = new GameObject(GO_DEFAULT_NAME, root);
 	}	
+	SetSceneDirty(true);
 	return go;
 }
 
@@ -202,7 +215,7 @@ GameObject* ModuleScene::CreateGameObject(const char* name, GameObject* parent)
 		LOG("Warning: parent == nullptr, creating GameObject without parent. \n ")
 		go = CreateGameObject(name);
 	}
-
+	SetSceneDirty(true);
 	return go;
 }
 
@@ -220,6 +233,7 @@ GameObject* ModuleScene::CreateGameObject(const char* name, math::float4x4& tran
 	else
 		go = new GameObject(GO_DEFAULT_NAME, transform, root);
 	
+	SetSceneDirty(true);
 	return go;
 }
 
@@ -244,6 +258,7 @@ GameObject* ModuleScene::CreateGameObject(const char* name, math::float4x4& tran
 		LOG("Warning: parent == nullptr, creating GameObject without parent. \n ")
 		go = CreateGameObject(name, transform);
 	}
+	SetSceneDirty(true);
 	return go;
 }
 
@@ -257,6 +272,7 @@ void ModuleScene::DeleteGameObject(GameObject* go)
 	if (go == root)
 		root = nullptr;
 
+	SetSceneDirty(true);
 	go->DeleteGameObject();
 }
 
@@ -265,6 +281,7 @@ GameObject* ModuleScene::DuplicateGameObject(const GameObject* go)
 	GameObject* new_go = new GameObject(*go);
 	new_go->parent = go->parent;
 	new_go->parent->children.push_back(new_go);
+	SetSceneDirty(true);
 	return new_go;
 }
 
@@ -276,6 +293,7 @@ void ModuleScene::Unchild(GameObject* go)
 		return;
 	}
 	go->SetParent(root);
+	SetSceneDirty(true);
 }
 
 unsigned ModuleScene::GetSceneGONumber(GameObject& go) const
@@ -290,15 +308,6 @@ unsigned ModuleScene::GetSceneGONumber(GameObject& go) const
 }
 
 #pragma region scene management functions
-
-bool ModuleScene::Save(JSON_file* document) 
-{
-	JSON_value* scene = document->createValue();
-	scene->AddString("name", "scene");
-	document->addValue("scene", scene);
-	root->Save(scene);
-	return true;
-}
 
 bool ModuleScene::InitScene()
 {
@@ -321,7 +330,8 @@ bool ModuleScene::InitScene()
 	game_camera->transform->position = math::float3(0.0f, 2.0f * App->editor->scale, 10.0f * App->editor->scale);
 	game_camera->CreateComponent(component_type::Camera);
 
-	dirty = true;
+	quadtree_dirty = true;
+	SetSceneDirty(true);
 
 	return true;
 }
@@ -338,25 +348,15 @@ void ModuleScene::NewScene(bool init)
 
 	name = "";
 
-	// Change window title
-	std::string windowTitle = "Untitled - ";
-	windowTitle += TITLE;
-	SDL_SetWindowTitle(App->window->window, windowTitle.c_str());
-
 	App->resources->CleanUp();
 	App->resources->UpdateFilesList();
 
 	if(init) InitScene();
+	else	 SetSceneDirty(true);
 }
 
 bool ModuleScene::SaveScene(const char* scene_name)
 {
-	// Change window title
-	std::string windowTitle = scene_name;
-	windowTitle += " - ";
-	windowTitle += TITLE;
-	SDL_SetWindowTitle(App->window->window, windowTitle.c_str());
-
 	JSON_file* scene = App->json->openWriteFile(App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
 	if (scene == nullptr)
 	{
@@ -375,6 +375,8 @@ bool ModuleScene::SaveScene(const char* scene_name)
 
 	App->resources->UpdateScenesList();
 
+	SetSceneDirty(false);
+
 	LOG("Scene saved successfully.");
 	return true;
 }
@@ -382,7 +384,6 @@ bool ModuleScene::SaveScene(const char* scene_name)
 bool ModuleScene::LoadScene(const char* scene_name)
 {
 	// Load scene file
-
 	LOG("Loading %s.", scene_name);
 
 	JSON_file* scene = App->json->openReadFile(App->file->getFullPath(scene_name, SCENES_FOLDER, SCENES_EXTENSION).c_str());
@@ -393,12 +394,6 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	}
 
 	NewScene(false);
-
-	// Change window title
-	std::string windowTitle = scene_name;
-	windowTitle += " - ";
-	windowTitle += TITLE;
-	SDL_SetWindowTitle(App->window->window, windowTitle.c_str());
 
 	// Change scene name
 	name = scene_name;
@@ -433,7 +428,8 @@ bool ModuleScene::LoadScene(const char* scene_name)
 	}
 	App->json->closeFile(scene);
 
-	dirty = true;
+	quadtree_dirty = true;
+	SetSceneDirty(false);
 
 	LOG("Scene load successful.");
 	return true;
@@ -453,6 +449,20 @@ bool ModuleScene::DeleteScene(const char* scene_name)
 		LOG("Scene deleted: [%s]", scene_name);
 		return true;
 	}
+}
+
+bool ModuleScene::SetSceneDirty(bool set)
+{
+	dirty = set;
+
+	// Change window title
+	std::string windowTitle = name.empty()? "Untitled" : name;
+	windowTitle += dirty ? "* - " : " - ";
+	windowTitle += TITLE;
+
+	SDL_SetWindowTitle(App->window->window, windowTitle.c_str());
+
+	return dirty;
 }
 
 #pragma endregion

@@ -6,6 +6,7 @@
 #include "ModuleEditor.h"
 #include "ModuleResources.h"
 #include "ModuleWindow.h"
+#include "ModuleScene.h"
 
 #include "ComponentTransform.h"
 
@@ -76,6 +77,7 @@ void ComponentCamera::Update()
 
 Component* ComponentCamera::Duplicate()
 {
+	App->scene->SetSceneDirty(true);
 	return new ComponentCamera(*this);
 }
 
@@ -88,15 +90,22 @@ bool ComponentCamera::DrawOnInspector()
 		bool deleted = Component::DrawOnInspector();
 		if (!deleted)
 		{
-			ImGui::Checkbox("Frustum Culling", &frustum_culling);
+			if(ImGui::Checkbox("Frustum Culling", &frustum_culling))
+				App->scene->SetSceneDirty(true);
+
 			// View mode
 			const char* items[] = { "Invalid", "Orthographic", "Perspective" };
-			ImGui::Combo("View type", (int*)&frustum.type, items, IM_ARRAYSIZE(items));
+			if(ImGui::Combo("View type", (int*)&frustum.type, items, IM_ARRAYSIZE(items)))
+				App->scene->SetSceneDirty(true);
 
-			ImGui::SliderFloat("Near Plane Distance", &frustum.nearPlaneDistance, 0.0f, frustum.farPlaneDistance);
-			ImGui::SliderFloat("Far Plane Distance", &frustum.farPlaneDistance, frustum.nearPlaneDistance, 3000.0f);
+			if(ImGui::SliderFloat("Near Plane Distance", &frustum.nearPlaneDistance, 0.0f, frustum.farPlaneDistance))
+				App->scene->SetSceneDirty(true);
+
+			if(ImGui::SliderFloat("Far Plane Distance", &frustum.farPlaneDistance, frustum.nearPlaneDistance, 3000.0f))
+				App->scene->SetSceneDirty(true);
 			//ImGui::SliderFloat("Aspect Ratio", &frustum.AspectRatio(), 0, 179);
-			ImGui::SliderFloat("FOV", &frustum.horizontalFov, 0.0f, 3.14f);
+			if(ImGui::SliderFloat("FOV", &frustum.horizontalFov, 0.0f, 3.14f))
+				App->scene->SetSceneDirty(true);
 		}
 		else
 		{
@@ -142,11 +151,6 @@ void ComponentCamera::CreateFrameBuffer()
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-void ComponentCamera::TranslateCamera(math::float3 direction)
-{
-	my_go->transform->position += direction * speed * App->time->real_delta_time;
 }
 
 void ComponentCamera::Rotate(float dx, float dy)

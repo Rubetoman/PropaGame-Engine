@@ -140,6 +140,7 @@ void GameObject::Update()
 			(*it_child)->CleanUp();
 			delete *it_child;
 			children.erase(it_child++);
+			App->scene->SetSceneDirty(true);
 		}
 		else
 		{
@@ -172,7 +173,8 @@ bool GameObject::isActive() const
 void GameObject::SetStatic(bool set)
 {
 	static_GO = set;
-	App->scene->dirty = true;
+	App->scene->quadtree_dirty = true;
+	App->scene->SetSceneDirty(true);
 }
 
 bool GameObject::isPureStatic() const
@@ -276,6 +278,7 @@ void GameObject::DeleteGameObject()
 {
 	Unchild();
 	CleanUp();
+	App->scene->SetSceneDirty(true);
 	delete this;
 }
 
@@ -482,8 +485,11 @@ Component* GameObject::CreateComponent(component_type type)
 		break;
 	}
 
-	if(component != nullptr)
+	if (component != nullptr)
+	{
 		components.push_back(component);
+		App->scene->SetSceneDirty(true);
+	}
 
 	return component;
 }
@@ -525,6 +531,7 @@ void GameObject::DeleteComponent(Component& component)
 			return;
 		}
 	}
+	App->scene->SetSceneDirty(true);
 }
 #pragma endregion
 
@@ -537,6 +544,7 @@ void GameObject::Unchild()
 		return;
 	}
 	parent->children.remove(this);
+	App->scene->SetSceneDirty(true);
 }
 
 void GameObject::SetParent(GameObject* new_parent)
@@ -557,6 +565,8 @@ void GameObject::SetParent(GameObject* new_parent)
 	// Adapt to new parent transformation
 	if (this->transform != nullptr)
 		this->transform->GlobalToLocal(this->parent->GetGlobalTransform());
+
+	App->scene->SetSceneDirty(true);
 }
 
 bool GameObject::isForefather(GameObject& go)

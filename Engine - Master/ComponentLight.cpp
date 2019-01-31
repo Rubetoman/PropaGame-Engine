@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "ModuleResources.h"
+#include "ModuleScene.h"
 
 #include "imgui/imgui.h"
 
@@ -23,6 +24,7 @@ ComponentLight::~ComponentLight()
 
 Component* ComponentLight::Duplicate()
 {
+	App->scene->SetSceneDirty(true);
 	return new ComponentLight(*this);
 }
 
@@ -35,7 +37,8 @@ bool ComponentLight::DrawOnInspector()
 		bool deleted = Component::DrawOnInspector();
 		if (!deleted)
 		{
-			ImGui::SliderFloat("Intensity", &intensity, 0.0f, 1.0f);
+			if(ImGui::SliderFloat("Intensity", &intensity, 0.0f, 1.0f))
+				App->scene->SetSceneDirty(true);
 		}
 		else
 		{

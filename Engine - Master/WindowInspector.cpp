@@ -24,12 +24,14 @@ void WindowInspector::Draw()
 		GameObject* go = App->editor->selectedGO;
 		if (go != nullptr)
 		{
-			ImGui::Checkbox("active", &go->active);
+			if(ImGui::Checkbox("active", &go->active))
+				App->scene->SetSceneDirty(true);
 			ImGui::SameLine();
 			// Show name field
 			char *name = new char[GO_NAME_SIZE];
 			strcpy(name, go->name.c_str());
-			ImGui::InputText("Name", name, GO_NAME_SIZE);
+			if(ImGui::InputText("Name", name, GO_NAME_SIZE))
+				App->scene->SetSceneDirty(true);
 			go->name = name;
 			delete[] name;
 
@@ -38,7 +40,8 @@ void WindowInspector::Draw()
 				if(go->children.size() > 0)
 					show_static_popup = true;
 				
-				App->scene->dirty = true;
+				App->scene->quadtree_dirty = true;
+				App->scene->SetSceneDirty(true);
 			}
 
 			if (show_static_popup)

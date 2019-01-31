@@ -38,6 +38,7 @@ void ComponentTransform::SetTransform(const math::float4x4& transform)
 	euler_rotation.x = math::RadToDeg(euler_rotation.x);
 	euler_rotation.y = math::RadToDeg(euler_rotation.y);
 	euler_rotation.z = math::RadToDeg(euler_rotation.z);
+	App->scene->SetSceneDirty(true);
 }
 
 void ComponentTransform::SetTransform(const math::float3& pos, const math::Quat& rot, const math::float3& sca)
@@ -49,6 +50,7 @@ void ComponentTransform::SetTransform(const math::float3& pos, const math::Quat&
 	euler_rotation.x = math::RadToDeg(euler_rotation.x);
 	euler_rotation.y = math::RadToDeg(euler_rotation.y);
 	euler_rotation.z = math::RadToDeg(euler_rotation.z);
+	App->scene->SetSceneDirty(true);
 }
 
 void ComponentTransform::SetGlobalTransform(const math::float4x4& global_transform)
@@ -61,6 +63,7 @@ void ComponentTransform::SetGlobalTransform(const math::float4x4& global_transfo
 		parent_global = my_go->parent->GetGlobalTransform();
 	}
 	GlobalToLocal(parent_global);
+	App->scene->SetSceneDirty(true);
 }
 
 void ComponentTransform::SetRotation(const math::Quat& rot)
@@ -70,12 +73,14 @@ void ComponentTransform::SetRotation(const math::Quat& rot)
 	euler_rotation.x = math::RadToDeg(euler_rotation.x);
 	euler_rotation.y = math::RadToDeg(euler_rotation.y);
 	euler_rotation.z = math::RadToDeg(euler_rotation.z);
+	App->scene->SetSceneDirty(true);
 }
 
 void ComponentTransform::SetRotation(const math::float3& rot)
 {
 	euler_rotation = rot;
 	rotation.FromEulerXYZ(euler_rotation.x, euler_rotation.y, euler_rotation.z);
+	App->scene->SetSceneDirty(true);
 }
 
 void ComponentTransform::LocalToGlobal(const math::float4x4& local_transform)
@@ -113,7 +118,8 @@ bool ComponentTransform::DrawOnInspector()
 				math::DegToRad(euler_rotation.y), math::DegToRad(euler_rotation.z));
 			scale = float3::one;
 			if (my_go->static_GO)
-				App->scene->dirty = true;
+				App->scene->quadtree_dirty = true;
+			App->scene->SetSceneDirty(true);
 		}
 
 		// Show scaled position
@@ -123,19 +129,22 @@ bool ComponentTransform::DrawOnInspector()
 		{
 			position = scaled_position * App->editor->scale;
 			if(my_go->static_GO)
-				App->scene->dirty = true;
+				App->scene->quadtree_dirty = true;
+			App->scene->SetSceneDirty(true);
 		}
 		if (ImGui::DragFloat3("Rotation", (float*)&euler_rotation, 0.1f))
 		{
 			rotation = rotation.FromEulerXYZ(math::DegToRad(euler_rotation.x),
 				math::DegToRad(euler_rotation.y), math::DegToRad(euler_rotation.z));
 			if (my_go->static_GO)
-				App->scene->dirty = true;
+				App->scene->quadtree_dirty = true;
+			App->scene->SetSceneDirty(true);
 		}
 		if(ImGui::DragFloat3("Scale", (float*)&scale, 0.1f))
 		{
 			if (my_go->static_GO)
-				App->scene->dirty = true;
+				App->scene->quadtree_dirty = true;
+			App->scene->SetSceneDirty(true);
 		}
 	}
 	ImGui::PopID();
