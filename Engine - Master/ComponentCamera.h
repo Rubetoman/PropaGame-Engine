@@ -16,9 +16,7 @@ public:
 	~ComponentCamera();
 
 	void Update() override;
-
 	Component* Duplicate() override;
-	void Delete() override;
 	bool DrawOnInspector();
 
 	void CreateFrameBuffer();

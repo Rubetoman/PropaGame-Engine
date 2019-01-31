@@ -88,7 +88,7 @@ public:
 	Component* CreateComponent(component_type type);
 	Component* GetComponent(component_type type) const;
 	std::vector<Component*> GetComponents(component_type type) const;
-	void DeleteComponent(Component* component);					// Removes the component pointer from GO components list
+	void DeleteComponent(Component& component);					// Removes the component pointer from GO components list
 
 	// Children
 	void Unchild();

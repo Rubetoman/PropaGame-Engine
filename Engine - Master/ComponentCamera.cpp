@@ -44,6 +44,15 @@ ComponentCamera::ComponentCamera(const ComponentCamera& comp) : Component(comp)
 
 ComponentCamera::~ComponentCamera()
 {
+	if (type != component_type::Editor_Camera)
+		App->resources->DeleteCamera(this);
+	if (fbo != 0)
+		glDeleteFramebuffers(1, &fbo);
+	if (rbo != 0)
+		glDeleteRenderbuffers(1, &rbo);
+	if (renderedTexture != 0)
+		glDeleteTextures(1, &renderedTexture);
+	//RELEASE(window);
 }
 
 void ComponentCamera::Update()
@@ -68,17 +77,6 @@ void ComponentCamera::Update()
 Component* ComponentCamera::Duplicate()
 {
 	return new ComponentCamera(*this);
-}
-
-void ComponentCamera::Delete()
-{
-	if (type != component_type::Editor_Camera)
-		App->resources->DeleteCamera(this);
-	Component::Delete();
-	glDeleteFramebuffers(1, &fbo);
-	glDeleteRenderbuffers(1, &rbo);
-	glDeleteTextures(1, &renderedTexture);
-	//RELEASE(window);
 }
 
 bool ComponentCamera::DrawOnInspector()

@@ -10,7 +10,6 @@ public:
 	~ComponentLight();
 
 	Component* Duplicate() override;
-	void Delete() override;
 	bool DrawOnInspector() override;
 
 	JSON_value* Save(JSON_value* component) const override;

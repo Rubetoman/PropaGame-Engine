@@ -35,8 +35,6 @@ public:
 	component_type type;
 	bool active = true;
 	GameObject* my_go = nullptr;
-
-	bool remove = false;
 };
 
 #endif /*__COMPONENT_H__*/

@@ -25,23 +25,27 @@ Component::Component(const Component& comp)
 
 Component::~Component()
 {
+	my_go = nullptr;
 }
 
 void Component::Update()
 {
-	if (remove)
-		Delete();
 }
 
 bool Component::DrawOnInspector()
 {
+	bool removed = false;
+
 	ImGui::Checkbox("Active", &active);	ImGui::SameLine();
 	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.7f, 0.7f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.8f, 0.8f));
 
 	if (ImGui::SmallButton("Delete Component"))
-		remove = true;
+	{
+		removed = true;
+		Delete();
+	}
 
 	// Serialization information
 	ImGui::Separator();
@@ -53,13 +57,12 @@ bool Component::DrawOnInspector()
 
 
 	ImGui::PopStyleColor(3);
-	return remove;
+	return removed;
 }
 
 void Component::Delete()
 {
-	my_go->DeleteComponent(this);
-	my_go = nullptr;
+	my_go->DeleteComponent(*this);
 }
 
 unsigned Component::GetComponentNumber() const

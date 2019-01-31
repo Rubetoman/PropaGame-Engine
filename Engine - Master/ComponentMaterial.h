@@ -45,7 +45,6 @@ public:
 	~ComponentMaterial();
 
 	Component* Duplicate() override;
-	void Delete() override;
 
 	bool DrawOnInspector() override;
 	void DrawDiffuseParameters();

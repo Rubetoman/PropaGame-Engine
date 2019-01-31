@@ -28,19 +28,13 @@ ComponentMesh::ComponentMesh(const ComponentMesh& comp) : Component(comp)
 
 ComponentMesh::~ComponentMesh()
 {
+	my_go->mesh_comp = nullptr;
+	DeleteMesh();
 }
 
 Component* ComponentMesh::Duplicate()
 {
 	return new ComponentMesh(*this);
-}
-
-void ComponentMesh::Delete()
-{
-	my_go->mesh_comp = nullptr;
-	DeleteMesh();
-	Component::Delete();
-
 }
 
 bool ComponentMesh::DrawOnInspector()

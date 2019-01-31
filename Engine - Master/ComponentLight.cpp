@@ -16,19 +16,14 @@ ComponentLight::ComponentLight(const ComponentLight& comp) : Component(comp)
 
 ComponentLight::~ComponentLight()
 {
+	unsigned pos = App->resources->GetLightNumber(*my_go);
+	if (pos > -1)
+		App->resources->lights.erase(App->resources->lights.begin() + pos);
 }
 
 Component* ComponentLight::Duplicate()
 {
 	return new ComponentLight(*this);
-}
-
-void ComponentLight::Delete()
-{
-	unsigned pos = App->resources->GetLightNumber(*my_go);
-	if (pos <= 0)
-		App->resources->lights.erase(App->resources->lights.begin() + pos);
-	Component::Delete();
 }
 
 bool ComponentLight::DrawOnInspector()

@@ -97,13 +97,16 @@ GameObject::~GameObject()
 {
 	for (auto &component : components)
 	{
-		component->Delete();
+		RELEASE(component);
 	}
 
 	for (auto &child : children)
 	{
 		RELEASE(child);
 	}
+
+	components.clear();
+	children.clear();
 
 	transform = nullptr;
 	mesh_comp = nullptr;
@@ -511,21 +514,17 @@ std::vector<Component*> GameObject::GetComponents(component_type type) const
 	return comp;
 }
 
-void GameObject::DeleteComponent(Component* component)
+void GameObject::DeleteComponent(Component& component)
 {
-	if (component != nullptr)
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
-		int position = component->GetComponentNumber();
-		if (position > -1)
+		if (*it == &component)
 		{
-			components.erase(components.begin() + position);
-			RELEASE(component);
+			components.erase(it);
+			RELEASE(*it);
+			return;
 		}
-		else
-			LOG("Error deleting component.");
 	}
-	else
-		LOG("Warning: Component was nullptr.");
 }
 #pragma endregion
 

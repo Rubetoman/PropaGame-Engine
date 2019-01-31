@@ -31,15 +31,6 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& comp) : Component(
 
 ComponentMaterial::~ComponentMaterial()
 {
-}
-
-Component* ComponentMaterial::Duplicate()
-{
-	return new ComponentMaterial(*this);
-}
-
-void ComponentMaterial::Delete()
-{
 	if (material.diffuse_map != 0)
 		App->textures->Unload(material.diffuse_map);
 
@@ -56,7 +47,11 @@ void ComponentMaterial::Delete()
 	material = emptyMaterial;
 
 	my_go->material_comp = nullptr;
-	Component::Delete();
+}
+
+Component* ComponentMaterial::Duplicate()
+{
+	return new ComponentMaterial(*this);
 }
 
 bool ComponentMaterial::DrawOnInspector()
