@@ -258,9 +258,26 @@ void GameObject::DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode) const
 	float scale = App->editor->scale;
 
 	// Draw a sphere on Editor
-	if (GetComponent(component_type::Light) != nullptr)
+	ComponentLight* light = (ComponentLight*)GetComponent(component_type::Light);
+	if (light != nullptr)
 	{
-		dd::sphere(transform->position, math::float3(1.0f, 1.0f, 1.0f), scale * 0.2f);
+		if (light->type == light_type::Point)
+			dd::sphere(transform->position, light->color, light->GetAttenuationDistance());
+		else if (light->type == light_type::Spot)
+			dd::cone(transform->position, light->direction * light->GetAttenuationDistance(), light->color, light->GetAttenuationDistance() * tanf(math::DegToRad(light->outer_cutoff)), 0.0f);
+		else
+		{
+			math::float3 pos = transform->position;
+			math::float3 dir = light->direction;
+			float scale = App->editor->scale;
+			dd::circle(pos, light->direction, light->color, App->editor->scale, 5.0f);
+			//TODO: Add lines
+			/*dd::line(math::float3(pos.x + scale, pos.y, pos.z), math::float3(dir.x + scale, dir.y, dir.z + 5.0f * scale), light->color, 2 * scale);
+			dd::line(math::float3(pos.x - scale, pos.y, pos.z), math::float3(pos.x - scale, pos.y, pos.z + 5.0f * scale), light->color, 2 * scale);
+			dd::line(math::float3(pos.x + scale * 0.5f, pos.y + scale, pos.z), math::float3(pos.x + scale * 0.5f, pos.y + scale, pos.z + 5.0f * scale), light->color, 2 * scale);
+			dd::line(math::float3(pos.x + scale * 2.0f, pos.y + scale, pos.z), math::float3(pos.x + scale * 2.0f, pos.y + scale, pos.z + 5.0f * scale), light->color, 2 * scale);
+			dd::line(math::float3(pos.x, pos.y - scale, pos.z), math::float3(pos.x, pos.y - scale, pos.z + 5.0f * scale), light->color, 2 * scale);*/
+		}
 	}
 
 	// Draw a camera icon and Frustum on Editor
@@ -522,13 +539,12 @@ std::vector<Component*> GameObject::GetComponents(component_type type) const
 
 void GameObject::DeleteComponent(Component& component)
 {
-	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	for (int i = 0; i < components.size(); ++i)
 	{
-		if (*it == &component)
+		if (components[i] == &component)
 		{
-			components.erase(it);
-			RELEASE(*it);
-			return;
+			RELEASE(components[i]);
+			components.erase(components.begin() + i);
 		}
 	}
 	App->scene->SetSceneDirty(true);

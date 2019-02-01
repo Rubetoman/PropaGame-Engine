@@ -47,8 +47,6 @@ void Component::Disable()
 
 bool Component::DrawOnInspector()
 {
-	bool removed = false;
-
 	if(ImGui::Checkbox("Active", &active))
 		App->scene->SetSceneDirty(true); 
 	ImGui::SameLine();
@@ -58,8 +56,9 @@ bool Component::DrawOnInspector()
 
 	if (ImGui::SmallButton("Delete Component"))
 	{
-		removed = true;
 		Delete();
+		ImGui::PopStyleColor(3);
+		return true;
 	}
 
 	// Serialization information
@@ -72,7 +71,7 @@ bool Component::DrawOnInspector()
 
 
 	ImGui::PopStyleColor(3);
-	return removed;
+	return false;
 }
 
 void Component::Delete()
