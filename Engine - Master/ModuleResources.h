@@ -11,6 +11,7 @@ class GameObject;
 class Texture;
 class ComponentCamera;
 class ComponentMesh;
+class ComponentLight;
 
 class ModuleResources : public Module
 {
@@ -23,7 +24,9 @@ public:
 	bool CleanUp() override;
 
 	std::string GenerateNewUID();
-	unsigned GetLightNumber(GameObject& go) const;
+
+	ComponentLight* GetDirectionalLight() const;
+	unsigned GetLightNumber(ComponentLight& light) const;
 
 	// Cameras
 	unsigned GetCameraNumber(ComponentCamera& camera) const;
@@ -45,7 +48,7 @@ public:
 	void UpdateScenesList();
 
 public:
-	std::vector<GameObject*> lights;		// List of all the lights on the scene
+	std::vector<ComponentLight*> lights;		// List of all the lights on the scene
 
 	// Default textures
 	unsigned checkers_texture = 0u;

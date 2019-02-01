@@ -71,6 +71,9 @@ public:
 	bool show_raycast = false;
 	math::float3 raycast_color = math::float3(0.0f, 1.0f, 0.0f);
 
+	// Max number of light that a GO will render
+	unsigned max_lights = 4u;
+
 	BBoxMode bbox_mode = BBoxMode::Divide;
 
 	//The window we'll be rendering to

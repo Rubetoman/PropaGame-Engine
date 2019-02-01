@@ -23,6 +23,8 @@ public:
 
 	void GenerateFallback();
 
+	void SetLightUniforms(unsigned shader) const;
+
 public:
 
 	void* context = nullptr;

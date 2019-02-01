@@ -18,6 +18,7 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
+#include "ComponentLight.h"
 
 #include <map>
 
@@ -112,7 +113,7 @@ void ModuleScene::Draw(const math::float4x4& view, const math::float4x4& proj, C
 		// Draw lights
 		for (auto light : App->resources->lights)
 		{
-			light->Draw(view, proj, camera);
+			light->my_go->Draw(view, proj, camera);
 		}
 
 		if (use_quadtree && draw_quadtree)
@@ -507,3 +508,26 @@ void ModuleScene::ResizeQuadtree(GameObject* go)
 }
 
 #pragma endregion
+
+std::list<ComponentLight*> ModuleScene::GetClosestLights(light_type light_type, float3 position) const
+{
+	std::map<float, ComponentLight*> lightmap;
+	for (const auto& light : App->resources->lights)
+	{
+		if (light->type == light_type && light->my_go->active && light->my_go->transform != nullptr)
+		{
+			float distance = light->my_go->transform->position.Distance(position);
+			lightmap.insert(std::pair<float, ComponentLight*>(distance, light));
+		}
+	}
+
+	std::list<ComponentLight*> closest;
+	int i = 0;
+	for (const auto& light : lightmap)
+	{
+		closest.push_back(light.second);
+		++i;
+		if (i == App->editor->max_lights) break;
+	}
+	return closest;
+}

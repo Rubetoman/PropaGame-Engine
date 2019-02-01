@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
+#include "ComponentLight.h"
 
 #include "TextureImporter.h"
 
@@ -78,9 +79,21 @@ std::string ModuleResources::GenerateNewUID()
 	return xg::newGuid().str();
 }
 
-unsigned ModuleResources::GetLightNumber(GameObject& go) const
+ComponentLight* ModuleResources::GetDirectionalLight() const
 {
-	auto pos = std::find(lights.begin(), lights.end(), &go) - lights.begin();
+	for (const auto& light : lights)
+	{
+		if (light->type == light_type::Directional && light->my_go->active)
+		{
+			return light;
+		}
+	}
+	return nullptr;
+}
+
+unsigned ModuleResources::GetLightNumber(ComponentLight& light) const
+{
+	auto pos = std::find(lights.begin(), lights.end(), &light) - lights.begin();
 	if (pos >= lights.size())
 	{
 		LOG("Warning: go not found as a resource of lights.");

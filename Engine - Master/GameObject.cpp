@@ -15,6 +15,7 @@
 #include "ComponentLight.h"
 #include "ComponentCamera.h"
 
+#include "GL/glew.h"
 #include "debugdraw.h"
 
 GameObject::GameObject(const char* name) : name(name)
@@ -81,7 +82,7 @@ GameObject::GameObject(const GameObject& go)
 		}
 		else if (new_comp->type == component_type::Light)
 		{
-			App->resources->lights.push_back(this);
+			App->resources->lights.push_back((ComponentLight*)new_comp);
 		}
 	}
 	for (const auto& child : go.children)
@@ -466,7 +467,7 @@ Component* GameObject::CreateComponent(component_type type)
 		{
 			component = new ComponentLight(this);
 			if (App!=nullptr)
-				App->resources->lights.push_back(this);
+				App->resources->lights.push_back((ComponentLight*)component);
 		}
 		else
 		{
@@ -550,6 +551,79 @@ void GameObject::DeleteComponent(Component& component)
 	App->scene->SetSceneDirty(true);
 }
 #pragma endregion
+
+void GameObject::SetLightUniforms(unsigned shader) const
+{
+	ComponentLight* directional = App->resources->GetDirectionalLight();
+	if (directional != nullptr)
+	{
+		glUniform3fv(glGetUniformLocation(shader, "lights.directional.direction"), 1, (GLfloat*)&directional->direction);
+		glUniform3fv(glGetUniformLocation(shader, "lights.directional.color"), 1, (GLfloat*)&directional->color);
+	}
+	else
+	{
+		float3 noDirectional = float3::zero;
+		glUniform3fv(glGetUniformLocation(shader, "lights.directional.direction"), 1, (GLfloat*)&noDirectional);
+	}
+
+	int i = 0;
+	for (const auto & spot : App->scene->GetClosestLights(light_type::Spot, transform->position))
+	{
+		char buffer[32];
+
+		sprintf(buffer, "lights.spots[%d].position", i);
+		glUniform3fv(glGetUniformLocation(shader, buffer), 1, (GLfloat*)&spot->my_go->transform->position);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.spots[%d].direction", i);
+		glUniform3fv(glGetUniformLocation(shader, buffer), 1, (GLfloat*)&spot->direction);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.spots[%d].color", i);
+		glUniform3fv(glGetUniformLocation(shader, buffer), 1, (GLfloat*)&spot->color);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.spots[%d].attenuation", i);
+		glUniform3fv(glGetUniformLocation(shader, buffer), 1, (GLfloat*)&spot->attenuation);
+
+		memset(buffer, 0, 32);
+		float innerRad = cosf(math::DegToRad(spot->inner_cutoff));
+		sprintf(buffer, "lights.spots[%d].inner", i);
+		glUniform1fv(glGetUniformLocation(shader,buffer), 1, (GLfloat*)&innerRad);
+
+		memset(buffer, 0, 32);
+		float outerRad = cosf(math::DegToRad(spot->outer_cutoff));
+		sprintf(buffer, "lights.spots[%d].outer", i);
+		glUniform1fv(glGetUniformLocation(shader,buffer), 1, (GLfloat*)&outerRad);
+
+		++i;
+	}
+	glUniform1i(glGetUniformLocation(shader, "lights.num_spots"), i);
+
+	i = 0;
+	for (const auto & point : App->scene->GetClosestLights(light_type::Point, transform->position))
+	{
+		char buffer[32];
+
+		sprintf(buffer, "lights.points[%d].position", i);
+		glUniform3fv(glGetUniformLocation(shader, buffer), 1, (GLfloat*)&point->my_go->transform->position);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.points[%d].direction", i);
+		glUniform3fv(glGetUniformLocation(shader, buffer), 1, (GLfloat*)&point->direction);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.points[%d].color", i);
+		glUniform3fv(glGetUniformLocation(shader, buffer), 1, (GLfloat*)&point->color);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.points[%d].attenuation", i);
+		glUniform3fv(glGetUniformLocation(shader, buffer), 1, (GLfloat*)&point->attenuation);
+
+		++i;
+	}
+	glUniform1i(glGetUniformLocation(shader, "lights.num_points"), i);
+}
 
 #pragma region Children Related Functions
 void GameObject::Unchild()

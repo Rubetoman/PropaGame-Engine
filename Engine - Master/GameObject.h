@@ -90,6 +90,8 @@ public:
 	std::vector<Component*> GetComponents(component_type type) const;
 	void DeleteComponent(Component& component);					// Removes the component pointer from GO components list
 
+	void GameObject::SetLightUniforms(unsigned shader) const;
+
 	// Children
 	void Unchild();
 	void SetParent(GameObject* new_parent);

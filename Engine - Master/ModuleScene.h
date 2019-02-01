@@ -5,11 +5,14 @@
 #include "ImGuizmo/ImGuizmo.h"
 #include "Math/float4x4.h"
 #include <vector>
+#include <list>
 
 class GameObject;
 class ComponentCamera;
+class ComponentLight;
 class JSON_file;
 class Quadtree;
+enum class light_type;
 
 class ModuleScene : public Module
 {
@@ -37,8 +40,6 @@ public:
 
 	unsigned GetSceneGONumber(GameObject& go) const;
 
-	bool Save(JSON_file* document);
-
 	bool InitScene();						// Creates a scene with root, default light and game camera
 	void NewScene(bool init);				// True to Init scene after deleting scene
 	bool SaveScene(const char* scene_name);
@@ -49,6 +50,8 @@ public:
 	void FillQuadtree(GameObject* go);
 	void ComputeSceneQuadtree();
 	void ResizeQuadtree(GameObject* go);
+
+	std::list<ComponentLight*> GetClosestLights(light_type light_type, float3 position) const;
 
 public:
 	std::vector<GameObject*> scene_gos;	// Vector with pointers to all scene GOs
@@ -65,6 +68,9 @@ public:
 	bool draw_quadtree = false;
 	bool use_quadtree = true;
 	std::vector<GameObject*> static_gos; // static GOs that intersect with the camera frustrum
+
+	// Ambient ilumination
+	float3 ambient_color = float3::one;
 };
 
 #endif /*__MODULESCENE_H__*/

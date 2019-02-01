@@ -88,6 +88,7 @@ void WindowConfiguration::Draw()
 			if (App->editor->scale < 0.001f)	// Avoid reaching 0 (It would crash)
 				App->editor->scale = 0.001f;
 		}
+		ImGui::ColorEdit3("Ambient Color", (float*)&App->scene->ambient_color);
 		ImGui::Checkbox("Show grid", &App->editor->show_grid); ImGui::SameLine();
 		ImGui::Checkbox("Show axis", &App->editor->show_axis);
 		ImGui::Separator();
