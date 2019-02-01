@@ -403,7 +403,7 @@ void ComponentMaterial::RenderMaterial()
 		glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&light->transform->position);
 		
 		ComponentLight* comp_light = (ComponentLight*)light->GetComponent(component_type::Light);
-		glUniform1f(glGetUniformLocation(program, "ambient"), comp_light->intensity);
+		glUniform1f(glGetUniformLocation(program, "ambient"), comp_light->attenuation[0]);
 	}
 	else
 	{
