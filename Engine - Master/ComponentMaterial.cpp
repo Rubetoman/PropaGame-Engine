@@ -396,21 +396,6 @@ void ComponentMaterial::RenderMaterial()
 {
 	unsigned program = App->shader->programs[shader];
 
-	// Light render
-	/*ComponentLight* light = App->resources->lights[0];
-	if (light != nullptr && light->active)
-	{
-		glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&light->my_go->transform->position);
-		
-		ComponentLight* comp_light = (ComponentLight*)light->GetComponent(component_type::Light);
-		glUniform1f(glGetUniformLocation(program, "ambient"), comp_light->attenuation[0]);
-	}
-	else
-	{
-		glUniform1f(glGetUniformLocation(program, "ambient"), 0.0f);
-	}*/
-
-
 	// Diffuse
 	glUniform4fv(glGetUniformLocation(program, "material.diffuse_color"), 1, (GLfloat*)&material.diffuse_color);
 

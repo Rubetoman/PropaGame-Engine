@@ -546,9 +546,11 @@ void GameObject::DeleteComponent(Component& component)
 		{
 			RELEASE(components[i]);
 			components.erase(components.begin() + i);
+			App->scene->SetSceneDirty(true);
+			return;
+
 		}
 	}
-	App->scene->SetSceneDirty(true);
 }
 #pragma endregion
 

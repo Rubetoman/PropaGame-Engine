@@ -292,7 +292,6 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 		my_go->material_comp->RenderMaterial();
 	}
 
-	// TODO: Add ambient variable
 	glUniform3fv(glGetUniformLocation(program, "lights.ambient_color"), 1, (GLfloat*)&App->scene->ambient_color);
 	my_go->SetLightUniforms(program);
 
