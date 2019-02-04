@@ -89,7 +89,7 @@ void WindowConfiguration::Draw()
 				App->editor->scale = 0.001f;
 		}
 		ImGui::Checkbox("Show grid", &App->editor->show_grid); ImGui::SameLine();
-		ImGui::Checkbox("Show axis", &App->editor->show_axis);
+		ImGui::Checkbox("Show world axis (when no GO is selected)", &App->editor->show_axis);
 		ImGui::Separator();
 		ImGui::Checkbox("Show click raycast", &App->editor->show_raycast);
 		ImGui::ColorEdit3("Raycast color", (float*)&App->editor->raycast_color);

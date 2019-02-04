@@ -258,7 +258,7 @@ void GameObject::DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode) const
 	float scale = App->editor->scale;
 
 	// Draw a sphere on Editor
-	if (GetComponent(component_type::Light) != nullptr)
+	if (GetComponent(component_type::Light) != nullptr && App->editor->selectedGO == this)
 	{
 		dd::sphere(transform->position, math::float3(1.0f, 1.0f, 1.0f), scale * 0.2f);
 	}
@@ -270,7 +270,8 @@ void GameObject::DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode) const
 		dd::cone(transform->position + (camera_component->frustum.front * scale * 0.3f), scale * 0.5f * camera_component->frustum.front, math::float3(1.0f, 1.0f, 1.0f), scale * 0.2f, scale * 0.01f);
 		dd::box(transform->position, math::float3(1.0f, 1.0f, 1.0f), scale * 0.4f, scale * 0.4f, scale * 0.4f);
 
-		dd::frustum((camera_component->frustum.ProjectionMatrix() * camera_component->frustum.ViewMatrix()).Inverted(), dd::colors::Purple);
+		if(App->editor->selectedGO == this)
+			dd::frustum((camera_component->frustum.ProjectionMatrix() * camera_component->frustum.ViewMatrix()).Inverted(), dd::colors::Purple);
 	}
 }
 
