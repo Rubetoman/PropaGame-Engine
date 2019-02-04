@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "Globals.h"
 
+#include "ModuleRender.h"
+
 ModuleShader::ModuleShader()
 {
 	for (unsigned i = 0; i < PROGRAM_COUNT; ++i)
@@ -28,6 +30,7 @@ bool ModuleShader::Init()
 
 	for (unsigned i = 0; ok && i < PROGRAM_COUNT; ++i)
 	{
+		App->renderer->AddBlockUniforms(programs[i]);
 		ok = programs[i] != 0;
 	}
 

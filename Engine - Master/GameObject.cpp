@@ -323,6 +323,12 @@ math::float3 GameObject::GetCenter() const
 	else
 		return transform->position;
 }
+
+void GameObject::UpdateModel(unsigned shader) const
+{
+	glUniformMatrix4fv(glGetUniformLocation(shader,"model"), 1, GL_TRUE, &GetGlobalTransform()[0][0]);
+}
+
 #pragma endregion
 
 #pragma region BBox functions

@@ -79,6 +79,12 @@ bool ModuleRender::Init()
 	return true;
 }
 
+bool ModuleRender::Start()
+{
+	GenBlockUniforms();
+	return true;
+}
+
 update_status ModuleRender::PreUpdate()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -100,10 +106,12 @@ update_status ModuleRender::Update()
 	App->editor->DrawDebugReferences();
 
 	// Draw Scene
-	ComponentCamera* editor_camera = App->camera->editor_camera_comp;
-	math::float4x4 proj = editor_camera->frustum.ProjectionMatrix();
-	math::float4x4 view = editor_camera->frustum.ViewMatrix();
-	App->scene->Draw(view, proj, *editor_camera);
+	ComponentCamera& editor_camera = *App->camera->editor_camera_comp;
+	math::float4x4 proj = editor_camera.frustum.ProjectionMatrix();
+	math::float4x4 view = editor_camera.frustum.ViewMatrix();
+	SetViewUniform(editor_camera);
+	SetProjectionUniform(editor_camera);
+	App->scene->Draw(view, proj, editor_camera);
 
 	// CAMERAS
 	for (auto &camera : App->resources->cameras)
@@ -119,6 +127,8 @@ update_status ModuleRender::Update()
 				proj = camera->frustum.ProjectionMatrix();
 				//view = camera->LookAt(cameraGO->transform->position + camera->front);
 				math::float4x4 view = camera->frustum.ViewMatrix();
+				SetProjectionUniform(*camera);
+				SetViewUniform(*camera);
 				App->scene->Draw(view, proj, *camera);
 			}
 		}
@@ -126,7 +136,7 @@ update_status ModuleRender::Update()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	// Draw debug draw
-	App->debug_draw->Draw(editor_camera, editor_camera->fbo, App->window->screen_height, App->window->screen_width);
+	App->debug_draw->Draw(&editor_camera, editor_camera.fbo, App->window->screen_height, App->window->screen_width);
 
 	return UPDATE_CONTINUE;
 }
@@ -176,4 +186,34 @@ void ModuleRender::GenerateFallback()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, fallbackImage);
+}
+
+void ModuleRender::GenBlockUniforms()
+{
+	glGenBuffers(1, &ubo); //Block uniform creation
+	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(float4x4), NULL, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, ubo, 0, 2 * sizeof(float4x4));
+}
+
+void ModuleRender::AddBlockUniforms(const unsigned &shader) const
+{
+	unsigned int uniformBlockIndex = glGetUniformBlockIndex(shader, "Matrices");
+	glUniformBlockBinding(shader, uniformBlockIndex, 0);
+}
+
+void ModuleRender::SetViewUniform(const ComponentCamera &camera) const
+{
+	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float4x4), sizeof(float4x4), &camera.frustum.ViewMatrix());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+void ModuleRender::SetProjectionUniform(const ComponentCamera &camera) const
+{
+	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float4x4), &camera.frustum.ProjectionMatrix());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

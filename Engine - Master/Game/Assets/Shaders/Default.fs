@@ -53,13 +53,17 @@ struct Lights
 	int         num_spots;
 };
 
+layout (std140) uniform Matrices
+{
+    mat4 proj;
+    mat4 view;
+};
+
 in vec3 normal;
 in vec3 position;
 in vec2 uv0;
 
 out vec4 color;
-
-uniform mat4 view;
 
 uniform	Material material;
 uniform Lights lights;

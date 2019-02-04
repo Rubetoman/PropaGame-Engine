@@ -7,23 +7,29 @@ struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
 
+class ComponentCamera;
+
 class ModuleRender : public Module
 {
 public:
 	ModuleRender();
 	~ModuleRender();
 
-	bool Init();
-	update_status PreUpdate();
-	update_status Update();
-	update_status PostUpdate();
-	bool CleanUp();
+	bool Start() override;
+	bool Init() override;
+	update_status PreUpdate() override;
+	update_status Update() override;
+	update_status PostUpdate() override;
+	bool CleanUp() override;
 
 	void WindowResized(unsigned width, unsigned height);
 
 	void GenerateFallback();
 
-	void SetLightUniforms(unsigned shader) const;
+	void GenBlockUniforms();
+	void AddBlockUniforms(const unsigned &shader) const;
+	void SetViewUniform(const ComponentCamera &camera) const;
+	void SetProjectionUniform(const ComponentCamera &camera) const;
 
 public:
 

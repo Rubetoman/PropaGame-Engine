@@ -76,6 +76,7 @@ public:
 	math::float4x4 GetLocalTransform() const;
 	math::float4x4 GetGlobalTransform() const;
 	math::float3 GetCenter() const;
+	void UpdateModel(unsigned shader) const;
 
 	// BBox
 	math::AABB ComputeBBox() const;				// Computes a bbox for the GO mesh

@@ -282,9 +282,9 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 
 	glUseProgram(program);
 
-	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&my_go->GetGlobalTransform()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
-	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
+	//glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&my_go->GetGlobalTransform()[0][0]);
+	//glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
+	//glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
 
 	// Render Material
 	if (my_go->material_comp != nullptr && my_go->material_comp->active)
@@ -294,7 +294,7 @@ void ComponentMesh::RenderMesh(const math::float4x4& view, const math::float4x4&
 
 	glUniform3fv(glGetUniformLocation(program, "lights.ambient_color"), 1, (GLfloat*)&App->scene->ambient_color);
 	my_go->SetLightUniforms(program);
-
+	my_go->UpdateModel(program);
 	glBindVertexArray(mesh.vao);
 	glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, nullptr);
 
