@@ -269,15 +269,8 @@ void GameObject::DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode) const
 		else
 		{
 			math::float3 pos = transform->position;
-			math::float3 dir = light->direction;
-			float scale = App->editor->scale;
-			dd::circle(pos, light->direction, light->color, App->editor->scale, 5.0f);
-			//TODO: Add lines
-			/*dd::line(math::float3(pos.x + scale, pos.y, pos.z), math::float3(dir.x + scale, dir.y, dir.z + 5.0f * scale), light->color, 2 * scale);
-			dd::line(math::float3(pos.x - scale, pos.y, pos.z), math::float3(pos.x - scale, pos.y, pos.z + 5.0f * scale), light->color, 2 * scale);
-			dd::line(math::float3(pos.x + scale * 0.5f, pos.y + scale, pos.z), math::float3(pos.x + scale * 0.5f, pos.y + scale, pos.z + 5.0f * scale), light->color, 2 * scale);
-			dd::line(math::float3(pos.x + scale * 2.0f, pos.y + scale, pos.z), math::float3(pos.x + scale * 2.0f, pos.y + scale, pos.z + 5.0f * scale), light->color, 2 * scale);
-			dd::line(math::float3(pos.x, pos.y - scale, pos.z), math::float3(pos.x, pos.y - scale, pos.z + 5.0f * scale), light->color, 2 * scale);*/
+			dd::circle(pos, light->direction, light->color, App->editor->scale * 0.5f, 8.0f);
+			dd::arrow(pos, pos + light->direction, light->color, App->editor->scale);
 		}
 	}
 
