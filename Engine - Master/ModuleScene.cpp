@@ -139,7 +139,7 @@ void ModuleScene::DrawStaticGameObjects(const math::float4x4& view, const math::
 	}
 }
 
-void ModuleScene::DrawImGuizmo(ImGuizmo::OPERATION operation) const
+void ModuleScene::DrawImGuizmo(ImGuizmo::OPERATION operation, ImGuizmo::MODE mode) const
 {
 	math::float2 pos = App->editor->scene->viewport;
 	ImGuizmo::SetRect(pos.x, pos.y, App->window->screen_width, App->window->screen_height);
@@ -149,8 +149,6 @@ void ModuleScene::DrawImGuizmo(ImGuizmo::OPERATION operation) const
 
 	if (selectedGO != nullptr)
 	{
-		//ImGuizmo::Enable(!selectedGO->isPureStatic());
-
 		ComponentTransform* transform = selectedGO->transform;
 		ComponentCamera* editor_camera = App->camera->editor_camera_comp;
 
@@ -163,7 +161,7 @@ void ModuleScene::DrawImGuizmo(ImGuizmo::OPERATION operation) const
 		model.Transpose();
 		view.Transpose();
 		proj.Transpose();
-		ImGuizmo::Manipulate((float*)&view, (float*)&proj, operation, ImGuizmo::LOCAL, (float*)&model, NULL, NULL, NULL, NULL);
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj, operation, mode, (float*)&model, NULL, NULL, NULL, NULL);
 
 		if (ImGuizmo::IsUsing())
 		{

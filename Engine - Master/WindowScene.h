@@ -11,6 +11,7 @@ public:
 	~WindowScene();
 
 	void Draw() override;
+	void DrawImGuizmo();
 	bool IsFocused() const;
 
 public:

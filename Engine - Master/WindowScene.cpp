@@ -46,14 +46,24 @@ void WindowScene::Draw()
 		gui_click = ImGuizmo::IsOver();
 	}
 
+	DrawImGuizmo();
+
+	ImGui::End();
+}
+
+void WindowScene::DrawImGuizmo()
+{
 	// Guizmo mode buttons
 	static ImGuizmo::OPERATION operation(ImGuizmo::TRANSLATE);
+	static ImGuizmo::MODE mode(ImGuizmo::WORLD);
+	ImVec2 size = ImGui::GetWindowSize();
 
 	ImGui::SetCursorPos(ImGui::GetWindowContentRegionMin());
 
-	if(operation == ImGuizmo::TRANSLATE)
+	// [Translate] [Rotate] [Scale]
+	if (operation == ImGuizmo::TRANSLATE)
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
-	else		
+	else
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.3f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 1.0f));
@@ -88,16 +98,49 @@ void WindowScene::Draw()
 	if (ImGui::Button("Scale"))
 	{
 		operation = ImGuizmo::SCALE;
+		mode = ImGuizmo::LOCAL;
 	}
+	if (ImGui::IsItemHovered()) gui_click = true;
 	ImGui::PopStyleColor(3);
+	ImGui::SameLine();
+
+	ImGui::SetCursorPos(ImVec2(ImGui::GetWindowContentRegionWidth() - 85.0f, ImGui::GetWindowContentRegionMin().y));
+
+	// [Local] [World]
+	if (mode == ImGuizmo::LOCAL)
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
+	else
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.3f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 1.0f));
+	if (ImGui::Button("Local"))
+	{
+		mode = ImGuizmo::LOCAL;
+	}
+	if (ImGui::IsItemHovered()) gui_click = true;
+	ImGui::PopStyleColor(3);
+	ImGui::SameLine();
+
+	if (mode == ImGuizmo::WORLD)
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
+	else
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.3f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.1f, 1.0f, 1.0f, 1.0f));
+	if (ImGui::Button("World") && operation != ImGuizmo::SCALE)
+	{
+		mode = ImGuizmo::WORLD;
+	}
+
+	if (ImGui::IsItemHovered()) gui_click = true;
+	ImGui::PopStyleColor(3);
+	ImGui::SameLine();
 
 	ImGui::SetCursorPos({ -(App->window->screen_width - size.x) / 2,-(App->window->screen_height - size.y) / 2 });
 	if (ImGui::IsItemHovered()) gui_click = true;
 
 	// Draw guizmo
-	App->scene->DrawImGuizmo(operation);
-
-	ImGui::End();
+	App->scene->DrawImGuizmo(operation, mode);
 }
 
 bool WindowScene::IsFocused() const { return focus; }
