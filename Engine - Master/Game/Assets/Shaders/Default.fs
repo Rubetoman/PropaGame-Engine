@@ -160,7 +160,7 @@ void main()
 
 	vec3 aux_color = directional_phong(normal, view_pos, lights.directional, diffuse_color, specular_color);
 
-		for(int i=0; i < lights.num_points; ++i)
+	for(int i=0; i < lights.num_points; ++i)
 	{
 		aux_color+= point_phong(normal, view_pos, lights.points[i], diffuse_color, specular_color);
 	}
@@ -174,4 +174,8 @@ void main()
 				 diffuse_color.rgb * lights.ambient_color * occlusion_color * material.k_ambient; //ambient
 
     color = vec4(aux_color, diffuse_color.a);
+
+	//color = vec4(lambert(lights.directional.direction, normal), 1.0);
+	//float l = lambert(lights.directional.direction, normal);
+	//color =vec4(l, l, l, 1.0);
 }
