@@ -19,8 +19,15 @@ public:
 
 	float GetAttenuationDistance() const;
 
+	// Debug draw
+	void DrawDebugLight() const;
+
 	JSON_value* Save(JSON_value* component) const override;
 	void Load(JSON_value* component) override;
+
+private:
+	void DrawDebugDirectional() const;
+	void DrawDebugSpot() const;
 
 public:
 	light_type type = light_type::Point;

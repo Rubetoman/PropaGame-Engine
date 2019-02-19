@@ -256,28 +256,16 @@ void GameObject::DrawDebugShapes(math::AABB bbox, BBoxMode bbox_mode) const
 		break;
 	}
 
-	float scale = App->editor->scale;
-
 	// Draw a sphere on Editor
 	ComponentLight* light = (ComponentLight*)GetComponent(component_type::Light);
 	if (light != nullptr)
-	{
-		if (light->type == light_type::Point)
-			dd::sphere(transform->position, light->color, light->GetAttenuationDistance());
-		else if (light->type == light_type::Spot)
-			dd::cone(transform->position, light->direction * light->GetAttenuationDistance(), light->color, light->GetAttenuationDistance() * tanf(math::DegToRad(light->outer_cutoff)), 0.0f);
-		else
-		{
-			math::float3 pos = transform->position;
-			dd::circle(pos, light->direction, light->color, App->editor->scale * 0.5f, 8.0f);
-			dd::arrow(pos, pos + light->direction, light->color, App->editor->scale);
-		}
-	}
+		light->DrawDebugLight();
 
 	// Draw a camera icon and Frustum on Editor
 	ComponentCamera* camera_component = (ComponentCamera*)GetComponent(component_type::Camera);
 	if (camera_component != nullptr)
 	{
+		float scale = App->editor->scale;
 		dd::cone(transform->position + (camera_component->frustum.front * scale * 0.3f), scale * 0.5f * camera_component->frustum.front, math::float3(1.0f, 1.0f, 1.0f), scale * 0.2f, scale * 0.01f);
 		dd::box(transform->position, math::float3(1.0f, 1.0f, 1.0f), scale * 0.4f, scale * 0.4f, scale * 0.4f);
 

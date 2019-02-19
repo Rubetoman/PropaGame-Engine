@@ -3,11 +3,13 @@
 #include "Application.h"
 #include "ModuleResources.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
 
 #include "imgui/imgui.h"
+#include "debugdraw.h"
 
 ComponentLight::ComponentLight(GameObject* go) : Component(go, component_type::Light)
 {
@@ -99,6 +101,60 @@ float ComponentLight::GetAttenuationDistance() const
 	}
 	return (-b + sqrt(delta)) / (2 * a);
 
+}
+void ComponentLight::DrawDebugLight() const
+{
+	if (type == light_type::Point)
+		dd::sphere(my_go->transform->position, color, GetAttenuationDistance());
+	else if (type == light_type::Spot)
+		DrawDebugSpot();
+	else
+		DrawDebugDirectional();	
+}
+
+void ComponentLight::DrawDebugDirectional() const
+{
+	float angle = 0;
+	float scale = App->editor->scale;
+
+	math::Circle circle(my_go->transform->position, direction, scale);
+	for (unsigned i = 0; i < 8; i++)
+	{
+		math::float3 debug_position = circle.GetPoint(angle);
+		math::Line line(debug_position, direction.Normalized());
+		math::float3 farPoint = line.GetPoint(-GetAttenuationDistance() * scale);
+
+		//Getting next point from the angle
+		dd::line(line.pos, farPoint, color);
+		angle += math::pi * 0.25f;
+
+		// Drawing the circle of the gizmo
+		math::float3 next_debug_position = circle.GetPoint(angle);
+		math::Line next_circle_line(next_debug_position, direction.Normalized());
+		dd::line(line.pos, next_circle_line.pos, color);
+	}
+}
+
+void ComponentLight::DrawDebugSpot() const
+{
+	math::float3 pos = my_go->transform->position;
+	float attenuation_distance = GetAttenuationDistance();
+	math::float3 circleCenter = pos + attenuation_distance * direction.Normalized();
+	float radius = attenuation_distance * tanf(math::DegToRad(outer_cutoff));
+	math::Circle circle(circleCenter, direction, radius);
+
+	// Draw circle
+	dd::circle(circleCenter, direction, color, radius, 16);
+
+	// Draw lines
+	float angle = 0.f;
+	for (unsigned i = 0; i < 8; i++)
+	{
+		math::float3 debug_position = circle.GetPoint(angle);
+		math::LineSegment segment(pos, debug_position);
+		dd::line(segment.a, segment.b, color);
+		angle += math::pi * 0.25f;
+	}
 }
 
 JSON_value* ComponentLight::Save(JSON_value* component) const
