@@ -13,14 +13,20 @@ Inside the folder Game there is a file called "PropaGame Engine.exe"; just execu
 -------------
 ### Editor Camera
 a.	While Right clicking: “WASD” fps-like movement, "QE" translates verticaly and with mouse movement you can look around.
+
 b.	Mouse wheel zooms in and out.
+
 c.	Alt+Left click orbits the selected Game Object (if none is selected will orbit around (0,0,0) of the world.
+
 d.	Pressing “F” the camera looks at the selected Game Object.
+
 e.	Holding SHIFT increases movement and rotating speed.
 
 ### Game Object manipulation:
 a. Game Objects with mesh component can be selected by clicking at them.
+
 b. When a Game Object is selected a Guizmos will appear, it can be used to translate, rotate or scale the selected Game Object.
+
 c. The buttons on the upper-left corner of the Editor Window can be used to change between Guizmos type (translation, rotation, scale).
 
 ![alt text](https://s2.gifyu.com/images/Guizmo.gif)
