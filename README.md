@@ -1,5 +1,5 @@
 # PropaGame Engine
-This is a C/C++ game engine created by Rubén Crispín for the "Universidad Politécnica de Cataluña" as a proyect for the Master Degree in Videogame Design & Development.
+This is a C/C++ game engine created by Rubén Crispín for the "Universidad Politécnica de Cataluña" as a project for the Master Degree in Videogame Design & Development.
 
 https://github.com/Rubetoman/PropaGame-Engine
 
